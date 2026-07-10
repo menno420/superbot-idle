@@ -1,0 +1,126 @@
+{
+  "graduation": {
+    "criteria": {
+      "blocking_questions": 0,
+      "critical_slots_filled_pct": 0.8
+    },
+    "soft_target_sessions": 50
+  },
+  "graduation_proposed": false,
+  "kit_version": "1.7.1",
+  "last_compaction_session": 0,
+  "mode": "guided",
+  "mode_history": [
+    {
+      "date": "2026-07-10",
+      "mode": "guided",
+      "session": 0
+    }
+  ],
+  "open_questions": [],
+  "planted_doc_hashes": {
+    ".session-journal.md": "9a32200f2bc6b7135af91a8f4993d8bec54df070629efd4aa34b254880ea03a5",
+    "CONSTITUTION.md": "c81add2347f36e3acd818582c04e9e4cf2ec8084cc5bb458ffb52d3072cf6c78",
+    "control/README.md": "80bcabb2b7e4aaa355752754fd6d9fe3594b9da7ce0d2a092af97dc59a3b3e89",
+    "control/claims/README.md": "a873f8b82bdcafde35fa777b2104d0ddc6654723cd903c34ad7a05c130d372c1",
+    "control/inbox.md": "958e51cb9723ab3079dba010cf6019e96ae0ec7bc967338df5fcada1af6bddb1",
+    "control/status.md": "8220a3aea4b3c856804ce1b00583faf425317936cfc56427c6d0414597ec6c3a",
+    "docs/AGENT_ORIENTATION.md": "1c18c3a008b3b9da45ab49c610d9571205bb8430dfc0b3a1c2a1887105c84241",
+    "docs/CAPABILITIES.md": "2d64a7b0537e8825681482dceaf4e39f772e96c59404ba67329460005d36f58c",
+    "docs/ai-project-workflow.md": "83ab40bc432f7d386a96db5a2512673c874c7a7c554837489d1814c240c7ff59",
+    "docs/architecture.md": "cfc40ee123b7e3ba049fa312f27a242a96829a374698c0efe9666a19f7eed57b",
+    "docs/collaboration-model.md": "93bf016d6c1a87fef92fad73338f84e760ee8cce4c8398de462427e5d984363a",
+    "docs/current-state.md": "6c0b5d3ddde4e00e25c899bae077ee4cd4a39ab457387ae777168f33932378ac",
+    "docs/decisions.md": "5bd1f00f2e155b6aad72d3c7e28b4eb427c47c351c5ab704fe8d3a0c32a6eab0",
+    "docs/helper-policy.md": "649d3bd95130cc26d7228aa84844ffef02ea54f31d6e30e7387e6de83985b423",
+    "docs/ideas/README.md": "b5b7506ed2a6f4668639980dbe06bd096c8ee2cb1fdfd055eb423a97cb5a3992",
+    "docs/owner-profile.md": "552bb3f5862927f81cd751e2952b2fda59dcfc7d5f38a0dca38c27e0df30e470",
+    "docs/ownership.md": "b3de81115d8f3f243df57a794521ce87c9e3f5494b102fac5e2a09deb8e811f2",
+    "docs/question-router.md": "e9edf1edf516c39eb372346c3c14fc68d7044e1755adec45095e3fd6c18e78e3",
+    "docs/repo-navigation-map.md": "05acbb90d67b41bb1b3e509d0c384679af92619302fcbd00d27113a85b843727",
+    "docs/runtime_contracts.md": "87311cddb04ddd85b8e37b86c79a9d531aaa848a6ab113dbe66be931c5fab325",
+    "scripts/env-setup.sh": "cd2145129fcba288ff9399ad44146a09017d85813e282c16bcba22340b613a2c"
+  },
+  "project_id": "fb6d784629fa",
+  "promotion_rights": "propose",
+  "quiet_sessions": 0,
+  "reflection_buffer": {
+    "active_count": 0,
+    "last_mined": "2026-07-10"
+  },
+  "review_log": [],
+  "session_count": 0,
+  "slot_values": {
+    "architecture_layers": {
+      "question_id": "Q-004",
+      "source": "user",
+      "value": "Three layers, one hard seam: (1) ENGINE CORE - pure-domain Python (tick, generators, currencies, upgrades, prestige, offline progress), no Discord API calls, no theme content hard-coded; (2) THEME PACKS - themes/<name>.yaml, DATA ONLY against the published schema, bounded multipliers, never code; (3) TOOLING/GATE - the theme-gate validator + tests + CI. Player-visible nouns live ONLY in layer 2 - one in engine code is a bug, fixed on sight."
+    },
+    "doc_roots": {
+      "question_id": "Q-007",
+      "source": "derived",
+      "value": "docs"
+    },
+    "drift_resolution": {
+      "question_id": "Q-011",
+      "source": "user",
+      "value": "Source and schema win over prose: engine code + the theme-manifest schema + theme-gate CI are ground truth; when a doc disagrees with them, fix the doc on sight and note it in the session card. Fleet instruction text is canonical at fleet-manager projects/ (version-stamped); a stale local copy loses."
+    },
+    "mutation_seam": {
+      "question_id": "Q-009",
+      "source": "user",
+      "value": "Everything ships branch -> READY PR -> substrate-gate green -> merge (arm auto-merge at creation; REST-merge on green when arming is unavailable; ONE merge attempt then park READY+green with a flag - never retry around a denial). Direct pushes to main are blocked post-seed. Engine behavior changes only with tests in the same PR; theme packs merge on gate-green alone - that is the core/skin split paying rent."
+    },
+    "new_area_ownership": {
+      "question_id": "Q-013",
+      "source": "user",
+      "value": "New engine modules go in the engine package subtree with tests beside them; new themes are one themes/<name>.yaml each (no code); design docs go under docs/design/ with a status badge, linked from docs/AGENT_ORIENTATION.md; economy parameters land PRE-REGISTERED in docs/design/ before any tuning."
+    },
+    "owner_profile": {
+      "question_id": "Q-008",
+      "source": "user",
+      "value": "The owner designs in fragments and relies on agents to build the fuller shape (understand-and-reflect); volume-first founding doctrine (superbot router Q-0266): maximize correct committed output now - CORRECT over BEST, refinement is consolidation-phase; decide-and-flag reversible calls (Q-0240); real money / external accounts are NEVER self-authorized (six-field OWNER-ACTION instead)."
+    },
+    "ownership_model": {
+      "question_id": "Q-006",
+      "source": "user",
+      "value": "Single seat owns this repo (Idle Engine Project); the fleet manager is the only other writer and only in control/inbox.md (ORDER blocks, one writer per file). themes/ accepts data-only packs gated by CI. Cross-repo: read-only via the public raw path (Q-0260); superbot-next owns the plugin contract this repo builds against."
+    },
+    "project_name": {
+      "question_id": "Q-002",
+      "source": "derived",
+      "value": "superbot-idle"
+    },
+    "review_ritual": {
+      "question_id": "Q-010",
+      "source": "user",
+      "value": "Kit enders every session (Model+time line, one genuine session idea, a previous-session review) in the session card; born-red card first commit, flip complete last; @codex is NOT enabled for this repo - do not attempt codex relays until the owner adds the integration."
+    },
+    "staleness_review": {
+      "question_id": "Q-012",
+      "source": "user",
+      "value": "Heartbeat control/status.md as every session's deliberate last step; every doc carries a status badge; any doc claiming live state gets re-verified against HEAD before reuse; the fleet manager's staleness sweep is the external check."
+    },
+    "verify_command": {
+      "question_id": "Q-005",
+      "source": "user",
+      "value": "python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additionally validate via the theme-gate step once ORDER 000 lands it in CI)"
+    }
+  },
+  "slots": {
+    "architecture_layers": "filled",
+    "doc_roots": "provisional",
+    "drift_resolution": "filled",
+    "mutation_seam": "filled",
+    "new_area_ownership": "filled",
+    "owner_profile": "filled",
+    "ownership_model": "filled",
+    "project_name": "provisional",
+    "review_ritual": "filled",
+    "staleness_review": "filled",
+    "verify_command": "filled"
+  },
+  "stage": "integration",
+  "stance": "analysis",
+  "version": 1
+}

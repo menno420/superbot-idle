@@ -1,0 +1,1 @@
+{"cmd": "check", "finding": {"kind": "badge", "message": "invalid badge token `living` (allowed: archive, audit, binding, historical, ideas, living-ledger, owner-guidance, plan, reference)", "path": "retro/questions.md"}, "guard": "badge", "judge": null, "outcome": null, "posture": "blocking", "reason": null, "surface": "check", "ts": "2026-07-10T23:32:15+00:00", "verdict": null}
