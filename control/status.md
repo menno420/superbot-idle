@@ -1,11 +1,12 @@
 # superbot-idle · status
-updated: 2026-07-10T23:35:00Z
-phase: SEEDED born-right (kit v1.7.1 adopt → 9 slots answered with real design values → render --live → mode guided → substrate-gate wired) — awaiting first coordinator boot (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md; ORDER 000 walking skeleton defined there)
+updated: 2026-07-10T23:44:48Z
+phase: BOOTED — ORDER 000 walking skeleton in progress (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green at seed · engaged: yes
+boot: 2026-07-10 — idle-engine seat synced HEAD 28fac02, kit v1.7.1 verified, check --strict green
 last-shipped: the seed itself (first push to empty main — the one push repository rules allow; everything after ships via READY PR → substrate-gate green → merge)
 blockers: none
-orders: acked= done=
+orders: acked=000 done= · ORDER-000 claimed-by: idle-engine seat (walking skeleton, in progress)
 ⚑ needs-owner:
 
 **OA-001 — repo settings: Allow auto-merge + required check `substrate-gate` on `main`**
