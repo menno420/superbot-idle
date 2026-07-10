@@ -1,0 +1,21 @@
+# egg-farm — flagship default theme pack (data only; validated by theme-gate)
+theme:
+  id: egg-farm
+  name: Egg Farm
+  description: A cozy backyard farm where patient chickens fund your empire.
+  emoji: "🥚"
+  embed_color: "#F5C542"
+
+currencies:
+  - id: primary
+    name: eggs
+    description: Fresh eggs, the farm's lifeblood.
+    emoji: "🥚"
+
+generators:
+  - id: tier1
+    name: chicken coop
+    description: A humble coop; each hen lays with metronomic dedication.
+    emoji: "🐔"
+    produces: primary
+    base_rate: 1

@@ -1,0 +1,21 @@
+# theme-gate v0 — validates every themes/*.yaml against the minimal
+# manifest (tools/theme_gate.py). LANE-OWNED: this file is separate from
+# the kit-owned substrate-gate.yml on purpose; put theme-validation
+# changes here, never there.
+name: theme-gate
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  theme-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: install validator deps
+        run: python -m pip install --quiet pyyaml
+      - name: run theme-gate
+        run: python tools/theme_gate.py themes
