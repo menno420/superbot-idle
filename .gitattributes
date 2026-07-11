@@ -1,0 +1,8 @@
+# Append-only JSONL ledgers: both feeds are append-mode-only by kit contract
+# (bootstrap.py "Telemetry substrate" — "full-file rewrites are never performed
+# on either feed"), so concurrent branch appends never truly conflict.
+# merge=union keeps both sides' lines and retires the recurring mid-flight
+# stash/rebase conflicts recorded in the ORDER-002 self-review (control/status.md).
+# Host-owned file (like .gitignore, PR #6) — the kit never writes .gitattributes.
+.substrate/guard-fires.jsonl merge=union
+telemetry/model-usage.jsonl merge=union
