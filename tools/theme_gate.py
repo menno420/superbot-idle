@@ -61,7 +61,12 @@ def _semantic_errors(data: dict, path: Path) -> list[str]:
     errors: list[str] = []
     currency_ids = [c["id"] for c in data["currencies"]]
     generator_ids = [g["id"] for g in data["generators"]]
-    for label, ids in (("currencies", currency_ids), ("generators", generator_ids)):
+    upgrade_ids = [u["id"] for u in data.get("upgrades", [])]
+    for label, ids in (
+        ("currencies", currency_ids),
+        ("generators", generator_ids),
+        ("upgrades", upgrade_ids),
+    ):
         dupes = sorted({i for i in ids if ids.count(i) > 1})
         if dupes:
             errors.append(f"{path}:{label}: duplicate id(s) {dupes} (ids must be unique)")
@@ -71,6 +76,26 @@ def _semantic_errors(data: dict, path: Path) -> list[str]:
             errors.append(
                 f"{path}:generators[{i}].produces: {gen['produces']!r} "
                 f"is not a declared currency id"
+            )
+    declared_generators = set(generator_ids)
+    for i, upgrade in enumerate(data.get("upgrades", [])):
+        if upgrade["target"] not in declared_generators:
+            errors.append(
+                f"{path}:upgrades[{i}].target: {upgrade['target']!r} "
+                f"is not a declared generator id"
+            )
+    prestige = data.get("prestige")
+    if prestige is not None:
+        for key in ("currency", "measures"):
+            if prestige[key] not in declared:
+                errors.append(
+                    f"{path}:prestige.{key}: {prestige[key]!r} "
+                    f"is not a declared currency id"
+                )
+        if prestige["currency"] == prestige["measures"]:
+            errors.append(
+                f"{path}:prestige: 'currency' and 'measures' must differ "
+                f"(a track cannot measure the currency it awards)"
             )
     if errors:
         return errors

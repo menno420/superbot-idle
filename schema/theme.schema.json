@@ -69,6 +69,37 @@
           }
         }
       }
+    },
+    "upgrades": {
+      "description": "OPTIONAL (added in slice (b), additive within v1). Display skins for engine upgrade ids. 1-20 entries: upgrades render on their OWN shop embed, so the 25-fields-per-embed cap holds with headroom. DATA ONLY: cost curves, effect sizes and every other economy number live engine-side (idle_engine/economy.py, pre-registered in docs/design/upgrades-prestige-v0.md) — a numeric field here is rejected by additionalProperties.",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "description", "emoji", "target"],
+        "properties": {
+          "id": { "$ref": "#/$defs/slug", "description": "Engine upgrade id this skin maps onto." },
+          "name": { "$ref": "#/$defs/display_name", "description": "Player-visible upgrade name; renders in field names/titles." },
+          "description": { "$ref": "#/$defs/flavor_text", "description": "Upgrade flavor text; renders as a field value (1024-char cap)." },
+          "emoji": { "$ref": "#/$defs/emoji", "description": "Upgrade emoji." },
+          "target": { "$ref": "#/$defs/slug", "description": "Generator id this upgrade boosts; MUST reference a declared generators[].id (referential check lives in the gate — not expressible here)." }
+        }
+      }
+    },
+    "prestige": {
+      "description": "OPTIONAL (added in slice (b), additive within v1). Display skin for the engine's prestige track: which declared currency is the persistent prestige currency, which declared currency's lifetime earnings it measures, and the reset action's nouns. Thresholds and award curves live engine-side (idle_engine/economy.py) — a numeric field here is rejected by additionalProperties.",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["currency", "measures", "action_name", "action_description", "action_emoji"],
+      "properties": {
+        "currency": { "$ref": "#/$defs/slug", "description": "Currency id of the persistent prestige currency; MUST reference a declared currencies[].id and differ from `measures` (gate check)." },
+        "measures": { "$ref": "#/$defs/slug", "description": "Currency id whose lifetime earnings drive eligibility/award; MUST reference a declared currencies[].id and differ from `currency` (gate check)." },
+        "action_name": { "$ref": "#/$defs/display_name", "description": "Player-visible name of the reset action; renders in buttons/titles." },
+        "action_description": { "$ref": "#/$defs/flavor_text", "description": "Reset action flavor text; renders as a field value (1024-char cap)." },
+        "action_emoji": { "$ref": "#/$defs/emoji", "description": "Reset action emoji." }
+      }
     }
   },
   "$defs": {

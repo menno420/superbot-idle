@@ -7,7 +7,7 @@ identical on every platform (no float drift, no rounding ambiguity).
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 
 
 @dataclass(frozen=True)
@@ -33,18 +33,45 @@ class GeneratorSpec:
 
 @dataclass(frozen=True)
 class GameState:
-    """Immutable snapshot of one save: balances, owned generators, last_seen.
+    """Immutable snapshot of one save.
 
-    ``balances`` maps currency id -> integer units held.
-    ``owned`` maps generator spec_id -> integer count owned.
-    ``last_seen`` is the unix timestamp (integer seconds) up to which
-    production has already been credited.
+    Run-scoped (wiped by a prestige reset):
+      ``balances`` maps currency id -> integer units held.
+      ``owned`` maps generator spec_id -> integer count owned.
+      ``upgrades`` maps upgrade spec_id -> integer level purchased.
+      ``lifetime`` maps currency id -> integer units EARNED this run
+      (production only — spending never decreases it; prestige awards
+      are computed from it).
+
+    Persistent (survives a prestige reset):
+      ``prestige`` maps prestige currency id -> integer units held.
+      ``last_seen`` is the unix timestamp (integer seconds) up to which
+      production has already been credited.
     """
 
     balances: dict[str, int] = field(default_factory=dict)
     owned: dict[str, int] = field(default_factory=dict)
     last_seen: int = 0
+    upgrades: dict[str, int] = field(default_factory=dict)
+    lifetime: dict[str, int] = field(default_factory=dict)
+    prestige: dict[str, int] = field(default_factory=dict)
 
     def with_balances(self, balances: dict[str, int], last_seen: int) -> "GameState":
         """Return a new state with replaced balances and last_seen."""
-        return GameState(balances=dict(balances), owned=dict(self.owned), last_seen=last_seen)
+        return replace(self, balances=dict(balances), last_seen=last_seen)
+
+    def with_earnings(
+        self, earned: dict[str, int], last_seen: int
+    ) -> "GameState":
+        """Credit production: add ``earned`` to balances AND lifetime.
+
+        Production is the only path that grows ``lifetime``; spending
+        goes through :func:`idle_engine.upgrades.purchase_upgrade` and
+        touches balances alone.
+        """
+        balances = dict(self.balances)
+        lifetime = dict(self.lifetime)
+        for currency, amount in earned.items():
+            balances[currency] = balances.get(currency, 0) + amount
+            lifetime[currency] = lifetime.get(currency, 0) + amount
+        return replace(self, balances=balances, lifetime=lifetime, last_seen=last_seen)

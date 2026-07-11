@@ -163,3 +163,74 @@ def test_duplicate_generator_ids_rejected(tmp_path):
     data = egg_farm_data()
     data["generators"].append(dict(data["generators"][0]))
     _assert_rejected(tmp_path, data, "duplicate")
+
+
+# --- upgrades + prestige slots (slice (b), optional additive v1 fields) ------
+
+
+def test_egg_farm_ships_upgrade_and_prestige_slots():
+    data = egg_farm_data()
+    assert data["upgrades"], "egg-farm must fill the upgrades slot"
+    assert data["prestige"], "egg-farm must fill the prestige slot"
+    assert validate_file(EGG_FARM) == []
+
+
+def test_pack_without_upgrades_or_prestige_still_passes(tmp_path):
+    # both slots are OPTIONAL — a minimal v1 pack stays valid (additive change)
+    data = egg_farm_data()
+    del data["upgrades"]
+    del data["prestige"]
+    path = write_pack(tmp_path, data)
+    assert validate_file(path) == []
+
+
+def test_dangling_upgrade_target_rejected(tmp_path):
+    data = egg_farm_data()
+    data["upgrades"][0]["target"] = "nonexistent"
+    _assert_rejected(tmp_path, data, "target")
+
+
+def test_duplicate_upgrade_ids_rejected(tmp_path):
+    data = egg_farm_data()
+    data["upgrades"].append(dict(data["upgrades"][0]))
+    _assert_rejected(tmp_path, data, "duplicate")
+
+
+def test_upgrade_cannot_smuggle_economy_numbers(tmp_path):
+    # cost curves / effect sizes live ENGINE-side; a numeric field in the
+    # theme's upgrade entry is exactly the smuggling the schema must red
+    for smuggled in ("base_cost", "effect_percent", "cost_multiplier"):
+        data = egg_farm_data()
+        data["upgrades"][0][smuggled] = 9999
+        _assert_rejected(tmp_path, data, smuggled)
+
+
+def test_more_than_20_upgrades_rejected(tmp_path):
+    data = egg_farm_data()
+    first = data["upgrades"][0]
+    data["upgrades"] = [dict(first, id=f"boost{i}") for i in range(1, 22)]  # 21 > 20
+    _assert_rejected(tmp_path, data, "upgrades")
+
+
+def test_prestige_currency_must_be_declared(tmp_path):
+    data = egg_farm_data()
+    data["prestige"]["currency"] = "nonexistent"
+    _assert_rejected(tmp_path, data, "currency")
+
+
+def test_prestige_measures_must_be_declared(tmp_path):
+    data = egg_farm_data()
+    data["prestige"]["measures"] = "nonexistent"
+    _assert_rejected(tmp_path, data, "measures")
+
+
+def test_prestige_currency_equal_to_measures_rejected(tmp_path):
+    data = egg_farm_data()
+    data["prestige"]["measures"] = data["prestige"]["currency"]
+    _assert_rejected(tmp_path, data, "differ")
+
+
+def test_prestige_cannot_smuggle_threshold(tmp_path):
+    data = egg_farm_data()
+    data["prestige"]["threshold"] = 1
+    _assert_rejected(tmp_path, data, "threshold")

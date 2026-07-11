@@ -38,7 +38,7 @@ def test_generator_specs_carry_no_display_data():
     "mutation, message_fragment",
     [
         ("name: Egg Farm", "name"),                # removed theme name
-        ("- id: primary", "currencies"),           # removed only currency
+        ('emoji: "🥇"', "currencies"),             # removed a currency's emoji
         ("base_rate: 1", "base_rate"),             # removed generator rate
     ],
 )
