@@ -1,0 +1,55 @@
+# potion-brewery — theme pack #3 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as egg-farm (primary/prestige, tier1/tier2, boost1/boost2):
+# identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: potion-brewery
+  name: Potion Brewery
+  description: A crooked little brewery where the pots mutter to themselves and every bottle glows.
+  emoji: "⚗️"
+  embed_color: "#7B3FA0"
+
+currencies:
+  - id: primary
+    name: potions
+    description: Bottled magic, corked, labeled, and ready to sell.
+    emoji: "🧪"
+  - id: prestige
+    name: arcane essence
+    description: Distilled mastery — the shimmering residue of every brewery given up for the craft.
+    emoji: "🔮"
+
+generators:
+  - id: tier1
+    name: cauldron
+    description: A pot-bellied cauldron that bubbles out potion after potion, day and night.
+    emoji: "🍲"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: apprentice alchemist
+    description: An eager apprentice who brews almost as fast as they spill.
+    emoji: "🧙"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: hotter flames
+    description: Stoke the fire under the cauldron; a fiercer boil means faster brewing.
+    emoji: "🔥"
+    target: tier1
+  - id: boost2
+    name: dog-eared grimoire
+    description: A hand-annotated grimoire; every apprentice who studies it brews with fewer mistakes.
+    emoji: "📖"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: transcend the craft
+  action_description: Shutter the brewery, distill everything you have learned, and begin again with arcane essence in hand.
+  action_emoji: "✨"

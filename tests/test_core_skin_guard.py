@@ -12,9 +12,13 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Word-boundary match so e.g. "when" does not trip on "hen".
 # Extended for slice (b): upgrade/prestige nouns (henhouse, golden [eggs]).
+# Extended for slice (c): space-colony + potion-brewery distinctive nouns.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
-    r"|henhouse|henhouses|golden)\b",
+    r"|henhouse|henhouses|golden"
+    r"|colony|colonies|oxygen|solar|hydroponics|artifact|artifacts"
+    r"|potion|potions|cauldron|cauldrons|brewery|breweries|alchemist"
+    r"|alchemists|arcane|grimoire|grimoires)\b",
     re.IGNORECASE,
 )
 
@@ -43,5 +47,12 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("Egg Farm")
     assert FORBIDDEN_NOUNS.search("a bigger henhouse")
     assert FORBIDDEN_NOUNS.search("Golden Eggs")
+    assert FORBIDDEN_NOUNS.search("launch a new colony")
+    assert FORBIDDEN_NOUNS.search("Oxygen from the solar array")
+    assert FORBIDDEN_NOUNS.search("alien artifacts")
+    assert FORBIDDEN_NOUNS.search("a Potion Brewery cauldron")
+    assert FORBIDDEN_NOUNS.search("arcane essence")
+    assert FORBIDDEN_NOUNS.search("the apprentice alchemist's grimoire")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
+    assert not FORBIDDEN_NOUNS.search("essential engine invariants")
