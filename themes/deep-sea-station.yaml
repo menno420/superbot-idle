@@ -1,0 +1,55 @@
+# deep-sea-station — theme pack #5 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: deep-sea-station
+  name: Deep-Sea Station
+  description: A pressurized research outpost on the trench floor, harvesting the abyss one pearl at a time.
+  emoji: "🌊"
+  embed_color: "#0B6E8C"
+
+currencies:
+  - id: primary
+    name: pearls
+    description: Trench pearls, luminous and flawless — the abyss pays its debts in beauty.
+    emoji: "🦪"
+  - id: prestige
+    name: abyssal relics
+    description: Strange relics dredged from the trench floor — proof of depths survived and voyages home.
+    emoji: "🏺"
+
+generators:
+  - id: tier1
+    name: oyster bed
+    description: A cultivated bed of trench oysters, each one patiently coating grit into pearls.
+    emoji: "🐚"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: submersible drone
+    description: A tireless drone that combs the kelp forests and vent fields for wild pearls.
+    emoji: "🤖"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: plankton drip line
+    description: A steady drip of rich plankton keeps every oyster fat, content, and productive.
+    emoji: "🦠"
+    target: tier1
+  - id: boost2
+    name: sonar trench maps
+    description: Fine-grained sonar charts of the trench; the drone stops searching and starts harvesting.
+    emoji: "📡"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: surface and resupply
+  action_description: Blow the ballast, ride up into the light, and refit — you return to the deep with abyssal relics in the hold.
+  action_emoji: "⚓"

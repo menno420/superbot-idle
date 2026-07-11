@@ -1,0 +1,55 @@
+# dragon-hoard — theme pack #6 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: dragon-hoard
+  name: Dragon Hoard
+  description: You are the dragon. The hoard must grow.
+  emoji: "🐉"
+  embed_color: "#B8860B"
+
+currencies:
+  - id: primary
+    name: gold coins
+    description: Warm coins to sleep on — a proper hoard is measured one gleaming coin at a time.
+    emoji: "🪙"
+  - id: prestige
+    name: ancient scales
+    description: Iridescent scales shed at each rebirth — proof of hoards burned and skies reclaimed.
+    emoji: "🐲"
+
+generators:
+  - id: tier1
+    name: kobold miner
+    description: A devoted kobold who tithes every coin it digs straight into the hoard.
+    emoji: "⛏️"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: tribute village
+    description: A village that pays its protection in gleaming coin, promptly and without being asked twice.
+    emoji: "🏘️"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: sharper pickaxes
+    description: Sharper pickaxes for the kobold crews; the coin seams give up their riches faster.
+    emoji: "⚒️"
+    target: tier1
+  - id: boost2
+    name: wings over the rooftops
+    description: One slow circle over the rooftops and the village discovers a deeper well of gratitude.
+    emoji: "🌥️"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: burn it all and fly on
+  action_description: Torch the lair, scatter the hoard to the winds, and fly for new mountains — nothing teaches like beginning again with ancient scales.
+  action_emoji: "🔥"
