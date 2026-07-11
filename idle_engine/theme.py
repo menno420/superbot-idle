@@ -17,6 +17,7 @@ from pathlib import Path
 import yaml
 
 from idle_engine import economy
+from idle_engine.achievements import MilestoneSpec
 from idle_engine.prestige import PrestigeSpec
 from idle_engine.state import GeneratorSpec
 from idle_engine.upgrades import UpgradeSpec
@@ -91,6 +92,22 @@ class ThemePrestige:
 
 
 @dataclass(frozen=True)
+class ThemeMilestone:
+    """Nouns for one engine-derived milestone slot — SKIN only.
+
+    ``milestone_id`` names the canonical slot (``owned-1`` …
+    ``prestige-3``); thresholds and bonuses live engine-side
+    (:mod:`idle_engine.economy`, pre-registered). An unskinned slot
+    still exists mechanically and renders as neutral scaffolding.
+    """
+
+    milestone_id: str
+    name: str
+    description: str
+    emoji: str
+
+
+@dataclass(frozen=True)
 class Theme:
     theme_id: str
     name: str
@@ -102,6 +119,7 @@ class Theme:
     upgrades: dict[str, ThemeUpgrade] = field(default_factory=dict)
     prestige: ThemePrestige | None = None
     labels: ThemeLabels | None = None
+    milestones: dict[str, ThemeMilestone] = field(default_factory=dict)
 
     def currency_name(self, currency_id: str) -> str:
         return self.currencies[currency_id].name
@@ -141,6 +159,25 @@ class Theme:
         return economy.build_prestige_spec(
             awards=self.prestige.currency, measures=self.prestige.measures
         )
+
+    def milestone_specs(self) -> list[MilestoneSpec]:
+        """The engine-derived milestone slots for this pack's roster.
+
+        The slot SET is mechanics (identical ladders for every pack —
+        CORE side); the pack's ``milestones`` block only skins slot ids
+        with nouns. The lifetime track measures the prestige track's
+        measured currency when one is declared, else — deterministic
+        fallback — the FIRST declared generator's produced currency;
+        the prestige track's slots exist only alongside a prestige
+        block.
+        """
+        if self.prestige is not None:
+            lifetime_currency = self.prestige.measures
+            prestige_currency = self.prestige.currency
+        else:
+            lifetime_currency = next(iter(self.generators.values())).produces
+            prestige_currency = None
+        return economy.build_milestone_specs(lifetime_currency, prestige_currency)
 
 
 def _require_str(mapping: dict, key: str, where: str) -> str:
@@ -283,6 +320,42 @@ def load_theme(path: str | Path) -> Theme:
                 )
         labels = ThemeLabels(**values)
 
+    milestones: dict[str, ThemeMilestone] = {}
+    raw_milestones = data.get("milestones")
+    if raw_milestones is not None:
+        if not isinstance(raw_milestones, list) or not raw_milestones:
+            raise ValueError(
+                f"{path}: 'milestones', when present, must be a non-empty list"
+            )
+        # The slot set is ENGINE-derived (economy ladders); nouns may only
+        # skin slots that exist for this pack's roster.
+        first_produces = next(iter(generators.values())).produces
+        slot_ids = {
+            spec.spec_id
+            for spec in economy.build_milestone_specs(
+                prestige.measures if prestige else first_produces,
+                prestige.currency if prestige else None,
+            )
+        }
+        for i, entry in enumerate(raw_milestones):
+            if not isinstance(entry, dict):
+                raise ValueError(f"{path}:milestones[{i}] must be a mapping")
+            w = f"{path}:milestones[{i}]"
+            mid = _require_str(entry, "id", w)
+            if mid not in slot_ids:
+                raise ValueError(
+                    f"{w}: id {mid!r} is not an engine milestone slot for this "
+                    f"pack (valid: {sorted(slot_ids)})"
+                )
+            if mid in milestones:
+                raise ValueError(f"{w}: duplicate milestone id {mid!r}")
+            milestones[mid] = ThemeMilestone(
+                milestone_id=mid,
+                name=_require_str(entry, "name", w),
+                description=_require_str(entry, "description", w),
+                emoji=_require_str(entry, "emoji", w),
+            )
+
     return Theme(
         theme_id=theme_id,
         name=name,
@@ -294,4 +367,5 @@ def load_theme(path: str | Path) -> Theme:
         upgrades=upgrades,
         prestige=prestige,
         labels=labels,
+        milestones=milestones,
     )

@@ -45,6 +45,8 @@ composition headroom* so every render slot fits by construction:
 | Shop description override: `labels.shop_description` | 4096 | ≤ 1024 | rendered verbatim as the embed description |
 | Shop value: `{mark} {labels.level} N → N+1 · cost {emoji} {name}\n{upgrades[].description}` | 1024 | upgrade description ≤ 768, level label ≤ 32 | exact spend of the cap: description (768) + newline (1) + themed cost-line text (mark 1 + label 32 + emoji 32 + name 64 + separators 10 = 139) + digit floor (116) = 1024; the cost line is number-bearing and clamps into the room the description leaves — the description itself never truncates |
 | Prestige progress value: `{mark} {labels.prestige_progress} N / M` | 1024 | label ≤ 64 | mark + label + separators ≤ ~70; ≥ 950 for digits before the numeric clamp |
+| Achievements value: `{mark} N / M\n{milestones[].description}` | 1024 | milestone description ≤ 768 | shop-value arithmetic: description (768) + newline (1) leaves ≥ 255 for the number-bearing progress line, which clamps; the description never truncates |
+| Achievements fields per embed | 25 | ≤ 9 engine slots | milestones render on their OWN achievements embed (the status view already spends up to 25 fields on 5 currencies + 20 generators); 16 fields of headroom |
 
 ## Fields
 
@@ -85,6 +87,11 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 | `prestige.action_name` | string | required* | player-visible reset-action name, 1–64 chars |
 | `prestige.action_description` | string | required* | flavor text, 1–1024 chars |
 | `prestige.action_emoji` | string | required* | 1–32 chars |
+| `milestones` | list | optional | 1–9 entries; noun skins for the ENGINE-DERIVED milestone slots (own achievements embed) |
+| `milestones[].id` | enum | required* | canonical slot id: `owned-1..3`, `lifetime-1..3`, `prestige-1..3`; `prestige-*` require the pack's `prestige` block (gate check); each id at most once |
+| `milestones[].name` | string | required* | player-visible milestone name, 1–64 chars |
+| `milestones[].description` | string | required* | flavor text, 1–768 chars (composed into the achievements field value — see the achievements-value budget row) |
+| `milestones[].emoji` | string | required* | 1–32 chars |
 | `labels` | mapping | optional | themed render-label overrides; ≥ 1 slot when present, EVERY slot optional |
 | `labels.offline_return` | string | optional | offline-gains flavor template, 1–256 chars; MUST contain `{gains}` exactly once, no other braces (gate check) |
 | `labels.status_title` | string | optional | status-view title, verbatim, 1–256 chars |
@@ -95,13 +102,32 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 
 `upgrades` and `prestige` are v1's first OPTIONAL top-level fields (added
 additively in slice (b), per the compatibility promise); `labels` is the
-third (themed-label-slots slice). `required*` means required *within its
-block when the block is present* — a pack may omit the whole block. **All
-these blocks are nouns-only**: cost curves, effect sizes, thresholds and
-award math live engine-side (`idle_engine/economy.py`, pre-registered in
-[`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md));
+third (themed-label-slots slice); `milestones` is the fourth (achievements
+slice). `required*` means required *within its block when the block is
+present* — a pack may omit the whole block. **All these blocks are
+nouns-only**: cost curves, effect sizes, thresholds and award math live
+engine-side (`idle_engine/economy.py`, pre-registered in
+[`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md) and
+[`design/achievements-v0.md`](design/achievements-v0.md));
 any numeric field smuggled into these blocks is rejected by
 `additionalProperties: false`.
+
+## `milestones` — noun skins for the engine-derived milestone slots (optional, additive)
+
+Unlike `upgrades`/`prestige`, the `milestones` block does not DECLARE
+mechanics at all: the milestone slot set is engine-derived (identical
+pre-registered threshold ladders for every pack —
+[`design/achievements-v0.md`](design/achievements-v0.md)), so two packs run
+identical milestone mechanics whether or not either fills this block. An
+entry skins ONE canonical slot id (`owned-1..3`: total generators owned;
+`lifetime-1..3`: run-lifetime earnings of the measured currency;
+`prestige-1..3`: prestige units held) with a name, flavor description and
+emoji. Any subset may be skinned; an unskinned slot renders as the render
+layer's neutral scaffolding (`Milestone {n}` + bare progress numbers), so a
+pack without the block renders byte-stable neutral output. The
+`prestige-1..3` slots exist only for packs declaring a `prestige` block —
+skinning them without one is a red gate (a noun for a slot that does not
+exist).
 
 **`upgrades[].description` budget provenance** (shop-composition slice):
 this field originally carried the generic 1024-char flavor budget but
@@ -178,6 +204,9 @@ layer's two-tier budget policy).
   `{gains}` **exactly once**, and no other `{`/`}` characters — an unknown
   placeholder (or a stray brace) is a red gate, so render-time substitution
   can never hit a token it does not know.
+- `milestones[].id` values are unique (a duplicate would silently collapse
+  in the theme's id map), and the `prestige-1..3` ids appear only in packs
+  declaring a `prestige` block (the slot must exist to be skinned).
 - The pack must load through `idle_engine.theme.load_theme` — the schema's
   ground truth is what the engine actually accepts.
 - **Catalog-wide** (checked across all of `themes/`, not per file):

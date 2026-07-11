@@ -196,6 +196,11 @@ def test_pack_without_upgrades_or_prestige_still_passes(tmp_path):
     data = egg_farm_data()
     del data["upgrades"]
     del data["prestige"]
+    # dropping the prestige track removes its milestone slots too — keep
+    # only the noun skins whose slots still exist for this roster
+    data["milestones"] = [
+        m for m in data["milestones"] if not m["id"].startswith("prestige-")
+    ]
     path = write_pack(tmp_path, data)
     assert validate_file(path) == []
 

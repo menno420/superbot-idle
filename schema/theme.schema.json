@@ -132,6 +132,36 @@
         }
       }
     },
+    "milestones": {
+      "description": "OPTIONAL (added in the achievements slice, additive within v1). Noun skins for the engine-derived milestone slots. The slot SET is mechanics (CORE side): every pack gets the same pre-registered threshold ladders (idle_engine/economy.py, docs/design/achievements-v0.md) — three 'owned' rungs (total generators owned), three 'lifetime' rungs (run-lifetime earnings of the measured currency), and, when the pack declares a prestige block, three 'prestige' rungs (prestige units held). An entry here skins ONE canonical slot id with name/flavor/emoji; any subset may be skinned, and an unskinned slot renders as neutral scaffolding. DATA ONLY: thresholds, bonus percents and track bindings live engine-side — a numeric or mechanical field here is rejected by additionalProperties. The prestige-* ids require the pack's prestige block (gate check — a noun for a slot that does not exist is a red gate).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 9,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "name", "description", "emoji"],
+        "properties": {
+          "id": {
+            "description": "Canonical engine milestone slot id being skinned (kind-rank over the three pre-registered ladders).",
+            "enum": [
+              "owned-1",
+              "owned-2",
+              "owned-3",
+              "lifetime-1",
+              "lifetime-2",
+              "lifetime-3",
+              "prestige-1",
+              "prestige-2",
+              "prestige-3"
+            ]
+          },
+          "name": { "$ref": "#/$defs/display_name", "description": "Player-visible milestone name; renders in the achievements view's field names ({emoji} {name}, 32 + 64 of the 256-char cap)." },
+          "description": { "$ref": "#/$defs/shop_flavor_text", "description": "Milestone flavor text; composed into the achievements field value below the progress line (same two-tier arithmetic as the shop value: description (768) + newline (1) leaves >= 255 for the number-bearing progress line, which clamps — the description itself never truncates)." },
+          "emoji": { "$ref": "#/$defs/emoji", "description": "Milestone emoji." }
+        }
+      }
+    },
     "prestige": {
       "description": "OPTIONAL (added in slice (b), additive within v1). Display skin for the engine's prestige track: which declared currency is the persistent prestige currency, which declared currency's lifetime earnings it measures, and the reset action's nouns. Thresholds and award curves live engine-side (idle_engine/economy.py) — a numeric field here is rejected by additionalProperties.",
       "type": "object",

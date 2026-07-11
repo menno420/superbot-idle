@@ -17,6 +17,8 @@ unique currency/generator ids, ``produces`` referencing a declared
 currency, the ``labels.offline_return`` template carrying its one
 substitution token ``{gains}`` exactly once with no other braces (an
 unknown placeholder would leak verbatim into player-visible text),
+``milestones[].id`` values unique with the ``prestige-*`` slots skinned
+only by packs declaring a prestige block (the slot must exist),
 ``theme.id`` equal to the pack's filename stem (catalog
 tooling and setup codes resolve packs by id, so a pack must live at
 ``themes/<theme.id>.yaml``), and that the pack actually loads through
@@ -137,6 +139,30 @@ def _semantic_errors(data: dict, path: Path) -> list[str]:
                 f"{path}:prestige: 'currency' and 'measures' must differ "
                 f"(a track cannot measure the currency it awards)"
             )
+    milestones = data.get("milestones")
+    if milestones is not None:
+        # The schema bounds ids to the canonical slot enum and budgets the
+        # nouns; what it cannot express: id uniqueness across the list, and
+        # that the prestige-* slots only EXIST for packs declaring a
+        # prestige block (a noun for a nonexistent slot would silently skin
+        # nothing). Thresholds/bonuses are engine-side
+        # (docs/design/achievements-v0.md) — additionalProperties already
+        # rejects smuggled numbers.
+        milestone_ids = [m["id"] for m in milestones]
+        dupes = sorted({i for i in milestone_ids if milestone_ids.count(i) > 1})
+        if dupes:
+            errors.append(
+                f"{path}:milestones: duplicate milestone id(s) {dupes} "
+                f"(each engine slot may be skinned at most once)"
+            )
+        if prestige is None:
+            orphaned = sorted(i for i in milestone_ids if i.startswith("prestige-"))
+            if orphaned:
+                errors.append(
+                    f"{path}:milestones: id(s) {orphaned} skin prestige-track "
+                    f"slots, but the pack declares no 'prestige' block — the "
+                    f"slot(s) do not exist for this pack"
+                )
     if errors:
         return errors
     try:  # the engine loader is ground truth — a schema-valid pack must load

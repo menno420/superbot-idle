@@ -44,9 +44,11 @@ Each is a testable statement; the enforcing check is named.
   `tests/test_engine.py` + partition-equivalence properties in
   `tests/test_properties.py`.
 - **Integer-only economy math, one floor per composed rate** — exact big-int
-  arithmetic; `rate = base_rate · count · upgrade_pct · prestige_pct // 10_000`.
-  Enforced: `tests/test_upgrades_prestige.py`, `tests/test_properties.py`
-  (determinism, conservation, monotonicity).
+  arithmetic; `rate = base_rate · count · upgrade_pct · prestige_pct ·
+  milestone_pct // 1_000_000` (identical to the earlier `// 10_000` fold
+  when no milestones are earned).
+  Enforced: `tests/test_upgrades_prestige.py`, `tests/test_achievements.py`,
+  `tests/test_properties.py` (determinism, conservation, monotonicity).
 - **A gate-green pack is safe to enable unreviewed** — schema + referential
   checks + budget bounds; render output from any gate-valid pack fits the
   embed caps by construction. Enforced: `tools/theme_gate.py` (required CI),

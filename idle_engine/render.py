@@ -36,6 +36,7 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
 
+from idle_engine.achievements import milestone_earned, milestone_progress
 from idle_engine.engine import offline_progress, production_per_second
 from idle_engine.prestige import prestige_award, prestige_eligible
 from idle_engine.upgrades import upgrade_cost
@@ -72,6 +73,12 @@ _GAINS_PLACEHOLDER = "{gains}"
 
 # Neutral scaffolding fallback for the shop level label.
 _NEUTRAL_LEVEL_LABEL = "Lv"
+
+# Neutral scaffolding fallback for an unskinned milestone slot's field
+# name: "Milestone {n}" numbered by the slot's position in the engine's
+# derived spec list (generic engine vocabulary, like "Lv" — never a
+# theme noun).
+_NEUTRAL_MILESTONE_LABEL = "Milestone"
 
 
 class RenderBudgetError(ValueError):
@@ -179,8 +186,13 @@ def render_status(state: GameState, theme: Theme, now: int) -> dict:
     specs = theme.generator_specs()
     upgrade_specs = theme.upgrade_specs()
     prestige_specs = _prestige_specs(theme)
-    rates = production_per_second(state, specs, upgrade_specs, prestige_specs)
-    earned = offline_progress(state, specs, state.last_seen, now, upgrade_specs, prestige_specs)
+    milestone_specs = theme.milestone_specs()
+    rates = production_per_second(
+        state, specs, upgrade_specs, prestige_specs, milestone_specs
+    )
+    earned = offline_progress(
+        state, specs, state.last_seen, now, upgrade_specs, prestige_specs, milestone_specs
+    )
 
     description = theme.description
     gain_lines = []
@@ -228,9 +240,9 @@ def render_status(state: GameState, theme: Theme, now: int) -> dict:
         count = state.owned.get(spec.spec_id, 0)
         value = f"× {_format_amount(count)}"
         if count:
-            rate = production_per_second(state, [spec], upgrade_specs, prestige_specs).get(
-                spec.produces, 0
-            )
+            rate = production_per_second(
+                state, [spec], upgrade_specs, prestige_specs, milestone_specs
+            ).get(spec.produces, 0)
             value += f" · +{_format_amount(rate)}/s"
         fields.append(
             _field(_labelled(generator.emoji, generator.name), _clamp(value, FIELD_VALUE_LIMIT), True)
@@ -332,6 +344,67 @@ def render_prestige(state: GameState, theme: Theme) -> dict | None:
         {
             "title": _labelled(theme.prestige.action_emoji, theme.prestige.action_name),
             "description": theme.prestige.action_description,
+            "color": embed_color_int(theme.embed_color),
+            "fields": fields,
+        }
+    )
+
+
+def render_achievements(state: GameState, theme: Theme) -> dict:
+    """The achievements view: one field per engine-derived milestone slot.
+
+    The slot SET is mechanics (identical pre-registered ladders for
+    every pack — ``idle_engine.economy``), so this view always renders:
+    at most 9 slots, its OWN embed, far under the 25-field cap (the
+    status view already spends up to 25 fields on currencies +
+    generators, which is why milestones do not ride there). The pack's
+    OPTIONAL ``milestones`` block skins individual slots; an unskinned
+    slot falls back to neutral scaffolding (``Milestone {n}``, the bare
+    progress numbers) so a pack without the block renders byte-stable
+    neutral output.
+
+    Field value composition mirrors the shop's two tiers: the progress
+    line (mark + numbers) is number-bearing and CLAMPS; the themed
+    flavor ``description`` below it is theme-sourced — never truncated;
+    overflowing its :data:`SHOP_FLAVOR_LIMIT` slot raises
+    :class:`RenderBudgetError`. An EARNED milestone pins its numbers at
+    ``threshold / threshold`` (the counters it watched may since have
+    reset — e.g. a prestige wiped ``owned`` — but an earn is forever);
+    an unearned one shows live progress, mark strictly reflecting the
+    earned set (awarding is the runtime's explicit action).
+    """
+    fields = []
+    for position, spec in enumerate(theme.milestone_specs(), 1):
+        earned = milestone_earned(state, spec)
+        mark = "✅" if earned else "\U0001f512"
+        progress = spec.threshold if earned else milestone_progress(state, spec)
+        line = f"{mark} {_format_amount(progress)} / {_format_amount(spec.threshold)}"
+        themed = theme.milestones.get(spec.spec_id)
+        if themed is not None:
+            name = _labelled(themed.emoji, themed.name)
+            description = themed.description or ""
+            if len(description) > SHOP_FLAVOR_LIMIT:
+                # Theme-sourced overflow tier: the gate bounds this slot, so
+                # an overflow is a broken pack or an engine bug — raise
+                # instead of letting the numeric clamp starve the line.
+                raise RenderBudgetError(
+                    f"embed budget violated at 'milestone.description' (measured "
+                    f"{len(description)}, slot {SHOP_FLAVOR_LIMIT}): theme-sourced "
+                    "text overflowed a gate-bounded slot"
+                )
+        else:
+            name = f"{_NEUTRAL_MILESTONE_LABEL} {position}"
+            description = ""
+        if description:
+            room = FIELD_VALUE_LIMIT - len(description) - 1
+            value = f"{_clamp(line, room)}\n{description}"
+        else:
+            value = _clamp(line, FIELD_VALUE_LIMIT)
+        fields.append(_field(name, value, True))
+    return validate_embed(
+        {
+            "title": _labelled(theme.emoji, theme.name),
+            "description": theme.description,
             "color": embed_color_int(theme.embed_color),
             "fields": fields,
         }
