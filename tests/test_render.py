@@ -8,6 +8,7 @@ module under test must contain none — `test_core_skin_guard.py` scans
 `idle_engine/**/*.py`, which includes `idle_engine/render.py`.
 """
 
+import json
 import re
 from pathlib import Path
 
@@ -19,6 +20,7 @@ from idle_engine.render import (
     FIELD_NAME_LIMIT,
     FIELD_VALUE_LIMIT,
     MAX_FIELDS,
+    SHOP_FLAVOR_LIMIT,
     TITLE_LIMIT,
     RenderBudgetError,
     embed_color_int,
@@ -27,7 +29,7 @@ from idle_engine.render import (
     render_status,
     validate_embed,
 )
-from idle_engine.theme import Theme, ThemeCurrency, ThemeGenerator, ThemeLabels
+from idle_engine.theme import Theme, ThemeCurrency, ThemeGenerator, ThemeLabels, ThemeUpgrade
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 THEMES_DIR = REPO_ROOT / "themes"
@@ -145,6 +147,11 @@ def test_shop_costs_and_affordability(egg_farm):
     assert field_broke["value"].startswith("🔒")
     assert field_rich["value"].startswith("✅")
     assert "Coop size 0 → 1" in field_rich["value"]  # labels.level
+    # Shop composition: cost line first, themed flavor on the line below.
+    assert field_rich["value"] == (
+        "✅ Coop size 0 → 1 · 60 🥚 eggs"
+        "\nA roomier henhouse; every hen in the coop lays that bit faster."
+    )
     assert shop_rich["title"] == "🧺 The Farm Supply Shed"  # labels.shop_title
     assert shop_rich["description"] == "Trade fresh eggs for a busier, happier farm."
     _assert_budgets(shop_rich)
@@ -436,6 +443,94 @@ def test_shop_and_prestige_label_budgets_at_extremes(egg_farm):
     prestige = render_prestige(state, themed)
     _assert_budgets(prestige)
     assert any(("P" * 64) in f["value"] for f in prestige["fields"])
+
+
+# --- shop composition: themed upgrade flavor in the field value ---------------
+
+
+def _shop_theme(flavor, currency_name="points", currency_emoji="🔹", level_label=None):
+    labels = ThemeLabels(level=level_label) if level_label else None
+    return Theme(
+        theme_id="rogue",
+        name="Okay",
+        description="Fine.",
+        emoji="🔹",
+        embed_color="#123456",
+        currencies={
+            "primary": ThemeCurrency("primary", currency_name, "flat.", currency_emoji)
+        },
+        generators={
+            "tier1": ThemeGenerator("tier1", "maker", "makes points.", "⚙️", "primary", 1)
+        },
+        upgrades={"boost1": ThemeUpgrade("boost1", "sharpener", flavor, "🗡", "tier1")},
+        labels=labels,
+    )
+
+
+def test_shop_flavor_limit_matches_schema_budget():
+    """SHOP_FLAVOR_LIMIT and $defs.shop_flavor_text carry the same number —
+    the composition arithmetic anchor cannot drift on either side alone."""
+    schema = json.loads(
+        (REPO_ROOT / "schema" / "theme.schema.json").read_text(encoding="utf-8")
+    )
+    assert schema["$defs"]["shop_flavor_text"]["maxLength"] == SHOP_FLAVOR_LIMIT == 768
+
+
+def test_shop_composes_description_below_cost_line(egg_farm):
+    """The composed value is exactly: cost line, newline, themed flavor."""
+    (field,) = render_shop(_fixed_state(), egg_farm)["fields"]
+    cost_line, _, flavor = field["value"].partition("\n")
+    assert cost_line == "✅ Coop size 1 → 2 · 69 🥚 eggs"
+    assert flavor == egg_farm.upgrades["boost1"].description
+
+
+def test_shop_without_description_pins_pre_composition_bytes():
+    """Absent flavor (hand-built themes only — the gate requires the field)
+    renders the bare cost line BYTE-IDENTICALLY to the pre-composition layer:
+    no newline, no trailing scaffolding."""
+    theme = _shop_theme("")
+    (field,) = render_shop(GameState(balances={"primary": 60}), theme)["fields"]
+    assert field["value"] == "✅ Lv 0 → 1 · 60 🔹 points"
+    (field,) = render_shop(GameState(), theme)["fields"]
+    assert field["value"] == "🔒 Lv 0 → 1 · 60 🔹 points"
+
+
+def test_shop_composition_budget_at_worst_case_extremes():
+    """Max-budget flavor (768) × max level label (32) × max currency label
+    (32 + 64) × an astronomical cost: the value spends the 1024 cap exactly,
+    the flavor survives verbatim, the number-bearing cost line clamps."""
+    flavor = "D" * SHOP_FLAVOR_LIMIT
+    theme = _shop_theme(
+        flavor, currency_name="c" * 64, currency_emoji="e" * 32, level_label="L" * 32
+    )
+    state = GameState(upgrades={"boost1": 10_000})  # cost ~10^607: must clamp
+    embed = render_shop(state, theme)
+    _assert_budgets(embed)
+    (field,) = embed["fields"]
+    cost_line, _, tail = field["value"].partition("\n")
+    assert tail == flavor  # themed flavor never truncated
+    assert len(field["value"]) == FIELD_VALUE_LIMIT  # 255 + 1 + 768 = 1024
+    assert ("L" * 32) in cost_line  # the leading themed label survives the clamp
+    assert cost_line.endswith("…")  # the numeric tail clamped with ellipsis
+
+
+def test_shop_description_overflowing_its_slot_raises():
+    """A flavor past 768 chars is theme-sourced overflow (gate-illegal pack):
+    it must raise, never silently starve the cost line."""
+    theme = _shop_theme("z" * (SHOP_FLAVOR_LIMIT + 1))
+    with pytest.raises(RenderBudgetError):
+        render_shop(GameState(), theme)
+
+
+def test_shop_boundary_description_never_raises():
+    """Exactly 768 chars — the budget boundary — renders within every cap."""
+    theme = _shop_theme("b" * SHOP_FLAVOR_LIMIT)
+    for magnitude in (0, 10**6, 10**400, 10**2000):
+        embed = render_shop(
+            GameState(balances={"primary": magnitude}, upgrades={"boost1": 25}), theme
+        )
+        _assert_budgets(embed)
+        assert embed["fields"][0]["value"].endswith("b" * SHOP_FLAVOR_LIMIT)
 
 
 # --- purity: the render module imports no chat-platform SDK ------------------

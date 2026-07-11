@@ -102,6 +102,20 @@ def test_oversized_field_value_rejected(tmp_path):
     _assert_rejected(tmp_path, data, "theme.description")
 
 
+def test_oversized_upgrade_description_rejected(tmp_path):
+    data = egg_farm_data()
+    # blows the 768-char shop-flavor budget (shop-composition arithmetic:
+    # 768 + 1 newline + 139 themed cost-line text + 116 digit floor = 1024)
+    data["upgrades"][0]["description"] = "x" * 769
+    _assert_rejected(tmp_path, data, "upgrades[0].description")
+
+
+def test_boundary_upgrade_description_passes(tmp_path):
+    data = egg_farm_data()
+    data["upgrades"][0]["description"] = "x" * 768  # exactly the shop-flavor budget
+    assert validate_file(write_pack(tmp_path, data)) == []
+
+
 def test_more_than_25_fields_worth_rejected(tmp_path):
     data = egg_farm_data()
     tier1 = data["generators"][0]

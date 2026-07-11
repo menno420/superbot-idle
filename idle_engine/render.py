@@ -51,6 +51,16 @@ FIELD_VALUE_LIMIT = 1024
 DESCRIPTION_LIMIT = 4096
 MAX_FIELDS = 25
 
+# The shop flavor slot: the budget an upgrade's themed ``description`` gets
+# inside the composed shop field value. Derived by the composition
+# arithmetic (docs/theme-schema.md § budgets), which spends the 1024-char
+# field-value cap exactly: description (768) + newline (1) + the cost
+# line's themed fixed text (mark 1 + level label 32 + currency emoji 32 +
+# currency name 64 + separators 10 = 139) + digit floor (116) = 1024.
+# The machine schema's ``$defs.shop_flavor_text`` mirrors this number —
+# ``tests/test_render.py`` pins the two equal so neither can drift alone.
+SHOP_FLAVOR_LIMIT = 768
+
 _ELLIPSIS = "…"
 _HEX_COLOR = re.compile(r"#[0-9A-Fa-f]{6}\Z")
 
@@ -237,14 +247,20 @@ def render_status(state: GameState, theme: Theme, now: int) -> dict:
 
 
 def render_shop(state: GameState, theme: Theme) -> dict | None:
-    """The upgrade-shop view: each upgrade's next level, cost, affordability.
+    """The upgrade-shop view: cost line + themed flavor per upgrade.
 
     Returns ``None`` when the pack declares no ``upgrades`` block. Costs
     come from the engine's pre-registered curve (``idle_engine.economy``)
-    at the state's CURRENT level. Upgrade flavor ``description`` is not
-    composed into the cost field in v1 — the schema gives it the whole
-    1024-char budget, so composing it with anything could overflow on a
-    legal pack (see docs/render-layer.md).
+    at the state's CURRENT level. Each field value composes the
+    number-bearing cost line (mark, level, cost — numeric tier: clamps)
+    and, on the line below, the upgrade's themed flavor ``description``
+    (theme-sourced tier: never truncated; overflowing its
+    :data:`SHOP_FLAVOR_LIMIT` slot raises :class:`RenderBudgetError`).
+    The cost line clamps into exactly the room the description leaves,
+    so a gate-legal pack can never bust the 1024-char field-value cap
+    (arithmetic at :data:`SHOP_FLAVOR_LIMIT`). An upgrade without a
+    description renders the bare cost line byte-identically to the
+    pre-composition layer.
     """
     if not theme.upgrades:
         return None
@@ -258,13 +274,26 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
         affordable = state.balances.get(spec.cost_currency, 0) >= cost
         currency = theme.currencies[spec.cost_currency]
         mark = "✅" if affordable else "\U0001f512"
-        value = (
+        cost_line = (
             f"{mark} {level_label} {_format_amount(level)} → {_format_amount(level + 1)}"
             f" · {_format_amount(cost)} {_labelled(currency.emoji, currency.name)}"
         )
-        fields.append(
-            _field(_labelled(upgrade.emoji, upgrade.name), _clamp(value, FIELD_VALUE_LIMIT), False)
-        )
+        description = upgrade.description or ""
+        if len(description) > SHOP_FLAVOR_LIMIT:
+            # Theme-sourced overflow tier: the gate bounds this slot, so an
+            # overflow is a broken pack or an engine bug — raise instead of
+            # letting the numeric clamp silently starve the cost line.
+            raise RenderBudgetError(
+                f"embed budget violated at 'upgrade.description' (measured "
+                f"{len(description)}, slot {SHOP_FLAVOR_LIMIT}): theme-sourced "
+                "text overflowed a gate-bounded slot"
+            )
+        if description:
+            room = FIELD_VALUE_LIMIT - len(description) - 1
+            value = f"{_clamp(cost_line, room)}\n{description}"
+        else:
+            value = _clamp(cost_line, FIELD_VALUE_LIMIT)
+        fields.append(_field(_labelled(upgrade.emoji, upgrade.name), value, False))
     return validate_embed(
         {
             "title": _label_slot(theme, "shop_title") or _labelled(theme.emoji, theme.name),
