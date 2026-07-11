@@ -1,1 +1,0 @@
-- `buy-max-math` · **buy-max / bulk-purchase math** — exact bulk upgrade cost + max-affordable-levels + atomic bulk purchase · idle_engine/upgrades.py, idle_engine/__init__.py, tests/test_bulk_purchase.py, docs/design/upgrades-prestige-v0.md addendum · 2026-07-11
