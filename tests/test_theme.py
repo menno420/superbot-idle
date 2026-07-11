@@ -57,3 +57,55 @@ def test_loader_rejects_produces_pointing_at_unknown_currency(tmp_path):
     path.write_text(broken, encoding="utf-8")
     with pytest.raises(ValueError, match="not a declared currency"):
         load_theme(path)
+
+
+# --- labels block (optional, every slot optional) ----------------------------
+
+
+def test_loader_maps_labels_block():
+    theme = load_theme(EGG_FARM)
+    assert theme.labels is not None
+    assert theme.labels.level == "Coop size"
+    assert theme.labels.status_title == "🥚 Egg Farm — the morning count"
+    assert theme.labels.shop_title == "🧺 The Farm Supply Shed"
+    assert theme.labels.shop_description == "Trade fresh eggs for a busier, happier farm."
+    assert theme.labels.prestige_progress == "lifetime eggs toward the sale:"
+    assert theme.labels.offline_return.count("{gains}") == 1
+
+
+def test_loader_defaults_labels_to_none(tmp_path):
+    stripped, sep, _ = EGG_FARM.read_text(encoding="utf-8").partition("\nlabels:")
+    assert sep, "egg-farm.yaml must carry a labels block"
+    path = tmp_path / "egg-farm.yaml"
+    path.write_text(stripped, encoding="utf-8")
+    assert load_theme(path).labels is None
+
+
+def test_loader_rejects_unknown_label_slot(tmp_path):
+    broken = EGG_FARM.read_text(encoding="utf-8").replace(
+        "  level: Coop size", "  level: Coop size\n  click_sound: cluck"
+    )
+    path = tmp_path / "broken.yaml"
+    path.write_text(broken, encoding="utf-8")
+    with pytest.raises(ValueError, match="unknown label slot"):
+        load_theme(path)
+
+
+@pytest.mark.parametrize(
+    "bad_template, fragment",
+    [
+        ('"no token here"', "exactly once"),
+        ('"{gains} twice {gains}"', "exactly once"),
+        ('"{gains} and a {smuggled} token"', "unknown placeholder"),
+        ('"{gains} then a stray } brace"', "unknown placeholder"),
+    ],
+)
+def test_loader_rejects_bad_offline_template(tmp_path, bad_template, fragment):
+    broken = EGG_FARM.read_text(encoding="utf-8").replace(
+        '"While you were away, the hens kept laying: {gains}"', bad_template
+    )
+    assert broken != EGG_FARM.read_text(encoding="utf-8")
+    path = tmp_path / "broken.yaml"
+    path.write_text(broken, encoding="utf-8")
+    with pytest.raises(ValueError, match=fragment):
+        load_theme(path)

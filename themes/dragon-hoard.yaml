@@ -53,3 +53,11 @@ prestige:
   action_name: burn it all and fly on
   action_description: Torch the lair, scatter the hoard to the winds, and fly for new mountains — nothing teaches like beginning again with ancient scales.
   action_emoji: "🔥"
+
+labels:
+  offline_return: "While you slumbered, the tribute kept piling up: {gains}"
+  status_title: "🐉 Dragon Hoard — a dragon's accounting"
+  shop_title: "🔥 The Dragon's Demands"
+  shop_description: Spend coins now to make the hoard grow faster. It is an investment.
+  level: Menace level
+  prestige_progress: "lifetime gold toward the burning:"

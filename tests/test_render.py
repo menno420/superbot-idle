@@ -27,7 +27,7 @@ from idle_engine.render import (
     render_status,
     validate_embed,
 )
-from idle_engine.theme import Theme, ThemeCurrency, ThemeGenerator
+from idle_engine.theme import Theme, ThemeCurrency, ThemeGenerator, ThemeLabels
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 THEMES_DIR = REPO_ROOT / "themes"
@@ -87,10 +87,10 @@ def test_status_is_deterministic_and_exactly_shaped(egg_farm):
     embed = render_status(state, egg_farm, now=1_100)
     assert embed == render_status(state, egg_farm, now=1_100)
     assert embed == {
-        "title": "🥚 Egg Farm",
+        "title": "🥚 Egg Farm — the morning count",
         "description": (
             "A cozy backyard farm where patient chickens fund your empire."
-            "\n\n+300 🥚 eggs"
+            "\n\nWhile you were away, the hens kept laying: +300 🥚 eggs"
         ),
         "color": 0xF5C542,
         "fields": [
@@ -107,7 +107,7 @@ def test_status_nouns_all_resolve_from_pack(egg_farm):
     assert "🥚 eggs" in names
     assert "🥇 golden eggs" in names
     assert "🐔 chicken coop" in names
-    assert embed["title"] == "🥚 Egg Farm"
+    assert embed["title"] == "🥚 Egg Farm — the morning count"  # labels.status_title
     _assert_budgets(embed)
 
 
@@ -144,7 +144,9 @@ def test_shop_costs_and_affordability(egg_farm):
     assert "60 🥚 eggs" in field_broke["value"]
     assert field_broke["value"].startswith("🔒")
     assert field_rich["value"].startswith("✅")
-    assert "Lv 0 → 1" in field_rich["value"]
+    assert "Coop size 0 → 1" in field_rich["value"]  # labels.level
+    assert shop_rich["title"] == "🧺 The Farm Supply Shed"  # labels.shop_title
+    assert shop_rich["description"] == "Trade fresh eggs for a busier, happier farm."
     _assert_budgets(shop_rich)
 
 
@@ -152,7 +154,7 @@ def test_shop_cost_tracks_current_level(egg_farm):
     # Level 3 -> 4 costs 60 * 115**3 // 100**3 = 91 (exact integer curve).
     state = GameState(balances={"primary": 10_000}, upgrades={"boost1": 3})
     (field,) = render_shop(state, egg_farm)["fields"]
-    assert "Lv 3 → 4" in field["value"]
+    assert "Coop size 3 → 4" in field["value"]
     assert "91 🥚 eggs" in field["value"]
 
 
@@ -182,6 +184,7 @@ def test_prestige_ineligible_then_eligible(egg_farm):
     assert embed["description"] == egg_farm.prestige.action_description
     by_name = {f["name"]: f["value"] for f in embed["fields"]}
     assert by_name["🥚 eggs"].startswith("🔒")
+    assert "lifetime eggs toward the sale:" in by_name["🥚 eggs"]  # labels.prestige_progress
     assert "99,999 / 100,000" in by_name["🥚 eggs"]
     assert "(+0)" in by_name["🥇 golden eggs"]
 
@@ -310,6 +313,129 @@ def test_validate_embed_rejects_empty_field_strings():
     }
     with pytest.raises(RenderBudgetError):
         validate_embed(embed)
+
+
+# --- themed label slots: themed path, fallback path, budget composition ------
+
+
+@pytest.fixture(scope="module")
+def egg_farm_unlabelled(tmp_path_factory):
+    """The shipped egg-farm pack with its labels block stripped — the
+    fallback path must render exactly the pre-labels neutral scaffolding."""
+    src = (THEMES_DIR / "egg-farm.yaml").read_text(encoding="utf-8")
+    stripped, sep, _ = src.partition("\nlabels:")
+    assert sep, "egg-farm.yaml must carry a labels block"
+    path = tmp_path_factory.mktemp("packs") / "egg-farm.yaml"
+    path.write_text(stripped, encoding="utf-8")
+    return load_theme(path)
+
+
+def test_fallback_without_labels_renders_neutral_scaffolding(egg_farm_unlabelled):
+    """A pack without the labels block pins the original neutral output."""
+    state = _fixed_state()
+    status = render_status(state, egg_farm_unlabelled, now=1_100)
+    assert status["title"] == "🥚 Egg Farm"
+    assert status["description"] == (
+        "A cozy backyard farm where patient chickens fund your empire."
+        "\n\n+300 🥚 eggs"
+    )
+    shop = render_shop(state, egg_farm_unlabelled)
+    assert shop["title"] == "🥚 Egg Farm"
+    assert shop["description"] == egg_farm_unlabelled.description
+    assert "Lv 1 → 2" in shop["fields"][0]["value"]
+    prestige = render_prestige(state, egg_farm_unlabelled)
+    by_name = {f["name"]: f["value"] for f in prestige["fields"]}
+    assert by_name["🥚 eggs"] == "🔒 5,000 / 100,000"
+
+
+def test_themed_labels_consume_every_slot(egg_farm):
+    """The shipped labels block reaches every view: all six slots pinned."""
+    state = _fixed_state()
+    status = render_status(state, egg_farm, now=1_100)
+    assert status["title"] == "🥚 Egg Farm — the morning count"
+    assert status["description"].endswith(
+        "\n\nWhile you were away, the hens kept laying: +300 🥚 eggs"
+    )
+    shop = render_shop(state, egg_farm)
+    assert shop["title"] == "🧺 The Farm Supply Shed"
+    assert shop["description"] == "Trade fresh eggs for a busier, happier farm."
+    assert "Coop size 1 → 2" in shop["fields"][0]["value"]
+    prestige = render_prestige(state, egg_farm)
+    by_name = {f["name"]: f["value"] for f in prestige["fields"]}
+    assert by_name["🥚 eggs"] == "🔒 lifetime eggs toward the sale: 5,000 / 100,000"
+
+
+def _theme_with_labels(labels, description="Fine."):
+    return Theme(
+        theme_id="rogue",
+        name="Okay",
+        description=description,
+        emoji="🔹",
+        embed_color="#123456",
+        currencies={"primary": ThemeCurrency("primary", "points", "flat.", "🔹")},
+        generators={
+            "tier1": ThemeGenerator("tier1", "maker", "makes points.", "⚙️", "primary", 1)
+        },
+        labels=labels,
+    )
+
+
+def test_offline_template_clamps_gains_never_the_template():
+    """Max-budget template + max-budget description + absurd gains: the
+    substituted gains clamp (numeric tier); the themed template survives
+    intact and the description stays within the 4096 cap."""
+    template = ("x" * 249) + "{gains}"  # 256 chars incl. the 7-char token
+    theme = _theme_with_labels(
+        ThemeLabels(offline_return=template), description="d" * 1024
+    )
+    state = GameState(owned={"tier1": 10**3000}, last_seen=0)
+    embed = render_status(state, theme, now=10**6)
+    assert len(embed["description"]) <= DESCRIPTION_LIMIT
+    assert ("x" * 249) in embed["description"]  # template never truncated
+    assert embed["description"].endswith("…")  # gains clamped with ellipsis
+
+
+def test_offline_template_that_cannot_fit_raises():
+    """A hand-built theme the gate would reject (description far over the
+    flavor budget): the themed template is theme-sourced — it must raise,
+    never silently truncate (the neutral path would just skip the line)."""
+    theme = _theme_with_labels(
+        ThemeLabels(offline_return="y" * 100 + "{gains}"), description="d" * 4090
+    )
+    state = GameState(owned={"tier1": 1}, last_seen=0)
+    with pytest.raises(RenderBudgetError):
+        render_status(state, theme, now=100)
+
+
+def test_themed_status_title_overflow_raises():
+    theme = _theme_with_labels(ThemeLabels(status_title="t" * 300))
+    with pytest.raises(RenderBudgetError):
+        render_status(GameState(), theme, now=0)
+
+
+def test_shop_and_prestige_label_budgets_at_extremes(egg_farm):
+    """Max-length level + progress labels with 10^400..10^2000 numbers:
+    composed values stay within every cap, labels render (they lead the
+    value, so the trailing numeric clamp never eats them)."""
+    from dataclasses import replace
+
+    themed = replace(
+        egg_farm, labels=ThemeLabels(level="L" * 32, prestige_progress="P" * 64)
+    )
+    state = GameState(
+        balances={"primary": 10**400},
+        owned={"tier1": 10**400},
+        last_seen=0,
+        upgrades={"boost1": 25},
+        lifetime={"primary": 10**2000},
+        prestige={"prestige": 10**2000},
+    )
+    shop = render_shop(state, themed)
+    _assert_budgets(shop)
+    assert ("L" * 32) in shop["fields"][0]["value"]
+    prestige = render_prestige(state, themed)
+    _assert_budgets(prestige)
+    assert any(("P" * 64) in f["value"] for f in prestige["fields"])
 
 
 # --- purity: the render module imports no chat-platform SDK ------------------

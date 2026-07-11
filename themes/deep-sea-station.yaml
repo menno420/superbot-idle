@@ -53,3 +53,11 @@ prestige:
   action_name: surface and resupply
   action_description: Blow the ballast, ride up into the light, and refit — you return to the deep with abyssal relics in the hold.
   action_emoji: "⚓"
+
+labels:
+  offline_return: "While you were topside, the abyss kept providing: {gains}"
+  status_title: "🌊 Deep-Sea Station — pressure-hull report"
+  shop_title: "⚙️ Station Stores"
+  shop_description: Trade pearls for gear that keeps the harvest coming.
+  level: Depth rating
+  prestige_progress: "lifetime pearls toward the surface run:"

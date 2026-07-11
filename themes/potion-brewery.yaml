@@ -53,3 +53,11 @@ prestige:
   action_name: transcend the craft
   action_description: Shutter the brewery, distill everything you have learned, and begin again with arcane essence in hand.
   action_emoji: "✨"
+
+labels:
+  offline_return: "While you were out, the cauldrons kept bubbling: {gains}"
+  status_title: "⚗️ Potion Brewery — the stockroom ledger"
+  shop_title: "📜 The Alchemist's Catalogue"
+  shop_description: Trade bottled potions for a fiercer, faster brewery.
+  level: Brew grade
+  prestige_progress: "lifetime potions toward transcendence:"

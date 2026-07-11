@@ -40,3 +40,11 @@ prestige:
   action_name: sell the farm
   action_description: Sell the whole farm and start over with golden eggs in hand.
   action_emoji: "🌟"
+
+labels:
+  offline_return: "While you were away, the hens kept laying: {gains}"
+  status_title: "🥚 Egg Farm — the morning count"
+  shop_title: "🧺 The Farm Supply Shed"
+  shop_description: Trade fresh eggs for a busier, happier farm.
+  level: Coop size
+  prestige_progress: "lifetime eggs toward the sale:"

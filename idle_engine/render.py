@@ -10,9 +10,13 @@ identical payload, byte for byte.
 CORE/SKIN contract: every player-visible noun (names, flavor, emoji,
 embed color) comes from the theme pack. The only literals this module
 contributes are neutral scaffolding — digits, separators, arrows,
-status marks, and the short generic label ``Lv`` for the one slot the
-v1 theme schema does not cover (see docs/render-layer.md; themed label
-slots are a parked follow-up).
+status marks, and the short generic label ``Lv``. Packs may override
+that scaffolding through the OPTIONAL schema-v1 ``labels`` block
+(docs/theme-schema.md § labels): an offline-return flavor template
+(with the one substitution token ``{gains}``), status/shop title,
+shop description, level label, and prestige progress label. Every
+slot is optional — an unset slot falls back to the neutral default,
+so pre-labels packs render byte-identically.
 
 Budget enforcement (PLATFORM-LIMITS.md / docs/theme-schema.md): title
 <= 256, field name <= 256, field value <= 1024, description <= 4096,
@@ -49,6 +53,15 @@ MAX_FIELDS = 25
 
 _ELLIPSIS = "…"
 _HEX_COLOR = re.compile(r"#[0-9A-Fa-f]{6}\Z")
+
+# The one substitution token themed label templates may carry. Kept as a
+# local literal (mirroring idle_engine.theme.GAINS_PLACEHOLDER) because
+# this module must stay runtime-stdlib-only and never import the
+# yaml-loading theme module.
+_GAINS_PLACEHOLDER = "{gains}"
+
+# Neutral scaffolding fallback for the shop level label.
+_NEUTRAL_LEVEL_LABEL = "Lv"
 
 
 class RenderBudgetError(ValueError):
@@ -133,6 +146,19 @@ def _prestige_specs(theme: Theme) -> list:
     return [spec] if spec is not None else []
 
 
+def _label_slot(theme: Theme, slot: str) -> str | None:
+    """The pack's themed override for a render label, or ``None``.
+
+    Reads the OPTIONAL ``labels`` block (schema v1, additive): an absent
+    block, or an unset/empty slot, yields ``None`` so the caller falls
+    back to the neutral scaffolding this layer shipped with.
+    """
+    labels = theme.labels
+    if labels is None:
+        return None
+    return getattr(labels, slot, None) or None
+
+
 def render_status(state: GameState, theme: Theme, now: int) -> dict:
     """The status view: balances, generator counts + rates, offline gains.
 
@@ -155,9 +181,22 @@ def render_status(state: GameState, theme: Theme, now: int) -> dict:
                 f"+{_format_amount(amount)} {_labelled(currency.emoji, currency.name)}"
             )
     if gain_lines:
-        room = DESCRIPTION_LIMIT - len(description) - 2
-        if room >= 1:
-            description = description + "\n\n" + _clamp("\n".join(gain_lines), room)
+        gains_text = "\n".join(gain_lines)
+        template = _label_slot(theme, "offline_return")
+        if template is not None:
+            # Themed flavor line: replace the one substitution token with
+            # the formatted gains, clamped (numeric tier) to the room the
+            # fixed template text leaves. The template itself is
+            # theme-sourced — never truncated; if it cannot fit,
+            # validate_embed raises (theme-overflow tier).
+            fixed = len(template) - len(_GAINS_PLACEHOLDER)
+            room = DESCRIPTION_LIMIT - len(description) - 2 - fixed
+            line = template.replace(_GAINS_PLACEHOLDER, _clamp(gains_text, max(room, 0)), 1)
+            description = description + "\n\n" + line
+        else:
+            room = DESCRIPTION_LIMIT - len(description) - 2
+            if room >= 1:
+                description = description + "\n\n" + _clamp(gains_text, room)
 
     fields = []
     prestige_currency = theme.prestige.currency if theme.prestige else None
@@ -189,7 +228,7 @@ def render_status(state: GameState, theme: Theme, now: int) -> dict:
 
     return validate_embed(
         {
-            "title": _labelled(theme.emoji, theme.name),
+            "title": _label_slot(theme, "status_title") or _labelled(theme.emoji, theme.name),
             "description": description,
             "color": embed_color_int(theme.embed_color),
             "fields": fields,
@@ -210,6 +249,7 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
     if not theme.upgrades:
         return None
     spec_by_id = {spec.spec_id: spec for spec in theme.upgrade_specs()}
+    level_label = _label_slot(theme, "level") or _NEUTRAL_LEVEL_LABEL
     fields = []
     for upgrade in theme.upgrades.values():
         spec = spec_by_id[upgrade.upgrade_id]
@@ -219,7 +259,7 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
         currency = theme.currencies[spec.cost_currency]
         mark = "✅" if affordable else "\U0001f512"
         value = (
-            f"{mark} Lv {_format_amount(level)} → {_format_amount(level + 1)}"
+            f"{mark} {level_label} {_format_amount(level)} → {_format_amount(level + 1)}"
             f" · {_format_amount(cost)} {_labelled(currency.emoji, currency.name)}"
         )
         fields.append(
@@ -227,8 +267,8 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
         )
     return validate_embed(
         {
-            "title": _labelled(theme.emoji, theme.name),
-            "description": theme.description,
+            "title": _label_slot(theme, "shop_title") or _labelled(theme.emoji, theme.name),
+            "description": _label_slot(theme, "shop_description") or theme.description,
             "color": embed_color_int(theme.embed_color),
             "fields": fields,
         }
@@ -251,7 +291,9 @@ def render_prestige(state: GameState, theme: Theme) -> dict | None:
     lifetime = state.lifetime.get(spec.measures, 0)
     held = state.prestige.get(spec.awards, 0)
     mark = "✅" if prestige_eligible(state, spec) else "\U0001f512"
-    progress = f"{mark} {_format_amount(lifetime)} / {_format_amount(spec.threshold)}"
+    progress_label = _label_slot(theme, "prestige_progress")
+    progress_prefix = f"{mark} {progress_label}" if progress_label else mark
+    progress = f"{progress_prefix} {_format_amount(lifetime)} / {_format_amount(spec.threshold)}"
     projected = f"{_format_amount(held)} (+{_format_amount(prestige_award(state, spec))})"
     fields = [
         _field(_labelled(measured.emoji, measured.name), _clamp(progress, FIELD_VALUE_LIMIT), True),

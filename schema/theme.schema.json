@@ -88,6 +88,50 @@
         }
       }
     },
+    "labels": {
+      "description": "OPTIONAL (added in the themed-label-slots slice, additive within v1). Themed overrides for the labels the render layer otherwise fills with neutral scaffolding (docs/render-layer.md). EVERY slot inside is optional — an absent slot falls back to the neutral default, so packs without this block render exactly as before. Budgets leave documented headroom for the numeric substitutions (arithmetic in docs/theme-schema.md § labels).",
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "offline_return": {
+          "description": "Flavor line for offline gains in the status view. TEMPLATE: must contain the substitution token {gains} exactly once and no other braces (gate check); the render layer replaces that token with the formatted gains text (clamped to fit) and appends the whole line to the theme description. Budget 256 (token included): 1024 description + 2 joiner + 249 fixed template chars leaves >= 2821 of the 4096 description cap for the substituted gains.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "status_title": {
+          "description": "Themed title for the status view, rendered VERBATIM (replaces the neutral '{emoji} {name}' composition). Nothing is composed into it, so the budget is the full 256-char title cap.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "shop_title": {
+          "description": "Themed title for the upgrade-shop view, rendered VERBATIM (replaces the neutral '{emoji} {name}' composition). Nothing is composed into it, so the budget is the full 256-char title cap.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "shop_description": {
+          "description": "Themed description for the upgrade-shop view, rendered VERBATIM as the embed description (replaces theme.description there). Budget 1024 = flavor-text budget, well under the 4096 description cap.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "level": {
+          "description": "Themed level label in shop field values (replaces the neutral 'Lv'). Composes as '{mark} {level} N -> N+1 · cost {emoji} {name}' inside the 1024-char field value: mark+label+emoji+name+separators <= ~140 chars, leaving >= 880 for digits before the numeric clamp.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "prestige_progress": {
+          "description": "Themed label for the prestige view's progress value (the neutral default is the bare numbers). Composes as '{mark} {label} N / M' inside the 1024-char field value: mark+label+separators <= ~70 chars, leaving >= 950 for digits before the numeric clamp.",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        }
+      }
+    },
     "prestige": {
       "description": "OPTIONAL (added in slice (b), additive within v1). Display skin for the engine's prestige track: which declared currency is the persistent prestige currency, which declared currency's lifetime earnings it measures, and the reset action's nouns. Thresholds and award curves live engine-side (idle_engine/economy.py) — a numeric field here is rejected by additionalProperties.",
       "type": "object",

@@ -62,15 +62,29 @@ is returned: title ≤ 256, field name ≤ 256, field value ≤ 1024, descriptio
 - No calling engine mutation functions to "refresh" a view — views are
   read-only by contract.
 
-## Neutral scaffolding & parked follow-up
+## Neutral scaffolding & themed label slots
 
-Schema v1 has no slots for UI labels, so the layer contributes only neutral
-scaffolding: digits/thousands separators, `+`/`/s`/`×`/`·`/`→`, the marks
-`✅`/`🔒`, and the single generic label `Lv` in the shop view. Deliberately
-NOT added this slice (concurrent workers own `schema/` + `themes/`):
-optional themed slots for an offline-return flavor line and shop/level
-labels — parked as a follow-up schema addition (additive, optional).
-Upgrade flavor `description` is likewise not composed into the shop cost
-field: the schema grants it the full 1024-char budget, so composition could
-overflow on a legal pack; a themed shop layout with headroom is part of the
-same follow-up.
+The layer contributes neutral scaffolding — digits/thousands separators,
+`+`/`/s`/`×`/`·`/`→`, the marks `✅`/`🔒`, and the generic label `Lv` in the
+shop view — and packs may override it through schema v1's OPTIONAL `labels`
+block (landed by the themed-label-slots slice; field list, substitution
+semantics, and budget arithmetic in
+[`docs/theme-schema.md`](theme-schema.md) § labels):
+
+| Slot | Themes | Fallback when unset |
+|---|---|---|
+| `labels.offline_return` | offline-gains flavor line (template; the token `{gains}` is replaced with the formatted, clamped gains text) | bare gain lines |
+| `labels.status_title` / `labels.shop_title` | the view's title, verbatim | `{emoji} {name}` |
+| `labels.shop_description` | shop embed description, verbatim | `theme.description` |
+| `labels.level` | shop level label | `Lv` |
+| `labels.prestige_progress` | label before the prestige progress numbers | bare `N / M` |
+
+Every slot is optional: a pack without the block renders byte-identically
+to the pre-labels layer. Budget policy is unchanged — substituted numeric
+text clamps, themed template/label text never truncates (overflow raises
+`RenderBudgetError`).
+
+Still parked: upgrade flavor `description` is not composed into the shop
+cost field — the schema grants it the full 1024-char budget, so
+composition could overflow on a legal pack; a themed shop layout with
+headroom for it remains a follow-up.
