@@ -11,8 +11,10 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Word-boundary match so e.g. "when" does not trip on "hen".
+# Extended for slice (b): upgrade/prestige nouns (henhouse, golden [eggs]).
 FORBIDDEN_NOUNS = re.compile(
-    r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens)\b",
+    r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
+    r"|henhouse|henhouses|golden)\b",
     re.IGNORECASE,
 )
 
@@ -39,4 +41,7 @@ def test_guard_pattern_actually_catches_nouns():
     # Self-check that the guard is not vacuous.
     assert FORBIDDEN_NOUNS.search("a chicken coop")
     assert FORBIDDEN_NOUNS.search("Egg Farm")
+    assert FORBIDDEN_NOUNS.search("a bigger henhouse")
+    assert FORBIDDEN_NOUNS.search("Golden Eggs")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
+    assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
