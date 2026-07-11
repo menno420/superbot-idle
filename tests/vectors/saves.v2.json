@@ -1,0 +1,436 @@
+{
+  "format": "superbot-idle-save-vectors",
+  "format_version": 1,
+  "state_version": 2,
+  "generated_by": "tools/gen_save_vectors.py \u2014 DO NOT EDIT BY HAND; regenerate with: python3 tools/gen_save_vectors.py",
+  "contract": "docs/persistence.md",
+  "canonical_form": "JSON object, keys sorted lexicographically at every level, separators (',', ':'), ensure_ascii escapes, integers only",
+  "v2_fields": [
+    "balances",
+    "last_seen",
+    "lifetime",
+    "milestones",
+    "owned",
+    "prestige",
+    "state_version",
+    "upgrades"
+  ],
+  "v1_fields": [
+    "balances",
+    "last_seen",
+    "lifetime",
+    "owned",
+    "prestige",
+    "state_version",
+    "upgrades"
+  ],
+  "load_error_classes": [
+    "MalformedSaveError",
+    "UnknownVersionError",
+    "FieldSetError",
+    "FieldTypeError",
+    "NegativeValueError"
+  ],
+  "counts": {
+    "golden_v2": 7,
+    "golden_v1_migration": 6,
+    "errors": 32
+  },
+  "vectors": {
+    "golden_v2": [
+      {
+        "name": "fresh",
+        "state": {
+          "balances": {},
+          "owned": {},
+          "last_seen": 0,
+          "upgrades": {},
+          "lifetime": {},
+          "prestige": {},
+          "milestones": {}
+        },
+        "save": "{\"balances\":{},\"last_seen\":0,\"lifetime\":{},\"milestones\":{},\"owned\":{},\"prestige\":{},\"state_version\":2,\"upgrades\":{}}",
+        "note": "the empty state \u2014 a brand-new save, all defaults"
+      },
+      {
+        "name": "mid-run-upgrades",
+        "state": {
+          "balances": {
+            "cur-a": 339
+          },
+          "owned": {
+            "gen-a": 1,
+            "gen-b": 2
+          },
+          "last_seen": 92,
+          "upgrades": {
+            "up-a": 2
+          },
+          "lifetime": {
+            "cur-a": 364
+          },
+          "prestige": {},
+          "milestones": {
+            "owned-1": 1
+          }
+        },
+        "save": "{\"balances\":{\"cur-a\":339},\"last_seen\":92,\"lifetime\":{\"cur-a\":364},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":1,\"gen-b\":2},\"prestige\":{},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "note": "played via real tick/purchase_upgrade/award_milestones: two upgrade levels bought, second generator entered mid-run"
+      },
+      {
+        "name": "milestones-earned",
+        "state": {
+          "balances": {
+            "cur-a": 600
+          },
+          "owned": {
+            "gen-a": 2,
+            "gen-b": 1
+          },
+          "last_seen": 60,
+          "upgrades": {},
+          "lifetime": {
+            "cur-a": 600
+          },
+          "prestige": {
+            "meta": 1
+          },
+          "milestones": {
+            "owned-1": 1,
+            "lifetime-100": 1,
+            "prestige-1": 1
+          }
+        },
+        "save": "{\"balances\":{\"cur-a\":600},\"last_seen\":60,\"lifetime\":{\"cur-a\":600},\"milestones\":{\"lifetime-100\":1,\"owned-1\":1,\"prestige-1\":1},\"owned\":{\"gen-a\":2,\"gen-b\":1},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{}}",
+        "note": "all three milestone kinds earned (owned/lifetime/prestige) via award_milestones"
+      },
+      {
+        "name": "post-prestige",
+        "state": {
+          "balances": {
+            "cur-a": 10
+          },
+          "owned": {
+            "gen-a": 1
+          },
+          "last_seen": 50,
+          "upgrades": {},
+          "lifetime": {
+            "cur-a": 10
+          },
+          "prestige": {
+            "meta": 3
+          },
+          "milestones": {
+            "owned-1": 1,
+            "lifetime-100": 1
+          }
+        },
+        "save": "{\"balances\":{\"cur-a\":10},\"last_seen\":50,\"lifetime\":{\"cur-a\":10},\"milestones\":{\"lifetime-100\":1,\"owned-1\":1},\"owned\":{\"gen-a\":1},\"prestige\":{\"meta\":3},\"state_version\":2,\"upgrades\":{}}",
+        "note": "a real apply_prestige reset: run fields wiped, prestige + milestones survive, then played on"
+      },
+      {
+        "name": "extreme-magnitude",
+        "state": {
+          "balances": {
+            "cur-a": 957000009000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+          },
+          "owned": {
+            "gen-a": 1,
+            "gen-b": 1
+          },
+          "last_seen": 1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+          "upgrades": {},
+          "lifetime": {
+            "cur-a": 957000009000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+          },
+          "prestige": {
+            "meta": 1000000000
+          },
+          "milestones": {
+            "owned-1": 1,
+            "prestige-1": 1
+          }
+        },
+        "save": "{\"balances\":{\"cur-a\":957000009000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000},\"last_seen\":1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,\"lifetime\":{\"cur-a\":957000009000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000},\"milestones\":{\"owned-1\":1,\"prestige-1\":1},\"owned\":{\"gen-a\":1,\"gen-b\":1},\"prestige\":{\"meta\":1000000000},\"state_version\":2,\"upgrades\":{}}",
+        "note": "real engine output of one dt=10^300 tick \u2014 unbounded ints serialize exactly at any magnitude"
+      },
+      {
+        "name": "all-zero-entries",
+        "state": {
+          "balances": {
+            "cur-a": 0
+          },
+          "owned": {
+            "gen-a": 0
+          },
+          "last_seen": 0,
+          "upgrades": {
+            "up-a": 0
+          },
+          "lifetime": {
+            "cur-a": 0
+          },
+          "prestige": {
+            "meta": 0
+          },
+          "milestones": {
+            "owned-1": 0
+          }
+        },
+        "save": "{\"balances\":{\"cur-a\":0},\"last_seen\":0,\"lifetime\":{\"cur-a\":0},\"milestones\":{\"owned-1\":0},\"owned\":{\"gen-a\":0},\"prestige\":{\"meta\":0},\"state_version\":2,\"upgrades\":{\"up-a\":0}}",
+        "note": "explicit zero entries are content, not absence: {'a': 0} != {} and round-trips as such"
+      },
+      {
+        "name": "non-ascii-ids",
+        "state": {
+          "balances": {
+            "caf\u00e9": 7
+          },
+          "owned": {},
+          "last_seen": 5,
+          "upgrades": {},
+          "lifetime": {
+            "caf\u00e9": 7
+          },
+          "prestige": {},
+          "milestones": {}
+        },
+        "save": "{\"balances\":{\"caf\\u00e9\":7},\"last_seen\":5,\"lifetime\":{\"caf\\u00e9\":7},\"milestones\":{},\"owned\":{},\"prestige\":{},\"state_version\":2,\"upgrades\":{}}",
+        "note": "non-ASCII mapping keys are ensure_ascii-escaped \u2014 the save string is plain ASCII bytes on every platform"
+      }
+    ],
+    "golden_v1_migration": [
+      {
+        "name": "v1-empty",
+        "v1": "{\"balances\":{},\"last_seen\":0,\"lifetime\":{},\"owned\":{},\"prestige\":{},\"state_version\":1,\"upgrades\":{}}",
+        "expected_v2": "{\"balances\":{},\"last_seen\":0,\"lifetime\":{},\"milestones\":{},\"owned\":{},\"prestige\":{},\"state_version\":2,\"upgrades\":{}}",
+        "note": "the canonical empty v1 save migrates to the canonical empty v2 save"
+      },
+      {
+        "name": "v1-mid-run",
+        "v1": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":1,\"upgrades\":{\"up-a\":2}}",
+        "expected_v2": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "note": "a populated legacy save: every v1 field carried through unchanged, milestones arrives empty"
+      },
+      {
+        "name": "v1-zero-entries",
+        "v1": "{\"balances\":{\"cur-a\":0},\"last_seen\":0,\"lifetime\":{},\"owned\":{\"gen-a\":0},\"prestige\":{},\"state_version\":1,\"upgrades\":{\"up-a\":0}}",
+        "expected_v2": "{\"balances\":{\"cur-a\":0},\"last_seen\":0,\"lifetime\":{},\"milestones\":{},\"owned\":{\"gen-a\":0},\"prestige\":{},\"state_version\":2,\"upgrades\":{\"up-a\":0}}",
+        "note": "explicit zero entries survive migration \u2014 never pruned"
+      },
+      {
+        "name": "v1-prestige-veteran",
+        "v1": "{\"balances\":{\"cur-a\":12},\"last_seen\":1800000000,\"lifetime\":{\"cur-a\":123456789},\"owned\":{\"gen-a\":25,\"gen-b\":10},\"prestige\":{\"meta\":40},\"state_version\":1,\"upgrades\":{\"up-a\":9}}",
+        "expected_v2": "{\"balances\":{\"cur-a\":12},\"last_seen\":1800000000,\"lifetime\":{\"cur-a\":123456789},\"milestones\":{},\"owned\":{\"gen-a\":25,\"gen-b\":10},\"prestige\":{\"meta\":40},\"state_version\":2,\"upgrades\":{\"up-a\":9}}",
+        "note": "a many-reset legacy player migrates with prestige intact and ZERO milestones \u2014 earning starts post-migration"
+      },
+      {
+        "name": "v1-extreme-magnitude",
+        "v1": "{\"balances\":{\"cur-a\":1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000},\"last_seen\":9223372036854775808,\"lifetime\":{\"cur-a\":1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001},\"owned\":{},\"prestige\":{},\"state_version\":1,\"upgrades\":{}}",
+        "expected_v2": "{\"balances\":{\"cur-a\":1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000},\"last_seen\":9223372036854775808,\"lifetime\":{\"cur-a\":1000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001},\"milestones\":{},\"owned\":{},\"prestige\":{},\"state_version\":2,\"upgrades\":{}}",
+        "note": "magnitude survives migration exactly \u2014 no precision loss at 10^300"
+      },
+      {
+        "name": "v1-non-ascii-ids",
+        "v1": "{\"balances\":{\"caf\\u00e9\":7},\"last_seen\":0,\"lifetime\":{\"caf\\u00e9\":7},\"owned\":{},\"prestige\":{},\"state_version\":1,\"upgrades\":{}}",
+        "expected_v2": "{\"balances\":{\"caf\\u00e9\":7},\"last_seen\":0,\"lifetime\":{\"caf\\u00e9\":7},\"milestones\":{},\"owned\":{},\"prestige\":{},\"state_version\":2,\"upgrades\":{}}",
+        "note": "escaped non-ASCII ids migrate byte-exactly"
+      }
+    ],
+    "errors": [
+      {
+        "name": "empty-string",
+        "input": "",
+        "error": "MalformedSaveError",
+        "note": "not JSON at all"
+      },
+      {
+        "name": "not-json",
+        "input": "not json",
+        "error": "MalformedSaveError",
+        "note": "unparseable text"
+      },
+      {
+        "name": "truncated",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{",
+        "error": "MalformedSaveError",
+        "note": "a cut-off save is unparseable"
+      },
+      {
+        "name": "top-level-array",
+        "input": "[{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}]",
+        "error": "MalformedSaveError",
+        "note": "a save is a JSON object, never an array"
+      },
+      {
+        "name": "top-level-string",
+        "input": "\"a string\"",
+        "error": "MalformedSaveError",
+        "note": "not an object"
+      },
+      {
+        "name": "top-level-number",
+        "input": "42",
+        "error": "MalformedSaveError",
+        "note": "not an object"
+      },
+      {
+        "name": "nan-constant",
+        "input": "{\"state_version\":NaN}",
+        "error": "MalformedSaveError",
+        "note": "NaN is not JSON \u2014 rejected by the constant hook"
+      },
+      {
+        "name": "infinity-in-field",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":Infinity,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "MalformedSaveError",
+        "note": "Infinity is not JSON \u2014 floats appear NOWHERE in a save"
+      },
+      {
+        "name": "no-state-version",
+        "input": "{}",
+        "error": "FieldSetError",
+        "note": "version field is mandatory"
+      },
+      {
+        "name": "v2-missing-field",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldSetError",
+        "note": "all eight v2 fields are required \u2014 'owned' missing"
+      },
+      {
+        "name": "v2-extra-field",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"surplus\":{\"x\":1},\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldSetError",
+        "note": "unknown extra fields are refused, never ignored"
+      },
+      {
+        "name": "v2-missing-and-extra",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"state_version\":2,\"surplus\":1,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldSetError",
+        "note": "field-set check is a SET diff: every offender named at once"
+      },
+      {
+        "name": "v1-smuggles-milestones",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":1,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldSetError",
+        "note": "a v1 doc carrying the v2-only 'milestones' field was never a valid v1 save \u2014 refused loudly, never silently wiped"
+      },
+      {
+        "name": "v1-extra-field",
+        "input": "{\"balances\":{},\"last_seen\":0,\"lifetime\":{},\"owned\":{},\"prestige\":{},\"state_version\":1,\"surplus\":1,\"upgrades\":{}}",
+        "error": "FieldSetError",
+        "note": "stray v1 fields ride through migration and red on v2 validation"
+      },
+      {
+        "name": "v1-missing-field",
+        "input": "{\"balances\":{},\"last_seen\":0,\"lifetime\":{},\"prestige\":{},\"state_version\":1,\"upgrades\":{}}",
+        "error": "FieldSetError",
+        "note": "an incomplete v1 doc migrates, then fails the v2 field-set check"
+      },
+      {
+        "name": "version-string",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":\"2\",\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "'2' is not an integer version"
+      },
+      {
+        "name": "version-bool",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":true,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "true is not an integer version (bools are not ints anywhere)"
+      },
+      {
+        "name": "version-float",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2.0,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "2.0 is not an integer version \u2014 floats refused even when integral"
+      },
+      {
+        "name": "float-count",
+        "input": "{\"balances\":{\"cur-a\":1.0},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "1.0 is not a count \u2014 float drift can never enter through a save"
+      },
+      {
+        "name": "bool-count",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":true},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "true is not a count"
+      },
+      {
+        "name": "string-count",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":\"2\"}}",
+        "error": "FieldTypeError",
+        "note": "'2' is not a count \u2014 no type coercion"
+      },
+      {
+        "name": "null-count",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":null},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "null is not a count"
+      },
+      {
+        "name": "mapping-not-object",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":[1,2],\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "mapping fields must be JSON objects"
+      },
+      {
+        "name": "last-seen-float",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1.5,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "FieldTypeError",
+        "note": "timestamps are integer seconds"
+      },
+      {
+        "name": "version-0",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":0,\"upgrades\":{\"up-a\":2}}",
+        "error": "UnknownVersionError",
+        "note": "v0 never existed \u2014 no registered migration"
+      },
+      {
+        "name": "version-negative",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":-1,\"upgrades\":{\"up-a\":2}}",
+        "error": "UnknownVersionError",
+        "note": "negative versions have no path"
+      },
+      {
+        "name": "version-3-future",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":3,\"upgrades\":{\"up-a\":2}}",
+        "error": "UnknownVersionError",
+        "note": "a FUTURE version fails loud ('update the plugin'), never misreads as the current format"
+      },
+      {
+        "name": "version-99-future",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":99,\"upgrades\":{\"up-a\":2}}",
+        "error": "UnknownVersionError",
+        "note": "any unknown future version"
+      },
+      {
+        "name": "negative-balance",
+        "input": "{\"balances\":{\"cur-a\":-1},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "NegativeValueError",
+        "note": "every save quantity is >= 0"
+      },
+      {
+        "name": "negative-last-seen",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":-1,\"lifetime\":{\"cur-a\":999},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "NegativeValueError",
+        "note": "timestamps are non-negative"
+      },
+      {
+        "name": "negative-astronomical",
+        "input": "{\"balances\":{\"cur-a\":42},\"last_seen\":1700000000,\"lifetime\":{\"cur-a\":-10000000000000000000000000000000000000000},\"milestones\":{\"owned-1\":1},\"owned\":{\"gen-a\":3},\"prestige\":{\"meta\":1},\"state_version\":2,\"upgrades\":{\"up-a\":2}}",
+        "error": "NegativeValueError",
+        "note": "negativity is checked at any magnitude"
+      },
+      {
+        "name": "v1-negative-migrated",
+        "input": "{\"balances\":{\"cur-a\":-7},\"last_seen\":0,\"lifetime\":{},\"owned\":{},\"prestige\":{},\"state_version\":1,\"upgrades\":{}}",
+        "error": "NegativeValueError",
+        "note": "migrated documents face exactly the same strictness as native saves"
+      }
+    ]
+  }
+}

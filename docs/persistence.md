@@ -135,6 +135,32 @@ round-trips exactly, or raises one of the classes above. The tamper/fuzz
 suite (`tests/test_persistence.py`) pins that dichotomy over seeded
 corruptions of real saves.
 
+## Golden save corpus (cross-version test vectors)
+
+[`tests/vectors/saves.v2.json`](../tests/vectors/saves.v2.json) is the
+machine-readable golden corpus for this contract, generated from the REAL
+codec by [`tools/gen_save_vectors.py`](../tools/gen_save_vectors.py) (the
+setup-code vector pattern, applied to saves). Three categories: **golden
+v2** — representative states (fresh, mid-run, post-prestige, milestones
+earned, ≥ 10^300 magnitudes, explicit-zero entries, non-ASCII ids) with
+their canonical strings; **golden v1 migration** — frozen-field-set legacy
+v1 documents with their byte-exact expected v1→v2 results; **errors** —
+inputs naming their expected taxonomy class. `tests/test_save_vectors.py`
+keeps it honest both ways: the committed file must be byte-identical to a
+fresh regeneration (regenerate-or-red), and every vector replays through
+the live `dump_state`/`load_state`. Regenerate after any deliberate format
+change with:
+
+```
+python3 tools/gen_save_vectors.py
+```
+
+**Policy (binding, extends § Version policy): any future `state_version`
+bump MUST extend this corpus in the same PR** — the existing golden v1/v2
+documents gain their expected migrated results under the new version, so
+what old saves become is always pinned byte-exactly before the bump can
+merge; the regenerate-or-red test makes skipping this loud, never silent.
+
 ## Consumers
 
 - **The future plugin/runtime**: `dump_state` after applying player
