@@ -17,18 +17,29 @@ class GeneratorSpec:
     ``spec_id`` and ``produces`` are opaque identifiers that a theme
     pack maps to display nouns; the engine never interprets them as
     words. ``base_rate`` is integer currency units produced per second
-    per owned generator.
+    per owned generator. ``rate_multiplier_pct`` is the theme lane's
+    bounded balance knob as an integer percent (100 = neutral); the
+    BOUNDS (90..110) are the theme contract's business, enforced by the
+    schema and the theme loader — this container only requires a
+    non-negative integer, like ``base_rate``.
     """
 
     spec_id: str
     produces: str
     base_rate: int
+    rate_multiplier_pct: int = 100
 
     def __post_init__(self) -> None:
         if not isinstance(self.base_rate, int) or isinstance(self.base_rate, bool):
             raise TypeError("base_rate must be an int")
         if self.base_rate < 0:
             raise ValueError("base_rate must be >= 0")
+        if not isinstance(self.rate_multiplier_pct, int) or isinstance(
+            self.rate_multiplier_pct, bool
+        ):
+            raise TypeError("rate_multiplier_pct must be an int")
+        if self.rate_multiplier_pct < 0:
+            raise ValueError("rate_multiplier_pct must be >= 0")
 
 
 @dataclass(frozen=True)

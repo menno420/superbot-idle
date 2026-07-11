@@ -68,7 +68,11 @@ rate(generator) = base_rate * count * upgrade_pct * prestige_pct // 10_000
 *(Extended by the achievements slice with a third factor —
 `… * milestone_pct // 1_000_000`, still one floor; integer-identical to
 this fold when no milestones are earned. See
-[`achievements-v0.md`](achievements-v0.md) § Bonus application.)*
+[`achievements-v0.md`](achievements-v0.md) § Bonus application. Extended
+again by the bounded-multipliers slice with the theme lane's
+schema-bounded factor — `… * theme_pct // 100_000_000`, still one floor;
+integer-identical when the theme is neutral. See
+[`theme-balance-v0.md`](theme-balance-v0.md).)*
 
 `upgrade_pct = 100 + Σ effect_percent·level` (upgrades targeting that
 generator), `prestige_pct = 100 + Σ bonus_percent·units_held` (global).

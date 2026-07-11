@@ -59,6 +59,11 @@ milestones the pct is 100 and `(x * 100) // 1_000_000 == x // 10_000` —
 integer-identical to the pre-slice fold, so every existing pinned output
 is byte-for-byte unchanged.
 
+*(Extended again by the bounded-multipliers slice with the theme lane's
+schema-bounded factor — `… * theme_pct // 100_000_000`, same single-floor
+discipline, integer-identical when the theme is neutral. See
+[`theme-balance-v0.md`](theme-balance-v0.md).)*
+
 ## Earning — SHAPE: threshold gate, explicit award action, never revoked
 
 ```

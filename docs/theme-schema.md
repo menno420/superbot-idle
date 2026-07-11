@@ -75,6 +75,9 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 | `generators[].emoji` | string | required | 1–32 chars |
 | `generators[].produces` | slug | required | MUST match a declared `currencies[].id` |
 | `generators[].base_rate` | integer | required | 1–1000, units of `produces`/generator/second |
+| `balance` | list | optional | 1–20 entries; the ONE bounded balance lane (rates only) — see § balance |
+| `balance[].generator` | slug | required* | MUST match a declared `generators[].id`; at most one entry per generator |
+| `balance[].rate_multiplier_pct` | integer | required* | **90–110** (schema-declared hard bounds), 100 = neutral; absent block/entry = 100 |
 | `upgrades` | list | optional | 1–20 entries when present (own shop embed, 25-field cap) |
 | `upgrades[].id` | slug | required* | engine upgrade id being skinned |
 | `upgrades[].name` | string | required* | player-visible name, 1–64 chars |
@@ -103,14 +106,48 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 `upgrades` and `prestige` are v1's first OPTIONAL top-level fields (added
 additively in slice (b), per the compatibility promise); `labels` is the
 third (themed-label-slots slice); `milestones` is the fourth (achievements
-slice). `required*` means required *within its block when the block is
-present* — a pack may omit the whole block. **All these blocks are
-nouns-only**: cost curves, effect sizes, thresholds and award math live
-engine-side (`idle_engine/economy.py`, pre-registered in
+slice); `balance` is the fifth (bounded-multipliers slice). `required*`
+means required *within its block when the block is present* — a pack may
+omit the whole block. **The noun blocks are nouns-only**: cost curves,
+effect sizes, thresholds and award math live engine-side
+(`idle_engine/economy.py`, pre-registered in
 [`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md) and
 [`design/achievements-v0.md`](design/achievements-v0.md));
 any numeric field smuggled into these blocks is rejected by
-`additionalProperties: false`.
+`additionalProperties: false`. The single deliberate exception is the
+`balance` block — the founding contract's bounded multiplier lane,
+specified in § balance below.
+
+## `balance` — bounded per-generator rate multipliers (optional, additive)
+
+The founding contract's one balance lane, exercised: *"Balance multipliers
+only within schema-declared bounds."* Each entry binds one declared
+generator id to a `rate_multiplier_pct` — an integer percent with **hard
+bounds 90–110 declared in the machine schema itself** (literal
+`minimum`/`maximum` keywords on the field) and re-validated independently
+by the engine loader (`idle_engine/theme.py`,
+`RATE_MULTIPLIER_MIN`/`RATE_MULTIPLIER_MAX`; parity between schema and
+loader constants is test-pinned — defense in depth, so an out-of-bounds
+pack raises at load even if it never met the gate). 100 = neutral; an
+absent block, or a generator with no entry, means 100 and renders/plays
+byte-identically to a pre-slice pack.
+
+**Rationale for the bounds** (pre-registered,
+[`design/theme-balance-v0.md`](design/theme-balance-v0.md)): ±10% is
+flavor-level variance only — a themed server may feel marginally brisker
+or lazier, but progression pacing stays the same game on every server
+(README rule 4: identical mechanics, one codebase to balance). Anything
+progression-defining is an engine-side economy number (pre-registered +
+sim-pinned), never theme data. The multiplier affects **rates only**:
+upgrade costs, prestige thresholds/awards and milestone thresholds are
+computed without it. It folds into the engine's single-floor integer
+rate composition, so tick == closed-form offline stays exact.
+
+**Values are sim-gated**: every shipped pack stays neutral (no `balance`
+block anywhere in `themes/`, test-pinned) until a non-neutral tuning is
+approved through the Q-0264 Simulator pipeline — the mechanism ships
+first, values follow the same integrity floor as every other economy
+number.
 
 ## `milestones` — noun skins for the engine-derived milestone slots (optional, additive)
 
@@ -207,6 +244,10 @@ layer's two-tier budget policy).
 - `milestones[].id` values are unique (a duplicate would silently collapse
   in the theme's id map), and the `prestige-1..3` ids appear only in packs
   declaring a `prestige` block (the slot must exist to be skinned).
+- `balance[].generator` references a declared `generators[].id`, with at
+  most one entry per generator (two entries for one generator would be
+  ambiguous — which multiplier wins?). The 90–110 bounds themselves are
+  JSON Schema `minimum`/`maximum`, not a gate check.
 - The pack must load through `idle_engine.theme.load_theme` — the schema's
   ground truth is what the engine actually accepts.
 - **Catalog-wide** (checked across all of `themes/`, not per file):
@@ -217,10 +258,15 @@ layer's two-tier budget policy).
 ## Balance bound (integrity floor)
 
 `base_rate` is capped 1–1000 in v1 so a theme cannot smuggle economy balance
-through the data lane. Baseline economy numbers are slated to move
-engine-side (themes then carry only schema-bounded multipliers) in the
-economy slice — see `.sessions/2026-07-10-order-000.md` § Session idea; that
-change will be a schema revision published here.
+through the data lane. The founding contract's bounded-multiplier lane is
+now LIVE (additively, within v1): the optional `balance` block carries
+per-generator `rate_multiplier_pct` values hard-bounded 90–110 in the
+schema — see § balance above and
+[`design/theme-balance-v0.md`](design/theme-balance-v0.md). Every shipped
+pack stays neutral until the Q-0264 Simulator pipeline approves a
+non-neutral value; moving baseline `base_rate` numbers engine-side remains
+a future schema revision (see `.sessions/2026-07-10-order-000.md`
+§ Session idea).
 
 ## Minimal valid pack
 

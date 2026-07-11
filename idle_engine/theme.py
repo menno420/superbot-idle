@@ -7,11 +7,15 @@ and embed color. This module maps those nouns onto opaque engine ids;
 nothing in this package hard-codes any theme vocabulary. Economy
 numbers (cost curves, effects, thresholds) never ride in the pack —
 they come from :mod:`idle_engine.economy` (pre-registered, CORE side).
+The ONE bounded exception the founding contract allows: an optional
+``balance`` block carrying per-generator ``rate_multiplier_pct``
+values, hard-bounded to the schema-declared 90..110 range (see
+:data:`RATE_MULTIPLIER_MIN` / :data:`RATE_MULTIPLIER_MAX` below).
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 import yaml
@@ -31,6 +35,20 @@ class ThemeCurrency:
     emoji: str
 
 
+# The theme lane's ONE bounded balance knob (founding contract: "Balance
+# multipliers only within schema-declared bounds"). The same 90..110
+# bounds live in schema/theme.schema.json as min/max — parity is
+# test-pinned — and are validated HERE independently of the gate
+# (defense in depth: an out-of-bounds pack raises even if it somehow
+# bypassed CI). 100 = neutral; an absent block/entry means 100. The
+# range is flavor-level variance only, never progression-defining;
+# shipping a non-neutral value is a sim-gated tuning decision (Q-0264,
+# docs/design/theme-balance-v0.md).
+RATE_MULTIPLIER_MIN = 90
+RATE_MULTIPLIER_NEUTRAL = 100
+RATE_MULTIPLIER_MAX = 110
+
+
 @dataclass(frozen=True)
 class ThemeGenerator:
     generator_id: str
@@ -39,6 +57,7 @@ class ThemeGenerator:
     emoji: str
     produces: str
     base_rate: int
+    rate_multiplier_pct: int = RATE_MULTIPLIER_NEUTRAL
 
 
 @dataclass(frozen=True)
@@ -131,9 +150,19 @@ class Theme:
         return self.upgrades[upgrade_id].name
 
     def generator_specs(self) -> list[GeneratorSpec]:
-        """Mechanical specs for the engine, stripped of all display data."""
+        """Mechanical specs for the engine, stripped of all display data.
+
+        ``rate_multiplier_pct`` rides along: it is the one BALANCE datum
+        a pack may carry, and only within the schema-declared bounds the
+        loader has already enforced.
+        """
         return [
-            GeneratorSpec(spec_id=g.generator_id, produces=g.produces, base_rate=g.base_rate)
+            GeneratorSpec(
+                spec_id=g.generator_id,
+                produces=g.produces,
+                base_rate=g.base_rate,
+                rate_multiplier_pct=g.rate_multiplier_pct,
+            )
             for g in self.generators.values()
         ]
 
@@ -243,6 +272,39 @@ def load_theme(path: str | Path) -> Theme:
             produces=produces,
             base_rate=base_rate,
         )
+
+    raw_balance = data.get("balance")
+    if raw_balance is not None:
+        if not isinstance(raw_balance, list) or not raw_balance:
+            raise ValueError(f"{path}: 'balance', when present, must be a non-empty list")
+        seen: set[str] = set()
+        for i, entry in enumerate(raw_balance):
+            if not isinstance(entry, dict):
+                raise ValueError(f"{path}:balance[{i}] must be a mapping")
+            w = f"{path}:balance[{i}]"
+            gid = _require_str(entry, "generator", w)
+            if gid not in generators:
+                raise ValueError(
+                    f"{w}: 'generator' ({gid!r}) is not a declared generator id"
+                )
+            if gid in seen:
+                raise ValueError(f"{w}: duplicate balance entry for generator {gid!r}")
+            seen.add(gid)
+            pct = entry.get("rate_multiplier_pct")
+            if not isinstance(pct, int) or isinstance(pct, bool):
+                raise ValueError(
+                    f"{w}: 'rate_multiplier_pct' must be an integer percent"
+                )
+            # Defense in depth: the SAME schema-declared bounds the gate
+            # enforces, re-checked at load time — an out-of-bounds pack
+            # raises here even if it never met the gate.
+            if not RATE_MULTIPLIER_MIN <= pct <= RATE_MULTIPLIER_MAX:
+                raise ValueError(
+                    f"{w}: 'rate_multiplier_pct' ({pct}) is outside the "
+                    f"schema-declared bounds "
+                    f"{RATE_MULTIPLIER_MIN}..{RATE_MULTIPLIER_MAX}"
+                )
+            generators[gid] = replace(generators[gid], rate_multiplier_pct=pct)
 
     upgrades: dict[str, ThemeUpgrade] = {}
     raw_upgrades = data.get("upgrades")
