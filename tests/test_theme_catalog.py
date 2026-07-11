@@ -2,8 +2,9 @@
 
 Slice (c) proved the schema on two packs it was NOT designed around
 (space-colony, potion-brewery); catalog growth added three more
-(haunted-manor, deep-sea-station, dragon-hoard) and wave 2 another
-three (wizard-tower, royal-bakery, cyber-city). Every pack must fill
+(haunted-manor, deep-sea-station, dragon-hoard), wave 2 another three
+(wizard-tower, royal-bakery, cyber-city), and wave 3 another three
+(pirate-cove, ant-colony, idol-agency). Every pack must fill
 every slot egg-farm fills, load through the engine's theme loader, and
 drive the full engine cycle (tick, upgrade purchase, prestige reset)
 with its own nouns. Plus the checks per-file JSON Schema cannot express:
@@ -38,12 +39,15 @@ DRAGON_HOARD = THEMES_DIR / "dragon-hoard.yaml"
 WIZARD_TOWER = THEMES_DIR / "wizard-tower.yaml"
 ROYAL_BAKERY = THEMES_DIR / "royal-bakery.yaml"
 CYBER_CITY = THEMES_DIR / "cyber-city.yaml"
+PIRATE_COVE = THEMES_DIR / "pirate-cove.yaml"
+ANT_COLONY = THEMES_DIR / "ant-colony.yaml"
+IDOL_AGENCY = THEMES_DIR / "idol-agency.yaml"
 
 
-# --- the catalog ships nine packs, all gate-green -----------------------------
+# --- the catalog ships twelve packs, all gate-green ---------------------------
 
 
-def test_catalog_ships_all_nine_packs():
+def test_catalog_ships_all_twelve_packs():
     for pack in (
         EGG_FARM,
         SPACE_COLONY,
@@ -54,9 +58,12 @@ def test_catalog_ships_all_nine_packs():
         WIZARD_TOWER,
         ROYAL_BAKERY,
         CYBER_CITY,
+        PIRATE_COVE,
+        ANT_COLONY,
+        IDOL_AGENCY,
     ):
         assert pack in ALL_PACKS, f"missing shipped pack {pack.name}"
-    assert len(ALL_PACKS) >= 9
+    assert len(ALL_PACKS) >= 12
 
 
 def test_whole_catalog_passes_gate_including_cross_pack_checks(capsys):
@@ -221,6 +228,54 @@ def test_cyber_city_nouns_resolve():
     assert theme.prestige.currency == "prestige"
     assert theme.prestige.measures == "primary"
     assert theme.prestige.action_name == "upload your consciousness"
+
+
+def test_pirate_cove_nouns_resolve():
+    theme = load_theme(PIRATE_COVE)
+    assert theme.theme_id == "pirate-cove"
+    assert theme.name == "Pirate Cove"
+    assert theme.currency_name("primary") == "doubloons"
+    assert theme.currency_name("prestige") == "cursed relics"
+    assert theme.generator_name("tier1") == "smuggler skiff"
+    assert theme.generator_name("tier2") == "tavern crew"
+    assert theme.upgrade_name("boost1") == "patched black sails"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "bury the treasure and set sail"
+
+
+def test_ant_colony_nouns_resolve():
+    theme = load_theme(ANT_COLONY)
+    assert theme.theme_id == "ant-colony"
+    assert theme.name == "Ant Colony"
+    assert theme.currency_name("primary") == "crumbs"
+    assert theme.currency_name("prestige") == "royal jelly"
+    assert theme.generator_name("tier1") == "forager trail"
+    assert theme.generator_name("tier2") == "fungus garden"
+    assert theme.upgrade_name("boost1") == "stronger pheromone markers"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "crown a new queen"
+
+
+def test_idol_agency_nouns_resolve():
+    theme = load_theme(IDOL_AGENCY)
+    assert theme.theme_id == "idol-agency"
+    assert theme.name == "Idol Agency"
+    assert theme.currency_name("primary") == "fans"
+    assert theme.currency_name("prestige") == "platinum records"
+    assert theme.generator_name("tier1") == "practice room"
+    assert theme.generator_name("tier2") == "livestream studio"
+    assert theme.upgrade_name("boost1") == "guest choreography coach"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "graduate and debut a new group"
 
 
 # --- every pack drives the engine end to end ---------------------------------

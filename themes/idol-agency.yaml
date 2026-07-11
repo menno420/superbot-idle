@@ -1,0 +1,63 @@
+# idol-agency — theme pack #12 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: idol-agency
+  name: Idol Agency
+  description: A scrappy talent agency turning midnight practice and shaky livestreams into stadium-filling stardom.
+  emoji: "🎤"
+  embed_color: "#E75480"
+
+currencies:
+  - id: primary
+    name: fans
+    description: Devoted fans won one wave, one wink, one encore at a time — the only number that matters.
+    emoji: "💖"
+  - id: prestige
+    name: platinum records
+    description: Framed platinum records on the agency wall — the shine of every fandom you ever built from zero.
+    emoji: "💿"
+
+generators:
+  - id: tier1
+    name: practice room
+    description: A mirror-walled practice room where trainees drill choreography until the squeak of sneakers becomes a fandom.
+    emoji: "🩰"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: livestream studio
+    description: A ring-lit livestream studio pumping out variety clips; the chat scrolls too fast to read.
+    emoji: "📡"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: guest choreography coach
+    description: A legendary coach tightens every eight-count; the practice room turns polish into devotion.
+    emoji: "🩷"
+    target: tier1
+  - id: boost2
+    name: viral fancam edit
+    description: One perfectly timed fancam edit and the algorithm falls in love; the studio's numbers go vertical.
+    emoji: "🎬"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: graduate and debut a new group
+  action_description: Hold the tearful graduation concert, hang the platinum record, and audition a brand-new lineup — the agency's next era starts tonight.
+  action_emoji: "🎓"
+
+labels:
+  offline_return: "While you were offstage, the fandom kept the lightsticks waving: {gains}"
+  status_title: "🎤 Idol Agency — the fandom report"
+  shop_title: "💿 The Producer's Desk"
+  shop_description: Spend fan devotion on polish, practice, and a little stage magic.
+  level: Spotlight level
+  prestige_progress: "lifetime fans toward the graduation stage:"

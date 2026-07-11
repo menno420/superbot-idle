@@ -1,0 +1,63 @@
+# ant-colony — theme pack #11 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: ant-colony
+  name: Ant Colony
+  description: A humming underground nest where a million tiny jaws turn the picnic upstairs into an empire.
+  emoji: "🐜"
+  embed_color: "#8B5A2B"
+
+currencies:
+  - id: primary
+    name: crumbs
+    description: Hard-won crumbs hauled down from the surface, each one a boulder on six legs.
+    emoji: "🍞"
+  - id: prestige
+    name: royal jelly
+    description: Golden droplets fit only for queens — the concentrated memory of every crumb the nest ever carried.
+    emoji: "🍯"
+
+generators:
+  - id: tier1
+    name: forager trail
+    description: A pheromone-marked trail of tireless foragers, marching crumbs home in an unbroken line.
+    emoji: "🐜"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: fungus garden
+    description: A cultivated fungus garden deep in the nest, digesting leaf cuttings into rich, steady crumbs.
+    emoji: "🍄"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: stronger pheromone markers
+    description: A bolder scent line no forager can lose; the trail marches straighter, faster, heavier-laden.
+    emoji: "🧪"
+    target: tier1
+  - id: boost2
+    name: leafcutter caravans
+    description: Squads of leafcutters ferry fresh cuttings on the hour; the fungus garden never goes hungry.
+    emoji: "🍃"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: crown a new queen
+  action_description: Raise a daughter queen on royal jelly and send her skyward with half the nest — a new empire begins from one brave flight.
+  action_emoji: "👑"
+
+labels:
+  offline_return: "While you were above ground, the workers never once stopped: {gains}"
+  status_title: "🐜 Ant Colony — the nest tally"
+  shop_title: "🍄 The Chamber of Provisions"
+  shop_description: Trade crumbs to grow the nest, one instinct at a time.
+  level: Instar level
+  prestige_progress: "lifetime crumbs toward the new queen:"

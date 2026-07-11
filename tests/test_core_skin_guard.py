@@ -16,11 +16,16 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # Extended for catalog growth: haunted-manor + deep-sea-station +
 # dragon-hoard distinctive nouns. Extended for catalog wave 2:
 # wizard-tower + royal-bakery + cyber-city distinctive nouns.
+# Extended for catalog wave 3: pirate-cove + ant-colony + idol-agency
+# distinctive nouns.
 # Deliberately EXCLUDED as too generic for a guard that scans engine
 # prose/identifiers: "gold", "coin", "scale" ("scales/scaling" is
 # legitimate engine vocabulary), "surface", "station", "village",
-# "drone" — and from wave 2: "tower", "library", "credit(s)", "city",
+# "drone" — from wave 2: "tower", "library", "credit(s)", "city",
 # "royal", "seal", "swarm", "grid", "upload", "franchise", "fragment"
+# — and from wave 3: "crew", "treasure", "tide", "captain", "anchor",
+# "queen", "nest", "worker(s)", "trail", "garden", "fan(s)", "studio",
+# "record(s)", "stage", "debut", "graduate/graduation", "agency"
 # — the packs' truly distinctive nouns below carry the guard instead.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
@@ -38,7 +43,13 @@ FORBIDDEN_NOUNS = re.compile(
     r"|astral|enchanted"
     r"|bakery|bakeries|bakehouse|bakehouses|pastry|pastries|sourdough"
     r"|dough|flour|hearth|hearths|oven|ovens"
-    r"|cyber|neon|uplink|overclock|overclocked|cryo-coolant)\b",
+    r"|cyber|neon|uplink|overclock|overclocked|cryo-coolant"
+    r"|pirate|pirates|doubloon|doubloons|smuggler|smugglers|skiff|skiffs"
+    r"|tavern|taverns|rum|quartermaster|quartermasters|cove|coves"
+    r"|ant|ants|crumb|crumbs|pheromone|pheromones|forager|foragers"
+    r"|leafcutter|leafcutters|fungus|instar|instars"
+    r"|idol|idols|fandom|fandoms|fancam|fancams|livestream|livestreams"
+    r"|choreography|platinum|lightstick|lightsticks)\b",
     re.IGNORECASE,
 )
 
@@ -94,6 +105,16 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("Cyber City neon")
     assert FORBIDDEN_NOUNS.search("a skyline uplink, overclocked")
     assert FORBIDDEN_NOUNS.search("the cryo-coolant overclock kicks in")
+    assert FORBIDDEN_NOUNS.search("a Pirate Cove smuggler skiff")
+    assert FORBIDDEN_NOUNS.search("doubloons for the tavern crew")
+    assert FORBIDDEN_NOUNS.search("the quartermaster counts the rum")
+    assert FORBIDDEN_NOUNS.search("an Ant Colony forager trail")
+    assert FORBIDDEN_NOUNS.search("crumbs for the fungus garden")
+    assert FORBIDDEN_NOUNS.search("pheromone markers guide the leafcutter")
+    assert FORBIDDEN_NOUNS.search("royal jelly at the next instar")
+    assert FORBIDDEN_NOUNS.search("an Idol Agency livestream studio")
+    assert FORBIDDEN_NOUNS.search("the fandom shares a viral fancam")
+    assert FORBIDDEN_NOUNS.search("choreography drills for a platinum record")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")
@@ -104,3 +125,8 @@ def test_guard_pattern_actually_catches_nouns():
     assert not FORBIDDEN_NOUNS.search("describes the flourish")  # not 'scribe'/'flour'
     assert not FORBIDDEN_NOUNS.search("cybersecurity")  # boundary: not 'cyber'
     assert not FORBIDDEN_NOUNS.search("the state manager")  # boundary: not 'mana'
+    assert not FORBIDDEN_NOUNS.search("an important invariant")  # boundary: not 'ant'
+    assert not FORBIDDEN_NOUNS.search("a quantum of spectrum")  # boundary: not 'ant'/'rum'
+    assert not FORBIDDEN_NOUNS.search("covered by the gate")  # boundary: not 'cove'
+    assert not FORBIDDEN_NOUNS.search("crumbling assumptions")  # boundary: not 'crumb'
+    assert not FORBIDDEN_NOUNS.search("idolatrous constants")  # boundary: not 'idol'

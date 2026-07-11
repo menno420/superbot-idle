@@ -74,7 +74,7 @@ THEMES_DIR = REPO_ROOT / "themes"
 THEME_PATHS = sorted(THEMES_DIR.glob("*.yaml"))
 THEME_IDS = [path.stem for path in THEME_PATHS]
 
-assert len(THEME_PATHS) == 9, "property suite expects the 9-pack catalog"
+assert len(THEME_PATHS) == 12, "property suite expects the 12-pack catalog"
 
 
 # --- seeded roster builders ---------------------------------------------------
