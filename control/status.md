@@ -1,11 +1,11 @@
 # superbot-idle · status
-updated: 2026-07-11T02:01:00Z
-phase: volume phase — catalog 6 packs, render layer live (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
+updated: 2026-07-11T02:27:36Z
+phase: volume phase — catalog 9 packs, render layer live (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: property/invariant test suite + plugin-adapter scoping (PRs #30+#31 → main 128953b)
-blockers: plugin-adapter blocked upstream (see PLUG-001)
+last-shipped: shop composition — themed upgrade descriptions + exact-cap arithmetic (PRs #36+#38 → main 0835adb)
+blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
 orders: acked=000 done=000
 
 ## SHIPPED RECORD
@@ -22,7 +22,10 @@ orders: acked=000 done=000
 - leading-zero version-prefix fix — DONE (PRs #26+#28): grammar-compliant MalformedCodeError, red-first.
 - themed-label slots — DONE (PRs #24+#27): schema labels block, gate placeholder semantics, render consumption with pinned neutral fallback, all 6 packs filled.
 - property/invariant test suite + plugin-adapter scoping — DONE (PRs #30+#31): 128 seeded property tests — tick/offline exact equivalence, 6-pack determinism trajectories, conservation/monotonicity, render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz with 0 crc16 collisions; zero engine bugs found; docs/plugin-adapter-scoping.md evidence-gated.
-- Suite: 24 → 533 tests, all green on main 128953b. No parked PRs, no denials.
+- catalog growth wave 2 — DONE (PRs #33+#34): wizard-tower, royal-bakery, cyber-city; 9 packs total; zero schema pinches; setup-code vectors regenerated to 125 total.
+- docs grooming — DONE (PRs #35+#37): current-state rewritten with groomed roadmap, architecture layers/invariants documented, decisions D-0002..D-0007 ledgered, stale ORDER-000-era claims fixed.
+- shop composition — DONE (PRs #36+#38): themed upgrade descriptions composed into shop view, exact-cap arithmetic 768+1+139+116=1024, schema description cap tightened 1024→768 with zero shipped-pack impact, fallback pinned byte-identical.
+- Suite: 24 → 628 tests green. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
@@ -52,12 +55,13 @@ orders: acked=000 done=000
 - Until then, adapter work is evidence-blocked by design — no speculative code, per docs/plugin-adapter-scoping.md § UNVERIFIED.
 
 ## QUEUE
-- IN PROGRESS: catalog growth wave 2 (3 more packs)
-- NEXT: upgrade-description shop composition (parked)
+- IN PROGRESS: state serialization v1 (versioned GameState save/load)
+- NEXT: catalog wave 3 (optional volume)
 - NEXT: plugin adapter build (BLOCKED on PLUG-001)
+- NEXT: economy tuning (BLOCKED on SIM-001)
 - NEXT: memoized rate table (needs bot runtime)
-- NEXT: setup-code version bound ruling (at v2)
-- SIM-001 still awaiting manager relay (Q-0264)
+- NEXT: setup-code v2 bound ruling (deferred)
+- SIM-001 + PLUG-001 awaiting manager
 
 notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step.
 
