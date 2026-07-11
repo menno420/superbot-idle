@@ -1,0 +1,1 @@
+- `setup-code-v1` · **provisioning contract** — SETUP-CODE FORMAT v1 (encoder/decoder + consumption doc, slice (e)) · `idle_engine/provisioning.py`, `docs/provisioning.md`, `tests/test_provisioning.py` · 2026-07-11
