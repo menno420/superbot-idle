@@ -153,6 +153,39 @@ def test_unknown_version_raises_before_body_parsing(version):
         decode_setup(f"IDLE{version}-THIS-BODY-IS-NOT-EVEN-VALID*")
 
 
+@pytest.mark.parametrize("bad_prefix", ["IDLE01-", "IDLE001-", "IDLE00-", "IDLE010-", "IDLE042-"])
+def test_leading_zero_version_prefix_is_malformed_even_with_a_valid_v1_body(bad_prefix):
+    # Grammar (docs/provisioning.md): "version = decimal integer, no
+    # leading zeros" — a zero-led version string is not a well-formed
+    # version AT ALL, so it is MalformedCodeError (bad shape), never
+    # UnknownVersionError (good shape, wrong version), and above all
+    # never silently folded into the zero-stripped integer. The body
+    # here is a REAL v1 body: before this pin, "IDLE01-<v1 body>"
+    # decoded as v1.
+    _, body = _split(encode_setup(SetupConfig(theme_id="egg-farm")))
+    with pytest.raises(MalformedCodeError):
+        decode_setup(bad_prefix + body)
+
+
+def test_version_zero_alone_is_well_formed_but_unknown():
+    # The single digit "0" carries no leading zero (it IS zero): it is
+    # grammar-valid, just not a version this decoder speaks — pinned as
+    # UnknownVersionError by the doc's field table ("any other value")
+    # and the published unknown-version-0 error vector.
+    _, body = _split(encode_setup(SetupConfig(theme_id="egg-farm")))
+    with pytest.raises(UnknownVersionError):
+        decode_setup("IDLE0-" + body)
+
+
+def test_prefix_regex_pins_the_no_leading_zeros_grammar():
+    # The guard recipe from 2026-07-11-setup-code-test-vectors.md: the
+    # grammar sentence, this regex, and the vector file red together.
+    for good in ("IDLE0-X", "IDLE1-X", "IDLE10-X", "IDLE42-X"):
+        assert provisioning._PREFIX_RE.fullmatch(good), good
+    for bad in ("IDLE01-X", "IDLE00-X", "IDLE001-X", "IDLE010-X"):
+        assert provisioning._PREFIX_RE.fullmatch(bad) is None, bad
+
+
 def test_tampered_payload_raises_checksum_error():
     prefix, body = _split(encode_setup(SetupConfig(theme_id="egg-farm")))
     original = body[0]
