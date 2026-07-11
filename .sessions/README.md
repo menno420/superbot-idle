@@ -2,6 +2,14 @@
 
 Per-session logs live here as `<date>-<slug>.md`, newest first. Create the log as the session's FIRST commit with a born-red status (`> **Status:** `in-progress``) so in-flight work is visible to parallel sessions, then flip it to `complete` as the deliberate LAST step once the close-out is written — a half-done session never reads as finished. Before it counts as complete, a log must carry these markers, each written with its exact backticked byte-form: Status badge (`**Status:**`), Session idea (`💡`), Previous-session review (`previous-session review`), Model line (`📊 Model:`).
 
+**`📊 Model:` line — attribution ground truth (fleet standing rule Q-0262, inbox ORDER 001):**
+record the family-level model name **as reported by the fired session's own
+harness/environment** (e.g. `fable-5`, `opus-4.8`, `sonnet-5`) — never copied from the
+Routines screen, which is NOT a reliable attribution surface (cross-surface disagreement is
+evidenced in the fleet model matrix: fm `docs/findings/model-matrix-2026-07.md`). Family-level
+names only — no snapshot/date suffixes, no secret values. Per-session self-report in the
+committed card is the only reliable attribution.
+
 If the card is missing at session end, the kit **auto-drafts** one from evidence (files touched, git HEAD movement, the verify command); an in-progress card missing its close-out gets the drafted section appended. A draft is a starting point, not a close-out: verify the evidence, resolve every `[[fill:]]` slot, then flip the Status badge — unresolved slots (and the `drafted` status) keep the card counting incomplete.
 
 **Guard recipes:** when a card records friction-to-guard material for a *later* session (a deferred fix, a flagged footgun), carry a one-line **guard recipe** naming the code anchors — function + file + the test target — not just the symptom. A symptom-only entry costs the next session a re-derivation grep pass; a recipe lets it land the guard in minutes.
