@@ -15,7 +15,10 @@ render bug. Human-readable twin: ``docs/theme-schema.md``.
 On top of JSON Schema, the gate enforces what a schema cannot express:
 unique currency/generator ids, ``produces`` referencing a declared
 currency, and that the pack actually loads through
-``idle_engine.theme.load_theme`` (the engine is ground truth).
+``idle_engine.theme.load_theme`` (the engine is ground truth). Across
+the catalog, ``theme.id`` must be unique — per-file validation cannot
+see two packs claiming the same id, so ``main`` collects ids from every
+pack that passed and fails on collisions.
 
 Exits 0 when every pack passes, 1 on any violation, 2 when no packs
 exist (an empty themes/ directory is a wiring error, not a pass).
@@ -123,6 +126,22 @@ def validate_file(path: Path, validator: jsonschema.Draft202012Validator | None 
     return _semantic_errors(data, path)
 
 
+def catalog_errors(theme_ids: dict[Path, str]) -> list[str]:
+    """Cross-pack checks over per-file-valid packs: theme.id must be unique
+    across the whole catalog (per-file validation cannot see a collision —
+    two packs claiming one id would silently shadow each other in any
+    id-keyed catalog map)."""
+    by_id: dict[str, list[Path]] = {}
+    for path, theme_id in theme_ids.items():
+        by_id.setdefault(theme_id, []).append(path)
+    return [
+        f"catalog: duplicate theme.id {theme_id!r} across packs: "
+        + ", ".join(str(p) for p in sorted(paths))
+        for theme_id, paths in sorted(by_id.items())
+        if len(paths) > 1
+    ]
+
+
 def main(argv: list[str]) -> int:
     themes_dir = Path(argv[1]) if len(argv) > 1 else REPO_ROOT / "themes"
     packs = sorted(themes_dir.glob("*.yaml")) + sorted(themes_dir.glob("*.yml"))
@@ -131,6 +150,7 @@ def main(argv: list[str]) -> int:
         return 2
     validator = _load_validator()
     failures: list[str] = []
+    theme_ids: dict[Path, str] = {}
     for pack in packs:
         errors = validate_file(pack, validator)
         if errors:
@@ -140,6 +160,12 @@ def main(argv: list[str]) -> int:
                 print(f"  - {error}")
         else:
             print(f"PASS {pack}")
+            data = yaml.safe_load(pack.read_text(encoding="utf-8"))
+            theme_ids[pack] = data["theme"]["id"]
+    cross_pack = catalog_errors(theme_ids)
+    for error in cross_pack:
+        failures.append(error)
+        print(f"FAIL {error}")
     if failures:
         print(f"theme-gate: {len(failures)} violation(s) across {len(packs)} pack(s)", file=sys.stderr)
         return 1

@@ -102,6 +102,10 @@ any numeric field smuggled into these blocks is rejected by
   currency it awards).
 - The pack must load through `idle_engine.theme.load_theme` — the schema's
   ground truth is what the engine actually accepts.
+- **Catalog-wide** (checked across all of `themes/`, not per file):
+  `theme.id` is unique across every pack in the catalog — two packs
+  claiming one id would silently shadow each other in any id-keyed
+  catalog map, and per-file validation cannot see the collision.
 
 ## Balance bound (integrity floor)
 
