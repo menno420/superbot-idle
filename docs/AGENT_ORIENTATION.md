@@ -47,6 +47,10 @@ python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additio
 - [`../themes/README.md`](../themes/README.md) — what a theme pack is.
 - [`provisioning.md`](provisioning.md) — SETUP-CODE FORMAT v1: the versioned
   provisioning contract (websites lane encodes, superbot-next plugin decodes).
+- [`render-layer.md`](render-layer.md) — the embed-payload contract:
+  `idle_engine/render.py` turns state + theme into Discord-embed-shaped
+  dicts (status/shop/prestige) with hard budget enforcement; the
+  superbot-next plugin renders these verbatim.
 - [`../review-queue.md`](../review-queue.md) — external-review rows.
 - [`retro/questions.md`](retro/questions.md) — open lane questions.
 - `design/` — economy design docs land here, PRE-REGISTERED before tuning

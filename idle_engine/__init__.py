@@ -27,11 +27,20 @@ from idle_engine.theme import (
     ThemeUpgrade,
     load_theme,
 )
+from idle_engine.render import (
+    RenderBudgetError,
+    embed_color_int,
+    render_prestige,
+    render_shop,
+    render_status,
+    validate_embed,
+)
 
 __all__ = [
     "GameState",
     "GeneratorSpec",
     "PrestigeSpec",
+    "RenderBudgetError",
     "Theme",
     "ThemeCurrency",
     "ThemeGenerator",
@@ -39,12 +48,17 @@ __all__ = [
     "ThemeUpgrade",
     "UpgradeSpec",
     "apply_prestige",
+    "embed_color_int",
     "load_theme",
     "offline_progress",
     "prestige_award",
     "prestige_eligible",
     "production_per_second",
     "purchase_upgrade",
+    "render_prestige",
+    "render_shop",
+    "render_status",
     "tick",
     "upgrade_cost",
+    "validate_embed",
 ]

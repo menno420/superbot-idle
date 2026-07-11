@@ -1,0 +1,322 @@
+"""Render layer: engine state + theme pack -> embed-shaped payloads.
+
+Written test-first for the render-layer slice. The render layer is the
+seam superbot-next's plugin renders through: PURE presentation, plain
+dicts shaped like Discord embeds, zero Discord imports. Tests here may
+use theme nouns freely (they exercise the real egg-farm pack); the
+module under test must contain none — `test_core_skin_guard.py` scans
+`idle_engine/**/*.py`, which includes `idle_engine/render.py`.
+"""
+
+import re
+from pathlib import Path
+
+import pytest
+
+from idle_engine import GameState, load_theme
+from idle_engine.render import (
+    DESCRIPTION_LIMIT,
+    FIELD_NAME_LIMIT,
+    FIELD_VALUE_LIMIT,
+    MAX_FIELDS,
+    TITLE_LIMIT,
+    RenderBudgetError,
+    embed_color_int,
+    render_prestige,
+    render_shop,
+    render_status,
+    validate_embed,
+)
+from idle_engine.theme import Theme, ThemeCurrency, ThemeGenerator
+
+REPO_ROOT = Path(__file__).resolve().parent.parent
+THEMES_DIR = REPO_ROOT / "themes"
+
+
+@pytest.fixture(scope="module")
+def egg_farm():
+    return load_theme(THEMES_DIR / "egg-farm.yaml")
+
+
+def _fixed_state():
+    """A small deterministic save: 2 coops, some eggs, 1 upgrade level."""
+    return GameState(
+        balances={"primary": 1234},
+        owned={"tier1": 2},
+        last_seen=1_000,
+        upgrades={"boost1": 1},
+        lifetime={"primary": 5_000},
+        prestige={"prestige": 3},
+    )
+
+
+def _assert_budgets(embed):
+    assert len(embed["title"]) <= TITLE_LIMIT
+    assert len(embed["description"]) <= DESCRIPTION_LIMIT
+    assert len(embed["fields"]) <= MAX_FIELDS
+    for field in embed["fields"]:
+        assert 1 <= len(field["name"]) <= FIELD_NAME_LIMIT
+        assert 1 <= len(field["value"]) <= FIELD_VALUE_LIMIT
+        assert isinstance(field["inline"], bool)
+    assert 0 <= embed["color"] <= 0xFFFFFF
+
+
+# --- embed color -------------------------------------------------------------
+
+
+def test_embed_color_int_parses_hex():
+    assert embed_color_int("#F5C542") == 0xF5C542
+    assert embed_color_int("#000000") == 0
+    assert embed_color_int("#ffffff") == 0xFFFFFF
+
+
+@pytest.mark.parametrize("bad", ["F5C542", "#F5C54", "#F5C5422", "#GGGGGG", "", "#12 456"])
+def test_embed_color_int_rejects_malformed(bad):
+    with pytest.raises(ValueError):
+        embed_color_int(bad)
+
+
+# --- status view -------------------------------------------------------------
+
+
+def test_status_is_deterministic_and_exactly_shaped(egg_farm):
+    """Pin the full payload for one fixed state: same inputs, same bytes."""
+    state = _fixed_state()
+    # 2 coops x base_rate 1 x (100 + 25*1 boost1)% x (100 + 10*3 prestige)% // 10_000
+    # = 2 * 125 * 130 // 10_000 = 3/s; 100 s offline -> +300 eggs shown.
+    embed = render_status(state, egg_farm, now=1_100)
+    assert embed == render_status(state, egg_farm, now=1_100)
+    assert embed == {
+        "title": "🥚 Egg Farm",
+        "description": (
+            "A cozy backyard farm where patient chickens fund your empire."
+            "\n\n+300 🥚 eggs"
+        ),
+        "color": 0xF5C542,
+        "fields": [
+            {"name": "🥚 eggs", "value": "1,234 (+3/s)", "inline": True},
+            {"name": "🥇 golden eggs", "value": "3", "inline": True},
+            {"name": "🐔 chicken coop", "value": "× 2 · +3/s", "inline": True},
+        ],
+    }
+
+
+def test_status_nouns_all_resolve_from_pack(egg_farm):
+    embed = render_status(_fixed_state(), egg_farm, now=1_100)
+    names = [f["name"] for f in embed["fields"]]
+    assert "🥚 eggs" in names
+    assert "🥇 golden eggs" in names
+    assert "🐔 chicken coop" in names
+    assert embed["title"] == "🥚 Egg Farm"
+    _assert_budgets(embed)
+
+
+def test_status_no_offline_line_when_caught_up(egg_farm):
+    state = _fixed_state()
+    embed = render_status(state, egg_farm, now=state.last_seen)
+    assert embed["description"] == egg_farm.description
+    # Clock skew (now < last_seen) accrues nothing rather than going negative.
+    skewed = render_status(state, egg_farm, now=state.last_seen - 50)
+    assert skewed["description"] == egg_farm.description
+
+
+def test_status_prestige_currency_reads_persistent_balance(egg_farm):
+    """The pack's prestige currency shows state.prestige, not run balances."""
+    state = GameState(prestige={"prestige": 7})
+    embed = render_status(state, egg_farm, now=0)
+    by_name = {f["name"]: f["value"] for f in embed["fields"]}
+    assert by_name["🥇 golden eggs"] == "7"
+    assert by_name["🥚 eggs"] == "0"
+
+
+# --- upgrade shop view -------------------------------------------------------
+
+
+def test_shop_costs_and_affordability(egg_farm):
+    # boost1 level 0 costs base_rate 1 * 60 s = 60 eggs (economy v0 table).
+    broke = GameState(balances={"primary": 59})
+    rich = GameState(balances={"primary": 60})
+    shop_broke = render_shop(broke, egg_farm)
+    shop_rich = render_shop(rich, egg_farm)
+    (field_broke,) = shop_broke["fields"]
+    (field_rich,) = shop_rich["fields"]
+    assert field_broke["name"] == "🏠 bigger henhouse"
+    assert "60 🥚 eggs" in field_broke["value"]
+    assert field_broke["value"].startswith("🔒")
+    assert field_rich["value"].startswith("✅")
+    assert "Lv 0 → 1" in field_rich["value"]
+    _assert_budgets(shop_rich)
+
+
+def test_shop_cost_tracks_current_level(egg_farm):
+    # Level 3 -> 4 costs 60 * 115**3 // 100**3 = 91 (exact integer curve).
+    state = GameState(balances={"primary": 10_000}, upgrades={"boost1": 3})
+    (field,) = render_shop(state, egg_farm)["fields"]
+    assert "Lv 3 → 4" in field["value"]
+    assert "91 🥚 eggs" in field["value"]
+
+
+def test_shop_is_none_without_upgrade_block(egg_farm):
+    bare = Theme(
+        theme_id="bare",
+        name="Bare",
+        description="No shop here.",
+        emoji="🔹",
+        embed_color="#123456",
+        currencies={"primary": ThemeCurrency("primary", "points", "points.", "🔹")},
+        generators={
+            "tier1": ThemeGenerator("tier1", "maker", "makes points.", "⚙️", "primary", 1)
+        },
+    )
+    assert render_shop(GameState(), bare) is None
+    assert render_prestige(GameState(), bare) is None
+
+
+# --- prestige view -----------------------------------------------------------
+
+
+def test_prestige_ineligible_then_eligible(egg_farm):
+    ineligible = GameState(lifetime={"primary": 99_999})
+    embed = render_prestige(ineligible, egg_farm)
+    assert embed["title"] == "🌟 sell the farm"
+    assert embed["description"] == egg_farm.prestige.action_description
+    by_name = {f["name"]: f["value"] for f in embed["fields"]}
+    assert by_name["🥚 eggs"].startswith("🔒")
+    assert "99,999 / 100,000" in by_name["🥚 eggs"]
+    assert "(+0)" in by_name["🥇 golden eggs"]
+
+    eligible = GameState(lifetime={"primary": 400_000}, prestige={"prestige": 2})
+    embed = render_prestige(eligible, egg_farm)
+    by_name = {f["name"]: f["value"] for f in embed["fields"]}
+    assert by_name["🥚 eggs"].startswith("✅")
+    assert by_name["🥇 golden eggs"] == "2 (+2)"  # isqrt(400_000 // 100_000) = 2
+    _assert_budgets(embed)
+
+
+# --- every shipped pack renders within budget --------------------------------
+
+
+@pytest.mark.parametrize("pack", sorted(THEMES_DIR.glob("*.yaml")), ids=lambda p: p.stem)
+def test_all_shipped_packs_render_within_budget(pack):
+    theme = load_theme(pack)
+    owned = {gid: 5 for gid in theme.generators}
+    upgrades = {uid: 2 for uid in theme.upgrades}
+    balances = {cid: 123_456 for cid in theme.currencies}
+    state = GameState(
+        balances=balances,
+        owned=owned,
+        last_seen=0,
+        upgrades=upgrades,
+        lifetime=dict(balances),
+        prestige={theme.prestige.currency: 4} if theme.prestige else {},
+    )
+    _assert_budgets(render_status(state, theme, now=86_400))
+    shop = render_shop(state, theme)
+    if shop is not None:
+        _assert_budgets(shop)
+    prestige = render_prestige(state, theme)
+    if prestige is not None:
+        _assert_budgets(prestige)
+
+
+# --- budget enforcement: numeric overflow clamps, themed overflow raises -----
+
+
+def test_extreme_values_stay_within_budget(egg_farm):
+    """Property-ish sweep: absurd balances/levels/counts never break caps."""
+    for magnitude in (10**6, 10**60, 10**200, 10**400):
+        state = GameState(
+            balances={"primary": magnitude},
+            owned={"tier1": magnitude},
+            last_seen=0,
+            upgrades={"boost1": 25},  # keeps the exact cost curve tractable
+            lifetime={"primary": magnitude},
+            prestige={"prestige": magnitude},
+        )
+        for embed in (
+            render_status(state, egg_farm, now=10**9),
+            render_shop(state, egg_farm),
+            render_prestige(state, egg_farm),
+        ):
+            _assert_budgets(embed)
+
+
+def test_numeric_overflow_truncates_with_ellipsis(egg_farm):
+    huge = 10**2000  # ~2,668 chars formatted with separators: must clamp
+    state = GameState(balances={"primary": huge}, prestige={"prestige": huge})
+    embed = render_status(state, egg_farm, now=0)
+    by_name = {f["name"]: f["value"] for f in embed["fields"]}
+    assert len(by_name["🥚 eggs"]) == FIELD_VALUE_LIMIT
+    assert by_name["🥚 eggs"].endswith("…")
+
+
+def test_offline_block_clamps_not_raises(egg_farm):
+    huge = 10**1000
+    state = GameState(owned={"tier1": huge}, last_seen=0)
+    embed = render_status(state, egg_farm, now=10**6)
+    assert len(embed["description"]) <= DESCRIPTION_LIMIT
+
+
+def _theme_with(name="Okay", emoji="🔹", description="Fine.", currency_name="points"):
+    return Theme(
+        theme_id="rogue",
+        name=name,
+        description=description,
+        emoji=emoji,
+        embed_color="#123456",
+        currencies={"primary": ThemeCurrency("primary", currency_name, "flat.", "🔹")},
+        generators={
+            "tier1": ThemeGenerator("tier1", "maker", "makes points.", "⚙️", "primary", 1)
+        },
+    )
+
+
+def test_theme_sourced_title_overflow_raises(egg_farm):
+    """A pack the gate would reject must raise, never silently truncate."""
+    rogue = _theme_with(name="x" * 300)
+    with pytest.raises(RenderBudgetError):
+        render_status(GameState(), rogue, now=0)
+
+
+def test_theme_sourced_field_name_overflow_raises():
+    rogue = _theme_with(currency_name="y" * 300)
+    with pytest.raises(RenderBudgetError):
+        render_status(GameState(), rogue, now=0)
+
+
+def test_theme_sourced_description_overflow_raises():
+    rogue = _theme_with(description="z" * 5000)
+    with pytest.raises(RenderBudgetError):
+        render_status(GameState(), rogue, now=0)
+
+
+def test_validate_embed_rejects_too_many_fields():
+    embed = {
+        "title": "t",
+        "description": "",
+        "color": 0,
+        "fields": [{"name": "n", "value": "v", "inline": True}] * 26,
+    }
+    with pytest.raises(RenderBudgetError):
+        validate_embed(embed)
+
+
+def test_validate_embed_rejects_empty_field_strings():
+    embed = {
+        "title": "t",
+        "description": "",
+        "color": 0,
+        "fields": [{"name": "", "value": "v", "inline": True}],
+    }
+    with pytest.raises(RenderBudgetError):
+        validate_embed(embed)
+
+
+# --- purity: the render module imports no chat-platform SDK ------------------
+
+
+def test_render_module_is_pure_presentation():
+    source = (REPO_ROOT / "idle_engine" / "render.py").read_text(encoding="utf-8")
+    assert not re.search(r"\bimport\s+discord\b|\bfrom\s+discord\b", source)
+    assert not re.search(r"\bimport\s+yaml\b|\bfrom\s+yaml\b", source)
+    assert "requests" not in source and "aiohttp" not in source
