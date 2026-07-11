@@ -34,8 +34,12 @@ The planted doc set (this router reaches every live doc — keep it that way):
 ## Verifying any change
 
 ```
-python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additionally validate via the theme-gate step once ORDER 000 lands it in CI)
+python3 -m pytest -q && python3 bootstrap.py check --strict
 ```
+
+Theme packs additionally validate via the `theme-gate` CI step (required
+check on `main` since PR #6 / OA-002; run `python3 tools/theme_gate.py
+themes/*.yaml` locally).
 
 ## Lane-layer docs (this repo's own additions — reachable from here on purpose)
 
@@ -45,6 +49,9 @@ python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additio
   ladder, session shape).
 - [`../PLATFORM-LIMITS.md`](../PLATFORM-LIMITS.md) — verbatim walls, never re-probe.
 - [`../themes/README.md`](../themes/README.md) — what a theme pack is.
+- [`theme-schema.md`](theme-schema.md) — THEME SCHEMA v1: the published pack
+  contract (machine twin `schema/theme.schema.json`, parity test-enforced);
+  read before touching any pack or the gate.
 - [`provisioning.md`](provisioning.md) — SETUP-CODE FORMAT v1: the versioned
   provisioning contract (websites lane encodes, superbot-next plugin decodes).
 - [`plugin-adapter-scoping.md`](plugin-adapter-scoping.md) — mapping our four
@@ -57,5 +64,8 @@ python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additio
   superbot-next plugin renders these verbatim.
 - [`../review-queue.md`](../review-queue.md) — external-review rows.
 - [`retro/questions.md`](retro/questions.md) — open lane questions.
-- `design/` — economy design docs land here, PRE-REGISTERED before tuning
-  (first file arrives with the economy design slice).
+- [`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md) +
+  [`design/economy-v1.md`](design/economy-v1.md) — the PRE-REGISTERED
+  economy: curve shapes, provisional parameters, pacing targets T1–T10, and
+  the SIM-001 simulation request; committed BEFORE tuning, parity with
+  `idle_engine/economy.py` test-enforced.

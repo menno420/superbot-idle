@@ -6,18 +6,132 @@
 > work always win over this file. Read it second (right after the working
 > agreement) and keep it current as the project moves.
 
+*Groomed 2026-07-11 against main `b6e6b68` (post-PR #35); suite 620 green.*
+
 ## Stability baseline
 
-(Describe the accepted-stable baseline once established — what is known-good and
-should not be re-audited without a reported regression.)
+Known-good and not to be re-audited without a reported regression:
+
+- **Engine core** (`idle_engine/`, pure-domain, stdlib-first, no chat-platform
+  imports — enforced by `tests/test_core_skin_guard.py`):
+  - `state.py` — `GameState`, an immutable dataclass of plain dicts/ints
+    (trivially serializable; persistence is deliberately NOT the engine's job).
+  - `engine.py` — tick loop + **closed-form offline progress** that is
+    integer-EXACT equal to looped live ticks (property-pinned).
+  - `upgrades.py` / `prestige.py` — upgrade shop and reset track; additive
+    integer-percent stacking, isqrt prestige award.
+  - `economy.py` — all economy numbers live here (geometric cost curve
+    ×1.15, exact big-int, single floor); parity with
+    `docs/design/economy-v1.md` is test-enforced.
+  - `theme.py` — `load_theme`: the data-only pack loader (ground truth for
+    what the schema accepts).
+  - `render.py` — pure embed-payload builder (status/shop/prestige views)
+    with hard budget enforcement; contract in `docs/render-layer.md`.
+  - `provisioning.py` — SETUP-CODE FORMAT v1 encoder/decoder + catalog
+    validation; contract in `docs/provisioning.md`.
+- **Theme catalog: 9 packs**, all schema-v1, all with full `labels` blocks:
+  egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
+  dragon-hoard, wizard-tower, royal-bakery, cyber-city. Waves 1–2 shipped
+  with **zero schema pinches** — the frozen v1 schema fit all foreign content.
+- **Schema v1** (`docs/theme-schema.md` + machine twin
+  `schema/theme.schema.json`, md↔json parity test-enforced): additive-only
+  within v1; unknown keys rejected; optional blocks so far: `upgrades`,
+  `prestige`, `labels` (every label slot optional with a neutral fallback —
+  packs without the block render byte-identically).
+- **theme-gate** (`tools/theme_gate.py`, required CI check): JSON-Schema
+  validation plus referential checks — `produces`/`target`/prestige-currency
+  references resolve; per-pack id uniqueness; `theme.id` == filename stem;
+  `labels.offline_return` contains `{gains}` exactly once; the pack loads
+  through `idle_engine.theme.load_theme`; catalog-wide `theme.id` uniqueness.
+  Gate-green = safe to enable on a live server unreviewed.
+- **Setup codes v1** (`IDLE1-` Crockford-base32 + CRC-16, FROZEN):
+  encode/decode/catalog-validate with a distinct error taxonomy;
+  cross-language vector file `tests/vectors/setup-codes.v1.json`
+  (125 vectors: 45 valid with layer-by-layer intermediates, 55 tolerance,
+  25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
+- **Test suite: 620 passing** — unit + doc-parity tests plus a seeded
+  property/invariant layer (128 tests: tick/offline exact equivalence,
+  per-pack determinism trajectories, conservation/monotonicity,
+  render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz).
+  Verify: `python3 -m pytest -q && python3 bootstrap.py check --strict`.
+
+## What does NOT exist (do not assume it)
+
+- **No bot runtime and no plugin adapter.** Nothing here talks to Discord.
+  Adapter work is evidence-BLOCKED upstream (**PLUG-001**): superbot-next
+  publishes no plugin/manifest contract and `superbot-plugin-hello` is an
+  empty repo — see `docs/plugin-adapter-scoping.md` (scoping/question doc,
+  not a build order).
+- **No persistence layer.** `GameState` is serializable by design, but where
+  saves live is the future plugin's job; nothing is stored anywhere today.
+- **Economy numbers are PROVISIONAL**, not tuned. Every parameter is
+  pre-registered (`docs/design/upgrades-prestige-v0.md`,
+  `docs/design/economy-v1.md`) and awaits Simulator verdict (**SIM-001**,
+  Q-0264 — still awaiting manager relay). No tuning until then.
+- **No generator purchase path** — generator counts are fixed; target T10 is
+  pre-registered for the future mechanic.
+- **No website encoder here** — the websites lane encodes setup codes; this
+  repo publishes the contract + vectors it consumes.
 
 ## In flight
 
 (Verify against live source control — this section is a dated snapshot.)
 
+- **Upgrade-description shop composition** (render/schema/themes/tests) — a
+  concurrent worker slice, in flight as of 2026-07-11. The parked seam is
+  documented at the end of `docs/render-layer.md`.
+
+## Roadmap (groomed 2026-07-11 — ordered, blockers marked)
+
+1. **Shop composition** — IN FLIGHT (see above).
+2. **Plugin adapter build** — **BLOCKED upstream (PLUG-001)**: no verified
+   superbot-next plugin/manifest contract. No speculative code, per
+   `docs/plugin-adapter-scoping.md` § UNVERIFIED.
+3. **Economy tuning / parameter graduation** — **BLOCKED (SIM-001)**: awaits
+   the fleet Simulator run against the pre-registered targets T1–T10;
+   parameters stay provisional until the verdict.
+4. **Memoized rate table** — needs a bot runtime to be worth anything
+   (perf work without a caller is speculative); deferred until the adapter
+   unblocks.
+5. **Catalog wave 3** — optional volume; the schema is proven (zero pinches
+   across 8 foreign packs), so more packs are merge-on-gate-green filler,
+   not risk reduction.
+6. **Setup-code v2 version-bound ruling** — deferred BY DESIGN to the PR
+   that defines v2 (bound the version integer + `prefix-version-overflow`
+   vector; see `.sessions/2026-07-11-leading-zero-version-fix.md` § idea).
+
 ## Recently shipped (newest first)
 
-(Merged work only, newest first.)
+(Merged work only, newest first. Fuller narrative per slice: the matching
+`.sessions/` card and `control/status.md` § SHIPPED RECORD.)
+
+- **Catalog wave 2** (PRs #33+#34): wizard-tower, royal-bakery, cyber-city —
+  9 packs; suite 533 → 620.
+- **Property/invariant suite + plugin-adapter scoping** (PRs #30+#31):
+  128 seeded property tests, zero engine bugs found;
+  `docs/plugin-adapter-scoping.md`; PLUG-001 flagged.
+- **Themed label slots** (PRs #24+#27): optional `labels` block —
+  schema + gate + render + all packs.
+- **Leading-zero version fix** (PRs #26+#28): grammar-wins ruling;
+  `IDLE01-` is `MalformedCodeError`.
+- **Setup-code test vectors** (PRs #23+#25): `tests/vectors/setup-codes.v1.json`,
+  regenerate-or-red.
+- **Catalog growth wave 1** (PRs #19+#21): haunted-manor, deep-sea-station,
+  dragon-hoard; id↔filename gate.
+- **Render layer** (PRs #18+#20): `idle_engine/render.py` +
+  `docs/render-layer.md`.
+- **SETUP-CODE FORMAT v1** (PRs #15+#16): `idle_engine/provisioning.py` +
+  `docs/provisioning.md`.
+- **Economy design v1** (PRs #9+#12+#13): pre-registered pacing targets
+  T1–T10 + SIM-001 request.
+- **Theme packs wave 0** (PRs #10+#11): space-colony + potion-brewery;
+  cross-pack id-uniqueness gate.
+- **Upgrades + prestige** (PRs #7+#8): engine layers + provisional curves
+  pre-registered.
+- **THEME SCHEMA v1** (PRs #4+#5): published schema + machine twin +
+  hardened gate. (PR #6: .gitignore.)
+- **ORDER 000 walking skeleton** (PRs #1+#2): tick engine, egg-farm pack,
+  theme-gate v0.
 
 ## Review rhythm
 

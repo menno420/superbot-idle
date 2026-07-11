@@ -17,3 +17,101 @@
   discipline let agents work correctly with little steering; adopting the
   kit starts superbot-idle governed instead of accreting rules ad hoc.
 - provenance: substrate-kit adoption interview
+
+## [D-0002] Integer-only economy math with single-floor rate composition
+
+- status: decided
+- date: 2026-07-11
+- verdict: All economy arithmetic is exact big-int with ONE floor division
+  per composed value — geometric upgrade costs
+  `base_cost·num^L // den^L`, rates
+  `base_rate·count·upgrade_pct·prestige_pct // 10_000`; no floats anywhere.
+- why: A cost table is a contract — every platform must price level N
+  identically, with no float drift or compounding rounding. The single
+  floor keeps the per-second rate a plain integer, which is exactly what
+  makes closed-form offline credit EQUAL to looped live ticks (the
+  engine's flagship invariant, later property-pinned at 10^3000 scale).
+- provenance: PRs #7+#8 (upgrades+prestige slice),
+  `docs/design/upgrades-prestige-v0.md`; property pinning PRs #30+#31.
+
+## [D-0003] Theme schema v1 evolves additive-only; anything breaking is v2
+
+- status: decided
+- date: 2026-07-11
+- verdict: Within `schema_version: 1`, fields are only ever ADDED as
+  optional, gate + doc landing together; unknown keys are rejected, not
+  ignored; removing/retyping a field or tightening a budget on existing
+  packs is v2.
+- why: Merge-on-gate-green theming only works if every already-shipped
+  pack stays valid forever under v1; rejecting unknown keys stops packs
+  smuggling capability ahead of the schema. Proven in practice: `upgrades`
+  + `prestige` (PR #8), `labels` (PR #27) landed additively, and 8 foreign
+  packs across two catalog waves fit with ZERO schema pinches.
+- provenance: PRs #4+#5 (`docs/theme-schema.md` § Versioning &
+  compatibility); exercised by PRs #10/#11, #19/#21, #24/#27, #33/#34.
+
+## [D-0004] Label slots are all-optional with pinned neutral fallbacks
+
+- status: decided
+- date: 2026-07-11
+- verdict: Every `labels` slot is optional and falls back to neutral
+  scaffolding (`Lv`, `{emoji} {name}` titles, bare gain lines); a pack
+  without the block renders BYTE-IDENTICALLY to the pre-labels layer.
+  `offline_return` templating is exactly one `{gains}` token, no other
+  braces (red gate); substituted numeric text clamps, themed text never
+  truncates (overflow raises).
+- why: Neutral fallback made the labels feature additive (D-0003) across
+  six pre-existing packs at once — no pack migration, no render churn —
+  and the one-token grammar means render-time substitution can never meet
+  a token it does not know.
+- provenance: PRs #24+#27 (themed-label-slots slice),
+  `docs/theme-schema.md` § labels, `docs/render-layer.md`.
+
+## [D-0005] Setup-code disputes: the published grammar wins over the code
+
+- status: decided
+- date: 2026-07-11
+- verdict: When the reference implementation and `docs/provisioning.md`
+  disagree, the PUBLISHED GRAMMAR wins and the code is fixed — applied to
+  leading-zero version prefixes: `IDLE01-` is `MalformedCodeError` (not a
+  well-formed prefix at all), while lone `IDLE0-` stays
+  `UnknownVersionError`.
+- why: v1 is frozen and foreign implementations build from the doc +
+  vector file, so the doc must be the contract, not a description of
+  accidents. The error-class split preserves the taxonomy's meaning:
+  malformed = "not shaped like a setup code", unknown-version = "valid
+  shape, version this decoder does not speak".
+- provenance: PRs #26+#28 (grammar-compliance fix), flagged by the
+  vectors slice (PRs #23+#25);
+  `.sessions/2026-07-11-leading-zero-version-fix.md`.
+
+## [D-0006] Plugin-adapter work is evidence-gated — no speculative code
+
+- status: decided
+- date: 2026-07-11
+- verdict: No adapter/manifest code is written until superbot-next's
+  plugin contract is verifiably readable (raw probe); until then the seam
+  ships as a scoping/question doc plus our four verified in-repo seams
+  (decode, theme loader, engine API, render payloads). Blocked as
+  PLUG-001.
+- why: The probe found the contract unpublished and the exemplar repo
+  EMPTY — building a speculative manifest against a contract that lands
+  later is integrity-floor debt; the probe log is committed verbatim so
+  no session re-derives it.
+- provenance: PRs #30+#31, `docs/plugin-adapter-scoping.md` § Evidence
+  log; PLUG-001 in `control/status.md`.
+
+## [D-0007] Catalog grows volume-first on the frozen schema
+
+- status: decided
+- date: 2026-07-11
+- verdict: While engine seams are blocked (PLUG-001, SIM-001), ship theme
+  packs in waves — full-slot, data-only, zero schema changes allowed per
+  wave (a needed change is a "schema pinch" and gets its own slice, not a
+  smuggled edit).
+- why: Each foreign pack that fits v1 unchanged is evidence the CORE/SKIN
+  split holds and the schema was published at the right shape (8/8 so
+  far, zero pinches); packs merge on gate-green alone, so volume is cheap
+  and derisks the "catalog choosable on the website" product goal.
+- provenance: PRs #10+#11 (wave 0), #19+#21 (wave 1), #33+#34 (wave 2);
+  `control/status.md` QUEUE ("volume phase").
