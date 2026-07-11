@@ -9,14 +9,56 @@
 
 Three layers, one hard seam: (1) ENGINE CORE - pure-domain Python (tick, generators, currencies, upgrades, prestige, offline progress), no Discord API calls, no theme content hard-coded; (2) THEME PACKS - themes/<name>.yaml, DATA ONLY against the published schema, bounded multipliers, never code; (3) TOOLING/GATE - the theme-gate validator + tests + CI. Player-visible nouns live ONLY in layer 2 - one in engine code is a bug, fixed on sight.
 
+As shipped, layer 1 is `idle_engine/` — `state` / `engine` / `upgrades` /
+`prestige` / `economy` (mechanics), `theme` (pack loader), plus the two
+outward-facing seams `render` (embed payloads out) and `provisioning`
+(setup codes in). Layer 2 is the 9-pack catalog under `themes/`. Layer 3 is
+`tools/theme_gate.py` + `tools/gen_setup_vectors.py` + `tests/` + the two CI
+workflows (`substrate-gate`, `theme-gate`), both required checks on `main`.
+
 | Layer | May import | Must NOT import |
 |---|---|---|
-| (one row per layer, expanded from the summary above) | | |
+| (1) engine core `idle_engine/` | stdlib; PyYAML in `theme.py` only | any Discord/chat SDK; `themes/` content (nouns arrive at runtime via `load_theme`); `tools/`, `tests/` |
+| (2) theme packs `themes/*.yaml` | nothing — DATA ONLY, no code | n/a (any executable content is a red gate) |
+| (3) tooling/gate `tools/`, `tests/` | anything, incl. layer 1 and jsonschema | n/a (nothing imports layer 3) |
+
+Per-seam contracts live in their own docs — authoritative, do not duplicate
+here: [`theme-schema.md`](theme-schema.md) (pack format + gate checks),
+[`render-layer.md`](render-layer.md) (embed-payload contract),
+[`provisioning.md`](provisioning.md) (SETUP-CODE FORMAT v1),
+[`plugin-adapter-scoping.md`](plugin-adapter-scoping.md) (the future
+plugin seam — UNVERIFIED upstream, scoping only). Economy numbers are
+engine-side and pre-registered in [`design/`](design/) before tuning.
 
 ## Invariants
 
-(The rules that must survive every refactor — write each one as a testable
-statement, and name the check that enforces it where one exists.)
+Each is a testable statement; the enforcing check is named.
+
+- **No platform imports / no theme nouns in engine core** — a player-visible
+  noun in `idle_engine/` is a bug, fixed on sight. Enforced:
+  `tests/test_core_skin_guard.py`.
+- **Offline progress is EXACTLY looped live ticks** — the closed form uses
+  the same integer rate function × elapsed seconds; no drift ever. Enforced:
+  `tests/test_engine.py` + partition-equivalence properties in
+  `tests/test_properties.py`.
+- **Integer-only economy math, one floor per composed rate** — exact big-int
+  arithmetic; `rate = base_rate · count · upgrade_pct · prestige_pct // 10_000`.
+  Enforced: `tests/test_upgrades_prestige.py`, `tests/test_properties.py`
+  (determinism, conservation, monotonicity).
+- **A gate-green pack is safe to enable unreviewed** — schema + referential
+  checks + budget bounds; render output from any gate-valid pack fits the
+  embed caps by construction. Enforced: `tools/theme_gate.py` (required CI),
+  `tests/test_theme_gate.py`, render-budget fuzz in `tests/test_properties.py`.
+- **Docs and machine twins cannot drift** — `docs/theme-schema.md` ↔
+  `schema/theme.schema.json` field parity; `docs/provisioning.md` literals
+  decode/re-encode exactly; `docs/design/economy-v1.md` ↔
+  `idle_engine/economy.py` parameter parity; committed vector file ==
+  fresh regeneration. Enforced: `tests/test_theme_schema.py`,
+  `tests/test_provisioning.py`, `tests/test_economy_design_doc.py`,
+  `tests/test_setup_vectors.py`.
+- **Setup-code v1 is frozen; unknown fails loud** — unknown versions and
+  flag bits raise distinct errors, never degrade silently. Enforced:
+  `tests/test_provisioning.py`, `tests/test_setup_vectors.py`.
 
 ## Namespace protection — two mechanisms, both required
 
@@ -34,8 +76,16 @@ Neither mechanism subsumes the other. The registry cannot see symbol
 shadowing; the AST pass cannot see string-keyed dispatch. Do not delete one
 believing the other covers it.
 
+In this repo the string-identity registry is the theme catalog itself:
+`theme.id`, `currencies[].id`, `generators[].id`, `upgrades[].id` are the
+runtime string identities, and the gate enforces per-pack and catalog-wide
+uniqueness (see theme-schema.md § Referential checks).
+
 ## Verifying a change
 
 ```
-python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additionally validate via the theme-gate step once ORDER 000 lands it in CI)
+python3 -m pytest -q && python3 bootstrap.py check --strict
 ```
+
+Theme packs additionally validate via the required `theme-gate` CI check
+(`python3 tools/theme_gate.py themes/*.yaml` locally).
