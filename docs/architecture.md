@@ -26,6 +26,8 @@ Per-seam contracts live in their own docs — authoritative, do not duplicate
 here: [`theme-schema.md`](theme-schema.md) (pack format + gate checks),
 [`render-layer.md`](render-layer.md) (embed-payload contract),
 [`provisioning.md`](provisioning.md) (SETUP-CODE FORMAT v1),
+[`persistence.md`](persistence.md) (SAVE FORMAT v1 — canonical versioned
+GameState save/load; the storage backend stays the runtime's concern),
 [`plugin-adapter-scoping.md`](plugin-adapter-scoping.md) (the future
 plugin seam — UNVERIFIED upstream, scoping only). Economy numbers are
 engine-side and pre-registered in [`design/`](design/) before tuning.

@@ -9,12 +9,12 @@
 
 | Path | What lives there | New code goes here when… |
 |---|---|---|
-| `idle_engine/` | Engine core: `state.py`, `engine.py` (tick + offline), `upgrades.py`, `prestige.py`, `economy.py` (all numbers), `theme.py` (pack loader), `render.py` (embed payloads), `provisioning.py` (setup codes) | it is pure-domain mechanics or a pure seam — no chat-platform imports, no theme nouns, tests in the same PR |
+| `idle_engine/` | Engine core: `state.py`, `engine.py` (tick + offline), `upgrades.py`, `prestige.py`, `economy.py` (all numbers), `theme.py` (pack loader), `render.py` (embed payloads), `provisioning.py` (setup codes), `persistence.py` (versioned saves) | it is pure-domain mechanics or a pure seam — no chat-platform imports, no theme nouns, tests in the same PR |
 | `themes/` | Data-only theme packs, one `<theme.id>.yaml` per pack (9 today) + `README.md` | it is a new/edited pack — YAML against schema v1 only, never code; merges on theme-gate green alone |
 | `schema/` | `theme.schema.json` — machine twin of `docs/theme-schema.md` (parity test-enforced) | the schema itself changes (additive within v1; edit doc + gate in the same PR) |
 | `tools/` | `theme_gate.py` (CI validator), `gen_setup_vectors.py` (vector regeneration) | it is repo tooling/gate logic, not engine behavior |
 | `tests/` | Pytest suite (620) incl. doc-parity + property/invariant tests; `tests/vectors/setup-codes.v1.json` (cross-language, regenerate-or-red) | always — every engine change carries tests in the same PR |
-| `docs/` | Contracts & ledgers: orientation router, `current-state.md`, `decisions.md`, seam docs (`theme-schema.md`, `render-layer.md`, `provisioning.md`, `plugin-adapter-scoping.md`), kit docs, `retro/`, `ideas/` | it is a contract, ledger entry, or seam doc |
+| `docs/` | Contracts & ledgers: orientation router, `current-state.md`, `decisions.md`, seam docs (`theme-schema.md`, `render-layer.md`, `provisioning.md`, `persistence.md`, `plugin-adapter-scoping.md`), kit docs, `retro/`, `ideas/` | it is a contract, ledger entry, or seam doc |
 | `docs/design/` | PRE-REGISTERED economy design (`upgrades-prestige-v0.md`, `economy-v1.md`) — committed BEFORE tuning | a balance/pacing rationale must land before (or with) the numbers |
 | `control/` | `inbox.md` (manager orders — manager-only writer), `status.md` (heartbeat — session's last-step overwrite), `claims/` (in-flight slice claims) | claiming a slice (fast-lane PR) or the end-of-session status overwrite |
 | `.sessions/` | Per-session cards, born-red first commit → flipped `complete` last | every session, as its first commit |

@@ -29,6 +29,9 @@ Known-good and not to be re-audited without a reported regression:
     with hard budget enforcement; contract in `docs/render-layer.md`.
   - `provisioning.py` — SETUP-CODE FORMAT v1 encoder/decoder + catalog
     validation; contract in `docs/provisioning.md`.
+  - `persistence.py` — SAVE FORMAT v1: canonical versioned
+    `dump_state`/`load_state` + migration registry; contract in
+    [`persistence.md`](persistence.md).
 - **Theme catalog: 9 packs**, all schema-v1, all with full `labels` blocks:
   egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
   dragon-hoard, wizard-tower, royal-bakery, cyber-city. Waves 1–2 shipped
@@ -62,8 +65,10 @@ Known-good and not to be re-audited without a reported regression:
   publishes no plugin/manifest contract and `superbot-plugin-hello` is an
   empty repo — see `docs/plugin-adapter-scoping.md` (scoping/question doc,
   not a build order).
-- **No persistence layer.** `GameState` is serializable by design, but where
-  saves live is the future plugin's job; nothing is stored anywhere today.
+- **No storage backend.** `GameState` now has a versioned save FORMAT
+  ([`persistence.md`](persistence.md): `dump_state`/`load_state`), but where
+  the save strings live is the future plugin's job; nothing is stored
+  anywhere today.
 - **Economy numbers are PROVISIONAL**, not tuned. Every parameter is
   pre-registered (`docs/design/upgrades-prestige-v0.md`,
   `docs/design/economy-v1.md`) and awaits Simulator verdict (**SIM-001**,
