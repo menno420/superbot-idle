@@ -248,6 +248,8 @@ def _build_errors() -> list[dict]:
         _error_vector("prefix-no-hyphen", "IDLE1", "MalformedCodeError", "prefix must end with a hyphen"),
         _error_vector("prefix-wrong-tag", "SETUP1-" + body, "MalformedCodeError", "tag must be IDLE"),
         _error_vector("prefix-non-numeric-version", "IDLEX-" + body, "MalformedCodeError", "version must be a decimal integer"),
+        _error_vector("prefix-leading-zero-version", "IDLE01-" + body, "MalformedCodeError", "leading-zero version violates the prefix grammar (no leading zeros) — never parsed as v1, even around a valid v1 body"),
+        _error_vector("prefix-leading-zero-version-multi-digit", "IDLE010-" + body, "MalformedCodeError", "leading zero ahead of a multi-digit version — never zero-stripped into version 10"),
         _error_vector("empty-body", "IDLE1-", "MalformedCodeError", "body must be non-empty"),
         _error_vector("illegal-char-U", "IDLE1-UUUU", "MalformedCodeError", "U is outside the Crockford alphabet — never folded"),
         _error_vector("illegal-junk-chars", "IDLE1-*!*!", "MalformedCodeError", "symbols outside the alphabet are malformed"),

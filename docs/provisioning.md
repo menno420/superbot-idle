@@ -50,6 +50,11 @@ theme_id := 1..32 bytes ASCII           ; schema-v1 slug: ^[a-z0-9]+(-[a-z0-9]+)
 checksum := 2 bytes                     ; CRC-32 (zlib) of payload, & 0xFFFF, big-endian
 ```
 
+"No leading zeros" means a zero-led version string (`IDLE01-`, `IDLE010-`)
+is not a well-formed prefix at all — `MalformedCodeError`, never parsed as a
+version — while the single digit `0` IS the well-formed integer zero and
+fails as `UnknownVersionError` like any other version ≠ 1.
+
 `crockford32` is Crockford base32: most-significant-bit-first 5-bit groups
 over the alphabet `0123456789ABCDEFGHJKMNPQRSTVWXYZ` (no `I`, `L`, `O`,
 `U`), final partial group zero-padded on the right. Encoding is canonical
@@ -138,7 +143,7 @@ distinct class, tested distinctly:
 | Error | Raised by | Condition |
 |---|---|---|
 | `InvalidConfigError` | `encode_setup` | config not representable (theme id not a slug) |
-| `MalformedCodeError` | `decode_setup` | no `IDLE<n>-` prefix, illegal body char (incl. `U`), empty/truncated body, non-canonical padding, payload theme id not a slug / not ASCII |
+| `MalformedCodeError` | `decode_setup` | no `IDLE<n>-` prefix (incl. leading-zero version, e.g. `IDLE01-`), illegal body char (incl. `U`), empty/truncated body, non-canonical padding, payload theme id not a slug / not ASCII |
 | `UnknownVersionError` | `decode_setup` | prefix version ≠ 1 |
 | `ChecksumError` | `decode_setup` | body decodes, checksum disagrees (typo/tampering) — checked before any payload semantics |
 | `UnknownFeatureError` | `decode_setup` | flags bits 3–7 set |

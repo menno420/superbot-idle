@@ -69,7 +69,11 @@ _ALPHABET = "0123456789ABCDEFGHJKMNPQRSTVWXYZ"
 _DECODE_MAP = {ch: i for i, ch in enumerate(_ALPHABET)}
 _DECODE_MAP.update({"O": 0, "I": 1, "L": 1})  # look-alike folding
 
-_PREFIX_RE = re.compile(r"^IDLE([0-9]+)-(.*)$", re.IGNORECASE | re.DOTALL)
+#: Prefix grammar (docs/provisioning.md § Grammar): version is a decimal
+#: integer with NO leading zeros — ``0`` is the integer zero (well-formed,
+#: then UnknownVersionError like any non-1 version), while ``01``/``010``
+#: are not versions at all and fail the prefix match (MalformedCodeError).
+_PREFIX_RE = re.compile(r"^IDLE(0|[1-9][0-9]*)-(.*)$", re.IGNORECASE | re.DOTALL)
 
 _CHECKSUM_BYTES = 2
 
@@ -205,9 +209,10 @@ def decode_setup(code: str) -> SetupConfig:
 
     Error taxonomy (all subclass :class:`SetupCodeError`, all distinct):
 
-    - :class:`MalformedCodeError` — no ``IDLE<n>-`` prefix, illegal
-      body character, truncated body, non-canonical padding, or a
-      payload whose theme id is not a slug.
+    - :class:`MalformedCodeError` — no ``IDLE<n>-`` prefix (including a
+      leading-zero version such as ``IDLE01-``, which the grammar
+      forbids), illegal body character, truncated body, non-canonical
+      padding, or a payload whose theme id is not a slug.
     - :class:`UnknownVersionError` — prefix version other than 1.
     - :class:`ChecksumError` — body decodes but the checksum disagrees
       (typo/tampering). Checked BEFORE any payload semantics.

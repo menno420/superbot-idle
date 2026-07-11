@@ -34,7 +34,7 @@
   "counts": {
     "valid": 30,
     "tolerance": 37,
-    "errors": 23
+    "errors": 25
   },
   "vectors": {
     "valid": [
@@ -899,6 +899,18 @@
         "input": "IDLEX-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
         "error": "MalformedCodeError",
         "note": "version must be a decimal integer"
+      },
+      {
+        "name": "prefix-leading-zero-version",
+        "input": "IDLE01-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "MalformedCodeError",
+        "note": "leading-zero version violates the prefix grammar (no leading zeros) \u2014 never parsed as v1, even around a valid v1 body"
+      },
+      {
+        "name": "prefix-leading-zero-version-multi-digit",
+        "input": "IDLE010-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "MalformedCodeError",
+        "note": "leading zero ahead of a multi-digit version \u2014 never zero-stripped into version 10"
       },
       {
         "name": "empty-body",
