@@ -69,3 +69,9 @@ themes/*.yaml` locally).
   economy: curve shapes, provisional parameters, pacing targets T1–T10, and
   the SIM-001 simulation request; committed BEFORE tuning, parity with
   `idle_engine/economy.py` test-enforced.
+- [`design/timed-events-scoping.md`](design/timed-events-scoping.md) —
+  timed events (festivals/bonus windows) scoping, `plan` badge, NO code:
+  why wall-time rate changes break the closed-form offline invariant, the
+  candidate solutions with exactness analysis (piecewise-exact offline
+  integration recommended), CORE/SKIN ownership of events, and the gated
+  build order + SIM-002 pre-registration sketch.
