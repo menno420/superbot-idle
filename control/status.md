@@ -1,63 +1,16 @@
 # superbot-idle · status
-updated: 2026-07-11T18:41:14Z
-phase: STEADY-STATE HOLD — owner-requested idea batch fully shipped (PRs #52–#68: sim harness + provisional run, achievements + save v2, buy-max, bounded multipliers, union hygiene, golden corpus, timed-events plan); lane again deliberately holds new engine surface pending Q-0264 rulings (A10 wording + multiplier values + achievements-inclusive sim + timed-events adoption), PLUG-001, or new inbox ORDERs; chain + failsafe cron continue watching the inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
+updated: 2026-07-11T19:37:36Z
+phase: ARCHIVED-READY / dormant — founding coordinator chat archived by owner order; all chat-only knowledge moved to durable homes (docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md, PR #70); wake loop DISARMED at close-out (ROUTINE RECORD below); lane sleeps until a resume trigger fires (QUEUE below)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: timed-events scoping (PRs #67+#68)
-blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
+last-shipped: close-out + archive prep (PR #70 + this heartbeat PR #71)
+blockers: none active — all holds upstream (SIM-001/Q-0264, PLUG-001, KIT-001; ⚑ blocks below)
 orders: acked=000-002 done=000-002
 
-## Self-review 2026-07-11 (ORDER 002 — window 2026-07-10 ~20:00Z → 10:11Z)
+## Self-review 2026-07-11 (ORDER 002)
 
-### What went wrong (all recovered in-session; none open)
-- **Transient GitHub rate limits (fleet-shared account):** auto-merge arming on PR #26 failed
-  twice — verbatim `API rate limit already exceeded for user ID 225413533` — and the documented
-  REST-merge-once-on-green fallback was used; PR #27 arming failed twice with the same error and
-  a paced retry succeeded. Recorded in § PLATFORM-LIMITS (heartbeat PR #29); workers pace GitHub
-  calls since.
-- **Real decoder bug, found and fixed red-first:** `decode_setup` accepted leading-zero version
-  prefixes (`IDLE01-` parsed as v1) contra docs/provisioning.md § Grammar ("no leading zeros").
-  Surfaced by the test-vector slice and deliberately reported-not-fixed in PR #25's ⚑; ruled
-  grammar-wins (docs/decisions.md D-0005), fixed in PR #28 — red-first `MalformedCodeError`
-  tests, `_PREFIX_RE` tightened, 2 new error vectors (23 → 25).
-- **Recurring mid-flight dirtying of `.substrate/guard-fires.jsonl`** (the kit appends to it on
-  every `check`, so any two concurrent sessions collide there): first union-merge on PR #27 when
-  the vectors PR #25 merged mid-flight, recurred on PR #38 (docs-grooming #37 merged mid-flight)
-  and PR #41 (heartbeat #39 merged mid-flight) — each resolved by stash → rebase → pop with full
-  re-verify before push, zero content conflicts (friction notes: session cards
-  themed-label-slots / shop-composition / state-serialization; a kit-level `merge=union`
-  gitattribute for `.substrate/*.jsonl` would retire the pattern).
-- **Doc drift found + fixed:** the orientation docs still described the seed state ~30 merges
-  later — docs/current-state.md an empty skeleton; architecture.md + AGENT_ORIENTATION.md still
-  saying theme-gate would be enforced "once ORDER 000 lands it in CI" long after OA-002 made it
-  a required check — corrected in docs-grooming PRs #35+#37.
-- **One mid-session strict-check red in slice (d):** the new economy design doc flagged as a
-  read-path orphan; cross-linked before PR #12 opened. Later slices applied the lesson
-  proactively ("no red loop" — setup-code-v1 card).
-- **Decide-and-flag schema tighten:** `upgrades[].description` cap 1024 → 768 in PR #38 —
-  required for the exact worst-case shop-composition arithmetic (768+1+139+116 = 1024);
-  in-bounds because the field had rendered NOWHERE before and zero shipped packs exceeded it
-  (catalog max 100 chars). Provenance noted in docs/theme-schema.md.
-- **No guard/classifier/merge denials, no parked PRs, no red CI on main at any point:** all 100
-  main-branch workflow runs to date concluded success; 48 lane PRs merged on green (50 repo PRs
-  total incl. the manager's inbox appends #46/#50).
-
-### Requiring owner attention (click-level, plain language)
-- **Nothing requires a click right now.** OA-001 (auto-merge + required `substrate-gate`) and
-  OA-002 (required `theme-gate`) were both done by the owner and are RESOLVED-VERIFIED below.
-- ⚑ **PLUG-001** (block below): the plugin adapter is blocked upstream — `superbot-plugin-hello`
-  is an EMPTY public repo and superbot-next publishes no plugin contract. If the owner controls
-  that repo, seeding the exemplar unblocks this lane; otherwise it waits on the manager.
-- ⚑ **SIM-001** (block below, Q-0264): economy numbers stay provisional until the fleet
-  Simulator runs the pre-registered scenarios — manager relay, no owner click.
-- FYI — decide-and-flag decisions taken without asking, all recorded: grammar-wins setup-code
-  ruling (PRs #26+#28, D-0005), description-cap tighten (PR #38), steady-state hold (PR #45).
-
-### Health
-green — founding package + volume backlog fully shipped (48 lane PRs merged-on-green, 827
-tests, 12 theme packs, ORDER 001 done); lane holds new engine surface pending
-PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
+MOVED at close-out → `docs/retro/2026-07-11-lane-retro.md` § 1 (verbatim, with the coordinator operations knowledge and in-chat owner rulings alongside it).
 
 ## SHIPPED RECORD
 - ORDER 000 — DONE (PRs #1+#2): walking skeleton — idle_engine/ (state, tick, closed-form offline progress, theme loader), themes/egg-farm.yaml, theme-gate CI, core/skin guard test.
@@ -86,18 +39,18 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 - append-only-ledger union hygiene — DONE (PRs #62+#63): root .gitattributes merge=union for guard-fires.jsonl + telemetry/model-usage.jsonl, union behavior demonstrated, ends the recurring rebase conflicts.
 - golden save corpus — DONE (PRs #65+#66): tests/vectors/saves.v2.json with 45 vectors incl. byte-pinned v1→v2 migration goldens, generator + regenerate-or-red tests, same-PR extension policy in docs/persistence.md; suite 1040 → 1131, zero persistence bugs found.
 - timed-events scoping — DONE (PRs #67+#68): docs/design/timed-events-scoping.md + plan badge; recommends piecewise-exact offline integration; all values deliberately unregistered pending SIM-002/Q-0264; no code built.
-- Suite: 24 → 1131 tests green. No parked PRs, no denials.
+- close-out + archive prep — DONE (PR #70 + this PR #71): chat-only knowledge captured into docs/retro/ (lane retro + archive-ready snapshot), PLATFORM-LIMITS zero-check-runs wall added, wake loop disarmed, lane flipped ARCHIVED-READY.
+- Suite: 24 → 1131 tests green. 69 lane PRs + these merged-on-green. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
 - theme schema + gate proven by 3 live packs ✓
 - setup-code format versioned + websites-consumable ✓
-- plugin-shaping — ongoing (render layer in progress)
+- plugin-shaping — render layer + scoping doc shipped; adapter itself evidence-blocked upstream (PLUG-001)
 
-## ROUTINE RECORD (Q-0265)
-- cron trigger created via mcp__claude-code-remote__create_trigger — id `trig_01TWKGFW8RUsMvxUMt2ndzqA`, name "superbot-idle failsafe wake", cron_expression "45 */2 * * *", enabled true, persistent_session_id session_01BRmUrjckzMsewsXzpc3wwW, prompt as specified by Q-0265 — VERIFIED via list_triggers.
-- send_later chain links have fired + re-armed on schedule; latest re-arm fires 00:51Z.
-- Both ARMED-AND-VERIFIED.
+## ROUTINE RECORD (Q-0265) — DISARMED at close-out 2026-07-11
+- Cron trigger `trig_01TWKGFW8RUsMvxUMt2ndzqA` ("superbot-idle failsafe wake", cron "45 */2 * * *", persistent_session_id session_01BRmUrjckzMsewsXzpc3wwW) — DELETED via mcp__claude-code-remote delete_trigger as the session's final act (after this heartbeat pushed); pending send_later chain links likewise listed + deleted. Verbatim call outcomes in the archived session's final report; disarm state verifiable via list_triggers.
+- RE-ARM SPEC for a resuming session (this is the recipe the founding session used): (1) failsafe cron — create_trigger with name "superbot-idle failsafe wake", cron_expression "45 */2 * * *", bound to the resuming coordinator session, prompt per Q-0265 (wake, read control/inbox.md + status.md, act or heartbeat); (2) pacemaker — a ~15-minute send_later chain where each firing re-arms the next link as its first act. Verify both via list_triggers before relying on them.
 
 ⚑ needs-owner:
 
@@ -109,6 +62,7 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 
 ## PLATFORM-LIMITS
 - Two transient GitHub rate-limit hits ("API rate limit already exceeded for user ID 225413533"): PR #26 arming → REST fallback; PR #27 arming → paced retry succeeded. Recorded per PLATFORM-LIMITS; workers now pace GitHub calls.
+- PR #61 sat ~5 min with ZERO check runs (mergeable_state: unknown — GitHub never built the merge ref); rebase + --force-with-lease retriggered checks instantly. Recorded in PLATFORM-LIMITS.md (PR #70).
 
 ## PLUG-001 — ⚑ to manager: superbot-next plugin contract unavailable upstream
 - Raw-probe evidence: superbot-plugin-hello is an empty public repo; superbot-next publishes no plugin/manifest doc — plugins.md and plugin-contract.md both 404.
@@ -118,14 +72,15 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 ## KIT-001 — ⚑ to manager: kit-level suggestion
 - Plant merge=union gitattributes for append-only ledgers fleet-wide (host-side proof: PR #63; four slices had hand-resolved guard-fires conflicts before it).
 
-## QUEUE
-- ON HOLD-PENDING-UPSTREAM: plugin adapter (PLUG-001)
-- ON HOLD-PENDING-UPSTREAM: economy tuning + A10 ruling + timed-events build (Q-0264)
-- DEFERRED: memoized rate table (needs bot runtime)
-- DEFERRED: setup-code v2 bound ruling
-- ON-DEMAND: catalog wave 4+
+## QUEUE — dormant (lane archived; resume triggers listed)
+- RESUME TRIGGER: new ORDER in control/inbox.md (manager) — a fresh session reads README.md → this file → docs/retro/2026-07-11-archive-ready.md and re-arms the wake loop per ROUTINE RECORD.
+- RESUME TRIGGER: Q-0264 ruling lands (A10 wording + multiplier values + achievements-inclusive sim + timed-events adoption) → unblocks economy tuning + timed-events build.
+- RESUME TRIGGER: PLUG-001 unblocks (plugin contract published / exemplar seeded) → adapter slice per docs/plugin-adapter-scoping.md.
+- RESUME TRIGGER: KIT-001 response (kit-level merge=union) — informational, no build.
+- ON-DEMAND: catalog wave 4+ (theme packs merge on theme-gate green alone).
+- DEFERRED: memoized rate table (needs bot runtime); setup-code v2 bound ruling.
 
-notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step.
+notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step. ARCHIVED 2026-07-11: founding coordinator chat archived by owner order; durable homes for its knowledge are docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md.
 
 ## SIM-001 — ⚑ to manager (Q-0264): Simulator time requested for superbot-idle economy v1
 - Executable request registered in `docs/design/economy-v1.md` § "Simulation request — SIM-001 (Q-0264)" (PR #12): scenarios S1–S3 (idle-only / check-in N ∈ {0.25, 2, 8, 24} h / optimal 1-s speedrun; 14-day horizon; 3+ resets) driving the REAL engine functions at the pinned commit — deterministic, integer-exact, stdlib-only.
