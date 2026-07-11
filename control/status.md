@@ -1,10 +1,10 @@
 # superbot-idle · status
-updated: 2026-07-11T02:27:36Z
+updated: 2026-07-11T02:42:16Z
 phase: volume phase — catalog 9 packs, render layer live (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: shop composition — themed upgrade descriptions + exact-cap arithmetic (PRs #36+#38 → main 0835adb)
+last-shipped: state serialization v1 — canonical versioned save/load + migration registry (PRs #40+#41 → main 20da9c9)
 blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
 orders: acked=000 done=000
 
@@ -25,7 +25,8 @@ orders: acked=000 done=000
 - catalog growth wave 2 — DONE (PRs #33+#34): wizard-tower, royal-bakery, cyber-city; 9 packs total; zero schema pinches; setup-code vectors regenerated to 125 total.
 - docs grooming — DONE (PRs #35+#37): current-state rewritten with groomed roadmap, architecture layers/invariants documented, decisions D-0002..D-0007 ledgered, stale ORDER-000-era claims fixed.
 - shop composition — DONE (PRs #36+#38): themed upgrade descriptions composed into shop view, exact-cap arithmetic 768+1+139+116=1024, schema description cap tightened 1024→768 with zero shipped-pack impact, fallback pinned byte-identical.
-- Suite: 24 → 628 tests green. No parked PRs, no denials.
+- state serialization v1 — DONE (PRs #40+#41): idle_engine/persistence.py canonical versioned save/load, error taxonomy, empty-but-proven migration registry, docs/persistence.md contract, +109 tests incl. mid-playthrough trajectory identity across 9 packs.
+- Suite: 24 → 737 tests green. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
@@ -55,13 +56,13 @@ orders: acked=000 done=000
 - Until then, adapter work is evidence-blocked by design — no speculative code, per docs/plugin-adapter-scoping.md § UNVERIFIED.
 
 ## QUEUE
-- IN PROGRESS: state serialization v1 (versioned GameState save/load)
-- NEXT: catalog wave 3 (optional volume)
+- IN PROGRESS: catalog wave 3 (3 packs → 12)
 - NEXT: plugin adapter build (BLOCKED on PLUG-001)
 - NEXT: economy tuning (BLOCKED on SIM-001)
 - NEXT: memoized rate table (needs bot runtime)
 - NEXT: setup-code v2 bound ruling (deferred)
 - SIM-001 + PLUG-001 awaiting manager
+- Note: unblocked backlog is thinning by design — lane is in steady volume state; new engine surface waits on upstream contracts rather than speculation.
 
 notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step.
 
