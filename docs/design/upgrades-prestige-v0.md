@@ -3,8 +3,8 @@
 > **Status:** `binding` (shapes) + **PROVISIONAL** (parameters) — committed
 > 2026-07-11 with slice (b), BEFORE any tuning, per the integrity floor
 > (README § Integrity floor). Every parameter below is provisional pending
-> the economy design doc slice ((d) on the queue) and Simulator pinning via
-> the Q-0264 pipeline; changing a value in `idle_engine/economy.py` without
+> the economy design doc ([`economy-v1.md`](economy-v1.md), slice (d)) and
+> Simulator pinning via the Q-0264 pipeline (SIM-001 request registered there); changing a value in `idle_engine/economy.py` without
 > changing this doc in the same PR breaks the pre-registration contract.
 
 ## Ownership (CORE/SKIN)
