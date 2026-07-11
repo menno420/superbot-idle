@@ -24,8 +24,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # "drone" — from wave 2: "tower", "library", "credit(s)", "city",
 # "royal", "seal", "swarm", "grid", "upload", "franchise", "fragment"
 # — and from wave 3: "crew", "treasure", "tide", "captain", "anchor",
-# "queen", "nest", "worker(s)", "trail", "garden", "fan(s)", "studio",
-# "record(s)", "stage", "debut", "graduate/graduation", "agency"
+# "queen", "nest", "worker(s)", "trail", "garden", "jelly", "fan(s)",
+# "studio", "record(s)", "stage", "debut", "graduate/graduation",
+# "agency"
 # — the packs' truly distinctive nouns below carry the guard instead.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
