@@ -1,0 +1,1019 @@
+{
+  "format": "superbot-idle-setup-code-vectors",
+  "format_version": 1,
+  "setup_code_version": 1,
+  "generated_by": "tools/gen_setup_vectors.py \u2014 DO NOT EDIT BY HAND; regenerate with: python3 tools/gen_setup_vectors.py",
+  "contract": "docs/provisioning.md",
+  "code_prefix": "IDLE1-",
+  "alphabet": "0123456789ABCDEFGHJKMNPQRSTVWXYZ",
+  "lookalike_folds": {
+    "O": "0",
+    "I": "1",
+    "L": "1"
+  },
+  "checksum": "crc32(payload) & 0xFFFF, 2 bytes big-endian, appended to payload before base32",
+  "feature_bits": {
+    "offline_progress": 0,
+    "upgrades": 1,
+    "prestige": 2
+  },
+  "themes": [
+    "deep-sea-station",
+    "dragon-hoard",
+    "egg-farm",
+    "haunted-manor",
+    "potion-brewery",
+    "space-colony"
+  ],
+  "decode_error_classes": [
+    "MalformedCodeError",
+    "UnknownVersionError",
+    "ChecksumError",
+    "UnknownFeatureError"
+  ],
+  "counts": {
+    "valid": 30,
+    "tolerance": 37,
+    "errors": 23
+  },
+  "vectors": {
+    "valid": [
+      {
+        "name": "deep-sea-station--all-on",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07646565702d7365612d73746174696f6e",
+        "crc16_hex": "ce21",
+        "code": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88"
+      },
+      {
+        "name": "deep-sea-station--all-off",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00646565702d7365612d73746174696f6e",
+        "crc16_hex": "b26a",
+        "code": "IDLE1-01J6ASBG5NSPAR9DEDT62X39DXQB4TG"
+      },
+      {
+        "name": "deep-sea-station--only-offline_progress",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01646565702d7365612d73746174696f6e",
+        "crc16_hex": "7929",
+        "code": "IDLE1-05J6ASBG5NSPAR9DEDT62X39DXQ7JA8"
+      },
+      {
+        "name": "deep-sea-station--only-upgrades",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02646565702d7365612d73746174696f6e",
+        "crc16_hex": "22ad",
+        "code": "IDLE1-09J6ASBG5NSPAR9DEDT62X39DXQ25B8"
+      },
+      {
+        "name": "deep-sea-station--only-prestige",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04646565702d7365612d73746174696f6e",
+        "crc16_hex": "95a5",
+        "code": "IDLE1-0HJ6ASBG5NSPAR9DEDT62X39DXQ9B98"
+      },
+      {
+        "name": "dragon-hoard--all-on",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07647261676f6e2d686f617264",
+        "crc16_hex": "2800",
+        "code": "IDLE1-0XJ74RB7DXQ2TT3FC5S68A00"
+      },
+      {
+        "name": "dragon-hoard--all-off",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00647261676f6e2d686f617264",
+        "crc16_hex": "2e58",
+        "code": "IDLE1-01J74RB7DXQ2TT3FC5S68BJR"
+      },
+      {
+        "name": "dragon-hoard--only-offline_progress",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01647261676f6e2d686f617264",
+        "crc16_hex": "f7dd",
+        "code": "IDLE1-05J74RB7DXQ2TT3FC5S69XYX"
+      },
+      {
+        "name": "dragon-hoard--only-upgrades",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02647261676f6e2d686f617264",
+        "crc16_hex": "9b13",
+        "code": "IDLE1-09J74RB7DXQ2TT3FC5S696RK"
+      },
+      {
+        "name": "dragon-hoard--only-prestige",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04647261676f6e2d686f617264",
+        "crc16_hex": "44ce",
+        "code": "IDLE1-0HJ74RB7DXQ2TT3FC5S68H6E"
+      },
+      {
+        "name": "egg-farm--all-on",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "076567672d6661726d",
+        "crc16_hex": "7edd",
+        "code": "IDLE1-0XJPESSDCSGQ4VBYVM"
+      },
+      {
+        "name": "egg-farm--all-off",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "006567672d6661726d",
+        "crc16_hex": "1314",
+        "code": "IDLE1-01JPESSDCSGQ4V8K2G"
+      },
+      {
+        "name": "egg-farm--only-offline_progress",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "016567672d6661726d",
+        "crc16_hex": "0757",
+        "code": "IDLE1-05JPESSDCSGQ4V87AW"
+      },
+      {
+        "name": "egg-farm--only-upgrades",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "026567672d6661726d",
+        "crc16_hex": "3b92",
+        "code": "IDLE1-09JPESSDCSGQ4V9VJ8"
+      },
+      {
+        "name": "egg-farm--only-prestige",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "046567672d6661726d",
+        "crc16_hex": "4218",
+        "code": "IDLE1-0HJPESSDCSGQ4VA230"
+      },
+      {
+        "name": "haunted-manor--all-on",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "076861756e7465642d6d616e6f72",
+        "crc16_hex": "d0f1",
+        "code": "IDLE1-0XM62XBEEHJP8BBDC5Q6YWPGY4"
+      },
+      {
+        "name": "haunted-manor--all-off",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "006861756e7465642d6d616e6f72",
+        "crc16_hex": "7a31",
+        "code": "IDLE1-01M62XBEEHJP8BBDC5Q6YWKT64"
+      },
+      {
+        "name": "haunted-manor--only-offline_progress",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "016861756e7465642d6d616e6f72",
+        "crc16_hex": "9b47",
+        "code": "IDLE1-05M62XBEEHJP8BBDC5Q6YWMV8W"
+      },
+      {
+        "name": "haunted-manor--only-upgrades",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "026861756e7465642d6d616e6f72",
+        "crc16_hex": "be9c",
+        "code": "IDLE1-09M62XBEEHJP8BBDC5Q6YWNYKG"
+      },
+      {
+        "name": "haunted-manor--only-prestige",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "046861756e7465642d6d616e6f72",
+        "crc16_hex": "f52a",
+        "code": "IDLE1-0HM62XBEEHJP8BBDC5Q6YWQN58"
+      },
+      {
+        "name": "potion-brewery--all-on",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07706f74696f6e2d62726577657279",
+        "crc16_hex": "9a90",
+        "code": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80"
+      },
+      {
+        "name": "potion-brewery--all-off",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00706f74696f6e2d62726577657279",
+        "crc16_hex": "958a",
+        "code": "IDLE1-01R6YX39DXQ2TRKJCNVPAWKSJP50"
+      },
+      {
+        "name": "potion-brewery--only-offline_progress",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01706f74696f6e2d62726577657279",
+        "crc16_hex": "4e62",
+        "code": "IDLE1-05R6YX39DXQ2TRKJCNVPAWKS9SH0"
+      },
+      {
+        "name": "potion-brewery--only-upgrades",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02706f74696f6e2d62726577657279",
+        "crc16_hex": "241b",
+        "code": "IDLE1-09R6YX39DXQ2TRKJCNVPAWKS4GDG"
+      },
+      {
+        "name": "potion-brewery--only-prestige",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04706f74696f6e2d62726577657279",
+        "crc16_hex": "f0e9",
+        "code": "IDLE1-0HR6YX39DXQ2TRKJCNVPAWKSY3MG"
+      },
+      {
+        "name": "space-colony--all-on",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0773706163652d636f6c6f6e79",
+        "crc16_hex": "b3fe",
+        "code": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY"
+      },
+      {
+        "name": "space-colony--all-off",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0073706163652d636f6c6f6e79",
+        "crc16_hex": "b5a6",
+        "code": "IDLE1-01SQ0RB3CMPP6VVCDXQ7KDD6"
+      },
+      {
+        "name": "space-colony--only-offline_progress",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0173706163652d636f6c6f6e79",
+        "crc16_hex": "6c23",
+        "code": "IDLE1-05SQ0RB3CMPP6VVCDXQ7JV13"
+      },
+      {
+        "name": "space-colony--only-upgrades",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0273706163652d636f6c6f6e79",
+        "crc16_hex": "00ed",
+        "code": "IDLE1-09SQ0RB3CMPP6VVCDXQ7J07D"
+      },
+      {
+        "name": "space-colony--only-prestige",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0473706163652d636f6c6f6e79",
+        "crc16_hex": "df30",
+        "code": "IDLE1-0HSQ0RB3CMPP6VVCDXQ7KQSG"
+      }
+    ],
+    "tolerance": [
+      {
+        "name": "deep-sea-station--lowercase",
+        "input": "idle1-0xj6asbg5nspar9dedt62x39dxqcw88",
+        "canonical": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "deep-sea-station--hyphen-grouped",
+        "input": "IDLE1-0XJ6-ASBG-5NSP-AR9D-EDT6-2X39-DXQC-W88",
+        "canonical": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "deep-sea-station--lookalike-O-for-0",
+        "input": "IDLE1-OXJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "canonical": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "deep-sea-station--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IJ6ASBG5NSPAR9DEDT62X39DXQB4TG",
+        "canonical": "IDLE1-01J6ASBG5NSPAR9DEDT62X39DXQB4TG",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "deep-sea-station--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LJ6ASBG5NSPAR9DEDT62X39DXQB4TG",
+        "canonical": "IDLE1-01J6ASBG5NSPAR9DEDT62X39DXQB4TG",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "deep-sea-station--kitchen-sink",
+        "input": "idle1-oxj6-asbg-5nsp-ar9d-edt6-2x39-dxqc-w88",
+        "canonical": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "dragon-hoard--lowercase",
+        "input": "idle1-0xj74rb7dxq2tt3fc5s68a00",
+        "canonical": "IDLE1-0XJ74RB7DXQ2TT3FC5S68A00",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "dragon-hoard--hyphen-grouped",
+        "input": "IDLE1-0XJ7-4RB7-DXQ2-TT3F-C5S6-8A00",
+        "canonical": "IDLE1-0XJ74RB7DXQ2TT3FC5S68A00",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "dragon-hoard--lookalike-O-for-0",
+        "input": "IDLE1-OXJ74RB7DXQ2TT3FC5S68AOO",
+        "canonical": "IDLE1-0XJ74RB7DXQ2TT3FC5S68A00",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "dragon-hoard--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IJ74RB7DXQ2TT3FC5S68BJR",
+        "canonical": "IDLE1-01J74RB7DXQ2TT3FC5S68BJR",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "dragon-hoard--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LJ74RB7DXQ2TT3FC5S68BJR",
+        "canonical": "IDLE1-01J74RB7DXQ2TT3FC5S68BJR",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "dragon-hoard--kitchen-sink",
+        "input": "idle1-oxj7-4rb7-dxq2-tt3f-c5s6-8aoo",
+        "canonical": "IDLE1-0XJ74RB7DXQ2TT3FC5S68A00",
+        "config": {
+          "theme_id": "dragon-hoard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "egg-farm--lowercase",
+        "input": "idle1-0xjpessdcsgq4vbyvm",
+        "canonical": "IDLE1-0XJPESSDCSGQ4VBYVM",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "egg-farm--hyphen-grouped",
+        "input": "IDLE1-0XJP-ESSD-CSGQ-4VBY-VM",
+        "canonical": "IDLE1-0XJPESSDCSGQ4VBYVM",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "egg-farm--lookalike-O-for-0",
+        "input": "IDLE1-OXJPESSDCSGQ4VBYVM",
+        "canonical": "IDLE1-0XJPESSDCSGQ4VBYVM",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "egg-farm--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IJPESSDCSGQ4V8K2G",
+        "canonical": "IDLE1-01JPESSDCSGQ4V8K2G",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "egg-farm--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LJPESSDCSGQ4V8K2G",
+        "canonical": "IDLE1-01JPESSDCSGQ4V8K2G",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "egg-farm--kitchen-sink",
+        "input": "idle1-oxjp-essd-csgq-4vby-vm",
+        "canonical": "IDLE1-0XJPESSDCSGQ4VBYVM",
+        "config": {
+          "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "haunted-manor--lowercase",
+        "input": "idle1-0xm62xbeehjp8bbdc5q6ywpgy4",
+        "canonical": "IDLE1-0XM62XBEEHJP8BBDC5Q6YWPGY4",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "haunted-manor--hyphen-grouped",
+        "input": "IDLE1-0XM6-2XBE-EHJP-8BBD-C5Q6-YWPG-Y4",
+        "canonical": "IDLE1-0XM62XBEEHJP8BBDC5Q6YWPGY4",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "haunted-manor--lookalike-O-for-0",
+        "input": "IDLE1-OXM62XBEEHJP8BBDC5Q6YWPGY4",
+        "canonical": "IDLE1-0XM62XBEEHJP8BBDC5Q6YWPGY4",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "haunted-manor--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IM62XBEEHJP8BBDC5Q6YWKT64",
+        "canonical": "IDLE1-01M62XBEEHJP8BBDC5Q6YWKT64",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "haunted-manor--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LM62XBEEHJP8BBDC5Q6YWKT64",
+        "canonical": "IDLE1-01M62XBEEHJP8BBDC5Q6YWKT64",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "haunted-manor--kitchen-sink",
+        "input": "idle1-oxm6-2xbe-ehjp-8bbd-c5q6-ywpg-y4",
+        "canonical": "IDLE1-0XM62XBEEHJP8BBDC5Q6YWPGY4",
+        "config": {
+          "theme_id": "haunted-manor",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "potion-brewery--lowercase",
+        "input": "idle1-0xr6yx39dxq2trkjcnvpawkska80",
+        "canonical": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "potion-brewery--hyphen-grouped",
+        "input": "IDLE1-0XR6-YX39-DXQ2-TRKJ-CNVP-AWKS-KA80",
+        "canonical": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "potion-brewery--lookalike-O-for-0",
+        "input": "IDLE1-OXR6YX39DXQ2TRKJCNVPAWKSKA8O",
+        "canonical": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "potion-brewery--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IR6YX39DXQ2TRKJCNVPAWKSJP50",
+        "canonical": "IDLE1-01R6YX39DXQ2TRKJCNVPAWKSJP50",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "potion-brewery--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LR6YX39DXQ2TRKJCNVPAWKSJP50",
+        "canonical": "IDLE1-01R6YX39DXQ2TRKJCNVPAWKSJP50",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "potion-brewery--kitchen-sink",
+        "input": "idle1-oxr6-yx39-dxq2-trkj-cnvp-awks-ka8o",
+        "canonical": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80",
+        "config": {
+          "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "space-colony--lowercase",
+        "input": "idle1-0xsq0rb3cmpp6vvcdxq7kczy",
+        "canonical": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "space-colony--hyphen-grouped",
+        "input": "IDLE1-0XSQ-0RB3-CMPP-6VVC-DXQ7-KCZY",
+        "canonical": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "space-colony--lookalike-O-for-0",
+        "input": "IDLE1-OXSQORB3CMPP6VVCDXQ7KCZY",
+        "canonical": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "space-colony--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0ISQ0RB3CMPP6VVCDXQ7KDD6",
+        "canonical": "IDLE1-01SQ0RB3CMPP6VVCDXQ7KDD6",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "space-colony--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LSQ0RB3CMPP6VVCDXQ7KDD6",
+        "canonical": "IDLE1-01SQ0RB3CMPP6VVCDXQ7KDD6",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "space-colony--kitchen-sink",
+        "input": "idle1-oxsq-orb3-cmpp-6vvc-dxq7-kczy",
+        "canonical": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY",
+        "config": {
+          "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "deep-sea-station--surrounding-whitespace",
+        "input": "  IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88 \n",
+        "canonical": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "config": {
+          "theme_id": "deep-sea-station",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "leading/trailing whitespace is stripped before parsing"
+      }
+    ],
+    "errors": [
+      {
+        "name": "empty-string",
+        "input": "",
+        "error": "MalformedCodeError",
+        "note": "not shaped like a code at all"
+      },
+      {
+        "name": "prefix-no-hyphen",
+        "input": "IDLE1",
+        "error": "MalformedCodeError",
+        "note": "prefix must end with a hyphen"
+      },
+      {
+        "name": "prefix-wrong-tag",
+        "input": "SETUP1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "MalformedCodeError",
+        "note": "tag must be IDLE"
+      },
+      {
+        "name": "prefix-non-numeric-version",
+        "input": "IDLEX-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "MalformedCodeError",
+        "note": "version must be a decimal integer"
+      },
+      {
+        "name": "empty-body",
+        "input": "IDLE1-",
+        "error": "MalformedCodeError",
+        "note": "body must be non-empty"
+      },
+      {
+        "name": "illegal-char-U",
+        "input": "IDLE1-UUUU",
+        "error": "MalformedCodeError",
+        "note": "U is outside the Crockford alphabet \u2014 never folded"
+      },
+      {
+        "name": "illegal-junk-chars",
+        "input": "IDLE1-*!*!",
+        "error": "MalformedCodeError",
+        "note": "symbols outside the alphabet are malformed"
+      },
+      {
+        "name": "body-too-short",
+        "input": "IDLE1-07",
+        "error": "MalformedCodeError",
+        "note": "body must decode to >= flags + 1 id byte + 2 checksum bytes"
+      },
+      {
+        "name": "non-canonical-padding",
+        "input": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW8B",
+        "error": "MalformedCodeError",
+        "note": "trailing padding bits must be zero \u2014 one canonical spelling per payload"
+      },
+      {
+        "name": "unknown-version-0",
+        "input": "IDLE0-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "UnknownVersionError",
+        "note": "version 0 is not v1 \u2014 rejected before body parsing"
+      },
+      {
+        "name": "unknown-version-2",
+        "input": "IDLE2-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "UnknownVersionError",
+        "note": "future versions fail loud, never misparse"
+      },
+      {
+        "name": "unknown-version-42",
+        "input": "IDLE42-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "UnknownVersionError",
+        "note": "any version other than 1"
+      },
+      {
+        "name": "checksum-tampered-payload",
+        "input": "IDLE1-1XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "error": "ChecksumError",
+        "note": "payload edited, checksum now disagrees"
+      },
+      {
+        "name": "checksum-tampered-checksum",
+        "input": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQ0W88",
+        "error": "ChecksumError",
+        "note": "checksum bytes edited"
+      },
+      {
+        "name": "unknown-flag-bit-3",
+        "input": "IDLE1-1XJ6ASBG5NSPAR9DEDT62X39DXQ83FR",
+        "error": "UnknownFeatureError",
+        "note": "flags bit 3 is undefined in v1 (valid checksum)"
+      },
+      {
+        "name": "unknown-flag-bit-7",
+        "input": "IDLE1-GXJ6ASBG5NSPAR9DEDT62X39DXQ0BJ8",
+        "error": "UnknownFeatureError",
+        "note": "flags bit 7 is undefined in v1 (valid checksum)"
+      },
+      {
+        "name": "theme-id-uppercase",
+        "input": "IDLE1-0XAN0M25A9XJM",
+        "error": "MalformedCodeError",
+        "note": "payload theme id must be a lowercase slug (valid checksum)"
+      },
+      {
+        "name": "theme-id-double-hyphen",
+        "input": "IDLE1-0XJ6YXB2DHJJTBB8F5R6GSBE6D3G",
+        "error": "MalformedCodeError",
+        "note": "single hyphens only between slug words"
+      },
+      {
+        "name": "theme-id-leading-hyphen",
+        "input": "IDLE1-0WPPRSB1CK27J",
+        "error": "MalformedCodeError",
+        "note": "slug cannot start with a hyphen"
+      },
+      {
+        "name": "theme-id-trailing-hyphen",
+        "input": "IDLE1-0XT74RB9DGPGB7R",
+        "error": "MalformedCodeError",
+        "note": "slug cannot end with a hyphen"
+      },
+      {
+        "name": "theme-id-underscore",
+        "input": "IDLE1-0XTPWS35E9FQ6RVFE9JJ128",
+        "error": "MalformedCodeError",
+        "note": "underscore is outside the slug charset"
+      },
+      {
+        "name": "theme-id-too-long",
+        "input": "IDLE1-0XGP2RB1C5GP2RB1C5GP2RB1C5GP2RB1C5GP2RB1C5GP2RB1C5GP2R8AXR",
+        "error": "MalformedCodeError",
+        "note": "slug max length is 32"
+      },
+      {
+        "name": "theme-id-non-ascii",
+        "input": "IDLE1-0ZZZXVFY",
+        "error": "MalformedCodeError",
+        "note": "payload theme id must be ASCII"
+      }
+    ]
+  }
+}
