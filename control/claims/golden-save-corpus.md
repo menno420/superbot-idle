@@ -1,1 +1,0 @@
-- `golden-save-corpus` · **golden save-file corpus: cross-version persistence vectors** — tests/vectors/saves.v2.json + tools/gen_save_vectors.py (golden v2 saves, v1→v2 migration goldens, error vectors) + regenerate-or-red/replay tests mirroring the setup-code vector pattern · tests/vectors/, tools/, tests/, docs/persistence.md · 2026-07-11
