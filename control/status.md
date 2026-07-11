@@ -1,10 +1,10 @@
 # superbot-idle · status
-updated: 2026-07-11T01:15:18Z
+updated: 2026-07-11T01:47:28Z
 phase: volume phase — catalog 6 packs, render layer live (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: catalog growth — 3 new packs, 6 total (PRs #19+#21 → main 2c7ad3f)
+last-shipped: themed-label slots — schema labels block, render consumption, all 6 packs (PRs #24+#27 → main 7969ae4)
 blockers: none
 orders: acked=000 done=000
 
@@ -18,7 +18,10 @@ orders: acked=000 done=000
 - slice (e) setup-code format v1 — DONE (PRs #15+#16): IDLE1- prefixed Crockford-base32 codes with CRC16; encode/decode/catalog-validate in idle_engine/provisioning.py; docs/provisioning.md as the websites-lane consumption contract with test-pinned literal example codes.
 - render layer — DONE (PRs #18+#20): idle_engine/render.py pure embed-payload builder, status/shop/prestige views, hard budget enforcement, docs/render-layer.md.
 - catalog growth — DONE (PRs #19+#21): haunted-manor, deep-sea-station, dragon-hoard; 6 packs total; theme.id↔filename-stem gate; zero schema pinches.
-- Suite: 24 → 216 tests, all green on main 2c7ad3f. No parked PRs, no denials.
+- setup-code cross-language test vectors — DONE (PRs #23+#25): tests/vectors/setup-codes.v1.json (90→92 vectors), generator + regenerate-or-red tests.
+- leading-zero version-prefix fix — DONE (PRs #26+#28): grammar-compliant MalformedCodeError, red-first.
+- themed-label slots — DONE (PRs #24+#27): schema labels block, gate placeholder semantics, render consumption with pinned neutral fallback, all 6 packs filled.
+- Suite: 24 → 405 tests, all green on main 7969ae4. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
@@ -39,11 +42,14 @@ orders: acked=000 done=000
 **OA-002 — repo settings: make `theme-gate` a required status check on `main` — RESOLVED-VERIFIED**
 - Owner enabled theme-gate as a required check ~00:10Z; observed gating merges from PR #6 onward — auto-merge fires only after theme-gate concludes.
 
+## PLATFORM-LIMITS
+- Two transient GitHub rate-limit hits ("API rate limit already exceeded for user ID 225413533"): PR #26 arming → REST fallback; PR #27 arming → paced retry succeeded. Recorded per PLATFORM-LIMITS; workers now pace GitHub calls.
+
 ## QUEUE
-- IN PROGRESS: themed-label slots — schema labels block + all 6 packs + render integration
-- IN PROGRESS: setup-code cross-language test vectors
-- NEXT: memoized rate table (runtime perf, when bot loop exists)
-- NEXT: deeper property tests
+- IN PROGRESS: property/invariant test suite + plugin-adapter scoping (evidence-gated against superbot-next exemplar)
+- NEXT: plugin adapter build (once contract verified)
+- NEXT: upgrade-description shop composition (parked)
+- NEXT: version-integer bound ruling for setup codes at v2
 - SIM-001 still awaiting manager relay (Q-0264)
 
 notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step.
