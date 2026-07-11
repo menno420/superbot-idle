@@ -1,33 +1,89 @@
 # 2026-07-11 — render layer: pure embed-payload builder
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** fable-5 · high · idle-engine seat (render-layer builder, coordinator-assigned) · 2026-07-11T01:03Z– (`date -u`)
+- **📊 Model:** fable-5 · high · idle-engine seat (render-layer builder, coordinator-assigned) · 2026-07-11T01:03Z–01:1xZ (`date -u`)
 
-## Plan
+## What happened
 
-Claimed via `control/claims/render-layer.md` (PR #18, control fast lane).
-Build PR delivers, test-first:
+Shipped the render layer — the seam superbot-next's plugin renders
+through — in one build PR after a control fast-lane claim (PR #18,
+`control/claims/render-layer.md`, merged then removed here).
 
-1. `idle_engine/render.py` — pure, stdlib-only-at-runtime, zero
-   chat-platform imports: status / upgrade-shop / prestige views as plain
-   embed-shaped dicts. Every player-visible noun from the theme pack.
-2. Hard budget enforcement (title 256 / field name 256 / field value 1024
-   / description 4096 / 25 fields) via one validator; theme-sourced
-   overflow raises, numeric overflow clamps with ellipsis.
-3. `tests/test_render.py` — per-view noun resolution on egg-farm,
-   determinism, extreme-value budget safety; core/skin guard covers
-   render.py automatically (glob).
-4. `docs/render-layer.md` + orientation cross-link — the plugin contract.
+1. **`idle_engine/render.py`** — PURE presentation, runtime stdlib-only
+   (theme/state types imported under `TYPE_CHECKING` only), zero
+   chat-platform imports, no I/O, no wall clock (callers pass `now`).
+   Three views as plain Discord-embed-shaped dicts (`title`,
+   `description`, `color` decimal-RGB from the pack's hex, `fields[]` of
+   `{name, value, inline}`): `render_status` (per-currency balances
+   +rate/s, per-generator counts + effective rates, offline gains since
+   `last_seen` appended to the description — shown, never credited),
+   `render_shop` (level → next, exact cost from the engine's
+   pre-registered curve at current level, affordability mark; `None`
+   when the pack declares no upgrades block), `render_prestige`
+   (eligibility mark, progress toward threshold, held balance +
+   projected award; `None` without a prestige block). The pack's
+   prestige currency renders from `state.prestige`; all others from
+   `state.balances`.
+2. **Hard budget enforcement**: one validator (`validate_embed`) on
+   every payload — title ≤256, field name ≤256, field value ≤1024,
+   description ≤4096, ≤25 fields, no empties, color bounds. Two tiers:
+   numeric/formatted content clamps at composition with `…`;
+   theme-sourced text is NEVER truncated — an overflow there raises
+   `RenderBudgetError` (the gate bounds themed text, so a violation is
+   an engine/pack bug surfaced loudly).
+3. **Tests 170 → 197** (`tests/test_render.py`, 27 tests, written
+   FIRST): full-payload pin on egg-farm for a fixed state (nouns
+   resolve, deterministic bytes), noun-resolution per view, prestige
+   ineligible→eligible transition, cost-tracks-level (exact 115/100
+   curve values), all 3 shipped packs render within budget,
+   extreme-value sweep (balances/counts up to 10^400, 10^2000-digit
+   clamp test ends in `…` at exactly 1024), theme-sourced
+   title/name/description overflow each raise, validator field-count
+   and empty-string rejection, purity check (no discord/yaml imports in
+   source). Core/skin guard covers `render.py` automatically
+   (`idle_engine/**/*.py` glob) — no guard edit needed; green.
+4. **`docs/render-layer.md`** — the plugin contract: inputs, payload
+   shape, the three views, budget guarantees, and what the plugin must
+   NOT do (no string surgery on themed text, render verbatim).
+   Cross-linked from `docs/AGENT_ORIENTATION.md` at birth (orphan-check
+   lesson applied proactively).
 
-Schema-slot decision: NO schema/themes edits this slice (concurrent
-workers own themes/, schema/, tools/theme_gate.py) — neutral scaffolding
-labels only, optional labeled slots parked as a follow-up.
+**Schema-slot decision (explicit per the coordination constraint):**
+NO edits to `schema/`, `themes/`, `tools/theme_gate.py` this slice —
+concurrent workers own them (catalog claim #19 landed mid-flight;
+rebase was clean, files disjoint). Chose neutral scaffolding (digits,
+`+`/`/s`/`×`/`·`/`→`, `✅`/`🔒`, single label `Lv`) and PARKED the
+optional themed slots (offline-return flavor line, shop/level labels,
+upgrade-description shop headroom) as an additive schema follow-up —
+documented in `docs/render-layer.md`.
+
+Verify: `python3 -m pytest -q` → 197 passed; `python3 bootstrap.py
+check --strict` green with this card flipped.
 
 ## 💡 Session idea
 
-(placeholder — filled at close)
+The full-payload pin test (`test_status_is_deterministic_and_exactly_shaped`)
+is de-facto the plugin's golden fixture: when superbot-next's plugin
+starts consuming this seam, export that pinned dict (and one per view)
+as a committed JSON fixture (e.g. `tests/vectors/render-egg-farm.json`)
+generated by the test helpers, and have the plugin's suite snapshot-test
+its Discord `Embed` construction against the same file — payload-shape
+drift then reds both repos instead of surfacing as a live render bug.
+Guard recipe: generator = `_fixed_state()` + `render_*` in
+`tests/test_render.py`; consumer target = the plugin's embed-builder
+unit tests.
 
 ## ⟲ Previous-session review
 
-(placeholder — filled at close)
+Slice (e)'s card (2026-07-11-setup-code-v1.md) parked cross-language
+setup-code vectors until superbot-web starts its encoder — still
+correctly parked, and its md-parity/regenerate-or-red pattern shaped
+this slice's full-payload pin test. The QUEUE's "offline-return flavor
+slot (needs render consumer)" now HAS its render consumer: this slice
+renders offline gains with neutral scaffolding and re-parks the slot as
+an additive schema v1 follow-up (deliberate — schema/themes are owned
+by concurrent workers this session; see decision above). Slice (a)'s
+composition-headroom table proved exactly right at render time: the one
+place it grants no headroom (description = the whole 1024 value) is the
+one place this layer refuses to compose themed text.
