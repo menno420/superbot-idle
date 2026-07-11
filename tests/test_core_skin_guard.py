@@ -14,11 +14,14 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # Extended for slice (b): upgrade/prestige nouns (henhouse, golden [eggs]).
 # Extended for slice (c): space-colony + potion-brewery distinctive nouns.
 # Extended for catalog growth: haunted-manor + deep-sea-station +
-# dragon-hoard distinctive nouns. Deliberately EXCLUDED as too generic for
-# a guard that scans engine prose/identifiers: "gold", "coin", "scale"
-# ("scales/scaling" is legitimate engine vocabulary), "surface", "station",
-# "village", "drone" — the packs' truly distinctive nouns below carry the
-# guard instead.
+# dragon-hoard distinctive nouns. Extended for catalog wave 2:
+# wizard-tower + royal-bakery + cyber-city distinctive nouns.
+# Deliberately EXCLUDED as too generic for a guard that scans engine
+# prose/identifiers: "gold", "coin", "scale" ("scales/scaling" is
+# legitimate engine vocabulary), "surface", "station", "village",
+# "drone" — and from wave 2: "tower", "library", "credit(s)", "city",
+# "royal", "seal", "swarm", "grid", "upload", "franchise", "fragment"
+# — the packs' truly distinctive nouns below carry the guard instead.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
     r"|henhouse|henhouses|golden"
@@ -30,7 +33,12 @@ FORBIDDEN_NOUNS = re.compile(
     r"|pearl|pearls|abyssal|trench|trenches|oyster|oysters|submersible"
     r"|submersibles|kelp|plankton|relic|relics"
     r"|dragon|dragons|hoard|hoards|kobold|kobolds|lair|lairs|pickaxe"
-    r"|pickaxes|tribute|tributes)\b",
+    r"|pickaxes|tribute|tributes"
+    r"|wizard|wizards|mana|scribe|scribes|quill|quills|starlight"
+    r"|astral|enchanted"
+    r"|bakery|bakeries|bakehouse|bakehouses|pastry|pastries|sourdough"
+    r"|dough|flour|hearth|hearths|oven|ovens"
+    r"|cyber|neon|uplink|overclock|overclocked|cryo-coolant)\b",
     re.IGNORECASE,
 )
 
@@ -75,9 +83,24 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("the Dragon Hoard grows")
     assert FORBIDDEN_NOUNS.search("a kobold miner's pickaxe")
     assert FORBIDDEN_NOUNS.search("tribute from the lair")
+    assert FORBIDDEN_NOUNS.search("the Wizard Tower brims with mana")
+    assert FORBIDDEN_NOUNS.search("an apprentice scribe's quill")
+    assert FORBIDDEN_NOUNS.search("crystallized starlight on the astral plane")
+    assert FORBIDDEN_NOUNS.search("the enchanted library hums")
+    assert FORBIDDEN_NOUNS.search("a Royal Bakery pastry")
+    assert FORBIDDEN_NOUNS.search("sourdough proofing by the hearth")
+    assert FORBIDDEN_NOUNS.search("stone-ground flour for the brick oven")
+    assert FORBIDDEN_NOUNS.search("a bakehouse full of pastries")
+    assert FORBIDDEN_NOUNS.search("Cyber City neon")
+    assert FORBIDDEN_NOUNS.search("a skyline uplink, overclocked")
+    assert FORBIDDEN_NOUNS.search("the cryo-coolant overclock kicks in")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")
     assert not FORBIDDEN_NOUNS.search("rates scale with upgrade level")
     assert not FORBIDDEN_NOUNS.search("goldilocks tick granularity")
     assert not FORBIDDEN_NOUNS.search("inspirited")  # boundary: not 'spirit'
+    assert not FORBIDDEN_NOUNS.search("a proven approach")  # boundary: not 'oven'
+    assert not FORBIDDEN_NOUNS.search("describes the flourish")  # not 'scribe'/'flour'
+    assert not FORBIDDEN_NOUNS.search("cybersecurity")  # boundary: not 'cyber'
+    assert not FORBIDDEN_NOUNS.search("the state manager")  # boundary: not 'mana'

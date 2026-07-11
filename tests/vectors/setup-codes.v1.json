@@ -18,12 +18,15 @@
     "prestige": 2
   },
   "themes": [
+    "cyber-city",
     "deep-sea-station",
     "dragon-hoard",
     "egg-farm",
     "haunted-manor",
     "potion-brewery",
-    "space-colony"
+    "royal-bakery",
+    "space-colony",
+    "wizard-tower"
   ],
   "decode_error_classes": [
     "MalformedCodeError",
@@ -32,12 +35,77 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 30,
-    "tolerance": 37,
+    "valid": 45,
+    "tolerance": 55,
     "errors": 25
   },
   "vectors": {
     "valid": [
+      {
+        "name": "cyber-city--all-on",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0763796265722d63697479",
+        "crc16_hex": "3041",
+        "code": "IDLE1-0XHQJRK5E8PP6TBMF4R42"
+      },
+      {
+        "name": "cyber-city--all-off",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0063796265722d63697479",
+        "crc16_hex": "25c2",
+        "code": "IDLE1-01HQJRK5E8PP6TBMF4JW4"
+      },
+      {
+        "name": "cyber-city--only-offline_progress",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0163796265722d63697479",
+        "crc16_hex": "fa02",
+        "code": "IDLE1-05HQJRK5E8PP6TBMF7X04"
+      },
+      {
+        "name": "cyber-city--only-upgrades",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0263796265722d63697479",
+        "crc16_hex": "9c03",
+        "code": "IDLE1-09HQJRK5E8PP6TBMF6E06"
+      },
+      {
+        "name": "cyber-city--only-prestige",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0463796265722d63697479",
+        "crc16_hex": "5640",
+        "code": "IDLE1-0HHQJRK5E8PP6TBMF5B40"
+      },
       {
         "name": "deep-sea-station--all-on",
         "config": {
@@ -364,6 +432,71 @@
         "code": "IDLE1-0HR6YX39DXQ2TRKJCNVPAWKSY3MG"
       },
       {
+        "name": "royal-bakery--all-on",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07726f79616c2d62616b657279",
+        "crc16_hex": "b0db",
+        "code": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V"
+      },
+      {
+        "name": "royal-bakery--all-off",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00726f79616c2d62616b657279",
+        "crc16_hex": "b683",
+        "code": "IDLE1-01S6YYB1DGPP4RBBCNS7KDM3"
+      },
+      {
+        "name": "royal-bakery--only-offline_progress",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01726f79616c2d62616b657279",
+        "crc16_hex": "6f06",
+        "code": "IDLE1-05S6YYB1DGPP4RBBCNS7JVR6"
+      },
+      {
+        "name": "royal-bakery--only-upgrades",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02726f79616c2d62616b657279",
+        "crc16_hex": "03c8",
+        "code": "IDLE1-09S6YYB1DGPP4RBBCNS7J0Y8"
+      },
+      {
+        "name": "royal-bakery--only-prestige",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04726f79616c2d62616b657279",
+        "crc16_hex": "dc15",
+        "code": "IDLE1-0HS6YYB1DGPP4RBBCNS7KQ0N"
+      },
+      {
         "name": "space-colony--all-on",
         "config": {
           "theme_id": "space-colony",
@@ -427,9 +560,146 @@
         "payload_hex": "0473706163652d636f6c6f6e79",
         "crc16_hex": "df30",
         "code": "IDLE1-0HSQ0RB3CMPP6VVCDXQ7KQSG"
+      },
+      {
+        "name": "wizard-tower--all-on",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0777697a6172642d746f776572",
+        "crc16_hex": "b824",
+        "code": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14"
+      },
+      {
+        "name": "wizard-tower--all-off",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0077697a6172642d746f776572",
+        "crc16_hex": "be7c",
+        "code": "IDLE1-01VPJYK1E9J2TX3FEXJQ5FKW"
+      },
+      {
+        "name": "wizard-tower--only-offline_progress",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0177697a6172642d746f776572",
+        "crc16_hex": "67f9",
+        "code": "IDLE1-05VPJYK1E9J2TX3FEXJQ4SZS"
+      },
+      {
+        "name": "wizard-tower--only-upgrades",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0277697a6172642d746f776572",
+        "crc16_hex": "0b37",
+        "code": "IDLE1-09VPJYK1E9J2TX3FEXJQ42SQ"
+      },
+      {
+        "name": "wizard-tower--only-prestige",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0477697a6172642d746f776572",
+        "crc16_hex": "d4ea",
+        "code": "IDLE1-0HVPJYK1E9J2TX3FEXJQ5N7A"
       }
     ],
     "tolerance": [
+      {
+        "name": "cyber-city--lowercase",
+        "input": "idle1-0xhqjrk5e8pp6tbmf4r42",
+        "canonical": "IDLE1-0XHQJRK5E8PP6TBMF4R42",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "cyber-city--hyphen-grouped",
+        "input": "IDLE1-0XHQ-JRK5-E8PP-6TBM-F4R4-2",
+        "canonical": "IDLE1-0XHQJRK5E8PP6TBMF4R42",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "cyber-city--lookalike-O-for-0",
+        "input": "IDLE1-OXHQJRK5E8PP6TBMF4R42",
+        "canonical": "IDLE1-0XHQJRK5E8PP6TBMF4R42",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "cyber-city--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IHQJRK5E8PP6TBMF4JW4",
+        "canonical": "IDLE1-01HQJRK5E8PP6TBMF4JW4",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "cyber-city--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LHQJRK5E8PP6TBMF4JW4",
+        "canonical": "IDLE1-01HQJRK5E8PP6TBMF4JW4",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "cyber-city--kitchen-sink",
+        "input": "idle1-oxhq-jrk5-e8pp-6tbm-f4r4-2",
+        "canonical": "IDLE1-0XHQJRK5E8PP6TBMF4R42",
+        "config": {
+          "theme_id": "cyber-city",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
       {
         "name": "deep-sea-station--lowercase",
         "input": "idle1-0xj6asbg5nspar9dedt62x39dxqcw88",
@@ -791,6 +1061,78 @@
         "note": "lowercase + hyphen groups + look-alike folds combined"
       },
       {
+        "name": "royal-bakery--lowercase",
+        "input": "idle1-0xs6yyb1dgpp4rbbcns7kc6v",
+        "canonical": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "royal-bakery--hyphen-grouped",
+        "input": "IDLE1-0XS6-YYB1-DGPP-4RBB-CNS7-KC6V",
+        "canonical": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "royal-bakery--lookalike-O-for-0",
+        "input": "IDLE1-OXS6YYB1DGPP4RBBCNS7KC6V",
+        "canonical": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "royal-bakery--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XS6YYBIDGPP4RBBCNS7KC6V",
+        "canonical": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "royal-bakery--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XS6YYBLDGPP4RBBCNS7KC6V",
+        "canonical": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "royal-bakery--kitchen-sink",
+        "input": "idle1-oxs6-yybl-dgpp-4rbb-cns7-kc6v",
+        "canonical": "IDLE1-0XS6YYB1DGPP4RBBCNS7KC6V",
+        "config": {
+          "theme_id": "royal-bakery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
         "name": "space-colony--lowercase",
         "input": "idle1-0xsq0rb3cmpp6vvcdxq7kczy",
         "canonical": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY",
@@ -863,11 +1205,83 @@
         "note": "lowercase + hyphen groups + look-alike folds combined"
       },
       {
-        "name": "deep-sea-station--surrounding-whitespace",
-        "input": "  IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88 \n",
-        "canonical": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "name": "wizard-tower--lowercase",
+        "input": "idle1-0xvpjyk1e9j2tx3fexjq5e14",
+        "canonical": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14",
         "config": {
-          "theme_id": "deep-sea-station",
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "wizard-tower--hyphen-grouped",
+        "input": "IDLE1-0XVP-JYK1-E9J2-TX3F-EXJQ-5E14",
+        "canonical": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "wizard-tower--lookalike-O-for-0",
+        "input": "IDLE1-OXVPJYK1E9J2TX3FEXJQ5E14",
+        "canonical": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "wizard-tower--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XVPJYKIE9J2TX3FEXJQ5EI4",
+        "canonical": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "wizard-tower--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XVPJYKLE9J2TX3FEXJQ5EL4",
+        "canonical": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "wizard-tower--kitchen-sink",
+        "input": "idle1-oxvp-jykl-e9j2-tx3f-exjq-5el4",
+        "canonical": "IDLE1-0XVPJYK1E9J2TX3FEXJQ5E14",
+        "config": {
+          "theme_id": "wizard-tower",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "cyber-city--surrounding-whitespace",
+        "input": "  IDLE1-0XHQJRK5E8PP6TBMF4R42 \n",
+        "canonical": "IDLE1-0XHQJRK5E8PP6TBMF4R42",
+        "config": {
+          "theme_id": "cyber-city",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true
@@ -890,25 +1304,25 @@
       },
       {
         "name": "prefix-wrong-tag",
-        "input": "SETUP1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "SETUP1-0XHQJRK5E8PP6TBMF4R42",
         "error": "MalformedCodeError",
         "note": "tag must be IDLE"
       },
       {
         "name": "prefix-non-numeric-version",
-        "input": "IDLEX-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLEX-0XHQJRK5E8PP6TBMF4R42",
         "error": "MalformedCodeError",
         "note": "version must be a decimal integer"
       },
       {
         "name": "prefix-leading-zero-version",
-        "input": "IDLE01-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLE01-0XHQJRK5E8PP6TBMF4R42",
         "error": "MalformedCodeError",
         "note": "leading-zero version violates the prefix grammar (no leading zeros) \u2014 never parsed as v1, even around a valid v1 body"
       },
       {
         "name": "prefix-leading-zero-version-multi-digit",
-        "input": "IDLE010-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLE010-0XHQJRK5E8PP6TBMF4R42",
         "error": "MalformedCodeError",
         "note": "leading zero ahead of a multi-digit version \u2014 never zero-stripped into version 10"
       },
@@ -938,49 +1352,49 @@
       },
       {
         "name": "non-canonical-padding",
-        "input": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQCW8B",
+        "input": "IDLE1-0XHQJRK5E8PP6TBMF4R43",
         "error": "MalformedCodeError",
         "note": "trailing padding bits must be zero \u2014 one canonical spelling per payload"
       },
       {
         "name": "unknown-version-0",
-        "input": "IDLE0-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLE0-0XHQJRK5E8PP6TBMF4R42",
         "error": "UnknownVersionError",
         "note": "version 0 is not v1 \u2014 rejected before body parsing"
       },
       {
         "name": "unknown-version-2",
-        "input": "IDLE2-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLE2-0XHQJRK5E8PP6TBMF4R42",
         "error": "UnknownVersionError",
         "note": "future versions fail loud, never misparse"
       },
       {
         "name": "unknown-version-42",
-        "input": "IDLE42-0XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLE42-0XHQJRK5E8PP6TBMF4R42",
         "error": "UnknownVersionError",
         "note": "any version other than 1"
       },
       {
         "name": "checksum-tampered-payload",
-        "input": "IDLE1-1XJ6ASBG5NSPAR9DEDT62X39DXQCW88",
+        "input": "IDLE1-1XHQJRK5E8PP6TBMF4R42",
         "error": "ChecksumError",
         "note": "payload edited, checksum now disagrees"
       },
       {
         "name": "checksum-tampered-checksum",
-        "input": "IDLE1-0XJ6ASBG5NSPAR9DEDT62X39DXQ0W88",
+        "input": "IDLE1-0XHQJRK5E8PP6TBMF0R42",
         "error": "ChecksumError",
         "note": "checksum bytes edited"
       },
       {
         "name": "unknown-flag-bit-3",
-        "input": "IDLE1-1XJ6ASBG5NSPAR9DEDT62X39DXQ83FR",
+        "input": "IDLE1-1XHQJRK5E8PP6TBMF78G8",
         "error": "UnknownFeatureError",
         "note": "flags bit 3 is undefined in v1 (valid checksum)"
       },
       {
         "name": "unknown-flag-bit-7",
-        "input": "IDLE1-GXJ6ASBG5NSPAR9DEDT62X39DXQ0BJ8",
+        "input": "IDLE1-GXHQJRK5E8PP6TBMF42XW",
         "error": "UnknownFeatureError",
         "note": "flags bit 7 is undefined in v1 (valid checksum)"
       },

@@ -1,0 +1,63 @@
+# royal-bakery — theme pack #8 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: royal-bakery
+  name: Royal Bakery
+  description: A flour-dusted bakehouse by appointment to the crown, where the ovens never cool and the queue never ends.
+  emoji: "🥐"
+  embed_color: "#D98E32"
+
+currencies:
+  - id: primary
+    name: pastries
+    description: Flaky, still-warm pastries — the bakehouse's daily bread and the kingdom's weakness.
+    emoji: "🥐"
+  - id: prestige
+    name: royal seals
+    description: Wax seals of royal favor, one per bakehouse chartered — proof of franchises founded and crowns fed.
+    emoji: "👑"
+
+generators:
+  - id: tier1
+    name: sourdough starter
+    description: A century-old starter, bubbling in its crock; feed it and it repays the bakehouse without rest.
+    emoji: "🫙"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: brick oven
+    description: A great brick oven with a hearth like a midsummer noon; batch after batch, it never cools.
+    emoji: "🧱"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: stone-ground flour
+    description: Finer flour from the old mill; the starter rises faster and the crumb turns cloud-light.
+    emoji: "🌾"
+    target: tier1
+  - id: boost2
+    name: twin hearth doors
+    description: A second door on the hearth; loaves go in as loaves come out, and the oven never waits.
+    emoji: "🚪"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: open a new royal franchise
+  action_description: Hand the keys to your best baker, take the crown's charter, and raise a new bakehouse in a new town — with royal seals to your name.
+  action_emoji: "🏰"
+
+labels:
+  offline_return: "While you were away from the counter, the ovens never cooled: {gains}"
+  status_title: "🥐 Royal Bakery — the morning proof"
+  shop_title: "🧾 The Pantry Ledger"
+  shop_description: Trade pastries for a warmer, busier bakehouse.
+  level: Recipe mastery
+  prestige_progress: "lifetime pastries toward the charter:"

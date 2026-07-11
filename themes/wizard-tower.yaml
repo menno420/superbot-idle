@@ -1,0 +1,63 @@
+# wizard-tower — theme pack #7 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: wizard-tower
+  name: Wizard Tower
+  description: A crooked tower above the clouds where mana condenses on the windowsills and every floor holds a stranger discipline.
+  emoji: "🧙"
+  embed_color: "#6A3FB5"
+
+currencies:
+  - id: primary
+    name: mana
+    description: Raw mana, distilled drop by drop from moonlit air — the tower runs on it.
+    emoji: "🔮"
+  - id: prestige
+    name: crystallized starlight
+    description: Starlight caught and pressed into cold crystal — proof of ascensions past and planes survived.
+    emoji: "✨"
+
+generators:
+  - id: tier1
+    name: apprentice scribe
+    description: A diligent apprentice copying sigils by candlelight; every finished page sheds a trickle of mana.
+    emoji: "🖋️"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: enchanted library
+    description: Shelves that reshelve themselves and books that hum; the stacks breathe mana into the tower all night.
+    emoji: "📚"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: self-inking quills
+    description: Quills that never run dry; the scribes stop dipping and never look up from the page.
+    emoji: "🪶"
+    target: tier1
+  - id: boost2
+    name: levitating stacks
+    description: The shelves learn to drift to the reader; the library spends no time fetching and all of it humming.
+    emoji: "🌀"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: ascend to the astral plane
+  action_description: Unmoor the tower from the world and step through the topmost door — you return to an empty foundation with crystallized starlight in your sleeves.
+  action_emoji: "🌌"
+
+labels:
+  offline_return: "While you wandered other planes, the tower kept humming with mana: {gains}"
+  status_title: "🧙 Wizard Tower — the evening attunement"
+  shop_title: "🔮 The Arcanum Exchange"
+  shop_description: Trade raw mana for a taller, stranger, more studious tower.
+  level: Circle
+  prestige_progress: "lifetime mana toward the ascension:"
