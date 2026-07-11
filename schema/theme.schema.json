@@ -70,6 +70,26 @@
         }
       }
     },
+    "balance": {
+      "description": "OPTIONAL (added in the bounded-multipliers slice, additive within v1). The founding contract's ONE bounded balance lane: per-generator rate multipliers as integer percents, HARD-BOUNDED 90..110 right here in the schema (100 = neutral; an absent block or unlisted generator means 100). The bounds are deliberate: +-10% is flavor-level variance — two packs still play the SAME game — never progression-defining balance; anything wider is an engine-side economy change (idle_engine/economy.py, pre-registered + sim-pinned). The multiplier folds into the engine's single-floor integer rate composition and touches RATES ONLY: costs, thresholds, upgrade effects and prestige math are untouched. Every SHIPPED pack stays neutral (no balance block) until the Simulator blesses a non-neutral tuning — Q-0264, docs/design/theme-balance-v0.md. Referential checks in the gate: each entry's generator MUST reference a declared generators[].id, at most one entry per generator. The loader re-validates the bounds independently (defense in depth).",
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["generator", "rate_multiplier_pct"],
+        "properties": {
+          "generator": { "$ref": "#/$defs/slug", "description": "Generator id this multiplier applies to; MUST reference a declared generators[].id, at most once (referential + uniqueness checks live in the gate)." },
+          "rate_multiplier_pct": {
+            "description": "Rate multiplier as an integer percent (100 = neutral/x1). SCHEMA-DECLARED HARD BOUNDS 90..110 — the founding contract's 'only within schema-declared bounds' clause, literally these min/max keywords. Loader twin: RATE_MULTIPLIER_MIN/MAX in idle_engine/theme.py (parity test-pinned).",
+            "type": "integer",
+            "minimum": 90,
+            "maximum": 110
+          }
+        }
+      }
+    },
     "upgrades": {
       "description": "OPTIONAL (added in slice (b), additive within v1). Display skins for engine upgrade ids. 1-20 entries: upgrades render on their OWN shop embed, so the 25-fields-per-embed cap holds with headroom. DATA ONLY: cost curves, effect sizes and every other economy number live engine-side (idle_engine/economy.py, pre-registered in docs/design/upgrades-prestige-v0.md) — a numeric field here is rejected by additionalProperties.",
       "type": "array",

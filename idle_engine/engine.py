@@ -5,21 +5,25 @@ Same inputs -> same outputs, byte for byte. All arithmetic is integer
 arithmetic, so a single closed-form offline calculation equals the sum
 of any number of smaller ticks covering the same span.
 
-Multiplier model (slice (b), extended by the achievements slice): each
-generator's per-second output is
+Multiplier model (slice (b), extended by the achievements and
+bounded-multipliers slices): each generator's per-second output is
 
-    base_rate * count * upgrade_pct * prestige_pct * milestone_pct // 1_000_000
+    base_rate * count * upgrade_pct * prestige_pct * milestone_pct
+        * theme_pct // 100_000_000
 
 where all pcts are integer percents (100 = x1) from
 :func:`idle_engine.upgrades.upgrade_percent`,
-:func:`idle_engine.prestige.prestige_percent` and
-:func:`idle_engine.achievements.milestone_percent`. The floor division
-happens ONCE per generator per second, inside the rate — so the rate is
-a plain integer and the closed-form offline path stays exactly equal to
-looped ticks by construction. With no milestone specs the milestone pct
-is 100 and the fold is integer-identical to the previous
-``// 10_000`` form (``(x * 100) // 1_000_000 == x // 10_000``), so
-every pre-slice output is byte-for-byte unchanged.
+:func:`idle_engine.prestige.prestige_percent`,
+:func:`idle_engine.achievements.milestone_percent`, and the spec's own
+``rate_multiplier_pct`` (the theme lane's SCHEMA-BOUNDED balance knob,
+90..110, validated by the theme loader and the gate — this module
+folds whatever the spec carries). The floor division happens ONCE per
+generator per second, inside the rate — so the rate is a plain integer
+and the closed-form offline path stays exactly equal to looped ticks
+by construction. With a neutral theme pct (100 — the default on every
+spec) the fold is integer-identical to the previous ``// 1_000_000``
+form (``(x * 100) // 100_000_000 == x // 1_000_000``), so every
+pre-slice output is byte-for-byte unchanged.
 """
 
 from __future__ import annotations
@@ -41,8 +45,8 @@ def production_per_second(
 ) -> dict[str, int]:
     """Integer units produced per second for each currency, given owned generators.
 
-    Upgrade, prestige and milestone multipliers are applied here (and
-    only here), so every consumer — live tick or closed-form offline
+    Upgrade, prestige, milestone and theme multipliers are applied here
+    (and only here), so every consumer — live tick or closed-form offline
     credit — sees the identical integer rate. The milestone pct reads
     the EARNED set in the state, never live counters, so the rate is
     constant across any span the runtime has not punctuated with an
@@ -59,7 +63,13 @@ def production_per_second(
         if count:
             pct = upgrade_percent(state, upgrade_specs, spec.spec_id)
             produced = (
-                spec.base_rate * count * pct * global_pct * earned_pct // 1_000_000
+                spec.base_rate
+                * count
+                * pct
+                * global_pct
+                * earned_pct
+                * spec.rate_multiplier_pct
+                // 100_000_000
             )
             rates[spec.produces] = rates.get(spec.produces, 0) + produced
     return rates

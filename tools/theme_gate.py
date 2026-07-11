@@ -9,12 +9,16 @@ required (must be 1), unknown keys are rejected at every level (a theme
 cannot smuggle new mechanics), and chat-embed string budgets are schema
 limits (names <= 64, flavor text <= 1024, emoji <= 32, <= 5 currencies +
 <= 20 generators so renders never exceed 25 fields, ``#RRGGBB`` colors,
-``base_rate`` bounded 1..1000) so overflow is a red gate, never a live
-render bug. Human-readable twin: ``docs/theme-schema.md``.
+``base_rate`` bounded 1..1000, ``balance[].rate_multiplier_pct`` bounded
+90..110 — the founding contract's schema-declared multiplier bounds) so
+overflow is a red gate, never a live render bug. Human-readable twin:
+``docs/theme-schema.md``.
 
 On top of JSON Schema, the gate enforces what a schema cannot express:
 unique currency/generator ids, ``produces`` referencing a declared
-currency, the ``labels.offline_return`` template carrying its one
+currency, ``balance[].generator`` referencing a declared generator with
+at most one entry per generator (a duplicate would be ambiguous — which
+multiplier wins?), the ``labels.offline_return`` template carrying its one
 substitution token ``{gains}`` exactly once with no other braces (an
 unknown placeholder would leak verbatim into player-visible text),
 ``milestones[].id`` values unique with the ``prestige-*`` slots skinned
@@ -96,6 +100,24 @@ def _semantic_errors(data: dict, path: Path) -> list[str]:
                 f"is not a declared currency id"
             )
     declared_generators = set(generator_ids)
+    balance_seen: set[str] = set()
+    for i, entry in enumerate(data.get("balance", [])):
+        # Bounds and types are schema territory (minimum/maximum on
+        # rate_multiplier_pct — the contract's schema-declared bounds);
+        # what the schema cannot express: the generator reference and
+        # one-entry-per-generator uniqueness.
+        gid = entry["generator"]
+        if gid not in declared_generators:
+            errors.append(
+                f"{path}:balance[{i}].generator: {gid!r} "
+                f"is not a declared generator id"
+            )
+        if gid in balance_seen:
+            errors.append(
+                f"{path}:balance[{i}].generator: duplicate balance entry for "
+                f"{gid!r} (at most one multiplier per generator)"
+            )
+        balance_seen.add(gid)
     for i, upgrade in enumerate(data.get("upgrades", [])):
         if upgrade["target"] not in declared_generators:
             errors.append(

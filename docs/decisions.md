@@ -25,9 +25,10 @@
 - verdict: All economy arithmetic is exact big-int with ONE floor division
   per composed value — geometric upgrade costs
   `base_cost·num^L // den^L`, rates
-  `base_rate·count·upgrade_pct·prestige_pct·milestone_pct // 1_000_000`
-  (integer-identical to the earlier `// 10_000` fold when no milestones
-  are earned); no floats anywhere.
+  `base_rate·count·upgrade_pct·prestige_pct·milestone_pct·theme_pct
+  // 100_000_000` (each fold extension is integer-identical to its
+  predecessor when the new factor is neutral — milestone_pct with nothing
+  earned, theme_pct at 100); no floats anywhere.
 - why: A cost table is a contract — every platform must price level N
   identically, with no float drift or compounding rounding. The single
   floor keeps the per-second rate a plain integer, which is exactly what

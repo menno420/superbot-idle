@@ -52,6 +52,12 @@ Full run cost: ~20 s, single process, stdlib only.
 - **Never tunes**: it imports the parameter table from
   `idle_engine/economy.py` and echoes it into the report; it contains no
   parameter of its own and changes none.
+- **Models a NEUTRAL theme multiplier**: the reference world's bare
+  `GeneratorSpec` defaults to `rate_multiplier_pct = 100`, so the
+  schema-bounded theme `balance` lane (90..110, bounded-multipliers slice)
+  is not swept — consistent with the catalog, where every shipped pack is
+  neutral; a non-neutral proposal must bring its own sweep
+  ([`theme-balance-v0.md`](theme-balance-v0.md)).
 
 ## Report layout
 

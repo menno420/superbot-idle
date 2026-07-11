@@ -45,9 +45,11 @@ Each is a testable statement; the enforcing check is named.
   `tests/test_properties.py`.
 - **Integer-only economy math, one floor per composed rate** — exact big-int
   arithmetic; `rate = base_rate · count · upgrade_pct · prestige_pct ·
-  milestone_pct // 1_000_000` (identical to the earlier `// 10_000` fold
-  when no milestones are earned).
+  milestone_pct · theme_pct // 100_000_000` (identical to each earlier,
+  shorter fold when the later factors are neutral; `theme_pct` is the theme
+  lane's schema-bounded 90..110 multiplier, neutral in every shipped pack).
   Enforced: `tests/test_upgrades_prestige.py`, `tests/test_achievements.py`,
+  `tests/test_theme_balance.py`,
   `tests/test_properties.py` (determinism, conservation, monotonicity).
 - **A gate-green pack is safe to enable unreviewed** — schema + referential
   checks + budget bounds; render output from any gate-valid pack fits the

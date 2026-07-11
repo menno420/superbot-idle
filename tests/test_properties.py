@@ -92,6 +92,9 @@ def _random_roster(rng: Random):
             spec_id=f"gen{i}",
             produces=rng.choice(currencies),
             base_rate=rng.randint(1, 1_000),
+            # the theme lane's full schema-declared bound range (90..110,
+            # bounded-multipliers slice) sweeps through every invariant
+            rate_multiplier_pct=rng.randint(90, 110),
         )
         for i in range(n_generators)
     ]
