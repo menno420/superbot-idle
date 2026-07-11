@@ -45,6 +45,8 @@ python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additio
   ladder, session shape).
 - [`../PLATFORM-LIMITS.md`](../PLATFORM-LIMITS.md) — verbatim walls, never re-probe.
 - [`../themes/README.md`](../themes/README.md) — what a theme pack is.
+- [`provisioning.md`](provisioning.md) — SETUP-CODE FORMAT v1: the versioned
+  provisioning contract (websites lane encodes, superbot-next plugin decodes).
 - [`../review-queue.md`](../review-queue.md) — external-review rows.
 - [`retro/questions.md`](retro/questions.md) — open lane questions.
 - `design/` — economy design docs land here, PRE-REGISTERED before tuning
