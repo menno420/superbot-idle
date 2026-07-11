@@ -100,6 +100,10 @@ any numeric field smuggled into these blocks is rejected by
 - `prestige.currency` and `prestige.measures` each reference a declared
   `currencies[].id`, and differ from each other (a track cannot measure the
   currency it awards).
+- **Filename convention:** `theme.id` must equal the pack's filename stem —
+  a pack lives at `themes/<theme.id>.yaml`. Catalog tooling and setup codes
+  resolve packs by id, so a mismatched filename would ship a pack unreachable
+  by the name it answers to. Checked per file; a mismatch is a red gate.
 - The pack must load through `idle_engine.theme.load_theme` — the schema's
   ground truth is what the engine actually accepts.
 - **Catalog-wide** (checked across all of `themes/`, not per file):
