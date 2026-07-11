@@ -130,6 +130,12 @@ currently used by any shipped pack; the one legacy theme-side number
 > follow-up questions; every input is committed in this repo at the pinned
 > commit. Report format: one results doc (markdown) per the Outputs section,
 > plus a verdict row per Acceptance criterion.
+>
+> **Executable form:** this request is committed as a runnable, deterministic
+> tool — `python3 tools/simulate.py` — documented in
+> [`sim-harness.md`](sim-harness.md), which also records every literal-reading
+> choice where this spec is ambiguous. Harness output is INPUT to the Q-0264
+> verdict, not the verdict.
 
 ### Scenarios
 
