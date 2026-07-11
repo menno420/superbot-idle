@@ -1,12 +1,12 @@
 # superbot-idle · status
-updated: 2026-07-11T02:53:26Z
+updated: 2026-07-11T04:16:10Z
 phase: STEADY-STATE HOLD — founding package complete, volume backlog cleared honestly (44 PRs, zero denials, zero parked); lane deliberately holds new engine surface pending PLUG-001 (plugin contract upstream), SIM-001 (Simulator verdict), or new inbox ORDERs; chain (15-min) + failsafe cron continue monitoring inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
 last-shipped: catalog wave 3 — pirate-cove, ant-colony, idol-agency; 12 packs total (PRs #43+#44 → main 6ea4640)
 blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
-orders: acked=000 done=000
+orders: acked=000-001 done=000 claimed-by: 001 idle-engine seat 2026-07-11T04:16Z (model attribution, in progress)
 
 ## SHIPPED RECORD
 - ORDER 000 — DONE (PRs #1+#2): walking skeleton — idle_engine/ (state, tick, closed-form offline progress, theme loader), themes/egg-farm.yaml, theme-gate CI, core/skin guard test.
