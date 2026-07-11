@@ -1,12 +1,12 @@
 # superbot-idle · status
-updated: 2026-07-11T04:16:10Z
+updated: 2026-07-11T04:23:53Z
 phase: STEADY-STATE HOLD — founding package complete, volume backlog cleared honestly (44 PRs, zero denials, zero parked); lane deliberately holds new engine surface pending PLUG-001 (plugin contract upstream), SIM-001 (Simulator verdict), or new inbox ORDERs; chain (15-min) + failsafe cron continue monitoring inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: catalog wave 3 — pirate-cove, ant-colony, idol-agency; 12 packs total (PRs #43+#44 → main 6ea4640)
+last-shipped: ORDER 001 — model-attribution ground truth; template guidance + compliant fired card (PRs #47+#48 → main b02f71c)
 blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
-orders: acked=000-001 done=000 claimed-by: 001 idle-engine seat 2026-07-11T04:16Z (model attribution, in progress)
+orders: acked=000-001 done=000-001
 
 ## SHIPPED RECORD
 - ORDER 000 — DONE (PRs #1+#2): walking skeleton — idle_engine/ (state, tick, closed-form offline progress, theme loader), themes/egg-farm.yaml, theme-gate CI, core/skin guard test.
@@ -27,6 +27,7 @@ orders: acked=000-001 done=000 claimed-by: 001 idle-engine seat 2026-07-11T04:16
 - shop composition — DONE (PRs #36+#38): themed upgrade descriptions composed into shop view, exact-cap arithmetic 768+1+139+116=1024, schema description cap tightened 1024→768 with zero shipped-pack impact, fallback pinned byte-identical.
 - state serialization v1 — DONE (PRs #40+#41): idle_engine/persistence.py canonical versioned save/load, error taxonomy, empty-but-proven migration registry, docs/persistence.md contract, +109 tests incl. mid-playthrough trajectory identity across 9 packs.
 - catalog growth wave 3 — DONE (PRs #43+#44): pirate-cove, ant-colony, idol-agency; 12 packs total; zero schema pinches; setup-code vectors regenerated 60/73/25.
+- ORDER 001 (model attribution, Q-0262) — DONE (PRs #47 claim + #48 build): .sessions/README.md `📊 Model:` marker confirmed present and strengthened with the standing-rule instructions (family-level, harness-self-reported, never the Routines screen); fired card .sessions/2026-07-11-order-001-model-attribution.md carries `📊 Model: fable-5` from the session's own harness self-report (exact id claude-fable-5); legacy audit: all 18 prior cards already carry the line (all fable-5), none rewritten; 827 tests + check --strict green.
 - Suite: 24 → 827 tests green. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
