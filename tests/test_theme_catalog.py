@@ -2,7 +2,8 @@
 
 Slice (c) proved the schema on two packs it was NOT designed around
 (space-colony, potion-brewery); catalog growth added three more
-(haunted-manor, deep-sea-station, dragon-hoard). Every pack must fill
+(haunted-manor, deep-sea-station, dragon-hoard) and wave 2 another
+three (wizard-tower, royal-bakery, cyber-city). Every pack must fill
 every slot egg-farm fills, load through the engine's theme loader, and
 drive the full engine cycle (tick, upgrade purchase, prestige reset)
 with its own nouns. Plus the checks per-file JSON Schema cannot express:
@@ -34,12 +35,15 @@ POTION_BREWERY = THEMES_DIR / "potion-brewery.yaml"
 HAUNTED_MANOR = THEMES_DIR / "haunted-manor.yaml"
 DEEP_SEA_STATION = THEMES_DIR / "deep-sea-station.yaml"
 DRAGON_HOARD = THEMES_DIR / "dragon-hoard.yaml"
+WIZARD_TOWER = THEMES_DIR / "wizard-tower.yaml"
+ROYAL_BAKERY = THEMES_DIR / "royal-bakery.yaml"
+CYBER_CITY = THEMES_DIR / "cyber-city.yaml"
 
 
-# --- the catalog ships six packs, all gate-green ------------------------------
+# --- the catalog ships nine packs, all gate-green -----------------------------
 
 
-def test_catalog_ships_all_six_packs():
+def test_catalog_ships_all_nine_packs():
     for pack in (
         EGG_FARM,
         SPACE_COLONY,
@@ -47,9 +51,12 @@ def test_catalog_ships_all_six_packs():
         HAUNTED_MANOR,
         DEEP_SEA_STATION,
         DRAGON_HOARD,
+        WIZARD_TOWER,
+        ROYAL_BAKERY,
+        CYBER_CITY,
     ):
         assert pack in ALL_PACKS, f"missing shipped pack {pack.name}"
-    assert len(ALL_PACKS) >= 6
+    assert len(ALL_PACKS) >= 9
 
 
 def test_whole_catalog_passes_gate_including_cross_pack_checks(capsys):
@@ -166,6 +173,54 @@ def test_dragon_hoard_nouns_resolve():
     assert theme.prestige.currency == "prestige"
     assert theme.prestige.measures == "primary"
     assert theme.prestige.action_name == "burn it all and fly on"
+
+
+def test_wizard_tower_nouns_resolve():
+    theme = load_theme(WIZARD_TOWER)
+    assert theme.theme_id == "wizard-tower"
+    assert theme.name == "Wizard Tower"
+    assert theme.currency_name("primary") == "mana"
+    assert theme.currency_name("prestige") == "crystallized starlight"
+    assert theme.generator_name("tier1") == "apprentice scribe"
+    assert theme.generator_name("tier2") == "enchanted library"
+    assert theme.upgrade_name("boost1") == "self-inking quills"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "ascend to the astral plane"
+
+
+def test_royal_bakery_nouns_resolve():
+    theme = load_theme(ROYAL_BAKERY)
+    assert theme.theme_id == "royal-bakery"
+    assert theme.name == "Royal Bakery"
+    assert theme.currency_name("primary") == "pastries"
+    assert theme.currency_name("prestige") == "royal seals"
+    assert theme.generator_name("tier1") == "sourdough starter"
+    assert theme.generator_name("tier2") == "brick oven"
+    assert theme.upgrade_name("boost1") == "stone-ground flour"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "open a new royal franchise"
+
+
+def test_cyber_city_nouns_resolve():
+    theme = load_theme(CYBER_CITY)
+    assert theme.theme_id == "cyber-city"
+    assert theme.name == "Cyber City"
+    assert theme.currency_name("primary") == "credits"
+    assert theme.currency_name("prestige") == "legacy code fragments"
+    assert theme.generator_name("tier1") == "data haven"
+    assert theme.generator_name("tier2") == "courier drone swarm"
+    assert theme.upgrade_name("boost1") == "cryo-coolant overclock"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "upload your consciousness"
 
 
 # --- every pack drives the engine end to end ---------------------------------

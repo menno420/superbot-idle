@@ -1,0 +1,63 @@
+# cyber-city — theme pack #9 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: cyber-city
+  name: Cyber City
+  description: A rain-slick sprawl of neon and antennae where everything is for sale and the skyline never sleeps.
+  emoji: "🌆"
+  embed_color: "#00C2D1"
+
+currencies:
+  - id: primary
+    name: credits
+    description: Untraceable credits, streamed in from a thousand shadow contracts — the city's only true language.
+    emoji: "💳"
+  - id: prestige
+    name: legacy code fragments
+    description: Fragments of pre-collapse code, priceless and unreadable — proof of minds uploaded and grids outlived.
+    emoji: "💾"
+
+generators:
+  - id: tier1
+    name: data haven
+    description: A cold vault of humming racks below the flood line; it rents secrecy by the millisecond.
+    emoji: "🗄️"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: courier drone swarm
+    description: A glittering swarm threading the towers with parcels no one signs for; every drop pays in credits.
+    emoji: "🛸"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: cryo-coolant overclock
+    description: Supercooled coolant lets the haven's racks run red-line all night without a single thermal stall.
+    emoji: "🧊"
+    target: tier1
+  - id: boost2
+    name: swarm routing firmware
+    description: Black-market pathing firmware; the swarm stops circling the towers and starts threading them.
+    emoji: "📶"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: upload your consciousness
+  action_description: Burn the safehouses, wipe the ledgers, and pour yourself into the grid — you wake in a new body with legacy code fragments etched behind your eyes.
+  action_emoji: "🧠"
+
+labels:
+  offline_return: "While you were jacked out, the city kept streaming credits: {gains}"
+  status_title: "🌆 Cyber City — skyline uplink"
+  shop_title: "🛠️ The Night Market Node"
+  shop_description: Burn credits on gear that keeps the grid paying you first.
+  level: Firmware rev
+  prestige_progress: "lifetime credits toward the upload:"
