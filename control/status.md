@@ -1,10 +1,10 @@
 # superbot-idle · status
-updated: 2026-07-11T18:16:32Z
-phase: STEADY-STATE HOLD — founding package complete, volume backlog cleared honestly (44 PRs, zero denials, zero parked); lane deliberately holds new engine surface pending PLUG-001 (plugin contract upstream), SIM-001 (Simulator verdict), or new inbox ORDERs; chain (15-min) + failsafe cron continue monitoring inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
+updated: 2026-07-11T18:41:14Z
+phase: STEADY-STATE HOLD — owner-requested idea batch fully shipped (PRs #52–#68: sim harness + provisional run, achievements + save v2, buy-max, bounded multipliers, union hygiene, golden corpus, timed-events plan); lane again deliberately holds new engine surface pending Q-0264 rulings (A10 wording + multiplier values + achievements-inclusive sim + timed-events adoption), PLUG-001, or new inbox ORDERs; chain + failsafe cron continue watching the inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: bounded multipliers + buy-max + union hygiene (PRs #58–#63)
+last-shipped: timed-events scoping (PRs #67+#68)
 blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
 orders: acked=000-002 done=000-002
 
@@ -84,7 +84,9 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 - buy-max/bulk-purchase math — DONE (PRs #59+#60): exact per-level-floored bulk cost with pinned 403-vs-404 naive-closed-form divergence, bisected max_affordable fast at 10^3000 scale, atomic purchase_upgrades; +67 tests.
 - bounded theme-multiplier mechanism — DONE (PRs #58+#61): schema-declared 90..110 bounds on per-generator rate_multiplier_pct, loader defense-in-depth, single-floor fold extended to //10^8 with byte-identical neutral behavior, catalog all-neutral values sim-gated per docs/design/theme-balance-v0.md — the founding "bounded multipliers" clause now exercised; +30 tests.
 - append-only-ledger union hygiene — DONE (PRs #62+#63): root .gitattributes merge=union for guard-fires.jsonl + telemetry/model-usage.jsonl, union behavior demonstrated, ends the recurring rebase conflicts.
-- Suite: 24 → 1040 tests green. No parked PRs, no denials.
+- golden save corpus — DONE (PRs #65+#66): tests/vectors/saves.v2.json with 45 vectors incl. byte-pinned v1→v2 migration goldens, generator + regenerate-or-red tests, same-PR extension policy in docs/persistence.md; suite 1040 → 1131, zero persistence bugs found.
+- timed-events scoping — DONE (PRs #67+#68): docs/design/timed-events-scoping.md + plan badge; recommends piecewise-exact offline integration; all values deliberately unregistered pending SIM-002/Q-0264; no code built.
+- Suite: 24 → 1131 tests green. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
@@ -117,14 +119,11 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 - Plant merge=union gitattributes for append-only ledgers fleet-wide (host-side proof: PR #63; four slices had hand-resolved guard-fires conflicts before it).
 
 ## QUEUE
-- IN PROGRESS: golden save-file corpus (concurrent worker holds worktree)
-- NEXT: timed events (data-only) scoping
 - ON HOLD-PENDING-UPSTREAM: plugin adapter (PLUG-001)
-- ON HOLD-PENDING-UPSTREAM: economy tuning (SIM-001)
+- ON HOLD-PENDING-UPSTREAM: economy tuning + A10 ruling + timed-events build (Q-0264)
 - DEFERRED: memoized rate table (needs bot runtime)
 - DEFERRED: setup-code v2 bound ruling
 - ON-DEMAND: catalog wave 4+
-- SIM-001 + PLUG-001 awaiting manager
 
 notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step.
 
