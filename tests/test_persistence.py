@@ -1,4 +1,4 @@
-"""SAVE FORMAT v1 tests — canonical round-trip, taxonomy, fuzz, migration.
+"""SAVE FORMAT v2 tests — canonical round-trip, taxonomy, fuzz, migration.
 
 Five layers, mirroring the module's published guarantees
 (``docs/persistence.md``):
@@ -17,10 +17,11 @@ Five layers, mirroring the module's published guarantees
 4. **Tamper/fuzz** — seeded corruptions of canonical saves either raise
    a documented subclass or load into a valid GameState that itself
    round-trips; never any other outcome.
-5. **Migration hook** — the registry is EMPTY at v1, but a synthetic
-   v0->v1 migration registered in-test proves the dispatch: load a
-   fabricated v0 document, get a valid migrated v1 state; misbehaving
-   migrations fail loud.
+5. **Migration** — the registry carries its FIRST REAL migration
+   (v1→v2: the achievements slice added ``milestones``); v1 documents
+   load through it into first-class v2 states, and a synthetic v0->v1
+   migration registered in-test still proves multi-step dispatch;
+   misbehaving migrations fail loud.
 
 Randomness is stdlib-only with fixed seeds (the repo's no-hypothesis
 convention) so CI runs are byte-for-byte reproducible.
@@ -37,6 +38,7 @@ import pytest
 
 from idle_engine import GameState, load_theme
 from idle_engine import persistence
+from idle_engine.achievements import award_milestones
 from idle_engine.engine import apply_offline_progress, tick
 from idle_engine.persistence import (
     STATE_VERSION,
@@ -58,6 +60,11 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 DOC_PATH = REPO_ROOT / "docs" / "persistence.md"
 
 CANONICAL_EMPTY = (
+    '{"balances":{},"last_seen":0,"lifetime":{},"milestones":{},"owned":{},'
+    '"prestige":{},"state_version":2,"upgrades":{}}'
+)
+
+CANONICAL_V1_EMPTY = (
     '{"balances":{},"last_seen":0,"lifetime":{},"owned":{},'
     '"prestige":{},"state_version":1,"upgrades":{}}'
 )
@@ -72,16 +79,25 @@ DOCUMENTED_ERRORS = (
 
 
 def _valid_doc(**overrides) -> dict:
-    """A well-formed v1 document, tweakable per test."""
+    """A well-formed v2 document, tweakable per test."""
     doc = {
-        "state_version": 1,
+        "state_version": 2,
         "balances": {"cur-a": 42},
         "owned": {"gen-a": 3},
         "last_seen": 1_700_000_000,
         "upgrades": {"up-a": 2},
         "lifetime": {"cur-a": 999},
         "prestige": {"meta": 1},
+        "milestones": {"owned-1": 1},
     }
+    doc.update(overrides)
+    return doc
+
+
+def _valid_v1_doc(**overrides) -> dict:
+    """A well-formed LEGACY v1 document (no milestones field)."""
+    doc = _valid_doc(state_version=1)
+    del doc["milestones"]
     doc.update(overrides)
     return doc
 
@@ -130,6 +146,7 @@ def test_doc_worked_example_dumps_exactly():
             upgrades={"up-a": 2},
             lifetime={"cur-a": 999},
             prestige={"meta": 1},
+            milestones={"owned-1": 1},
         )
     )
     # Each documented block is byte-identical to a real dump (strip the
@@ -205,7 +222,9 @@ def test_taxonomy_classes_are_distinct_saveerror_subclasses():
         ('{"state_version":"1"}', FieldTypeError),
         ('{"state_version":true}', FieldTypeError),
         ('{"state_version":1.0}', FieldTypeError),
-        ('{"state_version":2}', UnknownVersionError),  # from the future
+        ('{"state_version":2}', FieldSetError),  # current version, fields missing
+        ('{"state_version":1}', FieldSetError),  # migrates, then fields missing
+        ('{"state_version":3}', UnknownVersionError),  # from the future
         ('{"state_version":0}', UnknownVersionError),  # no migration registered
         ('{"state_version":-3}', UnknownVersionError),
     ],
@@ -243,6 +262,8 @@ def test_missing_and_unknown_fields_are_field_set_errors():
         {"balances": {"a": "5"}},
         {"balances": {"a": None}},
         {"owned": {"g": [1]}},
+        {"milestones": {"m": 1.0}},
+        {"milestones": [1]},
         {"last_seen": "0"},
         {"last_seen": 1.5},
         {"last_seen": False},
@@ -259,6 +280,7 @@ def test_wrong_types_are_field_type_errors(overrides):
     [
         {"balances": {"a": -1}},
         {"upgrades": {"u": -10**40}},
+        {"milestones": {"m": -1}},
         {"last_seen": -1},
     ],
 )
@@ -278,6 +300,8 @@ def test_dump_refuses_what_load_would_refuse():
         dump_state(GameState(owned={"g": True}))
     with pytest.raises(InvalidStateError):
         dump_state(GameState(lifetime={3: 1}))  # non-string id
+    with pytest.raises(InvalidStateError):
+        dump_state(GameState(milestones={"m": -1}))
     with pytest.raises(InvalidStateError):
         dump_state(GameState(last_seen=-5))
 
@@ -353,7 +377,15 @@ def test_structured_tamper_maps_to_exact_classes():
         ("future_version", UnknownVersionError),
         ("array_top", MalformedSaveError),
     )
-    fields = ("balances", "owned", "last_seen", "upgrades", "lifetime", "prestige")
+    fields = (
+        "balances",
+        "owned",
+        "last_seen",
+        "upgrades",
+        "lifetime",
+        "prestige",
+        "milestones",
+    )
     for trial in range(300):
         state = _random_roster(rng)[0]
         # Guarantee at least one positive entry so negate/floatify can bite.
@@ -383,7 +415,7 @@ def test_structured_tamper_maps_to_exact_classes():
             load_state(json.dumps(doc))
 
 
-# --- 5. migration hook -----------------------------------------------------------
+# --- 5. migration: the REAL v1→v2 step + synthetic multi-step dispatch ------------
 
 
 def _v0_doc() -> dict:
@@ -405,13 +437,56 @@ def _migrate_v0(doc: dict) -> dict:
     return migrated
 
 
-def test_registry_is_empty_at_v1():
-    """Version policy: v1 is the first version; nothing migrates INTO it yet."""
-    assert persistence._MIGRATIONS == {}
-    assert STATE_VERSION == 1
+def test_registry_carries_exactly_the_v1_migration():
+    """Version policy: v2 shipped WITH its v1 migration in the same PR."""
+    assert sorted(persistence._MIGRATIONS) == [1]
+    assert STATE_VERSION == 2
 
 
-def test_synthetic_v0_migration_proves_the_dispatch(monkeypatch):
+def test_v1_document_migrates_to_v2_with_no_milestones():
+    """The first REAL migration: a v1 save loads as v2 with an empty
+    earned set — achievements did not exist before v2."""
+    loaded = load_state(_dump_doc(_valid_v1_doc()))
+    assert loaded == GameState(
+        balances={"cur-a": 42},
+        owned={"gen-a": 3},
+        last_seen=1_700_000_000,
+        upgrades={"up-a": 2},
+        lifetime={"cur-a": 999},
+        prestige={"meta": 1},
+        milestones={},
+    )
+    # The migrated document is a first-class v2 citizen: it re-dumps
+    # canonically and round-trips like any native save.
+    assert load_state(dump_state(loaded)) == loaded
+
+
+def test_canonical_v1_empty_literal_migrates_to_canonical_v2():
+    assert load_state(CANONICAL_V1_EMPTY) == GameState()
+    assert dump_state(load_state(CANONICAL_V1_EMPTY)) == CANONICAL_EMPTY
+
+
+def test_v1_document_cannot_smuggle_a_milestones_field():
+    """A v1 save carrying the v2-only field was never a valid v1 document;
+    the migration refuses to bless it instead of silently wiping it."""
+    with pytest.raises(FieldSetError):
+        load_state(_dump_doc(_valid_v1_doc(milestones={"owned-1": 1})))
+
+
+def test_v1_documents_with_other_unknown_fields_still_red():
+    with pytest.raises(FieldSetError, match="surplus"):
+        load_state(_dump_doc(_valid_v1_doc(surplus=1)))
+
+
+def test_migrated_documents_still_face_v2_validation():
+    bad = _valid_v1_doc()
+    bad["balances"]["cur-a"] = -1
+    with pytest.raises(NegativeValueError):
+        load_state(_dump_doc(bad))
+
+
+def test_synthetic_v0_migration_walks_the_full_chain(monkeypatch):
+    """v0 → v1 (synthetic, in-test) → v2 (real): multi-step dispatch."""
     monkeypatch.setitem(persistence._MIGRATIONS, 0, _migrate_v0)
     loaded = load_state(json.dumps(_v0_doc()))
     assert loaded == GameState(
@@ -421,30 +496,21 @@ def test_synthetic_v0_migration_proves_the_dispatch(monkeypatch):
         upgrades={},
         lifetime={"cur-a": 42},
         prestige={},
+        milestones={},
     )
-    # The migrated document is a first-class v1 citizen: it re-dumps
-    # canonically and round-trips like any native save.
     assert load_state(dump_state(loaded)) == loaded
 
 
-def test_migrated_documents_still_face_v1_validation(monkeypatch):
-    monkeypatch.setitem(persistence._MIGRATIONS, 0, _migrate_v0)
-    bad = _v0_doc()
-    bad["balances"]["cur-a"] = -1
-    with pytest.raises(NegativeValueError):
-        load_state(json.dumps(bad))
-
-
-def test_migration_chain_walks_multiple_steps(monkeypatch):
-    monkeypatch.setattr(persistence, "STATE_VERSION", 2)
+def test_migration_chain_stops_exactly_at_current_version(monkeypatch):
+    monkeypatch.setattr(persistence, "STATE_VERSION", 3)
     monkeypatch.setitem(persistence._MIGRATIONS, 0, _migrate_v0)
 
-    def _migrate_v1(doc: dict) -> dict:
-        return {**doc, "state_version": 2}
+    def _migrate_v2(doc: dict) -> dict:
+        return {**doc, "state_version": 3}
 
-    monkeypatch.setitem(persistence._MIGRATIONS, 1, _migrate_v1)
-    # v0 walks 0 -> 1 -> 2; the chain stops exactly at STATE_VERSION.
-    assert persistence._migrate(_v0_doc(), 0)["state_version"] == 2
+    monkeypatch.setitem(persistence._MIGRATIONS, 2, _migrate_v2)
+    # v0 walks 0 -> 1 -> 2 (real) -> 3; the chain stops exactly at STATE_VERSION.
+    assert persistence._migrate(_v0_doc(), 0)["state_version"] == 3
 
 
 def test_misbehaving_migrations_fail_loud(monkeypatch):
@@ -463,7 +529,7 @@ def test_misbehaving_migrations_fail_loud(monkeypatch):
 
 def test_unregistered_old_version_names_the_migratable_set(monkeypatch):
     monkeypatch.setitem(persistence._MIGRATIONS, 0, _migrate_v0)
-    with pytest.raises(UnknownVersionError, match=r"\[0\]"):
+    with pytest.raises(UnknownVersionError, match=r"\[0, 1\]"):
         load_state('{"state_version":-1}')
 
 
@@ -479,17 +545,18 @@ def _play(theme, seed: int, save_load_at: int | None) -> list[GameState]:
     ups = theme.upgrade_specs()
     pr = theme.prestige_spec()
     prs = [pr] if pr is not None else []
+    mss = theme.milestone_specs()
     state = GameState(owned={gens[0].spec_id: 1})
     trajectory = [state]
     for step in range(40):
         if step == save_load_at:
             state = load_state(dump_state(state))  # the persistence seam
-        op = rng.choice(("tick", "offline", "buy", "prestige"))
+        op = rng.choice(("tick", "offline", "buy", "prestige", "award"))
         if op == "tick":
-            state = tick(state, gens, rng.randint(0, 100_000), ups, prs)
+            state = tick(state, gens, rng.randint(0, 100_000), ups, prs, mss)
         elif op == "offline":
             now = state.last_seen + rng.randint(-100, 100_000)
-            state = apply_offline_progress(state, gens, now, ups, prs)
+            state = apply_offline_progress(state, gens, now, ups, prs, mss)
         elif op == "buy" and ups:
             spec = rng.choice(ups)
             cost = upgrade_cost(spec, state.upgrades.get(spec.spec_id, 0))
@@ -497,6 +564,8 @@ def _play(theme, seed: int, save_load_at: int | None) -> list[GameState]:
                 state = purchase_upgrade(state, spec)
         elif op == "prestige" and prs and prestige_eligible(state, prs[0]):
             state = apply_prestige(state, prs[0])
+        elif op == "award":
+            state = award_milestones(state, mss)
         trajectory.append(state)
     return trajectory
 

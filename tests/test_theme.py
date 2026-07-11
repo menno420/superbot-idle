@@ -109,3 +109,59 @@ def test_loader_rejects_bad_offline_template(tmp_path, bad_template, fragment):
     path.write_text(broken, encoding="utf-8")
     with pytest.raises(ValueError, match=fragment):
         load_theme(path)
+
+
+# --- milestones block (optional noun skins for the engine-derived slots) -----
+
+
+def test_loader_maps_milestones_block():
+    theme = load_theme(EGG_FARM)
+    assert set(theme.milestones) == {
+        f"{kind}-{i}" for kind in ("owned", "lifetime", "prestige") for i in (1, 2, 3)
+    }
+    first = theme.milestones["owned-1"]
+    assert first.milestone_id == "owned-1"
+    assert first.name == "first flock"
+    assert first.description and first.emoji
+
+
+def test_loader_defaults_milestones_to_empty(tmp_path):
+    src = EGG_FARM.read_text(encoding="utf-8")
+    head, sep, _ = src.partition("\nmilestones:")
+    assert sep, "egg-farm.yaml must carry a milestones block"
+    path = tmp_path / "egg-farm.yaml"
+    path.write_text(head, encoding="utf-8")
+    theme = load_theme(path)
+    assert theme.milestones == {}
+    assert len(theme.milestone_specs()) == 9  # slots exist regardless of nouns
+
+
+def test_loader_rejects_unknown_milestone_slot(tmp_path):
+    broken = EGG_FARM.read_text(encoding="utf-8").replace(
+        "- id: owned-1", "- id: owned-9"
+    )
+    path = tmp_path / "broken.yaml"
+    path.write_text(broken, encoding="utf-8")
+    with pytest.raises(ValueError, match="not an engine milestone slot"):
+        load_theme(path)
+
+
+def test_loader_rejects_duplicate_milestone_slot(tmp_path):
+    broken = EGG_FARM.read_text(encoding="utf-8").replace(
+        "- id: owned-2", "- id: owned-1"
+    )
+    path = tmp_path / "broken.yaml"
+    path.write_text(broken, encoding="utf-8")
+    with pytest.raises(ValueError, match="duplicate milestone"):
+        load_theme(path)
+
+
+def test_loader_rejects_prestige_slot_nouns_without_prestige_track(tmp_path):
+    src = EGG_FARM.read_text(encoding="utf-8")
+    head, sep, rest = src.partition("\nprestige:")
+    assert sep
+    _, _, tail = rest.partition("\nlabels:")
+    path = tmp_path / "egg-farm.yaml"
+    path.write_text(head + "\nlabels:" + tail, encoding="utf-8")
+    with pytest.raises(ValueError, match="not an engine milestone slot"):
+        load_theme(path)  # prestige-1..3 nouns skin slots that do not exist

@@ -339,6 +339,94 @@ def test_non_string_label_rejected(tmp_path):
     _assert_rejected(tmp_path, data, "labels.level")
 
 
+# --- milestones slots (achievements slice, optional additive v1 field) -------
+
+MILESTONE_SLOT_IDS = tuple(
+    f"{kind}-{i}" for kind in ("owned", "lifetime", "prestige") for i in (1, 2, 3)
+)
+
+
+def test_egg_farm_fills_every_milestone_slot():
+    data = egg_farm_data()
+    assert [m["id"] for m in data["milestones"]] == list(MILESTONE_SLOT_IDS)
+    assert validate_file(EGG_FARM) == []
+
+
+def test_three_shipped_packs_fill_the_milestones_slot():
+    filled = [
+        pack.stem
+        for pack in sorted((REPO_ROOT / "themes").glob("*.yaml"))
+        if yaml.safe_load(pack.read_text(encoding="utf-8")).get("milestones")
+    ]
+    assert {"egg-farm", "space-colony", "potion-brewery"} <= set(filled)
+
+
+def test_pack_without_milestones_still_passes(tmp_path):
+    # the whole block is OPTIONAL — a pre-achievements pack stays valid
+    data = egg_farm_data()
+    del data["milestones"]
+    assert validate_file(write_pack(tmp_path, data)) == []
+
+
+def test_unknown_milestone_slot_id_rejected(tmp_path):
+    data = egg_farm_data()
+    data["milestones"][0]["id"] = "owned-9"
+    _assert_rejected(tmp_path, data, "milestones[0].id")
+
+
+def test_duplicate_milestone_slot_ids_rejected(tmp_path):
+    data = egg_farm_data()
+    data["milestones"][1]["id"] = data["milestones"][0]["id"]
+    _assert_rejected(tmp_path, data, "duplicate")
+
+
+def test_prestige_milestone_nouns_require_prestige_block(tmp_path):
+    data = egg_farm_data()
+    del data["prestige"]
+    _assert_rejected(tmp_path, data, "prestige")
+
+
+def test_milestone_cannot_smuggle_economy_numbers(tmp_path):
+    # thresholds and bonus percents live ENGINE-side (pre-registered in
+    # docs/design/achievements-v0.md) — numeric fields here must red
+    for smuggled in ("threshold", "bonus_percent", "kind", "target"):
+        data = egg_farm_data()
+        data["milestones"][0][smuggled] = 9999
+        _assert_rejected(tmp_path, data, smuggled)
+
+
+def test_oversized_milestone_strings_rejected(tmp_path):
+    for field, limit in (("name", 64), ("description", 768), ("emoji", 32)):
+        data = egg_farm_data()
+        data["milestones"][0][field] = "x" * (limit + 1)
+        _assert_rejected(tmp_path, data, f"milestones[0].{field}")
+
+
+def test_boundary_milestone_description_passes(tmp_path):
+    data = egg_farm_data()
+    data["milestones"][0]["description"] = "x" * 768
+    assert validate_file(write_pack(tmp_path, data)) == []
+
+
+def test_partial_milestone_fill_passes(tmp_path):
+    # a pack may skin any SUBSET of the slots; unfilled slots render neutral
+    data = egg_farm_data()
+    data["milestones"] = data["milestones"][:2]
+    assert validate_file(write_pack(tmp_path, data)) == []
+
+
+def test_empty_milestones_list_rejected(tmp_path):
+    data = egg_farm_data()
+    data["milestones"] = []
+    _assert_rejected(tmp_path, data, "milestones")
+
+
+def test_more_than_nine_milestones_rejected(tmp_path):
+    data = egg_farm_data()
+    data["milestones"].append(dict(data["milestones"][0]))
+    _assert_rejected(tmp_path, data, "milestones")
+
+
 def test_offline_return_missing_placeholder_rejected(tmp_path):
     data = egg_farm_data()
     data["labels"]["offline_return"] = "The generators were busy."

@@ -36,6 +36,7 @@ from random import Random
 import pytest
 
 from idle_engine import GameState, load_theme
+from idle_engine.achievements import MilestoneSpec, award_milestones
 from idle_engine.engine import (
     apply_offline_progress,
     offline_progress,
@@ -61,6 +62,7 @@ from idle_engine.render import (
     MAX_FIELDS,
     TITLE_LIMIT,
     RenderBudgetError,
+    render_achievements,
     render_prestige,
     render_shop,
     render_status,
@@ -119,6 +121,18 @@ def _random_roster(rng: Random):
                 bonus_percent=rng.randint(0, 25),
             )
         )
+    milestone_specs = []
+    for i in range(rng.randint(0, 4)):
+        kind = rng.choice(("owned", "lifetime", "prestige"))
+        milestone_specs.append(
+            MilestoneSpec(
+                spec_id=f"ms{i}",
+                kind=kind,
+                subject="" if kind == "owned" else rng.choice(currencies),
+                threshold=rng.randint(1, 1_000_000),
+                bonus_percent=rng.randint(0, 25),
+            )
+        )
     state = GameState(
         balances={c: rng.randint(0, 10**9) for c in currencies},
         owned={g.spec_id: rng.randint(0, 50) for g in gen_specs},
@@ -126,8 +140,11 @@ def _random_roster(rng: Random):
         upgrades={u.spec_id: rng.randint(0, 20) for u in upgrade_specs},
         lifetime={c: rng.randint(0, 10**12) for c in currencies},
         prestige={p.awards: rng.randint(0, 30) for p in prestige_specs},
+        milestones={
+            m.spec_id: 1 for m in milestone_specs if rng.random() < 0.5
+        },
     )
-    return state, gen_specs, upgrade_specs, prestige_specs
+    return state, gen_specs, upgrade_specs, prestige_specs, milestone_specs
 
 
 def _random_partition(rng: Random, total: int, parts: int) -> list[int]:
@@ -144,19 +161,19 @@ def _random_partition(rng: Random, total: int, parts: int) -> list[int]:
 def test_partitioned_ticks_equal_closed_form_offline(seed):
     """Sum of ANY random tick partition == one closed-form offline credit."""
     rng = Random(1_000 + seed)
-    state, gens, ups, prs = _random_roster(rng)
+    state, gens, ups, prs, mss = _random_roster(rng)
     total = rng.randint(0, 1_000_000)
     parts = rng.randint(1, 12)
     partition = _random_partition(rng, total, parts)
     assert sum(partition) == total
 
     closed = offline_progress(
-        state, gens, state.last_seen, state.last_seen + total, ups, prs
+        state, gens, state.last_seen, state.last_seen + total, ups, prs, mss
     )
 
     walked = state
     for dt in partition:
-        walked = tick(walked, gens, dt, ups, prs)
+        walked = tick(walked, gens, dt, ups, prs, mss)
 
     assert walked.last_seen == state.last_seen + total
     for currency in set(state.balances) | set(closed):
@@ -170,14 +187,14 @@ def test_partitioned_ticks_equal_closed_form_offline(seed):
 def test_one_second_loop_equals_closed_form(seed):
     """The doc's strongest claim: 1s-at-a-time looping == the closed form."""
     rng = Random(2_000 + seed)
-    state, gens, ups, prs = _random_roster(rng)
+    state, gens, ups, prs, mss = _random_roster(rng)
     total = rng.randint(0, 200)
     closed = offline_progress(
-        state, gens, state.last_seen, state.last_seen + total, ups, prs
+        state, gens, state.last_seen, state.last_seen + total, ups, prs, mss
     )
     walked = state
     for _ in range(total):
-        walked = tick(walked, gens, 1, ups, prs)
+        walked = tick(walked, gens, 1, ups, prs, mss)
     for currency, earned in closed.items():
         assert walked.balances.get(currency, 0) == state.balances.get(currency, 0) + earned
 
@@ -186,10 +203,12 @@ def test_one_second_loop_equals_closed_form(seed):
 def test_apply_offline_progress_equals_tick_of_elapsed(seed):
     """apply_offline_progress(now) == tick(now - last_seen), state for state."""
     rng = Random(3_000 + seed)
-    state, gens, ups, prs = _random_roster(rng)
+    state, gens, ups, prs, mss = _random_roster(rng)
     elapsed = rng.randint(0, 10**6)
-    via_offline = apply_offline_progress(state, gens, state.last_seen + elapsed, ups, prs)
-    via_tick = tick(state, gens, elapsed, ups, prs)
+    via_offline = apply_offline_progress(
+        state, gens, state.last_seen + elapsed, ups, prs, mss
+    )
+    via_tick = tick(state, gens, elapsed, ups, prs, mss)
     assert via_offline == via_tick
 
 
@@ -206,6 +225,7 @@ def _canon(state: GameState) -> bytes:
             "upgrades": state.upgrades,
             "lifetime": state.lifetime,
             "prestige": state.prestige,
+            "milestones": state.milestones,
         },
         sort_keys=True,
         separators=(",", ":"),
@@ -219,16 +239,17 @@ def _drive_trajectory(theme, seed: int) -> list[bytes]:
     ups = theme.upgrade_specs()
     pr = theme.prestige_spec()
     prs = [pr] if pr is not None else []
+    mss = theme.milestone_specs()
     state = GameState(last_seen=rng.randint(0, 10**6))
     snapshots = [_canon(state)]
     for _ in range(60):
-        op = rng.choice(("tick", "offline", "own", "buy", "prestige"))
+        op = rng.choice(("tick", "offline", "own", "buy", "prestige", "award"))
         if op == "tick":
-            state = tick(state, gens, rng.randint(0, 100_000), ups, prs)
+            state = tick(state, gens, rng.randint(0, 100_000), ups, prs, mss)
         elif op == "offline":
             # Occasionally a PAST now: clock skew must accrue nothing.
             now = state.last_seen + rng.randint(-1_000, 100_000)
-            state = apply_offline_progress(state, gens, now, ups, prs)
+            state = apply_offline_progress(state, gens, now, ups, prs, mss)
         elif op == "own":
             spec = rng.choice(gens)
             owned = dict(state.owned)
@@ -241,6 +262,8 @@ def _drive_trajectory(theme, seed: int) -> list[bytes]:
                 state = purchase_upgrade(state, spec)
         elif op == "prestige" and prs and prestige_eligible(state, prs[0]):
             state = apply_prestige(state, prs[0])
+        elif op == "award":
+            state = award_milestones(state, mss)
         snapshots.append(_canon(state))
     return snapshots
 
@@ -270,13 +293,15 @@ def test_balances_and_lifetime_never_negative_along_trajectories(path):
     ups = theme.upgrade_specs()
     pr = theme.prestige_spec()
     prs = [pr] if pr is not None else []
+    mss = theme.milestone_specs()
     rng = Random(4_000)
     state = GameState()
     prev_lifetime: dict[str, int] = {}
+    prev_milestones: set[str] = set()
     for _ in range(80):
-        op = rng.choice(("tick", "own", "buy", "prestige"))
+        op = rng.choice(("tick", "own", "buy", "prestige", "award"))
         if op == "tick":
-            state = tick(state, gens, rng.randint(0, 50_000), ups, prs)
+            state = tick(state, gens, rng.randint(0, 50_000), ups, prs, mss)
         elif op == "own":
             spec = rng.choice(gens)
             owned = dict(state.owned)
@@ -297,20 +322,26 @@ def test_balances_and_lifetime_never_negative_along_trajectories(path):
             else:
                 with pytest.raises(ValueError):
                     apply_prestige(state, prs[0])
-        for mapping in (state.balances, state.owned, state.upgrades, state.lifetime, state.prestige):
+        elif op == "award":
+            state = award_milestones(state, mss)
+        for mapping in (state.balances, state.owned, state.upgrades, state.lifetime, state.prestige, state.milestones):
             assert all(v >= 0 for v in mapping.values())
         # Lifetime is monotone non-decreasing WITHIN a run (reset wipes it).
         for currency, value in prev_lifetime.items():
             assert state.lifetime.get(currency, 0) >= value
         prev_lifetime = dict(state.lifetime)
+        # The earned milestone set only ever GROWS — prestige never wipes it.
+        earned_now = {m for m, v in state.milestones.items() if v >= 1}
+        assert prev_milestones <= earned_now
+        prev_milestones = earned_now
 
 
 @pytest.mark.parametrize("seed", range(15))
 def test_purchase_conserves_lifetime_and_spends_exactly_cost(seed):
     rng = Random(5_000 + seed)
-    state, gens, ups, prs = _random_roster(rng)
+    state, gens, ups, prs, mss = _random_roster(rng)
     while not ups:  # deterministic redraw: same rng stream, so still seeded
-        state, gens, ups, prs = _random_roster(rng)
+        state, gens, ups, prs, mss = _random_roster(rng)
     spec = rng.choice(ups)
     level = state.upgrades.get(spec.spec_id, 0)
     cost = upgrade_cost(spec, level)
@@ -353,9 +384,9 @@ def test_prestige_award_monotone_in_lifetime(seed):
 @pytest.mark.parametrize("seed", range(10))
 def test_apply_prestige_never_increases_run_balances(seed):
     rng = Random(7_000 + seed)
-    state, gens, ups, prs = _random_roster(rng)
+    state, gens, ups, prs, mss = _random_roster(rng)
     while not prs:  # deterministic redraw: same rng stream, so still seeded
-        state, gens, ups, prs = _random_roster(rng)
+        state, gens, ups, prs, mss = _random_roster(rng)
     spec = prs[0]
     eligible = dataclasses.replace(
         state, lifetime={**state.lifetime, spec.measures: spec.threshold + rng.randint(0, 10**9)}
@@ -403,6 +434,11 @@ def _extreme_state(rng: Random, theme) -> GameState:
         upgrades={u: rng.choice((0, rng.randint(0, 10_000))) for u in upgrades},
         lifetime={c: huge() for c in currencies},
         prestige={c: rng.choice((0, rng.randint(0, 10_000))) for c in currencies},
+        milestones={
+            m.spec_id: 1
+            for m in theme.milestone_specs()
+            if rng.random() < 0.5
+        },
     )
 
 
@@ -422,6 +458,7 @@ def test_render_fuzz_engine_content_never_busts_budgets(path):
         prestige = render_prestige(state, theme)
         if prestige is not None:
             _assert_budgets(prestige)
+        _assert_budgets(render_achievements(state, theme))
 
 
 def test_render_fuzz_themed_overflow_still_reds():

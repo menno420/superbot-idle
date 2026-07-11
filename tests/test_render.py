@@ -24,12 +24,20 @@ from idle_engine.render import (
     TITLE_LIMIT,
     RenderBudgetError,
     embed_color_int,
+    render_achievements,
     render_prestige,
     render_shop,
     render_status,
     validate_embed,
 )
-from idle_engine.theme import Theme, ThemeCurrency, ThemeGenerator, ThemeLabels, ThemeUpgrade
+from idle_engine.theme import (
+    Theme,
+    ThemeCurrency,
+    ThemeGenerator,
+    ThemeLabels,
+    ThemeMilestone,
+    ThemeUpgrade,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 THEMES_DIR = REPO_ROOT / "themes"
@@ -531,6 +539,160 @@ def test_shop_boundary_description_never_raises():
         )
         _assert_budgets(embed)
         assert embed["fields"][0]["value"].endswith("b" * SHOP_FLAVOR_LIMIT)
+
+
+# --- achievements view: themed pins, neutral fallback pins, budgets ----------
+
+
+@pytest.fixture(scope="module")
+def egg_farm_no_milestones(tmp_path_factory):
+    """The shipped egg-farm pack with its milestones block stripped — the
+    fallback path must render the neutral scaffolding, byte-pinned."""
+    src = (THEMES_DIR / "egg-farm.yaml").read_text(encoding="utf-8")
+    head, sep, rest = src.partition("\nmilestones:")
+    assert sep, "egg-farm.yaml must carry a milestones block"
+    # keep everything after the milestones block (the next top-level key)
+    tail = re.search(r"\n(?=[a-z_]+:)", rest[1:])
+    remainder = rest[1 + tail.start() :] if tail else ""
+    path = tmp_path_factory.mktemp("packs") / "egg-farm.yaml"
+    path.write_text(head + remainder, encoding="utf-8")
+    theme = load_theme(path)
+    assert not theme.milestones
+    return theme
+
+
+def test_achievements_is_deterministic_and_exactly_shaped(egg_farm):
+    """Pin the full themed payload for one fixed state (nothing earned)."""
+    state = _fixed_state()
+    embed = render_achievements(state, egg_farm)
+    assert embed == render_achievements(state, egg_farm)
+    assert embed["title"] == "🥚 Egg Farm"
+    assert embed["description"] == egg_farm.description
+    assert embed["color"] == 0xF5C542
+    assert len(embed["fields"]) == 9
+    first = embed["fields"][0]
+    assert first["name"] == "🐣 first flock"
+    line, _, flavor = first["value"].partition("\n")
+    assert line == "🔒 2 / 10"  # owned total 2 vs pre-registered threshold 10
+    assert flavor == egg_farm.milestones["owned-1"].description
+    by_name = {f["name"]: f["value"] for f in embed["fields"]}
+    # lifetime-1 (threshold 1,000) is REACHED (5,000) but not yet AWARDED:
+    # the mark reflects the earned set, never live progress.
+    assert by_name["🧺 first thousand eggs"].startswith("🔒 5,000 / 1,000")
+    assert by_name["🥇 first golden egg"].startswith("🔒 3 / 1")
+    _assert_budgets(embed)
+
+
+def test_achievements_earned_pins_at_threshold(egg_farm):
+    """An earned milestone shows threshold/threshold with the earned mark,
+    even after the live counter reset (e.g. post-prestige owned = 0)."""
+    state = GameState(milestones={"owned-1": 1})
+    embed = render_achievements(state, egg_farm)
+    by_name = {f["name"]: f["value"] for f in embed["fields"]}
+    assert by_name["🐣 first flock"].startswith("✅ 10 / 10")
+    assert by_name["🐥 hundred-hen farmstead"].startswith("🔒 0 / 100")
+
+
+def test_achievements_neutral_fallback_is_byte_pinned(egg_farm_no_milestones):
+    """A pack without the milestones noun block renders pure neutral
+    scaffolding: numbered milestone slots, bare progress lines."""
+    state = _fixed_state()
+    embed = render_achievements(state, egg_farm_no_milestones)
+    assert [f["name"] for f in embed["fields"]] == [
+        f"Milestone {i}" for i in range(1, 10)
+    ]
+    assert embed["fields"][0] == {
+        "name": "Milestone 1",
+        "value": "🔒 2 / 10",
+        "inline": True,
+    }
+    assert embed["fields"][3]["value"] == "🔒 5,000 / 1,000"
+    assert embed["fields"][6]["value"] == "🔒 3 / 1"
+    assert "\n" not in embed["fields"][0]["value"]  # no flavor line composed
+    assert embed["title"] == "🥚 Egg Farm"
+    assert embed["description"] == egg_farm_no_milestones.description
+    _assert_budgets(embed)
+
+
+def test_achievements_mechanics_identical_with_and_without_nouns(
+    egg_farm, egg_farm_no_milestones
+):
+    """The noun block skins slots, never creates them: same slot count,
+    same marks, same numbers either way."""
+    state = GameState(owned={"tier1": 15}, milestones={"owned-1": 1})
+    themed = render_achievements(state, egg_farm)
+    neutral = render_achievements(state, egg_farm_no_milestones)
+    assert len(themed["fields"]) == len(neutral["fields"]) == 9
+    themed_lines = [f["value"].partition("\n")[0] for f in themed["fields"]]
+    neutral_lines = [f["value"] for f in neutral["fields"]]
+    assert themed_lines == neutral_lines
+
+
+@pytest.mark.parametrize("pack", sorted(THEMES_DIR.glob("*.yaml")), ids=lambda p: p.stem)
+def test_all_shipped_packs_render_achievements_within_budget(pack):
+    theme = load_theme(pack)
+    state = GameState(
+        owned={gid: 500 for gid in theme.generators},
+        lifetime={cid: 10**6 for cid in theme.currencies},
+        prestige={theme.prestige.currency: 30} if theme.prestige else {},
+        milestones={spec.spec_id: 1 for spec in theme.milestone_specs()[:4]},
+    )
+    _assert_budgets(render_achievements(state, theme))
+
+
+def _milestone_theme(flavor):
+    """A hand-built single-currency, no-prestige theme (6 slots) with one
+    themed milestone noun."""
+    return Theme(
+        theme_id="rogue",
+        name="Okay",
+        description="Fine.",
+        emoji="🔹",
+        embed_color="#123456",
+        currencies={"primary": ThemeCurrency("primary", "points", "flat.", "🔹")},
+        generators={
+            "tier1": ThemeGenerator("tier1", "maker", "makes points.", "⚙️", "primary", 1)
+        },
+        milestones={"owned-1": ThemeMilestone("owned-1", "starter", flavor, "🗿")},
+    )
+
+
+def test_achievements_without_prestige_track_has_six_slots():
+    embed = render_achievements(GameState(), _milestone_theme("keep going."))
+    assert len(embed["fields"]) == 6
+    assert embed["fields"][0]["name"] == "🗿 starter"
+    assert embed["fields"][1]["name"] == "Milestone 2"  # partial fill falls back
+
+
+def test_achievements_flavor_overflowing_its_slot_raises():
+    theme = _milestone_theme("z" * (SHOP_FLAVOR_LIMIT + 1))
+    with pytest.raises(RenderBudgetError):
+        render_achievements(GameState(), theme)
+
+
+def test_achievements_boundary_flavor_and_extreme_numbers_stay_in_budget():
+    theme = _milestone_theme("b" * SHOP_FLAVOR_LIMIT)
+    for magnitude in (0, 10**6, 10**400, 10**2000):
+        state = GameState(
+            owned={"tier1": magnitude}, lifetime={"primary": magnitude}
+        )
+        embed = render_achievements(state, theme)
+        _assert_budgets(embed)
+        assert embed["fields"][0]["value"].endswith("b" * SHOP_FLAVOR_LIMIT)
+
+
+def test_status_rates_include_earned_milestone_bonus(egg_farm):
+    """The status view shows the rate the engine would actually credit:
+    milestone_pct folds into the displayed /s numbers."""
+    base = GameState(owned={"tier1": 100})
+    earned = GameState(owned={"tier1": 100}, milestones={"owned-1": 1})
+    plain = render_status(base, egg_farm, now=0)
+    boosted = render_status(earned, egg_farm, now=0)
+    by_name = {f["name"]: f["value"] for f in plain["fields"]}
+    boosted_by_name = {f["name"]: f["value"] for f in boosted["fields"]}
+    # 100 coops × 1/s: +5% milestone bonus -> 105/s (single shared floor).
+    assert by_name["🥚 eggs"].endswith("(+100/s)")
+    assert boosted_by_name["🥚 eggs"].endswith("(+105/s)")
 
 
 # --- purity: the render module imports no chat-platform SDK ------------------
