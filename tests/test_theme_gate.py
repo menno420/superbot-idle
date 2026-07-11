@@ -35,7 +35,7 @@ def test_string_budget_enforced(tmp_path):
     path = tmp_path / "oversized.yaml"
     path.write_text(oversized, encoding="utf-8")
     errors = validate_file(path)
-    assert errors and "title budget" in errors[0]
+    assert errors and "theme.name" in errors[0]
 
 
 def test_bad_embed_color_rejected(tmp_path):

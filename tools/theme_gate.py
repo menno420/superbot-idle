@@ -1,12 +1,21 @@
 #!/usr/bin/env python3
-"""theme-gate v0 — validate every theme pack under themes/.
+"""theme-gate v1 — validate every theme pack under themes/ against schema v1.
 
-Checks each ``themes/*.yaml`` against the minimal required manifest:
-required fields present, types correct, names non-empty, generator
-``produces`` references a declared currency, positive integer rates
-(all enforced by ``idle_engine.theme.load_theme``), plus v0 string
-budgets so a passing pack cannot overflow a chat embed at render time
-(titles <= 256 chars, descriptions <= 1024 chars).
+Each ``themes/*.yaml`` is validated against the published machine schema
+(``schema/theme.schema.json``, JSON Schema draft 2020-12, via the
+``jsonschema`` library — the theme-gate workflow pip-installs it). The
+schema enforces the data-only contract hard: ``schema_version`` is
+required (must be 1), unknown keys are rejected at every level (a theme
+cannot smuggle new mechanics), and chat-embed string budgets are schema
+limits (names <= 64, flavor text <= 1024, emoji <= 32, <= 5 currencies +
+<= 20 generators so renders never exceed 25 fields, ``#RRGGBB`` colors,
+``base_rate`` bounded 1..1000) so overflow is a red gate, never a live
+render bug. Human-readable twin: ``docs/theme-schema.md``.
+
+On top of JSON Schema, the gate enforces what a schema cannot express:
+unique currency/generator ids, ``produces`` referencing a declared
+currency, and that the pack actually loads through
+``idle_engine.theme.load_theme`` (the engine is ground truth).
 
 Exits 0 when every pack passes, 1 on any violation, 2 when no packs
 exist (an empty themes/ directory is a wiring error, not a pass).
@@ -14,49 +23,79 @@ exist (an empty themes/ directory is a wiring error, not a pass).
 
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT))
 
-from idle_engine.theme import Theme, load_theme  # noqa: E402
+import jsonschema  # noqa: E402
+import yaml  # noqa: E402
 
-TITLE_BUDGET = 256  # chat-embed title cap
-TEXT_BUDGET = 1024  # chat-embed field-value cap
+from idle_engine.theme import load_theme  # noqa: E402
+
+SCHEMA_PATH = REPO_ROOT / "schema" / "theme.schema.json"
 
 
-def check_budgets(theme: Theme, path: Path) -> list[str]:
+def _load_validator() -> jsonschema.Draft202012Validator:
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    jsonschema.Draft202012Validator.check_schema(schema)
+    return jsonschema.Draft202012Validator(schema)
+
+
+def _json_path(error: jsonschema.ValidationError) -> str:
+    if not error.absolute_path:
+        return "<root>"
+    parts: list[str] = []
+    for part in error.absolute_path:
+        if isinstance(part, int):
+            parts[-1:] = [f"{parts[-1]}[{part}]"] if parts else [f"[{part}]"]
+        else:
+            parts.append(str(part))
+    return ".".join(parts)
+
+
+def _semantic_errors(data: dict, path: Path) -> list[str]:
+    """Checks the JSON Schema cannot express (run only on schema-clean data)."""
     errors: list[str] = []
-
-    def title(where: str, value: str) -> None:
-        if len(value) > TITLE_BUDGET:
-            errors.append(f"{path}:{where}: name exceeds {TITLE_BUDGET}-char title budget")
-
-    def text(where: str, value: str) -> None:
-        if len(value) > TEXT_BUDGET:
-            errors.append(f"{path}:{where}: description exceeds {TEXT_BUDGET}-char text budget")
-
-    title("theme.name", theme.name)
-    text("theme.description", theme.description)
-    if not (len(theme.embed_color) == 7 and theme.embed_color.startswith("#")
-            and all(c in "0123456789abcdefABCDEF" for c in theme.embed_color[1:])):
-        errors.append(f"{path}:theme.embed_color: must be #RRGGBB hex, got {theme.embed_color!r}")
-    for c in theme.currencies.values():
-        title(f"currencies[{c.currency_id}].name", c.name)
-        text(f"currencies[{c.currency_id}].description", c.description)
-    for g in theme.generators.values():
-        title(f"generators[{g.generator_id}].name", g.name)
-        text(f"generators[{g.generator_id}].description", g.description)
+    currency_ids = [c["id"] for c in data["currencies"]]
+    generator_ids = [g["id"] for g in data["generators"]]
+    for label, ids in (("currencies", currency_ids), ("generators", generator_ids)):
+        dupes = sorted({i for i in ids if ids.count(i) > 1})
+        if dupes:
+            errors.append(f"{path}:{label}: duplicate id(s) {dupes} (ids must be unique)")
+    declared = set(currency_ids)
+    for i, gen in enumerate(data["generators"]):
+        if gen["produces"] not in declared:
+            errors.append(
+                f"{path}:generators[{i}].produces: {gen['produces']!r} "
+                f"is not a declared currency id"
+            )
+    if errors:
+        return errors
+    try:  # the engine loader is ground truth — a schema-valid pack must load
+        load_theme(path)
+    except Exception as exc:
+        errors.append(f"{path}: engine loader rejected pack: {exc}")
     return errors
 
 
-def validate_file(path: Path) -> list[str]:
+def validate_file(path: Path, validator: jsonschema.Draft202012Validator | None = None) -> list[str]:
+    validator = validator or _load_validator()
     try:
-        theme = load_theme(path)
-    except Exception as exc:  # structural violation or unreadable YAML
-        return [f"{path}: {exc}"]
-    return check_budgets(theme, path)
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        return [f"{path}: unreadable YAML: {exc}"]
+    if not isinstance(data, dict):
+        return [f"{path}: theme pack must be a mapping"]
+    errors = [
+        f"{path}:{_json_path(error)}: {error.message}"
+        for error in sorted(validator.iter_errors(data), key=lambda e: list(map(str, e.absolute_path)))
+    ]
+    if errors:
+        return errors
+    return _semantic_errors(data, path)
 
 
 def main(argv: list[str]) -> int:
@@ -65,9 +104,10 @@ def main(argv: list[str]) -> int:
     if not packs:
         print(f"theme-gate: no theme packs found under {themes_dir}", file=sys.stderr)
         return 2
+    validator = _load_validator()
     failures: list[str] = []
     for pack in packs:
-        errors = validate_file(pack)
+        errors = validate_file(pack, validator)
         if errors:
             failures.extend(errors)
             print(f"FAIL {pack}")
@@ -78,7 +118,7 @@ def main(argv: list[str]) -> int:
     if failures:
         print(f"theme-gate: {len(failures)} violation(s) across {len(packs)} pack(s)", file=sys.stderr)
         return 1
-    print(f"theme-gate: all {len(packs)} pack(s) valid")
+    print(f"theme-gate: all {len(packs)} pack(s) valid (schema v1)")
     return 0
 
 

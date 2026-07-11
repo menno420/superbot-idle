@@ -1,5 +1,6 @@
-# theme-gate v0 — validates every themes/*.yaml against the minimal
-# manifest (tools/theme_gate.py). LANE-OWNED: this file is separate from
+# theme-gate v1 — validates every themes/*.yaml against the published
+# schema (docs/theme-schema.md + schema/theme.schema.json) via
+# tools/theme_gate.py. LANE-OWNED: this file is separate from
 # the kit-owned substrate-gate.yml on purpose; put theme-validation
 # changes here, never there.
 name: theme-gate
@@ -16,6 +17,6 @@ jobs:
         with:
           python-version: "3.x"
       - name: install validator deps
-        run: python -m pip install --quiet pyyaml
+        run: python -m pip install --quiet pyyaml jsonschema
       - name: run theme-gate
         run: python tools/theme_gate.py themes

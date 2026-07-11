@@ -1,4 +1,7 @@
-# egg-farm — flagship default theme pack (data only; validated by theme-gate)
+# egg-farm — flagship default theme pack (data only; validated by theme-gate
+# against docs/theme-schema.md / schema/theme.schema.json)
+schema_version: 1
+
 theme:
   id: egg-farm
   name: Egg Farm
