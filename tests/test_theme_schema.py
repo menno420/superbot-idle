@@ -236,3 +236,114 @@ def test_prestige_cannot_smuggle_threshold(tmp_path):
     data = egg_farm_data()
     data["prestige"]["threshold"] = 1
     _assert_rejected(tmp_path, data, "threshold")
+
+
+# --- labels slots (themed-label-slots slice, optional additive v1 fields) ----
+
+LABEL_SLOTS = (
+    "offline_return",
+    "status_title",
+    "shop_title",
+    "shop_description",
+    "level",
+    "prestige_progress",
+)
+
+
+def test_all_shipped_packs_fill_labels():
+    for pack in sorted((REPO_ROOT / "themes").glob("*.yaml")):
+        data = yaml.safe_load(pack.read_text(encoding="utf-8"))
+        assert data.get("labels"), f"{pack.stem} must fill the labels slot"
+        assert set(data["labels"]) == set(LABEL_SLOTS), (
+            f"{pack.stem} should fill every label slot"
+        )
+
+
+def test_pack_without_labels_still_passes(tmp_path):
+    # the whole block is OPTIONAL — a pre-labels pack stays valid (additive)
+    data = egg_farm_data()
+    del data["labels"]
+    path = write_pack(tmp_path, data)
+    assert validate_file(path) == []
+
+
+def test_every_label_slot_individually_optional(tmp_path):
+    # EVERY slot inside the block is optional too — one slot alone is valid
+    for slot in LABEL_SLOTS:
+        data = egg_farm_data()
+        data["labels"] = {slot: data["labels"][slot]}
+        path = write_pack(tmp_path, data)
+        assert validate_file(path) == [], f"labels with only {slot!r} must pass"
+
+
+def test_empty_labels_block_rejected(tmp_path):
+    data = egg_farm_data()
+    data["labels"] = {}
+    _assert_rejected(tmp_path, data, "labels")
+
+
+def test_unknown_label_slot_rejected(tmp_path):
+    data = egg_farm_data()
+    data["labels"]["click_sound"] = "cluck"
+    _assert_rejected(tmp_path, data, "click_sound")
+
+
+def test_label_budget_boundaries_pass(tmp_path):
+    data = egg_farm_data()
+    data["labels"] = {
+        "offline_return": "x" * 249 + "{gains}",  # 256 incl. the 7-char token
+        "status_title": "t" * 256,
+        "shop_title": "s" * 256,
+        "shop_description": "d" * 1024,
+        "level": "l" * 32,
+        "prestige_progress": "p" * 64,
+    }
+    path = write_pack(tmp_path, data)
+    assert validate_file(path) == []
+
+
+def test_oversized_label_slots_rejected(tmp_path):
+    for slot, limit in (
+        ("offline_return", 256),
+        ("status_title", 256),
+        ("shop_title", 256),
+        ("shop_description", 1024),
+        ("level", 32),
+        ("prestige_progress", 64),
+    ):
+        data = egg_farm_data()
+        filler = "x" * (limit + 1)
+        if slot == "offline_return":
+            filler = "{gains}" + "x" * (limit + 1 - len("{gains}"))
+        data["labels"][slot] = filler
+        _assert_rejected(tmp_path, data, f"labels.{slot}")
+
+
+def test_non_string_label_rejected(tmp_path):
+    data = egg_farm_data()
+    data["labels"]["level"] = 42
+    _assert_rejected(tmp_path, data, "labels.level")
+
+
+def test_offline_return_missing_placeholder_rejected(tmp_path):
+    data = egg_farm_data()
+    data["labels"]["offline_return"] = "The generators were busy."
+    _assert_rejected(tmp_path, data, "labels.offline_return")
+
+
+def test_offline_return_duplicate_placeholder_rejected(tmp_path):
+    data = egg_farm_data()
+    data["labels"]["offline_return"] = "{gains} and then {gains} again"
+    _assert_rejected(tmp_path, data, "exactly once")
+
+
+def test_offline_return_unknown_placeholder_rejected(tmp_path):
+    for bad in (
+        "Back with {loot}!",  # unknown token instead of {gains}
+        "{gains} plus a {bonus}",  # unknown token alongside the real one
+        "stray } brace with {gains}",  # unbalanced brace
+        "{gains} then {",  # dangling opener
+    ):
+        data = egg_farm_data()
+        data["labels"]["offline_return"] = bad
+        _assert_rejected(tmp_path, data, "labels.offline_return")

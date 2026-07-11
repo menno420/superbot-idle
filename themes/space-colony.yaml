@@ -53,3 +53,11 @@ prestige:
   action_name: launch a new colony
   action_description: Pack the ship, leave the outpost behind, and found a new colony with alien artifacts in the hold.
   action_emoji: "🚀"
+
+labels:
+  offline_return: "While you slept in cryo, the colony kept breathing: {gains}"
+  status_title: "🪐 Space Colony — life-support readout"
+  shop_title: "🛠️ Colony Requisitions"
+  shop_description: Spend hard-won oxygen on hardware the colony will thank you for.
+  level: Mark
+  prestige_progress: "lifetime oxygen toward launch:"

@@ -49,6 +49,38 @@ class ThemeUpgrade:
     target: str
 
 
+# The one substitution token themed label templates may carry. The render
+# layer replaces it verbatim (idle_engine/render.py keeps its own copy of
+# this literal: it must not import this yaml-loading module at runtime).
+GAINS_PLACEHOLDER = "{gains}"
+
+_LABEL_SLOTS = (
+    "offline_return",
+    "status_title",
+    "shop_title",
+    "shop_description",
+    "level",
+    "prestige_progress",
+)
+
+
+@dataclass(frozen=True)
+class ThemeLabels:
+    """Optional themed overrides for render labels — every slot optional.
+
+    An unset (``None``) slot falls back to the render layer's neutral
+    scaffolding, so a pack without a ``labels`` block renders exactly as
+    it did before the block existed.
+    """
+
+    offline_return: str | None = None
+    status_title: str | None = None
+    shop_title: str | None = None
+    shop_description: str | None = None
+    level: str | None = None
+    prestige_progress: str | None = None
+
+
 @dataclass(frozen=True)
 class ThemePrestige:
     currency: str
@@ -69,6 +101,7 @@ class Theme:
     generators: dict[str, ThemeGenerator]
     upgrades: dict[str, ThemeUpgrade] = field(default_factory=dict)
     prestige: ThemePrestige | None = None
+    labels: ThemeLabels | None = None
 
     def currency_name(self, currency_id: str) -> str:
         return self.currencies[currency_id].name
@@ -225,6 +258,31 @@ def load_theme(path: str | Path) -> Theme:
             action_emoji=_require_str(raw_prestige, "action_emoji", w),
         )
 
+    labels: ThemeLabels | None = None
+    raw_labels = data.get("labels")
+    if raw_labels is not None:
+        if not isinstance(raw_labels, dict) or not raw_labels:
+            raise ValueError(f"{path}: 'labels', when present, must be a non-empty mapping")
+        w = f"{path}:labels"
+        for key in raw_labels:
+            if key not in _LABEL_SLOTS:
+                raise ValueError(f"{w}: unknown label slot {key!r}")
+        values = {key: _require_str(raw_labels, key, w) for key in raw_labels}
+        template = values.get("offline_return")
+        if template is not None:
+            if template.count(GAINS_PLACEHOLDER) != 1:
+                raise ValueError(
+                    f"{w}.offline_return: must contain the substitution token "
+                    f"{GAINS_PLACEHOLDER!r} exactly once"
+                )
+            remainder = template.replace(GAINS_PLACEHOLDER, "")
+            if "{" in remainder or "}" in remainder:
+                raise ValueError(
+                    f"{w}.offline_return: unknown placeholder or stray brace — the "
+                    f"only substitution token is {GAINS_PLACEHOLDER!r}"
+                )
+        labels = ThemeLabels(**values)
+
     return Theme(
         theme_id=theme_id,
         name=name,
@@ -235,4 +293,5 @@ def load_theme(path: str | Path) -> Theme:
         generators=generators,
         upgrades=upgrades,
         prestige=prestige,
+        labels=labels,
     )

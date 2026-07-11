@@ -53,3 +53,11 @@ prestige:
   action_name: hold a séance
   action_description: Gather the household for one last séance and set every spirit free — they remember you kindly.
   action_emoji: "📿"
+
+labels:
+  offline_return: "While you were away, the spirits kept seeping: {gains}"
+  status_title: "🏚️ Haunted Manor — the night ledger"
+  shop_title: "🕯️ The Séance Supply Cabinet"
+  shop_description: Spend ectoplasm to make the haunting that little bit worse.
+  level: Haunting level
+  prestige_progress: "lifetime ectoplasm toward the séance:"

@@ -14,7 +14,10 @@ render bug. Human-readable twin: ``docs/theme-schema.md``.
 
 On top of JSON Schema, the gate enforces what a schema cannot express:
 unique currency/generator ids, ``produces`` referencing a declared
-currency, ``theme.id`` equal to the pack's filename stem (catalog
+currency, the ``labels.offline_return`` template carrying its one
+substitution token ``{gains}`` exactly once with no other braces (an
+unknown placeholder would leak verbatim into player-visible text),
+``theme.id`` equal to the pack's filename stem (catalog
 tooling and setup codes resolve packs by id, so a pack must live at
 ``themes/<theme.id>.yaml``), and that the pack actually loads through
 ``idle_engine.theme.load_theme`` (the engine is ground truth). Across
@@ -97,6 +100,30 @@ def _semantic_errors(data: dict, path: Path) -> list[str]:
                 f"{path}:upgrades[{i}].target: {upgrade['target']!r} "
                 f"is not a declared generator id"
             )
+    labels = data.get("labels")
+    if labels is not None:
+        # The schema bounds every label slot's type and budget; the
+        # placeholder semantics of the offline-return template are the
+        # part it cannot express. The only substitution token the render
+        # layer knows is {gains}: it must appear exactly once (zero would
+        # silently drop the gains display; twice is ambiguous), and no
+        # other brace may appear (an unknown placeholder would leak
+        # verbatim into player-visible text).
+        template = labels.get("offline_return")
+        if template is not None:
+            placeholder = "{gains}"
+            count = template.count(placeholder)
+            if count != 1:
+                errors.append(
+                    f"{path}:labels.offline_return: substitution token "
+                    f"{placeholder!r} must appear exactly once (found {count})"
+                )
+            remainder = template.replace(placeholder, "")
+            if "{" in remainder or "}" in remainder:
+                errors.append(
+                    f"{path}:labels.offline_return: unknown placeholder or stray "
+                    f"brace — the only substitution token is {placeholder!r}"
+                )
     prestige = data.get("prestige")
     if prestige is not None:
         for key in ("currency", "measures"):

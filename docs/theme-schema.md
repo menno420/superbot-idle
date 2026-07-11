@@ -40,6 +40,11 @@ composition headroom* so every render slot fits by construction:
 | Fields per embed | 25 | ≤ 5 currencies + ≤ 20 generators | 5 + 20 = 25 |
 | Upgrade-shop fields per embed | 25 | ≤ 20 upgrades | upgrades render on their own shop embed; 5 fields of headroom |
 | Accent color | decimal RGB | `#RRGGBB` pattern | parses losslessly |
+| Status description + offline line: `{description}\n\n{labels.offline_return with {gains} substituted}` | 4096 | description ≤ 1024, template ≤ 256 | 1024 + 2 + (256 − 7 token chars) = 1275 fixed; ≥ 2821 left for the substituted gains text (numeric — clamps) |
+| Status / shop title override: `labels.status_title`, `labels.shop_title` | 256 | ≤ 256 | rendered verbatim, nothing composed — budget = cap |
+| Shop description override: `labels.shop_description` | 4096 | ≤ 1024 | rendered verbatim as the embed description |
+| Shop value: `{mark} {labels.level} N → N+1 · cost {emoji} {name}` | 1024 | level label ≤ 32 | mark + label + emoji(32) + name(64) + separators ≤ ~140; ≥ 880 for digits before the numeric clamp |
+| Prestige progress value: `{mark} {labels.prestige_progress} N / M` | 1024 | label ≤ 64 | mark + label + separators ≤ ~70; ≥ 950 for digits before the numeric clamp |
 
 ## Fields
 
@@ -80,15 +85,67 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 | `prestige.action_name` | string | required* | player-visible reset-action name, 1–64 chars |
 | `prestige.action_description` | string | required* | flavor text, 1–1024 chars |
 | `prestige.action_emoji` | string | required* | 1–32 chars |
+| `labels` | mapping | optional | themed render-label overrides; ≥ 1 slot when present, EVERY slot optional |
+| `labels.offline_return` | string | optional | offline-gains flavor template, 1–256 chars; MUST contain `{gains}` exactly once, no other braces (gate check) |
+| `labels.status_title` | string | optional | status-view title, verbatim, 1–256 chars |
+| `labels.shop_title` | string | optional | shop-view title, verbatim, 1–256 chars |
+| `labels.shop_description` | string | optional | shop-view description, verbatim, 1–1024 chars |
+| `labels.level` | string | optional | shop level label (replaces neutral `Lv`), 1–32 chars |
+| `labels.prestige_progress` | string | optional | prestige progress label (default: bare numbers), 1–64 chars |
 
 `upgrades` and `prestige` are v1's first OPTIONAL top-level fields (added
-additively in slice (b), per the compatibility promise). `required*` means
-required *within its block when the block is present* — a pack may omit the
-whole block. **Both blocks are nouns-only**: cost curves, effect sizes,
-thresholds and award math live engine-side (`idle_engine/economy.py`,
-pre-registered in [`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md));
+additively in slice (b), per the compatibility promise); `labels` is the
+third (themed-label-slots slice). `required*` means required *within its
+block when the block is present* — a pack may omit the whole block. **All
+these blocks are nouns-only**: cost curves, effect sizes, thresholds and
+award math live engine-side (`idle_engine/economy.py`, pre-registered in
+[`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md));
 any numeric field smuggled into these blocks is rejected by
 `additionalProperties: false`.
+
+## `labels` — themed render-label slots (optional, additive)
+
+The render layer ([`docs/render-layer.md`](render-layer.md)) contributes
+neutral scaffolding for the handful of labels schema v1 originally had no
+slot for. The `labels` block lets a pack theme them; **every slot is
+optional and falls back to the neutral default**, so all pre-existing packs
+stay valid AND render byte-identically without the block:
+
+| Slot | Themes | Neutral fallback |
+|---|---|---|
+| `offline_return` | the offline-gains line appended to the status description | the bare gain lines |
+| `status_title` | status-view embed title | `{theme.emoji} {theme.name}` |
+| `shop_title` | shop-view embed title | `{theme.emoji} {theme.name}` |
+| `shop_description` | shop-view embed description | `theme.description` |
+| `level` | the level label in shop field values | `Lv` |
+| `prestige_progress` | label before the prestige progress numbers | none (bare `N / M`) |
+
+**`offline_return` substitution semantics** (exact): the template must
+contain the literal token `{gains}` exactly once and no other `{`/`}`
+characters (red gate). At render time the token — and ONLY the token; no
+other formatting or escaping is applied — is replaced with the formatted
+gains text (one `+{amount} {emoji} {name}` line per currency gained,
+newline-joined), and the resulting line is appended to the theme
+description after a blank line. The gains text is numeric-bearing so it
+CLAMPS to the room left by the fixed template text; the template itself is
+theme-sourced so it is never truncated (overflow raises, per the render
+layer's two-tier budget policy).
+
+**Budget arithmetic** (why composed output cannot bust embed caps):
+
+- *Offline line*: description cap 4096 ≥ `theme.description` (≤ 1024) +
+  `"\n\n"` (2) + template minus token (≤ 256 − 7 = 249) = 1275 fixed,
+  leaving ≥ 2821 chars for the substituted gains, which clamp to exactly
+  the room available.
+- *Titles* (`status_title`, `shop_title`): rendered verbatim, nothing
+  composed in — budget equals the 256-char title cap.
+- *`shop_description`*: verbatim as the embed description — 1024 ≤ 4096.
+- *`level`*: shop value composes `{mark} {label} N → N+1 · cost {emoji}
+  {name}` — mark (≤ 2) + label (≤ 32) + emoji (≤ 32) + name (≤ 64) +
+  separators (≤ 10) ≤ ~140 of the 1024 value cap, ≥ 880 for digits; the
+  whole value is number-bearing and clamps.
+- *`prestige_progress`*: value composes `{mark} {label} N / M` — mark +
+  label (≤ 64) + separators ≤ ~70 of 1024, ≥ 950 for digits; clamps.
 
 ## Referential checks (enforced by the gate, beyond JSON Schema)
 
@@ -104,6 +161,10 @@ any numeric field smuggled into these blocks is rejected by
   a pack lives at `themes/<theme.id>.yaml`. Catalog tooling and setup codes
   resolve packs by id, so a mismatched filename would ship a pack unreachable
   by the name it answers to. Checked per file; a mismatch is a red gate.
+- `labels.offline_return`, when present, contains the substitution token
+  `{gains}` **exactly once**, and no other `{`/`}` characters — an unknown
+  placeholder (or a stray brace) is a red gate, so render-time substitution
+  can never hit a token it does not know.
 - The pack must load through `idle_engine.theme.load_theme` — the schema's
   ground truth is what the engine actually accepts.
 - **Catalog-wide** (checked across all of `themes/`, not per file):
