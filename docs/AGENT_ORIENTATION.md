@@ -64,6 +64,14 @@ themes/*.yaml` locally).
   superbot-next plugin renders these verbatim.
 - [`../review-queue.md`](../review-queue.md) — external-review rows.
 - [`retro/questions.md`](retro/questions.md) — open lane questions.
+- [`retro/2026-07-11-lane-retro.md`](retro/2026-07-11-lane-retro.md) — the
+  founding-session retro: the moved ORDER 002 self-review, coordinator
+  operations knowledge (worktree topology, wake loop, rate-limit ladder),
+  and the in-chat owner rulings (OA-001/OA-002/idea-batch mandate).
+- [`retro/2026-07-11-archive-ready.md`](retro/2026-07-11-archive-ready.md) —
+  the archive-ready snapshot: true state at close-out, the ⚑ wait-list, and
+  the resume checklist for a fresh session (incl. re-arming the Q-0265 wake
+  loop).
 - [`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md) +
   [`design/economy-v1.md`](design/economy-v1.md) — the PRE-REGISTERED
   economy: curve shapes, provisional parameters, pacing targets T1–T10, and

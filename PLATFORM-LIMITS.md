@@ -16,3 +16,7 @@
   heartbeat is the only readable record; trust git over any panel.
 - **Shared token rate limits** fleet-wide: on "rate limit exceeded", record
   verbatim, back off.
+- **PR can stall with ZERO check runs** (`mergeable_state: unknown` — GitHub
+  never built the merge ref, so no workflow dispatches; observed ~5 min on
+  PR #61): a `git rebase` + `push --force-with-lease` retriggers checks
+  instantly. Rebase, don't wait.
