@@ -1,10 +1,10 @@
 # superbot-idle · status
-updated: 2026-07-11T17:52:45Z
+updated: 2026-07-11T18:16:32Z
 phase: STEADY-STATE HOLD — founding package complete, volume backlog cleared honestly (44 PRs, zero denials, zero parked); lane deliberately holds new engine surface pending PLUG-001 (plugin contract upstream), SIM-001 (Simulator verdict), or new inbox ORDERs; chain (15-min) + failsafe cron continue monitoring inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: achievements layer (PRs #53+#56)
+last-shipped: bounded multipliers + buy-max + union hygiene (PRs #58–#63)
 blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
 orders: acked=000-002 done=000-002
 
@@ -81,7 +81,10 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 - ORDER 001 (model attribution, Q-0262) — DONE (PRs #47 claim + #48 build): .sessions/README.md `📊 Model:` marker confirmed present and strengthened with the standing-rule instructions (family-level, harness-self-reported, never the Routines screen); fired card .sessions/2026-07-11-order-001-model-attribution.md carries `📊 Model: fable-5` from the session's own harness self-report (exact id claude-fable-5); legacy audit: all 18 prior cards already carry the line (all fable-5), none rewritten; 827 tests + check --strict green.
 - SIM-001 executable harness — DONE (PRs #52+#54): tools/simulate.py deterministic runner of the pre-registered scenarios S1–S3 driving the REAL engine functions, docs/design/sim-harness.md, provisional results committed (docs/design/sim-results-2026-07-11-provisional.json); suite 827 → 838.
 - achievements/milestones layer — DONE (PRs #53+#56): idle_engine milestones with engine-derived slots owned/lifetime/prestige ×3, pre-registered PROVISIONAL numbers in docs/design/achievements-v0.md, +5%/earn global bonus max +45%, milestones persist through prestige, save format v2 with first real v1→v2 migration, schema noun slots filled in 3 packs, budget-safe render_achievements view; test-first, suite 838 → 943.
-- Suite: 24 → 943 tests green. No parked PRs, no denials.
+- buy-max/bulk-purchase math — DONE (PRs #59+#60): exact per-level-floored bulk cost with pinned 403-vs-404 naive-closed-form divergence, bisected max_affordable fast at 10^3000 scale, atomic purchase_upgrades; +67 tests.
+- bounded theme-multiplier mechanism — DONE (PRs #58+#61): schema-declared 90..110 bounds on per-generator rate_multiplier_pct, loader defense-in-depth, single-floor fold extended to //10^8 with byte-identical neutral behavior, catalog all-neutral values sim-gated per docs/design/theme-balance-v0.md — the founding "bounded multipliers" clause now exercised; +30 tests.
+- append-only-ledger union hygiene — DONE (PRs #62+#63): root .gitattributes merge=union for guard-fires.jsonl + telemetry/model-usage.jsonl, union behavior demonstrated, ends the recurring rebase conflicts.
+- Suite: 24 → 1040 tests green. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
@@ -110,11 +113,12 @@ PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 - Ask: a contract pointer, or an ETA for exemplar seeding.
 - Until then, adapter work is evidence-blocked by design — no speculative code, per docs/plugin-adapter-scoping.md § UNVERIFIED.
 
+## KIT-001 — ⚑ to manager: kit-level suggestion
+- Plant merge=union gitattributes for append-only ledgers fleet-wide (host-side proof: PR #63; four slices had hand-resolved guard-fires conflicts before it).
+
 ## QUEUE
-- IN PROGRESS: buy-max/bulk-purchase math (concurrent worker holds claims/branches)
-- IN PROGRESS: bounded theme-multiplier mechanism (concurrent worker holds claims/branches)
-- NEXT: golden save corpus
-- NEXT: timed events (data-only) exploration
+- IN PROGRESS: golden save-file corpus (concurrent worker holds worktree)
+- NEXT: timed events (data-only) scoping
 - ON HOLD-PENDING-UPSTREAM: plugin adapter (PLUG-001)
 - ON HOLD-PENDING-UPSTREAM: economy tuning (SIM-001)
 - DEFERRED: memoized rate table (needs bot runtime)
