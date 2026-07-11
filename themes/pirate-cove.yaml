@@ -1,0 +1,63 @@
+# pirate-cove — theme pack #10 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: pirate-cove
+  name: Pirate Cove
+  description: A hidden smugglers' cove where every tide brings in doubloons and nobody asks where they came from.
+  emoji: "🏴‍☠️"
+  embed_color: "#0E7490"
+
+currencies:
+  - id: primary
+    name: doubloons
+    description: Salt-crusted gold doubloons, counted twice and trusted never.
+    emoji: "🪙"
+  - id: prestige
+    name: cursed relics
+    description: Trinkets from ships that should have stayed sunk — proof of hoards buried and horizons chased.
+    emoji: "⚱️"
+
+generators:
+  - id: tier1
+    name: smuggler skiff
+    description: A low-slung skiff that slips past the customs sloop with a hold full of doubloons.
+    emoji: "🛶"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: tavern crew
+    description: A rowdy tavern crew that fleeces every sailor foolish enough to play dice with pirates.
+    emoji: "🍻"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: patched black sails
+    description: New sailcloth dyed midnight black; the skiff runs faster and the customs sloop sees nothing.
+    emoji: "⛵"
+    target: tier1
+  - id: boost2
+    name: double rum rations
+    description: Twice the rum makes the crew twice as charming; the dice keep landing the cove's way.
+    emoji: "🥃"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: bury the treasure and set sail
+  action_description: Sink the chest beneath the palm, burn the map into memory, and chase a fresh horizon — the sea remembers your legend.
+  action_emoji: "🗺️"
+
+labels:
+  offline_return: "While ye were ashore, the tide kept the smugglers busy: {gains}"
+  status_title: "🏴‍☠️ Pirate Cove — the captain's ledger"
+  shop_title: "⚓ The Quartermaster's Stores"
+  shop_description: Spend doubloons to keep the skiffs swift and the crew wicked.
+  level: Infamy level
+  prestige_progress: "lifetime doubloons toward the buried chest:"

@@ -18,11 +18,14 @@
     "prestige": 2
   },
   "themes": [
+    "ant-colony",
     "cyber-city",
     "deep-sea-station",
     "dragon-hoard",
     "egg-farm",
     "haunted-manor",
+    "idol-agency",
+    "pirate-cove",
     "potion-brewery",
     "royal-bakery",
     "space-colony",
@@ -35,12 +38,77 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 45,
-    "tolerance": 55,
+    "valid": 60,
+    "tolerance": 73,
     "errors": 25
   },
   "vectors": {
     "valid": [
+      {
+        "name": "ant-colony--all-on",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07616e742d636f6c6f6e79",
+        "crc16_hex": "805e",
+        "code": "IDLE1-0XGPWX1DCDQPRVVEF605W"
+      },
+      {
+        "name": "ant-colony--all-off",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00616e742d636f6c6f6e79",
+        "crc16_hex": "95dd",
+        "code": "IDLE1-01GPWX1DCDQPRVVEF6AXT"
+      },
+      {
+        "name": "ant-colony--only-offline_progress",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01616e742d636f6c6f6e79",
+        "crc16_hex": "4a1d",
+        "code": "IDLE1-05GPWX1DCDQPRVVEF551T"
+      },
+      {
+        "name": "ant-colony--only-upgrades",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02616e742d636f6c6f6e79",
+        "crc16_hex": "2c1c",
+        "code": "IDLE1-09GPWX1DCDQPRVVEF4P1R"
+      },
+      {
+        "name": "ant-colony--only-prestige",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04616e742d636f6c6f6e79",
+        "crc16_hex": "e65f",
+        "code": "IDLE1-0HGPWX1DCDQPRVVEF7K5Y"
+      },
       {
         "name": "cyber-city--all-on",
         "config": {
@@ -367,6 +435,136 @@
         "code": "IDLE1-0HM62XBEEHJP8BBDC5Q6YWQN58"
       },
       {
+        "name": "idol-agency--all-on",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0769646f6c2d6167656e6379",
+        "crc16_hex": "e7cf",
+        "code": "IDLE1-0XMP8VVC5NGPESBECDWYFKR"
+      },
+      {
+        "name": "idol-agency--all-off",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0069646f6c2d6167656e6379",
+        "crc16_hex": "0e40",
+        "code": "IDLE1-01MP8VVC5NGPESBECDWGWG0"
+      },
+      {
+        "name": "idol-agency--only-offline_progress",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0169646f6c2d6167656e6379",
+        "crc16_hex": "422f",
+        "code": "IDLE1-05MP8VVC5NGPESBECDWM4BR"
+      },
+      {
+        "name": "idol-agency--only-upgrades",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0269646f6c2d6167656e6379",
+        "crc16_hex": "90df",
+        "code": "IDLE1-09MP8VVC5NGPESBECDWS1QR"
+      },
+      {
+        "name": "idol-agency--only-prestige",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0469646f6c2d6167656e6379",
+        "crc16_hex": "353f",
+        "code": "IDLE1-0HMP8VVC5NGPESBECDWKAFR"
+      },
+      {
+        "name": "pirate-cove--all-on",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "077069726174652d636f7665",
+        "crc16_hex": "07ec",
+        "code": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0"
+      },
+      {
+        "name": "pirate-cove--all-off",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "007069726174652d636f7665",
+        "crc16_hex": "ee63",
+        "code": "IDLE1-01R6JWK1EHJJTRVFESJYWRR"
+      },
+      {
+        "name": "pirate-cove--only-offline_progress",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "017069726174652d636f7665",
+        "crc16_hex": "a20c",
+        "code": "IDLE1-05R6JWK1EHJJTRVFESJT430"
+      },
+      {
+        "name": "pirate-cove--only-upgrades",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "027069726174652d636f7665",
+        "crc16_hex": "70fc",
+        "code": "IDLE1-09R6JWK1EHJJTRVFESJQ1Z0"
+      },
+      {
+        "name": "pirate-cove--only-prestige",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "047069726174652d636f7665",
+        "crc16_hex": "d51c",
+        "code": "IDLE1-0HR6JWK1EHJJTRVFESJXA70"
+      },
+      {
         "name": "potion-brewery--all-on",
         "config": {
           "theme_id": "potion-brewery",
@@ -628,6 +826,78 @@
       }
     ],
     "tolerance": [
+      {
+        "name": "ant-colony--lowercase",
+        "input": "idle1-0xgpwx1dcdqprvvef605w",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "ant-colony--hyphen-grouped",
+        "input": "IDLE1-0XGP-WX1D-CDQP-RVVE-F605-W",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "ant-colony--lookalike-O-for-0",
+        "input": "IDLE1-OXGPWX1DCDQPRVVEF6O5W",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "ant-colony--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XGPWXIDCDQPRVVEF605W",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "ant-colony--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XGPWXLDCDQPRVVEF605W",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "ant-colony--kitchen-sink",
+        "input": "idle1-oxgp-wxld-cdqp-rvve-f6o5-w",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
+        "config": {
+          "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
       {
         "name": "cyber-city--lowercase",
         "input": "idle1-0xhqjrk5e8pp6tbmf4r42",
@@ -989,6 +1259,150 @@
         "note": "lowercase + hyphen groups + look-alike folds combined"
       },
       {
+        "name": "idol-agency--lowercase",
+        "input": "idle1-0xmp8vvc5ngpesbecdwyfkr",
+        "canonical": "IDLE1-0XMP8VVC5NGPESBECDWYFKR",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "idol-agency--hyphen-grouped",
+        "input": "IDLE1-0XMP-8VVC-5NGP-ESBE-CDWY-FKR",
+        "canonical": "IDLE1-0XMP8VVC5NGPESBECDWYFKR",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "idol-agency--lookalike-O-for-0",
+        "input": "IDLE1-OXMP8VVC5NGPESBECDWYFKR",
+        "canonical": "IDLE1-0XMP8VVC5NGPESBECDWYFKR",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "idol-agency--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IMP8VVC5NGPESBECDWGWG0",
+        "canonical": "IDLE1-01MP8VVC5NGPESBECDWGWG0",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "idol-agency--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LMP8VVC5NGPESBECDWGWG0",
+        "canonical": "IDLE1-01MP8VVC5NGPESBECDWGWG0",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "idol-agency--kitchen-sink",
+        "input": "idle1-oxmp-8vvc-5ngp-esbe-cdwy-fkr",
+        "canonical": "IDLE1-0XMP8VVC5NGPESBECDWYFKR",
+        "config": {
+          "theme_id": "idol-agency",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "pirate-cove--lowercase",
+        "input": "idle1-0xr6jwk1ehjjtrvfesjgfv0",
+        "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "pirate-cove--hyphen-grouped",
+        "input": "IDLE1-0XR6-JWK1-EHJJ-TRVF-ESJG-FV0",
+        "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "pirate-cove--lookalike-O-for-0",
+        "input": "IDLE1-OXR6JWK1EHJJTRVFESJGFVO",
+        "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "pirate-cove--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XR6JWKIEHJJTRVFESJGFV0",
+        "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "pirate-cove--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XR6JWKLEHJJTRVFESJGFV0",
+        "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "pirate-cove--kitchen-sink",
+        "input": "idle1-oxr6-jwkl-ehjj-trvf-esjg-fvo",
+        "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
+        "config": {
+          "theme_id": "pirate-cove",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
         "name": "potion-brewery--lowercase",
         "input": "idle1-0xr6yx39dxq2trkjcnvpawkska80",
         "canonical": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80",
@@ -1277,11 +1691,11 @@
         "note": "lowercase + hyphen groups + look-alike folds combined"
       },
       {
-        "name": "cyber-city--surrounding-whitespace",
-        "input": "  IDLE1-0XHQJRK5E8PP6TBMF4R42 \n",
-        "canonical": "IDLE1-0XHQJRK5E8PP6TBMF4R42",
+        "name": "ant-colony--surrounding-whitespace",
+        "input": "  IDLE1-0XGPWX1DCDQPRVVEF605W \n",
+        "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
         "config": {
-          "theme_id": "cyber-city",
+          "theme_id": "ant-colony",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true
@@ -1304,25 +1718,25 @@
       },
       {
         "name": "prefix-wrong-tag",
-        "input": "SETUP1-0XHQJRK5E8PP6TBMF4R42",
+        "input": "SETUP1-0XGPWX1DCDQPRVVEF605W",
         "error": "MalformedCodeError",
         "note": "tag must be IDLE"
       },
       {
         "name": "prefix-non-numeric-version",
-        "input": "IDLEX-0XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLEX-0XGPWX1DCDQPRVVEF605W",
         "error": "MalformedCodeError",
         "note": "version must be a decimal integer"
       },
       {
         "name": "prefix-leading-zero-version",
-        "input": "IDLE01-0XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLE01-0XGPWX1DCDQPRVVEF605W",
         "error": "MalformedCodeError",
         "note": "leading-zero version violates the prefix grammar (no leading zeros) \u2014 never parsed as v1, even around a valid v1 body"
       },
       {
         "name": "prefix-leading-zero-version-multi-digit",
-        "input": "IDLE010-0XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLE010-0XGPWX1DCDQPRVVEF605W",
         "error": "MalformedCodeError",
         "note": "leading zero ahead of a multi-digit version \u2014 never zero-stripped into version 10"
       },
@@ -1352,49 +1766,49 @@
       },
       {
         "name": "non-canonical-padding",
-        "input": "IDLE1-0XHQJRK5E8PP6TBMF4R43",
+        "input": "IDLE1-0XGPWX1DCDQPRVVEF605Z",
         "error": "MalformedCodeError",
         "note": "trailing padding bits must be zero \u2014 one canonical spelling per payload"
       },
       {
         "name": "unknown-version-0",
-        "input": "IDLE0-0XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLE0-0XGPWX1DCDQPRVVEF605W",
         "error": "UnknownVersionError",
         "note": "version 0 is not v1 \u2014 rejected before body parsing"
       },
       {
         "name": "unknown-version-2",
-        "input": "IDLE2-0XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLE2-0XGPWX1DCDQPRVVEF605W",
         "error": "UnknownVersionError",
         "note": "future versions fail loud, never misparse"
       },
       {
         "name": "unknown-version-42",
-        "input": "IDLE42-0XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLE42-0XGPWX1DCDQPRVVEF605W",
         "error": "UnknownVersionError",
         "note": "any version other than 1"
       },
       {
         "name": "checksum-tampered-payload",
-        "input": "IDLE1-1XHQJRK5E8PP6TBMF4R42",
+        "input": "IDLE1-1XGPWX1DCDQPRVVEF605W",
         "error": "ChecksumError",
         "note": "payload edited, checksum now disagrees"
       },
       {
         "name": "checksum-tampered-checksum",
-        "input": "IDLE1-0XHQJRK5E8PP6TBMF0R42",
+        "input": "IDLE1-0XGPWX1DCDQPRVVEF005W",
         "error": "ChecksumError",
         "note": "checksum bytes edited"
       },
       {
         "name": "unknown-flag-bit-3",
-        "input": "IDLE1-1XHQJRK5E8PP6TBMF78G8",
+        "input": "IDLE1-1XGPWX1DCDQPRVVEF5GHP",
         "error": "UnknownFeatureError",
         "note": "flags bit 3 is undefined in v1 (valid checksum)"
       },
       {
         "name": "unknown-flag-bit-7",
-        "input": "IDLE1-GXHQJRK5E8PP6TBMF42XW",
+        "input": "IDLE1-GXGPWX1DCDQPRVVEF6TW2",
         "error": "UnknownFeatureError",
         "note": "flags bit 7 is undefined in v1 (valid checksum)"
       },
