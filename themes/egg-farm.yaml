@@ -14,6 +14,10 @@ currencies:
     name: eggs
     description: Fresh eggs, the farm's lifeblood.
     emoji: "🥚"
+  - id: prestige
+    name: golden eggs
+    description: Gleaming golden eggs — proof of farms sold and fortunes past.
+    emoji: "🥇"
 
 generators:
   - id: tier1
@@ -22,3 +26,17 @@ generators:
     emoji: "🐔"
     produces: primary
     base_rate: 1
+
+upgrades:
+  - id: boost1
+    name: bigger henhouse
+    description: A roomier henhouse; every hen in the coop lays that bit faster.
+    emoji: "🏠"
+    target: tier1
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: sell the farm
+  action_description: Sell the whole farm and start over with golden eggs in hand.
+  action_emoji: "🌟"

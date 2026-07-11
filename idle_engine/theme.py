@@ -1,19 +1,25 @@
 """Theme loading — the SKIN side of the CORE/SKIN split.
 
 A theme pack is a data-only YAML file. It supplies every player-visible
-noun: theme name, currency names, generator names, flavor text, emoji,
+noun: theme name, currency names, generator names, upgrade names, the
+prestige currency's and prestige action's names, flavor text, emoji,
 and embed color. This module maps those nouns onto opaque engine ids;
-nothing in this package hard-codes any theme vocabulary.
+nothing in this package hard-codes any theme vocabulary. Economy
+numbers (cost curves, effects, thresholds) never ride in the pack —
+they come from :mod:`idle_engine.economy` (pre-registered, CORE side).
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
 
+from idle_engine import economy
+from idle_engine.prestige import PrestigeSpec
 from idle_engine.state import GeneratorSpec
+from idle_engine.upgrades import UpgradeSpec
 
 
 @dataclass(frozen=True)
@@ -35,6 +41,24 @@ class ThemeGenerator:
 
 
 @dataclass(frozen=True)
+class ThemeUpgrade:
+    upgrade_id: str
+    name: str
+    description: str
+    emoji: str
+    target: str
+
+
+@dataclass(frozen=True)
+class ThemePrestige:
+    currency: str
+    measures: str
+    action_name: str
+    action_description: str
+    action_emoji: str
+
+
+@dataclass(frozen=True)
 class Theme:
     theme_id: str
     name: str
@@ -43,6 +67,8 @@ class Theme:
     embed_color: str
     currencies: dict[str, ThemeCurrency]
     generators: dict[str, ThemeGenerator]
+    upgrades: dict[str, ThemeUpgrade] = field(default_factory=dict)
+    prestige: ThemePrestige | None = None
 
     def currency_name(self, currency_id: str) -> str:
         return self.currencies[currency_id].name
@@ -50,12 +76,38 @@ class Theme:
     def generator_name(self, generator_id: str) -> str:
         return self.generators[generator_id].name
 
+    def upgrade_name(self, upgrade_id: str) -> str:
+        return self.upgrades[upgrade_id].name
+
     def generator_specs(self) -> list[GeneratorSpec]:
         """Mechanical specs for the engine, stripped of all display data."""
         return [
             GeneratorSpec(spec_id=g.generator_id, produces=g.produces, base_rate=g.base_rate)
             for g in self.generators.values()
         ]
+
+    def upgrade_specs(self) -> list[UpgradeSpec]:
+        """Engine upgrade specs: theme names the slot, economy prices it."""
+        by_id = {g.generator_id: g for g in self.generators.values()}
+        return [
+            economy.build_upgrade_spec(
+                u.upgrade_id,
+                GeneratorSpec(
+                    spec_id=u.target,
+                    produces=by_id[u.target].produces,
+                    base_rate=by_id[u.target].base_rate,
+                ),
+            )
+            for u in self.upgrades.values()
+        ]
+
+    def prestige_spec(self) -> PrestigeSpec | None:
+        """Engine prestige spec, or None when the pack declares no track."""
+        if self.prestige is None:
+            return None
+        return economy.build_prestige_spec(
+            awards=self.prestige.currency, measures=self.prestige.measures
+        )
 
 
 def _require_str(mapping: dict, key: str, where: str) -> str:
@@ -122,6 +174,57 @@ def load_theme(path: str | Path) -> Theme:
             base_rate=base_rate,
         )
 
+    upgrades: dict[str, ThemeUpgrade] = {}
+    raw_upgrades = data.get("upgrades")
+    if raw_upgrades is not None:
+        if not isinstance(raw_upgrades, list) or not raw_upgrades:
+            raise ValueError(f"{path}: 'upgrades', when present, must be a non-empty list")
+        for i, entry in enumerate(raw_upgrades):
+            if not isinstance(entry, dict):
+                raise ValueError(f"{path}:upgrades[{i}] must be a mapping")
+            w = f"{path}:upgrades[{i}]"
+            uid = _require_str(entry, "id", w)
+            if uid in upgrades:
+                raise ValueError(f"{w}: duplicate upgrade id {uid!r}")
+            target = _require_str(entry, "target", w)
+            if target not in generators:
+                raise ValueError(
+                    f"{w}: 'target' ({target!r}) is not a declared generator id"
+                )
+            upgrades[uid] = ThemeUpgrade(
+                upgrade_id=uid,
+                name=_require_str(entry, "name", w),
+                description=_require_str(entry, "description", w),
+                emoji=_require_str(entry, "emoji", w),
+                target=target,
+            )
+
+    prestige: ThemePrestige | None = None
+    raw_prestige = data.get("prestige")
+    if raw_prestige is not None:
+        if not isinstance(raw_prestige, dict):
+            raise ValueError(f"{path}: 'prestige', when present, must be a mapping")
+        w = f"{path}:prestige"
+        currency = _require_str(raw_prestige, "currency", w)
+        measures = _require_str(raw_prestige, "measures", w)
+        for label, cid in (("currency", currency), ("measures", measures)):
+            if cid not in currencies:
+                raise ValueError(
+                    f"{w}: {label!r} ({cid!r}) is not a declared currency id"
+                )
+        if currency == measures:
+            raise ValueError(
+                f"{w}: 'currency' and 'measures' must differ (a track cannot "
+                f"measure the currency it awards)"
+            )
+        prestige = ThemePrestige(
+            currency=currency,
+            measures=measures,
+            action_name=_require_str(raw_prestige, "action_name", w),
+            action_description=_require_str(raw_prestige, "action_description", w),
+            action_emoji=_require_str(raw_prestige, "action_emoji", w),
+        )
+
     return Theme(
         theme_id=theme_id,
         name=name,
@@ -130,4 +233,6 @@ def load_theme(path: str | Path) -> Theme:
         embed_color=embed_color,
         currencies=currencies,
         generators=generators,
+        upgrades=upgrades,
+        prestige=prestige,
     )

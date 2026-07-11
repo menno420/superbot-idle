@@ -38,6 +38,7 @@ composition headroom* so every render slot fits by construction:
 | Field name: `{emoji} {name}` | 256 | 64 + 32 | same |
 | Field value / embed description: `description` | 1024 | ≤ 1024 | description is the whole value |
 | Fields per embed | 25 | ≤ 5 currencies + ≤ 20 generators | 5 + 20 = 25 |
+| Upgrade-shop fields per embed | 25 | ≤ 20 upgrades | upgrades render on their own shop embed; 5 fields of headroom |
 | Accent color | decimal RGB | `#RRGGBB` pattern | parses losslessly |
 
 ## Fields
@@ -67,15 +68,38 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 | `generators[].emoji` | string | required | 1–32 chars |
 | `generators[].produces` | slug | required | MUST match a declared `currencies[].id` |
 | `generators[].base_rate` | integer | required | 1–1000, units of `produces`/generator/second |
+| `upgrades` | list | optional | 1–20 entries when present (own shop embed, 25-field cap) |
+| `upgrades[].id` | slug | required* | engine upgrade id being skinned |
+| `upgrades[].name` | string | required* | player-visible name, 1–64 chars |
+| `upgrades[].description` | string | required* | flavor text, 1–1024 chars |
+| `upgrades[].emoji` | string | required* | 1–32 chars |
+| `upgrades[].target` | slug | required* | MUST match a declared `generators[].id` |
+| `prestige` | mapping | optional | the prestige track's skin (nouns only) |
+| `prestige.currency` | slug | required* | prestige currency; MUST match a declared `currencies[].id`, ≠ `measures` |
+| `prestige.measures` | slug | required* | lifetime-progress currency; MUST match a declared `currencies[].id`, ≠ `currency` |
+| `prestige.action_name` | string | required* | player-visible reset-action name, 1–64 chars |
+| `prestige.action_description` | string | required* | flavor text, 1–1024 chars |
+| `prestige.action_emoji` | string | required* | 1–32 chars |
 
-Every field above is required in v1 — there are no optional fields yet; the
-compatibility promise reserves optional-add for later v1 revisions.
+`upgrades` and `prestige` are v1's first OPTIONAL top-level fields (added
+additively in slice (b), per the compatibility promise). `required*` means
+required *within its block when the block is present* — a pack may omit the
+whole block. **Both blocks are nouns-only**: cost curves, effect sizes,
+thresholds and award math live engine-side (`idle_engine/economy.py`,
+pre-registered in [`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md));
+any numeric field smuggled into these blocks is rejected by
+`additionalProperties: false`.
 
 ## Referential checks (enforced by the gate, beyond JSON Schema)
 
 - `generators[].produces` references a declared `currencies[].id`.
-- `currencies[].id` values are unique; `generators[].id` values are unique
-  (duplicates would silently collapse in the engine's id maps).
+- `currencies[].id` values are unique; `generators[].id` values are unique;
+  `upgrades[].id` values are unique (duplicates would silently collapse in
+  the engine's id maps).
+- `upgrades[].target` references a declared `generators[].id`.
+- `prestige.currency` and `prestige.measures` each reference a declared
+  `currencies[].id`, and differ from each other (a track cannot measure the
+  currency it awards).
 - The pack must load through `idle_engine.theme.load_theme` — the schema's
   ground truth is what the engine actually accepts.
 
