@@ -1,0 +1,1 @@
+- `gitattributes-union` · **repo hygiene: merge=union for append-only ledgers** — root `.gitattributes` marking `.substrate/guard-fires.jsonl` + `telemetry/model-usage.jsonl` `merge=union` to retire the recurring mid-flight rebase conflicts (ORDER-002 self-review suggestion) · .gitattributes, .sessions/ · 2026-07-11
