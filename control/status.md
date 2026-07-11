@@ -1,12 +1,63 @@
 # superbot-idle · status
-updated: 2026-07-11T04:23:53Z
+updated: 2026-07-11T10:11:04Z
 phase: STEADY-STATE HOLD — founding package complete, volume backlog cleared honestly (44 PRs, zero denials, zero parked); lane deliberately holds new engine surface pending PLUG-001 (plugin contract upstream), SIM-001 (Simulator verdict), or new inbox ORDERs; chain (15-min) + failsafe cron continue monitoring inbox; catalog can grow on demand (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: ORDER 001 — model-attribution ground truth; template guidance + compliant fired card (PRs #47+#48 → main b02f71c)
+last-shipped: ORDER 002 — 24h self-review committed below (§ Self-review 2026-07-11)
 blockers: plugin adapter (PLUG-001), economy tuning (SIM-001) — both upstream
-orders: acked=000-001 done=000-001
+orders: acked=000-002 done=000-002
+
+## Self-review 2026-07-11 (ORDER 002 — window 2026-07-10 ~20:00Z → 10:11Z)
+
+### What went wrong (all recovered in-session; none open)
+- **Transient GitHub rate limits (fleet-shared account):** auto-merge arming on PR #26 failed
+  twice — verbatim `API rate limit already exceeded for user ID 225413533` — and the documented
+  REST-merge-once-on-green fallback was used; PR #27 arming failed twice with the same error and
+  a paced retry succeeded. Recorded in § PLATFORM-LIMITS (heartbeat PR #29); workers pace GitHub
+  calls since.
+- **Real decoder bug, found and fixed red-first:** `decode_setup` accepted leading-zero version
+  prefixes (`IDLE01-` parsed as v1) contra docs/provisioning.md § Grammar ("no leading zeros").
+  Surfaced by the test-vector slice and deliberately reported-not-fixed in PR #25's ⚑; ruled
+  grammar-wins (docs/decisions.md D-0005), fixed in PR #28 — red-first `MalformedCodeError`
+  tests, `_PREFIX_RE` tightened, 2 new error vectors (23 → 25).
+- **Recurring mid-flight dirtying of `.substrate/guard-fires.jsonl`** (the kit appends to it on
+  every `check`, so any two concurrent sessions collide there): first union-merge on PR #27 when
+  the vectors PR #25 merged mid-flight, recurred on PR #38 (docs-grooming #37 merged mid-flight)
+  and PR #41 (heartbeat #39 merged mid-flight) — each resolved by stash → rebase → pop with full
+  re-verify before push, zero content conflicts (friction notes: session cards
+  themed-label-slots / shop-composition / state-serialization; a kit-level `merge=union`
+  gitattribute for `.substrate/*.jsonl` would retire the pattern).
+- **Doc drift found + fixed:** the orientation docs still described the seed state ~30 merges
+  later — docs/current-state.md an empty skeleton; architecture.md + AGENT_ORIENTATION.md still
+  saying theme-gate would be enforced "once ORDER 000 lands it in CI" long after OA-002 made it
+  a required check — corrected in docs-grooming PRs #35+#37.
+- **One mid-session strict-check red in slice (d):** the new economy design doc flagged as a
+  read-path orphan; cross-linked before PR #12 opened. Later slices applied the lesson
+  proactively ("no red loop" — setup-code-v1 card).
+- **Decide-and-flag schema tighten:** `upgrades[].description` cap 1024 → 768 in PR #38 —
+  required for the exact worst-case shop-composition arithmetic (768+1+139+116 = 1024);
+  in-bounds because the field had rendered NOWHERE before and zero shipped packs exceeded it
+  (catalog max 100 chars). Provenance noted in docs/theme-schema.md.
+- **No guard/classifier/merge denials, no parked PRs, no red CI on main at any point:** all 100
+  main-branch workflow runs to date concluded success; 48 lane PRs merged on green (50 repo PRs
+  total incl. the manager's inbox appends #46/#50).
+
+### Requiring owner attention (click-level, plain language)
+- **Nothing requires a click right now.** OA-001 (auto-merge + required `substrate-gate`) and
+  OA-002 (required `theme-gate`) were both done by the owner and are RESOLVED-VERIFIED below.
+- ⚑ **PLUG-001** (block below): the plugin adapter is blocked upstream — `superbot-plugin-hello`
+  is an EMPTY public repo and superbot-next publishes no plugin contract. If the owner controls
+  that repo, seeding the exemplar unblocks this lane; otherwise it waits on the manager.
+- ⚑ **SIM-001** (block below, Q-0264): economy numbers stay provisional until the fleet
+  Simulator runs the pre-registered scenarios — manager relay, no owner click.
+- FYI — decide-and-flag decisions taken without asking, all recorded: grammar-wins setup-code
+  ruling (PRs #26+#28, D-0005), description-cap tighten (PR #38), steady-state hold (PR #45).
+
+### Health
+green — founding package + volume backlog fully shipped (48 lane PRs merged-on-green, 827
+tests, 12 theme packs, ORDER 001 done); lane holds new engine surface pending
+PLUG-001/SIM-001 or new ORDERs; chain + failsafe cron watching the inbox.
 
 ## SHIPPED RECORD
 - ORDER 000 — DONE (PRs #1+#2): walking skeleton — idle_engine/ (state, tick, closed-form offline progress, theme loader), themes/egg-farm.yaml, theme-gate CI, core/skin guard test.
