@@ -1,0 +1,1 @@
+- `timed-events-scoping` · **timed events (data-only) scoping doc** — docs/design/timed-events-scoping.md: how time-boxed events (festivals/bonuses) could work as data-only theme content without breaking deterministic closed-form offline progress; design only, NO engine code · docs/design/, docs/AGENT_ORIENTATION.md, .sessions/ · 2026-07-11
