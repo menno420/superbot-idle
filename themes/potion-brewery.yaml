@@ -61,3 +61,43 @@ labels:
   shop_description: Trade bottled potions for a fiercer, faster brewery.
   level: Brew grade
   prestige_progress: "lifetime potions toward transcendence:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: a proper kitchen
+    description: Ten brewers bubbling at once — the hallway smells permanently of lavender and sulfur.
+    emoji: "🫕"
+  - id: owned-2
+    name: guild-sized operation
+    description: A hundred brewers; the guild sends inspectors just to watch.
+    emoji: "🏰"
+  - id: owned-3
+    name: the thousand-pot works
+    description: A thousand brewers — the town downwind reports prophetic dreams.
+    emoji: "🌋"
+  - id: lifetime-1
+    name: first crate corked
+    description: A thousand potions sealed and shelved without a single explosion. Well, one.
+    emoji: "📦"
+  - id: lifetime-2
+    name: royal supplier
+    description: A hundred thousand potions — the palace buys by the wagonload.
+    emoji: "👑"
+  - id: lifetime-3
+    name: legend of the still
+    description: Ten million potions; apprentices whisper your recipes like scripture.
+    emoji: "🌠"
+  - id: prestige-1
+    name: first drop of essence
+    description: One measure of arcane essence — the craft finally distilled to its truth.
+    emoji: "💧"
+  - id: prestige-2
+    name: essence in reserve
+    description: Five measures of essence, humming softly in their vials.
+    emoji: "🧿"
+  - id: prestige-3
+    name: transcendent brewer
+    description: Twenty-five measures — you no longer follow recipes; recipes follow you.
+    emoji: "🌌"

@@ -48,3 +48,43 @@ labels:
   shop_description: Trade fresh eggs for a busier, happier farm.
   level: Coop size
   prestige_progress: "lifetime eggs toward the sale:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first flock
+    description: Ten layers on the roost — the yard finally sounds like a farm.
+    emoji: "🐣"
+  - id: owned-2
+    name: hundred-hen farmstead
+    description: A hundred layers strong; the feed bill is now a line item.
+    emoji: "🐥"
+  - id: owned-3
+    name: poultry empire
+    description: A thousand layers — neighbors set their clocks by the morning chorus.
+    emoji: "🏆"
+  - id: lifetime-1
+    name: first thousand eggs
+    description: The first thousand eggs of the season, counted and crated.
+    emoji: "🧺"
+  - id: lifetime-2
+    name: county-fair famous
+    description: A hundred thousand eggs — the county fair knows your name.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: ten-million-egg legend
+    description: Ten million eggs. Songs are sung. Omelettes are legion.
+    emoji: "👑"
+  - id: prestige-1
+    name: first golden egg
+    description: The first farm sold — one golden egg, warm in your palm.
+    emoji: "🥇"
+  - id: prestige-2
+    name: golden clutch
+    description: Five golden eggs in the nest box of your retirement fund.
+    emoji: "💰"
+  - id: prestige-3
+    name: golden dynasty
+    description: Twenty-five golden eggs — a dynasty measured in farms sold.
+    emoji: "🌟"

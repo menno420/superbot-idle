@@ -1,4 +1,4 @@
-"""SAVE FORMAT v1 — canonical, versioned GameState serialization.
+"""SAVE FORMAT v2 — canonical, versioned GameState serialization.
 
 :func:`dump_state` turns a :class:`~idle_engine.state.GameState` into ONE
 canonical JSON string; :func:`load_state` turns that string back into an
@@ -6,14 +6,16 @@ equal ``GameState`` under strict validation. Both are pure and
 deterministic: stdlib only, no I/O, no clock, no randomness — the same
 state always dumps to the same bytes, so saves can be compared, hashed,
 and diffed as strings. The byte-level contract is published in
-``docs/persistence.md`` — v1 is FROZEN once merged; any change to what a
-``"state_version": 1`` document may contain is a version bump routed
-through the migration registry, never an in-place edit.
+``docs/persistence.md`` — each version is FROZEN once merged; any change
+to what a document of the current version may contain is a version bump
+routed through the migration registry, never an in-place edit. v2 added
+``milestones`` (the achievements slice) and shipped WITH the v1→v2
+migration in the same PR, per the version policy.
 
 Canonical form (the only spelling :func:`dump_state` emits)::
 
-    {"balances":{...},"last_seen":0,"lifetime":{...},"owned":{...},
-     "prestige":{...},"state_version":1,"upgrades":{...}}
+    {"balances":{...},"last_seen":0,"lifetime":{...},"milestones":{...},
+     "owned":{...},"prestige":{...},"state_version":2,"upgrades":{...}}
 
 - keys sorted lexicographically at every level, separators ``(",", ":")``
   (no whitespace), ``ensure_ascii`` escapes — byte-identical output on
@@ -21,7 +23,7 @@ Canonical form (the only spelling :func:`dump_state` emits)::
 - every quantity is a JSON integer: the engine's math is integer-exact
   (see :mod:`idle_engine.state`), and the save format refuses floats
   ANYWHERE so no platform can smuggle drift back in;
-- all seven v1 fields always present, including empty mappings — one
+- all eight v2 fields always present, including empty mappings — one
   state, one spelling.
 
 :func:`load_state` is tolerant of non-canonical *JSON* spellings
@@ -49,15 +51,24 @@ from idle_engine.state import GameState
 
 #: The save-format version this module WRITES. Bump only alongside a
 #: migration registered in :data:`_MIGRATIONS` covering the old version.
-STATE_VERSION = 1
+STATE_VERSION = 2
 
-#: The exact v1 top-level key set (including the version field itself).
-_V1_KEYS = frozenset(
-    {"state_version", "balances", "owned", "last_seen", "upgrades", "lifetime", "prestige"}
+#: The exact CURRENT (v2) top-level key set (including the version field).
+_CURRENT_KEYS = frozenset(
+    {
+        "state_version",
+        "balances",
+        "owned",
+        "last_seen",
+        "upgrades",
+        "lifetime",
+        "prestige",
+        "milestones",
+    }
 )
 
-#: v1 fields holding a ``{str: non-negative int}`` mapping, in GameState order.
-_MAPPING_FIELDS = ("balances", "owned", "upgrades", "lifetime", "prestige")
+#: v2 fields holding a ``{str: non-negative int}`` mapping, in GameState order.
+_MAPPING_FIELDS = ("balances", "owned", "upgrades", "lifetime", "prestige", "milestones")
 
 
 class SaveError(ValueError):
@@ -85,17 +96,35 @@ class FieldTypeError(SaveError):
 
 
 class NegativeValueError(SaveError):
-    """A quantity is a negative integer; every v1 quantity is >= 0."""
+    """A quantity is a negative integer; every save quantity is >= 0."""
+
+
+def _migrate_v1_to_v2(doc: dict) -> dict:
+    """v1 → v2: the achievements slice added the ``milestones`` mapping.
+
+    Achievements did not exist before v2, so every legacy save migrates
+    with an EMPTY earned set. A v1 document already carrying a
+    ``milestones`` key was never a valid v1 save — refuse it loudly
+    rather than silently wiping whatever it smuggled; any OTHER stray or
+    missing field rides through and is caught by the current-version
+    field-set validation, exactly as strict as for native saves.
+    """
+    if "milestones" in doc:
+        raise FieldSetError(
+            "v1 save already carries the v2-only field 'milestones' — "
+            "not a valid v1 document"
+        )
+    return {**doc, "milestones": {}, "state_version": 2}
 
 
 #: Migration registry: source version -> function returning the document
 #: migrated to source version + 1 (bumping ``state_version`` itself).
-#: EMPTY at v1 by design — there is nothing older than v1 — but the
-#: dispatch below is live and test-proven (a synthetic v0->v1 migration
-#: in tests/test_persistence.py), so the first real bump changes data,
-#: not machinery. Policy: a format change ships IN THE SAME PR as the
-#: migration that covers it; see docs/persistence.md § Version policy.
-_MIGRATIONS: dict[int, Callable[[dict], dict]] = {}
+#: Carries its first REAL entry since the v2 bump (achievements slice);
+#: the dispatch is additionally proven over multiple steps by a
+#: synthetic v0->v1 migration in tests/test_persistence.py. Policy: a
+#: format change ships IN THE SAME PR as the migration that covers it;
+#: see docs/persistence.md § Version policy.
+_MIGRATIONS: dict[int, Callable[[dict], dict]] = {1: _migrate_v1_to_v2}
 
 
 def _require_count(value: object, where: str) -> int:
@@ -120,7 +149,7 @@ def _require_mapping(value: object, name: str) -> dict[str, int]:
 
 
 def _validated_document(state: GameState) -> dict:
-    """The v1 document for ``state``, validating the state on the way out.
+    """The current-version document for ``state``, validating on the way out.
 
     Dumping refuses what loading would refuse, so every emitted string is
     loadable by construction and the round-trip guarantee has no blind
@@ -138,7 +167,7 @@ def _validated_document(state: GameState) -> dict:
 
 
 def dump_state(state: GameState) -> str:
-    """Serialize a GameState to its ONE canonical v1 JSON string.
+    """Serialize a GameState to its ONE canonical current-version JSON string.
 
     Pure and deterministic: sorted keys, no whitespace, ASCII escapes,
     integers only — the same state always returns byte-identical text.
@@ -205,15 +234,15 @@ def load_state(text: str) -> GameState:
     - :class:`MalformedSaveError` — not a string, not parseable JSON,
       non-JSON constants (``NaN``/``Infinity``), or a top level that is
       not an object.
-    - :class:`FieldSetError` — ``state_version`` missing, a v1 field
-      missing, or unknown extra fields present (checked as a SET, so the
-      message names every offender at once).
+    - :class:`FieldSetError` — ``state_version`` missing, a current-
+      version field missing, or unknown extra fields present (checked as
+      a SET, so the message names every offender at once).
     - :class:`FieldTypeError` — a present field or mapping entry has the
       wrong JSON type; floats and booleans are wrong types EVERYWHERE
       (``1.0`` and ``true`` are not counts).
     - :class:`UnknownVersionError` — an integer version this loader
       cannot reach v{current} from (checked before field validation, so
-      a future format is never misread as a broken v1 document).
+      a future format is never misread as a broken current document).
     - :class:`NegativeValueError` — a well-typed quantity below zero.
     """
     if not isinstance(text, str):
@@ -229,7 +258,7 @@ def load_state(text: str) -> GameState:
     doc = _migrate(doc, _read_version(doc))
 
     present = set(doc)
-    missing, unknown = _V1_KEYS - present, present - _V1_KEYS
+    missing, unknown = _CURRENT_KEYS - present, present - _CURRENT_KEYS
     if missing or unknown:
         raise FieldSetError(
             f"v{STATE_VERSION} save fields are wrong: "

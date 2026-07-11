@@ -45,6 +45,9 @@ class GameState:
 
     Persistent (survives a prestige reset):
       ``prestige`` maps prestige currency id -> integer units held.
+      ``milestones`` maps milestone spec_id -> ``1`` once earned
+      (meta-progression: awarding is explicit and never revoked — see
+      :mod:`idle_engine.achievements`).
       ``last_seen`` is the unix timestamp (integer seconds) up to which
       production has already been credited.
     """
@@ -55,6 +58,7 @@ class GameState:
     upgrades: dict[str, int] = field(default_factory=dict)
     lifetime: dict[str, int] = field(default_factory=dict)
     prestige: dict[str, int] = field(default_factory=dict)
+    milestones: dict[str, int] = field(default_factory=dict)
 
     def with_balances(self, balances: dict[str, int], last_seen: int) -> "GameState":
         """Return a new state with replaced balances and last_seen."""

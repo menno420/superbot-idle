@@ -11,6 +11,7 @@ is a lie.
 
 from __future__ import annotations
 
+from idle_engine.achievements import MilestoneSpec
 from idle_engine.prestige import PrestigeSpec
 from idle_engine.state import GeneratorSpec
 from idle_engine.upgrades import UpgradeSpec
@@ -38,6 +39,21 @@ PRESTIGE_AWARD_DIVISOR = 100_000
 #: Additive percent added to ALL production per prestige unit held.
 PRESTIGE_BONUS_PERCENT = 10
 
+# --- PROVISIONAL v0 milestone parameters (docs/design/achievements-v0.md) ----
+
+#: Threshold ladder for the ``owned`` track (TOTAL generators owned).
+MILESTONE_OWNED_THRESHOLDS = (10, 100, 1_000)
+
+#: Threshold ladder for the ``lifetime`` track (run-lifetime earnings of
+#: the measured currency — the prestige track's currency when declared).
+MILESTONE_LIFETIME_THRESHOLDS = (1_000, 100_000, 10_000_000)
+
+#: Threshold ladder for the ``prestige`` track (prestige units held).
+MILESTONE_PRESTIGE_THRESHOLDS = (1, 5, 25)
+
+#: Additive percent added to ALL production per milestone EARNED.
+MILESTONE_BONUS_PERCENT = 5
+
 
 def build_upgrade_spec(upgrade_id: str, target: GeneratorSpec) -> UpgradeSpec:
     """Price one theme-declared upgrade slot against the v0 curve table."""
@@ -61,3 +77,35 @@ def build_prestige_spec(awards: str, measures: str) -> PrestigeSpec:
         award_divisor=PRESTIGE_AWARD_DIVISOR,
         bonus_percent=PRESTIGE_BONUS_PERCENT,
     )
+
+
+def build_milestone_specs(
+    lifetime_currency: str, prestige_currency: str | None
+) -> list[MilestoneSpec]:
+    """The engine-derived milestone slots for one pack's roster.
+
+    Every pack gets the same pre-registered ladders — three ``owned``
+    rungs (total generators), three ``lifetime`` rungs bound to
+    ``lifetime_currency``, and, when the pack declares a prestige track,
+    three ``prestige`` rungs bound to ``prestige_currency``. Slot ids
+    are canonical (``owned-1`` … ``prestige-3``): the theme's optional
+    ``milestones`` block skins these ids with nouns, never creates or
+    reprices them.
+    """
+    ladders: list[tuple[str, str, tuple[int, ...]]] = [
+        ("owned", "", MILESTONE_OWNED_THRESHOLDS),
+        ("lifetime", lifetime_currency, MILESTONE_LIFETIME_THRESHOLDS),
+    ]
+    if prestige_currency is not None:
+        ladders.append(("prestige", prestige_currency, MILESTONE_PRESTIGE_THRESHOLDS))
+    return [
+        MilestoneSpec(
+            spec_id=f"{kind}-{rank}",
+            kind=kind,
+            subject=subject,
+            threshold=threshold,
+            bonus_percent=MILESTONE_BONUS_PERCENT,
+        )
+        for kind, subject, ladder in ladders
+        for rank, threshold in enumerate(ladder, 1)
+    ]
