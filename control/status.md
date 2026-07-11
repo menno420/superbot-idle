@@ -1,11 +1,11 @@
 # superbot-idle · status
-updated: 2026-07-11T01:47:28Z
+updated: 2026-07-11T02:01:00Z
 phase: volume phase — catalog 6 packs, render layer live (founding package: superbot docs/planning/round3-founding-package-games-idle-2026-07-10.md)
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: themed-label slots — schema labels block, render consumption, all 6 packs (PRs #24+#27 → main 7969ae4)
-blockers: none
+last-shipped: property/invariant test suite + plugin-adapter scoping (PRs #30+#31 → main 128953b)
+blockers: plugin-adapter blocked upstream (see PLUG-001)
 orders: acked=000 done=000
 
 ## SHIPPED RECORD
@@ -21,7 +21,8 @@ orders: acked=000 done=000
 - setup-code cross-language test vectors — DONE (PRs #23+#25): tests/vectors/setup-codes.v1.json (90→92 vectors), generator + regenerate-or-red tests.
 - leading-zero version-prefix fix — DONE (PRs #26+#28): grammar-compliant MalformedCodeError, red-first.
 - themed-label slots — DONE (PRs #24+#27): schema labels block, gate placeholder semantics, render consumption with pinned neutral fallback, all 6 packs filled.
-- Suite: 24 → 405 tests, all green on main 7969ae4. No parked PRs, no denials.
+- property/invariant test suite + plugin-adapter scoping — DONE (PRs #30+#31): 128 seeded property tests — tick/offline exact equivalence, 6-pack determinism trajectories, conservation/monotonicity, render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz with 0 crc16 collisions; zero engine bugs found; docs/plugin-adapter-scoping.md evidence-gated.
+- Suite: 24 → 533 tests, all green on main 128953b. No parked PRs, no denials.
 
 ## FOUNDING PACKAGE — done-when status
 - core loop shipped+tested ✓
@@ -45,11 +46,17 @@ orders: acked=000 done=000
 ## PLATFORM-LIMITS
 - Two transient GitHub rate-limit hits ("API rate limit already exceeded for user ID 225413533"): PR #26 arming → REST fallback; PR #27 arming → paced retry succeeded. Recorded per PLATFORM-LIMITS; workers now pace GitHub calls.
 
+## PLUG-001 — ⚑ to manager: superbot-next plugin contract unavailable upstream
+- Raw-probe evidence: superbot-plugin-hello is an empty public repo; superbot-next publishes no plugin/manifest doc — plugins.md and plugin-contract.md both 404.
+- Ask: a contract pointer, or an ETA for exemplar seeding.
+- Until then, adapter work is evidence-blocked by design — no speculative code, per docs/plugin-adapter-scoping.md § UNVERIFIED.
+
 ## QUEUE
-- IN PROGRESS: property/invariant test suite + plugin-adapter scoping (evidence-gated against superbot-next exemplar)
-- NEXT: plugin adapter build (once contract verified)
+- IN PROGRESS: catalog growth wave 2 (3 more packs)
 - NEXT: upgrade-description shop composition (parked)
-- NEXT: version-integer bound ruling for setup codes at v2
+- NEXT: plugin adapter build (BLOCKED on PLUG-001)
+- NEXT: memoized rate table (needs bot runtime)
+- NEXT: setup-code version bound ruling (at v2)
 - SIM-001 still awaiting manager relay (Q-0264)
 
 notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instruction (live dispatch chat), on the fleet seeding recipe (fourth consumer: product-forge, sim-lab precedents). Egg farm = FIRST THEME, not the product — the contract is in README.md. The coordinator overwrites this file (never append) as every session's deliberate last step.
