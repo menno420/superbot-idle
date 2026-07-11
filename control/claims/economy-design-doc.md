@@ -1,1 +1,0 @@
-- `feat/economy-design-v1` · **slice (d): economy design doc** — docs/design/economy-v1.md (pre-registered pacing targets + cost curves + Q-0264 sim request) + SIM-001 ⚑ status append · expected files: docs/design/economy-v1.md, tests/test_economy_design_doc.py, control/status.md, .sessions/ · 2026-07-11
