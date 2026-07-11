@@ -1,0 +1,9 @@
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Test caches
+.pytest_cache/
+
+# Claude Code harness working state (agent worktrees, local settings)
+.claude/
