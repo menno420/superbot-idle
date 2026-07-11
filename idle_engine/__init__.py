@@ -12,7 +12,15 @@ pre-registered in docs/design/ before any tuning.
 
 from idle_engine.state import GameState, GeneratorSpec
 from idle_engine.engine import offline_progress, production_per_second, tick
-from idle_engine.upgrades import UpgradeSpec, purchase_upgrade, upgrade_cost
+from idle_engine.upgrades import (
+    BulkPurchaseError,
+    UpgradeSpec,
+    bulk_upgrade_cost,
+    max_affordable_levels,
+    purchase_upgrade,
+    purchase_upgrades,
+    upgrade_cost,
+)
 from idle_engine.prestige import (
     PrestigeSpec,
     apply_prestige,
@@ -47,6 +55,7 @@ from idle_engine.render import (
 )
 
 __all__ = [
+    "BulkPurchaseError",
     "GameState",
     "GeneratorSpec",
     "MilestoneSpec",
@@ -61,8 +70,10 @@ __all__ = [
     "UpgradeSpec",
     "apply_prestige",
     "award_milestones",
+    "bulk_upgrade_cost",
     "embed_color_int",
     "load_theme",
+    "max_affordable_levels",
     "milestone_earned",
     "milestone_percent",
     "milestone_progress",
@@ -72,6 +83,7 @@ __all__ = [
     "prestige_eligible",
     "production_per_second",
     "purchase_upgrade",
+    "purchase_upgrades",
     "render_achievements",
     "render_prestige",
     "render_shop",

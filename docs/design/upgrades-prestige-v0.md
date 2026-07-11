@@ -34,6 +34,31 @@ rounding).
 | `UPGRADE_COST_GROWTH_NUM/DEN` | 115/100 (×1.15) | the classic idle-genre growth band (1.07–1.15); the high end keeps upgrade spam in check while generators (future cost curves) carry breadth |
 | `UPGRADE_EFFECT_PERCENT` | 25 | +25% of the target's base rate per level, additive (level L → ×(1 + 0.25·L)); additive-linear beats multiplicative-compounding for v0 because it cannot run away before the Simulator has pinned pacing |
 
+## Bulk purchase math — DERIVED, not new pre-registered numbers
+
+*(Buy-max slice addendum. Nothing on this page changed: the bulk API is
+arithmetic DERIVED from the curve above — no new parameter, no repricing.)*
+
+```
+bulk_cost(f, n)          = Σ_{L=f}^{f+n-1} cost(L)          exact, floors per level
+max_affordable(f, budget) = max { n : bulk_cost(f, n) <= budget }
+purchase_upgrades(n)      = n sequential purchases, one atomic spend
+```
+
+**Why no closed form:** each level's cost floors independently, so the
+geometric-series closed form with ONE final floor keeps fractional parts
+the per-level floors discard and systematically over-charges — on this
+very curve at egg-farm scale (base 60, ×1.15), the first five levels sum
+to **403** exactly while the single-floor closed form says **404**
+(pinned in `tests/test_bulk_purchase.py`). The exact sum is evaluated
+level by level with an incremental quotient/remainder recurrence
+(`idle_engine/upgrades.py`), and `max_affordable_levels` finds its argmax
+by exponential search + bisection over the monotone sum, deciding probes
+with the exact rational bounds `T(n) - n < bulk_cost(n) <= T(n)` — so a
+10^3000-scale budget resolves without a per-level scan. Bulk purchase is
+byte-identical to n sequential single purchases and all-or-nothing on
+insufficient funds (`BulkPurchaseError`, nothing spent).
+
 ## Effect application — SHAPE: percent fold, floor once per generator
 
 ```
