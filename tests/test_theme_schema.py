@@ -23,7 +23,9 @@ def egg_farm_data() -> dict:
 
 
 def write_pack(tmp_path: Path, data: dict) -> Path:
-    path = tmp_path / "pack.yaml"
+    # Named for the fixture's theme.id: the gate enforces id == filename stem,
+    # and these cases must red on THEIR needle, not on a fixture-name mismatch.
+    path = tmp_path / f"{data['theme']['id']}.yaml"
     path.write_text(yaml.safe_dump(data, allow_unicode=True), encoding="utf-8")
     return path
 

@@ -13,12 +13,24 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # Word-boundary match so e.g. "when" does not trip on "hen".
 # Extended for slice (b): upgrade/prestige nouns (henhouse, golden [eggs]).
 # Extended for slice (c): space-colony + potion-brewery distinctive nouns.
+# Extended for catalog growth: haunted-manor + deep-sea-station +
+# dragon-hoard distinctive nouns. Deliberately EXCLUDED as too generic for
+# a guard that scans engine prose/identifiers: "gold", "coin", "scale"
+# ("scales/scaling" is legitimate engine vocabulary), "surface", "station",
+# "village", "drone" — the packs' truly distinctive nouns below carry the
+# guard instead.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
     r"|henhouse|henhouses|golden"
     r"|colony|colonies|oxygen|solar|hydroponics|artifact|artifacts"
     r"|potion|potions|cauldron|cauldrons|brewery|breweries|alchemist"
-    r"|alchemists|arcane|grimoire|grimoires)\b",
+    r"|alchemists|arcane|grimoire|grimoires"
+    r"|manor|manors|haunted|ectoplasm|s[eé]ance|s[eé]ances|spirit|spirits"
+    r"|poltergeist|poltergeists|phantom|phantoms"
+    r"|pearl|pearls|abyssal|trench|trenches|oyster|oysters|submersible"
+    r"|submersibles|kelp|plankton|relic|relics"
+    r"|dragon|dragons|hoard|hoards|kobold|kobolds|lair|lairs|pickaxe"
+    r"|pickaxes|tribute|tributes)\b",
     re.IGNORECASE,
 )
 
@@ -53,6 +65,19 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("a Potion Brewery cauldron")
     assert FORBIDDEN_NOUNS.search("arcane essence")
     assert FORBIDDEN_NOUNS.search("the apprentice alchemist's grimoire")
+    assert FORBIDDEN_NOUNS.search("the Haunted Manor's ectoplasm")
+    assert FORBIDDEN_NOUNS.search("hold a séance for restless spirits")
+    assert FORBIDDEN_NOUNS.search("hold a seance")  # ASCII spelling too
+    assert FORBIDDEN_NOUNS.search("a poltergeist in the parlor")
+    assert FORBIDDEN_NOUNS.search("pearls from the oyster bed")
+    assert FORBIDDEN_NOUNS.search("abyssal relics from the trench")
+    assert FORBIDDEN_NOUNS.search("a submersible combing the kelp")
+    assert FORBIDDEN_NOUNS.search("the Dragon Hoard grows")
+    assert FORBIDDEN_NOUNS.search("a kobold miner's pickaxe")
+    assert FORBIDDEN_NOUNS.search("tribute from the lair")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")
+    assert not FORBIDDEN_NOUNS.search("rates scale with upgrade level")
+    assert not FORBIDDEN_NOUNS.search("goldilocks tick granularity")
+    assert not FORBIDDEN_NOUNS.search("inspirited")  # boundary: not 'spirit'

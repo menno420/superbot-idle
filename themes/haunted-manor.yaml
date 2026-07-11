@@ -1,0 +1,55 @@
+# haunted-manor — theme pack #4 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: haunted-manor
+  name: Haunted Manor
+  description: A creaking old manor whose restless spirits pay their rent in ectoplasm.
+  emoji: "🏚️"
+  embed_color: "#5E4B8B"
+
+currencies:
+  - id: primary
+    name: ectoplasm
+    description: Luminous spectral residue, skimmed nightly from the manor's cold spots.
+    emoji: "🌫️"
+  - id: prestige
+    name: restless spirits
+    description: Freed phantoms who owe you a favor — proof of manors settled and hauntings outgrown.
+    emoji: "👻"
+
+generators:
+  - id: tier1
+    name: haunted portrait
+    description: A portrait whose eyes follow you around the room, weeping a slow trickle of ectoplasm.
+    emoji: "🖼️"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: poltergeist parlor
+    description: A parlor of furniture-flinging poltergeists; all that racket condenses into ectoplasm.
+    emoji: "🪑"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: midnight candles
+    description: Candles lit at exactly midnight; the portrait broods harder and weeps faster.
+    emoji: "🕯️"
+    target: tier1
+  - id: boost2
+    name: creakier floorboards
+    description: Loosened floorboards give the poltergeists more to slam; the parlor's output rattles upward.
+    emoji: "🪵"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: hold a séance
+  action_description: Gather the household for one last séance and set every spirit free — they remember you kindly.
+  action_emoji: "📿"

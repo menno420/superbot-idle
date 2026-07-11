@@ -14,11 +14,15 @@ render bug. Human-readable twin: ``docs/theme-schema.md``.
 
 On top of JSON Schema, the gate enforces what a schema cannot express:
 unique currency/generator ids, ``produces`` referencing a declared
-currency, and that the pack actually loads through
+currency, ``theme.id`` equal to the pack's filename stem (catalog
+tooling and setup codes resolve packs by id, so a pack must live at
+``themes/<theme.id>.yaml``), and that the pack actually loads through
 ``idle_engine.theme.load_theme`` (the engine is ground truth). Across
 the catalog, ``theme.id`` must be unique — per-file validation cannot
 see two packs claiming the same id, so ``main`` collects ids from every
-pack that passed and fails on collisions.
+pack that passed and fails on collisions (the filename-stem rule makes
+that near-impossible within one directory, but ``.yaml``/``.yml`` twins
+share a stem, so the catalog check stays as defense-in-depth).
 
 Exits 0 when every pack passes, 1 on any violation, 2 when no packs
 exist (an empty themes/ directory is a wiring error, not a pass).
@@ -62,6 +66,12 @@ def _json_path(error: jsonschema.ValidationError) -> str:
 def _semantic_errors(data: dict, path: Path) -> list[str]:
     """Checks the JSON Schema cannot express (run only on schema-clean data)."""
     errors: list[str] = []
+    theme_id = data["theme"]["id"]
+    if theme_id != path.stem:
+        errors.append(
+            f"{path}:theme.id: {theme_id!r} must equal the filename stem "
+            f"{path.stem!r} (packs live at themes/<theme.id>.yaml)"
+        )
     currency_ids = [c["id"] for c in data["currencies"]]
     generator_ids = [g["id"] for g in data["generators"]]
     upgrade_ids = [u["id"] for u in data.get("upgrades", [])]

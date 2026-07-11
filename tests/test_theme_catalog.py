@@ -1,10 +1,14 @@
-"""Theme catalog (slice (c)): schema v1 proven on foreign content.
+"""Theme catalog: schema v1 proven on foreign content, at catalog scale.
 
-Two packs the schema was NOT designed around — space-colony and
-potion-brewery — must fill every slot egg-farm fills, load through the
-engine's theme loader, and drive the full engine cycle (tick, upgrade
-purchase, prestige reset) with their own nouns. Plus the catalog-level
-check per-file validation cannot see: cross-pack `theme.id` uniqueness.
+Slice (c) proved the schema on two packs it was NOT designed around
+(space-colony, potion-brewery); catalog growth added three more
+(haunted-manor, deep-sea-station, dragon-hoard). Every pack must fill
+every slot egg-farm fills, load through the engine's theme loader, and
+drive the full engine cycle (tick, upgrade purchase, prestige reset)
+with its own nouns. Plus the checks per-file JSON Schema cannot express:
+`theme.id` == filename stem (per file, both directions) and cross-pack
+`theme.id` uniqueness (defense-in-depth — reachable end-to-end only via
+`.yaml`/`.yml` stem twins now that the stem rule holds per file).
 """
 
 from pathlib import Path
@@ -27,14 +31,25 @@ ALL_PACKS = sorted(THEMES_DIR.glob("*.yaml"))
 EGG_FARM = THEMES_DIR / "egg-farm.yaml"
 SPACE_COLONY = THEMES_DIR / "space-colony.yaml"
 POTION_BREWERY = THEMES_DIR / "potion-brewery.yaml"
+HAUNTED_MANOR = THEMES_DIR / "haunted-manor.yaml"
+DEEP_SEA_STATION = THEMES_DIR / "deep-sea-station.yaml"
+DRAGON_HOARD = THEMES_DIR / "dragon-hoard.yaml"
 
 
-# --- the catalog ships three packs, all gate-green ---------------------------
+# --- the catalog ships six packs, all gate-green ------------------------------
 
 
-def test_catalog_ships_the_slice_c_packs():
-    assert SPACE_COLONY in ALL_PACKS and POTION_BREWERY in ALL_PACKS
-    assert len(ALL_PACKS) >= 3
+def test_catalog_ships_all_six_packs():
+    for pack in (
+        EGG_FARM,
+        SPACE_COLONY,
+        POTION_BREWERY,
+        HAUNTED_MANOR,
+        DEEP_SEA_STATION,
+        DRAGON_HOARD,
+    ):
+        assert pack in ALL_PACKS, f"missing shipped pack {pack.name}"
+    assert len(ALL_PACKS) >= 6
 
 
 def test_whole_catalog_passes_gate_including_cross_pack_checks(capsys):
@@ -105,6 +120,54 @@ def test_potion_brewery_nouns_resolve():
     assert theme.prestige.action_name == "transcend the craft"
 
 
+def test_haunted_manor_nouns_resolve():
+    theme = load_theme(HAUNTED_MANOR)
+    assert theme.theme_id == "haunted-manor"
+    assert theme.name == "Haunted Manor"
+    assert theme.currency_name("primary") == "ectoplasm"
+    assert theme.currency_name("prestige") == "restless spirits"
+    assert theme.generator_name("tier1") == "haunted portrait"
+    assert theme.generator_name("tier2") == "poltergeist parlor"
+    assert theme.upgrade_name("boost1") == "midnight candles"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "hold a séance"
+
+
+def test_deep_sea_station_nouns_resolve():
+    theme = load_theme(DEEP_SEA_STATION)
+    assert theme.theme_id == "deep-sea-station"
+    assert theme.name == "Deep-Sea Station"
+    assert theme.currency_name("primary") == "pearls"
+    assert theme.currency_name("prestige") == "abyssal relics"
+    assert theme.generator_name("tier1") == "oyster bed"
+    assert theme.generator_name("tier2") == "submersible drone"
+    assert theme.upgrade_name("boost1") == "plankton drip line"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "surface and resupply"
+
+
+def test_dragon_hoard_nouns_resolve():
+    theme = load_theme(DRAGON_HOARD)
+    assert theme.theme_id == "dragon-hoard"
+    assert theme.name == "Dragon Hoard"
+    assert theme.currency_name("primary") == "gold coins"
+    assert theme.currency_name("prestige") == "ancient scales"
+    assert theme.generator_name("tier1") == "kobold miner"
+    assert theme.generator_name("tier2") == "tribute village"
+    assert theme.upgrade_name("boost1") == "sharper pickaxes"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "burn it all and fly on"
+
+
 # --- every pack drives the engine end to end ---------------------------------
 
 
@@ -164,11 +227,13 @@ def test_catalog_errors_unit():
     assert "c.yaml" not in errors[0]
 
 
-def test_duplicate_theme_id_across_packs_reds_gate(tmp_path, capsys):
+def test_duplicate_theme_id_via_stem_twins_reds_gate(tmp_path, capsys):
+    # With id == filename stem enforced per file, two packs claiming one id
+    # can only BOTH pass per-file as `.yaml`/`.yml` stem twins — exactly the
+    # hole the catalog-level check still covers, end to end.
     src = EGG_FARM.read_text(encoding="utf-8")
-    (tmp_path / "a.yaml").write_text(src, encoding="utf-8")
-    # a second pack, individually valid, claiming the SAME theme.id
-    (tmp_path / "b.yaml").write_text(
+    (tmp_path / "egg-farm.yaml").write_text(src, encoding="utf-8")
+    (tmp_path / "egg-farm.yml").write_text(
         src.replace("name: Egg Farm", "name: Other Skin"), encoding="utf-8"
     )
     assert main(["theme_gate", str(tmp_path)]) == 1
@@ -177,10 +242,22 @@ def test_duplicate_theme_id_across_packs_reds_gate(tmp_path, capsys):
     assert "'egg-farm'" in out
 
 
+def test_duplicate_theme_id_under_wrong_filename_reds_per_file(tmp_path, capsys):
+    # The pre-stem-rule collision shape (same id, different .yaml filename)
+    # now reds EARLIER, at the per-file stem check — never reaching main green.
+    src = EGG_FARM.read_text(encoding="utf-8")
+    (tmp_path / "egg-farm.yaml").write_text(src, encoding="utf-8")
+    (tmp_path / "impostor.yaml").write_text(
+        src.replace("name: Egg Farm", "name: Other Skin"), encoding="utf-8"
+    )
+    assert main(["theme_gate", str(tmp_path)]) == 1
+    assert "filename stem" in capsys.readouterr().out
+
+
 def test_distinct_theme_ids_pass_cross_pack_check(tmp_path, capsys):
     src = EGG_FARM.read_text(encoding="utf-8")
-    (tmp_path / "a.yaml").write_text(src, encoding="utf-8")
-    (tmp_path / "b.yaml").write_text(
+    (tmp_path / "egg-farm.yaml").write_text(src, encoding="utf-8")
+    (tmp_path / "other-skin.yaml").write_text(
         src.replace("id: egg-farm", "id: other-skin"), encoding="utf-8"
     )
     assert main(["theme_gate", str(tmp_path)]) == 0
@@ -189,10 +266,10 @@ def test_distinct_theme_ids_pass_cross_pack_check(tmp_path, capsys):
 
 def test_invalid_pack_does_not_join_cross_pack_check(tmp_path, capsys):
     src = EGG_FARM.read_text(encoding="utf-8")
-    (tmp_path / "a.yaml").write_text(src, encoding="utf-8")
-    # same theme.id but schema-invalid: per-file failure must not also
-    # produce a spurious catalog-level duplicate
-    (tmp_path / "b.yaml").write_text(
+    (tmp_path / "egg-farm.yaml").write_text(src, encoding="utf-8")
+    # a stem twin with the same theme.id but schema-invalid: per-file failure
+    # must not also produce a spurious catalog-level duplicate
+    (tmp_path / "egg-farm.yml").write_text(
         src.replace('embed_color: "#F5C542"', 'embed_color: "gold"'),
         encoding="utf-8",
     )
