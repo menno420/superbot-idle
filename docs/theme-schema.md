@@ -43,7 +43,7 @@ composition headroom* so every render slot fits by construction:
 | Status description + offline line: `{description}\n\n{labels.offline_return with {gains} substituted}` | 4096 | description ≤ 1024, template ≤ 256 | 1024 + 2 + (256 − 7 token chars) = 1275 fixed; ≥ 2821 left for the substituted gains text (numeric — clamps) |
 | Status / shop title override: `labels.status_title`, `labels.shop_title` | 256 | ≤ 256 | rendered verbatim, nothing composed — budget = cap |
 | Shop description override: `labels.shop_description` | 4096 | ≤ 1024 | rendered verbatim as the embed description |
-| Shop value: `{mark} {labels.level} N → N+1 · cost {emoji} {name}` | 1024 | level label ≤ 32 | mark + label + emoji(32) + name(64) + separators ≤ ~140; ≥ 880 for digits before the numeric clamp |
+| Shop value: `{mark} {labels.level} N → N+1 · cost {emoji} {name}\n{upgrades[].description}` | 1024 | upgrade description ≤ 768, level label ≤ 32 | exact spend of the cap: description (768) + newline (1) + themed cost-line text (mark 1 + label 32 + emoji 32 + name 64 + separators 10 = 139) + digit floor (116) = 1024; the cost line is number-bearing and clamps into the room the description leaves — the description itself never truncates |
 | Prestige progress value: `{mark} {labels.prestige_progress} N / M` | 1024 | label ≤ 64 | mark + label + separators ≤ ~70; ≥ 950 for digits before the numeric clamp |
 
 ## Fields
@@ -76,7 +76,7 @@ text lives in the `description` fields* — there is no separate flavor slot in 
 | `upgrades` | list | optional | 1–20 entries when present (own shop embed, 25-field cap) |
 | `upgrades[].id` | slug | required* | engine upgrade id being skinned |
 | `upgrades[].name` | string | required* | player-visible name, 1–64 chars |
-| `upgrades[].description` | string | required* | flavor text, 1–1024 chars |
+| `upgrades[].description` | string | required* | flavor text, 1–768 chars (composed into the shop field value — see the shop-value budget row) |
 | `upgrades[].emoji` | string | required* | 1–32 chars |
 | `upgrades[].target` | slug | required* | MUST match a declared `generators[].id` |
 | `prestige` | mapping | optional | the prestige track's skin (nouns only) |
@@ -102,6 +102,17 @@ award math live engine-side (`idle_engine/economy.py`, pre-registered in
 [`design/upgrades-prestige-v0.md`](design/upgrades-prestige-v0.md));
 any numeric field smuggled into these blocks is rejected by
 `additionalProperties: false`.
+
+**`upgrades[].description` budget provenance** (shop-composition slice):
+this field originally carried the generic 1024-char flavor budget but
+rendered *nowhere* — the render layer parked its composition precisely
+because 1024 left zero headroom. When the shop view first consumed it,
+the budget was set to 768 *by* the composition arithmetic above (exact
+spend of the 1024 field-value cap). No render contract ever relied on
+the wider budget, and every shipped pack passed unchanged at the tighten
+(catalog max: 100 chars) — which is why this landed within v1 rather
+than as a v2 bump; a tighten that invalidated any existing pack would
+have been v2 per the compatibility promise.
 
 ## `labels` — themed render-label slots (optional, additive)
 
@@ -141,9 +152,11 @@ layer's two-tier budget policy).
   composed in — budget equals the 256-char title cap.
 - *`shop_description`*: verbatim as the embed description — 1024 ≤ 4096.
 - *`level`*: shop value composes `{mark} {label} N → N+1 · cost {emoji}
-  {name}` — mark (≤ 2) + label (≤ 32) + emoji (≤ 32) + name (≤ 64) +
-  separators (≤ 10) ≤ ~140 of the 1024 value cap, ≥ 880 for digits; the
-  whole value is number-bearing and clamps.
+  {name}` on the cost line (plus the upgrade `description` on the line
+  below, shop-composition slice) — mark (1) + label (≤ 32) + emoji (≤ 32)
+  + name (≤ 64) + separators (10) = 139 fixed; with the description at
+  its 768 budget and the joining newline, ≥ 116 chars remain for digits;
+  the cost line is number-bearing and clamps into exactly that room.
 - *`prestige_progress`*: value composes `{mark} {label} N / M` — mark +
   label (≤ 64) + separators ≤ ~70 of 1024, ≥ 950 for digits; clamps.
 

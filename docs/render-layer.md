@@ -15,7 +15,8 @@ here, *credited* only by `idle_engine.engine.apply_offline_progress`).
 
 - `state: GameState` — the save being rendered.
 - `theme: Theme` — a pack loaded via `idle_engine.theme.load_theme` (i.e.
-  gate-valid: names ≤ 64, emoji ≤ 32, descriptions ≤ 1024, ≤ 5 currencies,
+  gate-valid: names ≤ 64, emoji ≤ 32, descriptions ≤ 1024 — except upgrade
+  descriptions ≤ 768, the shop-composition budget — ≤ 5 currencies,
   ≤ 20 generators/upgrades).
 - `now: int` (status view only) — the caller's unix timestamp.
 
@@ -31,7 +32,7 @@ here, *credited* only by `idle_engine.engine.apply_offline_progress`).
 | Function | Shows | Returns `None` when |
 |---|---|---|
 | `render_status(state, theme, now)` | theme title/flavor, per-currency balances (+rate/s), per-generator counts + rates, offline gains since `state.last_seen` appended to the description | never |
-| `render_shop(state, theme)` | one field per upgrade: current level → next, exact cost at current level (engine curve, `idle_engine.economy`), affordability mark | pack has no `upgrades` block |
+| `render_shop(state, theme)` | one field per upgrade: a cost line (current level → next, exact cost at current level per the engine curve in `idle_engine.economy`, affordability mark) with the upgrade's themed `description` composed on the line below | pack has no `upgrades` block |
 | `render_prestige(state, theme)` | reset action as title/description, progress toward threshold with eligibility mark, held prestige balance + projected award | pack has no `prestige` block |
 
 The pack's prestige currency renders from `state.prestige` (persistent),
@@ -84,7 +85,29 @@ to the pre-labels layer. Budget policy is unchanged — substituted numeric
 text clamps, themed template/label text never truncates (overflow raises
 `RenderBudgetError`).
 
-Still parked: upgrade flavor `description` is not composed into the shop
-cost field — the schema grants it the full 1024-char budget, so
-composition could overflow on a legal pack; a themed shop layout with
-headroom for it remains a follow-up.
+## Shop composition (upgrade flavor in the shop view)
+
+Each shop field value composes two lines (landed by the shop-composition
+slice; this closes the last item this doc had parked):
+
+```text
+{mark} {labels.level|Lv} {N} → {N+1} · {cost} {currency emoji} {currency name}
+{upgrades[].description}
+```
+
+The two budget tiers split exactly along the newline: the cost line is
+number-bearing (numeric tier — it clamps, with `…`, into precisely the
+room the description leaves: `1024 − len(description) − 1`), while the
+description is theme-sourced (never truncated; one that overflows its
+768-char slot raises `RenderBudgetError`). The arithmetic that makes the
+worst case safe spends the 1024-char field-value cap exactly —
+description (768) + newline (1) + themed cost-line text (mark 1 + level
+label 32 + currency emoji 32 + currency name 64 + separators 10 = 139) +
+digit floor (116) = 1024 — and is the reason schema v1 budgets
+`upgrades[].description` at 768 (provenance note in
+[`docs/theme-schema.md`](theme-schema.md)). `SHOP_FLAVOR_LIMIT` in
+`idle_engine/render.py` and `$defs.shop_flavor_text` in the machine
+schema are pinned equal by `tests/test_render.py`. An upgrade without a
+description (impossible for a gate-valid pack; reachable for hand-built
+`Theme` objects) renders the bare cost line byte-identically to the
+pre-composition layer.

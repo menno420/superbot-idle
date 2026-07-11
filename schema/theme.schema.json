@@ -82,7 +82,7 @@
         "properties": {
           "id": { "$ref": "#/$defs/slug", "description": "Engine upgrade id this skin maps onto." },
           "name": { "$ref": "#/$defs/display_name", "description": "Player-visible upgrade name; renders in field names/titles." },
-          "description": { "$ref": "#/$defs/flavor_text", "description": "Upgrade flavor text; renders as a field value (1024-char cap)." },
+          "description": { "$ref": "#/$defs/shop_flavor_text", "description": "Upgrade flavor text; composed into the shop field value below the cost line (shop-composition slice). Budget 768 by composition arithmetic: description (768) + newline (1) + themed cost-line text (mark 1 + level label 32 + currency emoji 32 + currency name 64 + separators 10 = 139) + digit floor (116) = the 1024-char field-value cap exactly. Tightened from the generic 1024 flavor budget when the render layer first consumed this field — the field rendered NOWHERE before, so no render contract relied on the wider budget, and every shipped pack passes unchanged (catalog max at the tighten: 100 chars)." },
           "emoji": { "$ref": "#/$defs/emoji", "description": "Upgrade emoji." },
           "target": { "$ref": "#/$defs/slug", "description": "Generator id this upgrade boosts; MUST reference a declared generators[].id (referential check lives in the gate — not expressible here)." }
         }
@@ -161,6 +161,11 @@
       "type": "string",
       "minLength": 1,
       "maxLength": 1024
+    },
+    "shop_flavor_text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 768
     },
     "emoji": {
       "type": "string",
