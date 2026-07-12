@@ -1,11 +1,11 @@
 # superbot-idle · status
 updated: 2026-07-12T10:17Z
-phase: RESUMED for ORDER 003 (pytest CI) — a P1 order landed in control/inbox.md (2026-07-12T08:30Z), waking the lane from ARCHIVED-READY; addressed by PR #74. Founding chat knowledge remains in durable homes (docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md, PR #70). Wake loop remains per ROUTINE RECORD below.
+phase: RESUMED for ORDER 003 (pytest CI) — a P1 order landed in control/inbox.md (2026-07-12T08:30Z), waking the lane from ARCHIVED-READY; addressed by PR #74. Meanwhile the PLUG-001 docs-only un-park landed via PR #72 (upstream superbot-next plugin contract VERIFIED to EXIST — see PLUG-001 section below). Founding chat knowledge remains in durable homes (docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md, PR #70). Wake loop remains per ROUTINE RECORD below.
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: ORDER 003 — pytest CI workflow (PR #74); prior: close-out + archive prep (PR #70 + heartbeat PR #71)
-blockers: none active — all holds upstream (SIM-001/Q-0264, PLUG-001, KIT-001; ⚑ blocks below)
+last-shipped: ORDER 003 — pytest CI workflow (PR #74); prior: PLUG-001 docs-only un-park (PR #72), close-out + archive prep (PR #70 + heartbeat PR #71)
+blockers: SIM-001/Q-0264 and KIT-001 still open (⚑ blocks below). PLUG-001 CLEARED 2026-07-12 — contract found, un-parked (see PLUG-001 section below).
 orders: acked=000-003 done=000-002 (003 in-flight: PR #74 READY+green, awaiting owner required-check + merge)
 
 ## ORDER 003 — pytest CI on PR + push (2026-07-12T08:30Z, P1)
@@ -53,7 +53,7 @@ MOVED at close-out → `docs/retro/2026-07-11-lane-retro.md` § 1 (verbatim, wit
 - core loop shipped+tested ✓
 - theme schema + gate proven by 3 live packs ✓
 - setup-code format versioned + websites-consumable ✓
-- plugin-shaping — render layer + scoping doc shipped; adapter itself evidence-blocked upstream (PLUG-001)
+- plugin-shaping — render layer + scoping doc shipped; PLUG-001 UN-PARKED 2026-07-12 (upstream contract VERIFIED at superbot-next docs/game-plugin-contract.md @ d3dba9b); the adapter itself is still unbuilt — next slice
 
 ## ROUTINE RECORD (Q-0265) — DISARMED at close-out 2026-07-11
 - Cron trigger `trig_01TWKGFW8RUsMvxUMt2ndzqA` ("superbot-idle failsafe wake", cron "45 */2 * * *", persistent_session_id session_01BRmUrjckzMsewsXzpc3wwW) — DELETED via mcp__claude-code-remote delete_trigger as the session's final act (after this heartbeat pushed); pending send_later chain links likewise listed + deleted. Verbatim call outcomes in the archived session's final report; disarm state verifiable via list_triggers.
@@ -78,10 +78,13 @@ MOVED at close-out → `docs/retro/2026-07-11-lane-retro.md` § 1 (verbatim, wit
 - Two transient GitHub rate-limit hits ("API rate limit already exceeded for user ID 225413533"): PR #26 arming → REST fallback; PR #27 arming → paced retry succeeded. Recorded per PLATFORM-LIMITS; workers now pace GitHub calls.
 - PR #61 sat ~5 min with ZERO check runs (mergeable_state: unknown — GitHub never built the merge ref); rebase + --force-with-lease retriggered checks instantly. Recorded in PLATFORM-LIMITS.md (PR #70).
 
-## PLUG-001 — ⚑ to manager: superbot-next plugin contract unavailable upstream
-- Raw-probe evidence: superbot-plugin-hello is an empty public repo; superbot-next publishes no plugin/manifest doc — plugins.md and plugin-contract.md both 404.
-- Ask: a contract pointer, or an ETA for exemplar seeding.
-- Until then, adapter work is evidence-blocked by design — no speculative code, per docs/plugin-adapter-scoping.md § UNVERIFIED.
+## PLUG-001 — RESOLVED / UN-PARKED 2026-07-12: superbot-next plugin contract FOUND (⚑ cleared)
+- CONTRACT FOUND: superbot-next `docs/game-plugin-contract.md` @ `d3dba9b` (binding; owner decision 2026-07-09). A 2026-07-12 re-probe re-listed the superbot-next repo tree; the contract was published all along at a different path than the two the 2026-07-11 probe hypothesized.
+- Probe nuance kept (old history not wrong): the two old URLs (docs/plugins.md, docs/plugin-contract.md) are STILL 404 today — only the guessed filenames were wrong, not the probe method. The standalone menno420/superbot-plugin-hello repo is STILL EMPTY; the working exemplar lives in-tree at superbot-next examples/superbot-plugin-hello/.
+- Contract shape (host-side real, not just spec): entry point group `sb.plugins`, module exports MANIFEST/MANIFESTS, refs via @handler/@panel/@workflow/@provider + idempotent ENSURE_REFS; v1 facets commands/panels/settings(+bindings)/events/capabilities; host-owned (refused at gate) stores/data_invariants/wizard_sections; pin/hash lifecycle via tools/plugin_pin.py → host-PR pin diff → boot-time discovery+pin-verify+register, drift/unpinned ⇒ FAILED_STARTUP(plugin_gate). Host impl: sb/app/plugin_host.py, plugins.lock.json.
+- Docs un-parked via PR #72 (READY, substrate-gate + theme-gate both green 2026-07-12T00:22Z): plugin-adapter-scoping.md dated re-probe section supersedes the UNVERIFIED verdict; current-state.md + persistence.md + AGENT_ORIENTATION.md flipped to VERIFIED.
+- NEXT STEP: the adapter slice (a separate, non-docs slice) per docs/plugin-adapter-scoping.md § Re-probe 2026-07-12 — thin plugin/ shell exporting a SubsystemManifest over the four verified seams, pinned via tools/plugin_pin.py. No adapter code exists yet.
+- ⚑ to manager: no longer a blocker-ask. Optional follow-up only — owner may create the standalone superbot-plugin-hello repo (still empty); exemplar is in-tree meanwhile.
 
 ## KIT-001 — ⚑ to manager: kit-level suggestion
 - Plant merge=union gitattributes for append-only ledgers fleet-wide (host-side proof: PR #63; four slices had hand-resolved guard-fires conflicts before it).
@@ -89,7 +92,7 @@ MOVED at close-out → `docs/retro/2026-07-11-lane-retro.md` § 1 (verbatim, wit
 ## QUEUE — dormant (lane archived; resume triggers listed)
 - RESUME TRIGGER: new ORDER in control/inbox.md (manager) — a fresh session reads README.md → this file → docs/retro/2026-07-11-archive-ready.md and re-arms the wake loop per ROUTINE RECORD.
 - RESUME TRIGGER: Q-0264 ruling lands (A10 wording + multiplier values + achievements-inclusive sim + timed-events adoption) → unblocks economy tuning + timed-events build.
-- RESUME TRIGGER: PLUG-001 unblocks (plugin contract published / exemplar seeded) → adapter slice per docs/plugin-adapter-scoping.md.
+- RESUME TRIGGER: PLUG-001 unblocks (plugin contract published / exemplar seeded) → adapter slice per docs/plugin-adapter-scoping.md. — FIRED 2026-07-12: contract FOUND at superbot-next docs/game-plugin-contract.md @ d3dba9b; docs un-parked (PR #72). REMAINING resume: build the adapter slice (non-docs) when scheduled.
 - RESUME TRIGGER: KIT-001 response (kit-level merge=union) — informational, no build.
 - ON-DEMAND: catalog wave 4+ (theme packs merge on theme-gate green alone).
 - DEFERRED: memoized rate table (needs bot runtime); setup-code v2 bound ruling.

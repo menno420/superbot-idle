@@ -60,11 +60,17 @@ Known-good and not to be re-audited without a reported regression:
 
 ## What does NOT exist (do not assume it)
 
-- **No bot runtime and no plugin adapter.** Nothing here talks to Discord.
-  Adapter work is evidence-BLOCKED upstream (**PLUG-001**): superbot-next
-  publishes no plugin/manifest contract and `superbot-plugin-hello` is an
-  empty repo — see `docs/plugin-adapter-scoping.md` (scoping/question doc,
-  not a build order).
+- **No bot runtime and no plugin adapter yet.** Nothing here talks to Discord.
+  The upstream blocker is CLEARED: as of 2026-07-12 the superbot-next plugin
+  contract is VERIFIED to EXIST at superbot-next `docs/game-plugin-contract.md`
+  @ `d3dba9b` (binding; owner decision 2026-07-09 — upstream provenance in
+  `docs/plugin-adapter-scoping.md`), with a real
+  host-side loader (`sb/app/plugin_host.py`), pin CLI (`tools/plugin_pin.py`),
+  and an in-tree exemplar (`examples/superbot-plugin-hello/`). **PLUG-001 is
+  UN-PARKED.** The standalone `menno420/superbot-plugin-hello` repo is still
+  EMPTY (exemplar lives in-tree for now). The adapter itself is still unbuilt —
+  it is the next slice, scoped in `docs/plugin-adapter-scoping.md` (§ Re-probe
+  2026-07-12).
 - **No storage backend.** `GameState` now has a versioned save FORMAT
   ([`persistence.md`](persistence.md): `dump_state`/`load_state`), but where
   the save strings live is the future plugin's job; nothing is stored
@@ -89,9 +95,13 @@ Known-good and not to be re-audited without a reported regression:
 ## Roadmap (groomed 2026-07-11 — ordered, blockers marked)
 
 1. **Shop composition** — IN FLIGHT (see above).
-2. **Plugin adapter build** — **BLOCKED upstream (PLUG-001)**: no verified
-   superbot-next plugin/manifest contract. No speculative code, per
-   `docs/plugin-adapter-scoping.md` § UNVERIFIED.
+2. **Plugin adapter build** — **UN-PARKED / ready (PLUG-001 unblocked
+   2026-07-12)**: the superbot-next plugin contract is VERIFIED at
+   `docs/game-plugin-contract.md` @ `d3dba9b`. Next step = scope+build the
+   adapter slice per `docs/plugin-adapter-scoping.md` § Re-probe 2026-07-12
+   (thin `plugin/` shell exporting a `SubsystemManifest` over the four verified
+   seams, pinned via `tools/plugin_pin.py`). Not built yet — a separate,
+   non-docs slice.
 3. **Economy tuning / parameter graduation** — **BLOCKED (SIM-001)**: awaits
    the fleet Simulator run against the pre-registered targets T1–T10;
    parameters stay provisional until the verdict.
