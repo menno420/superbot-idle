@@ -19,6 +19,9 @@
   },
   "themes": [
     "ant-colony",
+    "arctic-outpost",
+    "candy-factory",
+    "coffee-roastery",
     "cyber-city",
     "deep-sea-station",
     "dragon-hoard",
@@ -38,8 +41,8 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 60,
-    "tolerance": 73,
+    "valid": 75,
+    "tolerance": 91,
     "errors": 25
   },
   "vectors": {
@@ -108,6 +111,201 @@
         "payload_hex": "04616e742d636f6c6f6e79",
         "crc16_hex": "e65f",
         "code": "IDLE1-0HGPWX1DCDQPRVVEF7K5Y"
+      },
+      {
+        "name": "arctic-outpost--all-on",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "076172637469632d6f7574706f7374",
+        "crc16_hex": "8458",
+        "code": "IDLE1-0XGQ4RVMD5HJTVVNEHR6YWVMGHC0"
+      },
+      {
+        "name": "arctic-outpost--all-off",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "006172637469632d6f7574706f7374",
+        "crc16_hex": "8b42",
+        "code": "IDLE1-01GQ4RVMD5HJTVVNEHR6YWVMHD10"
+      },
+      {
+        "name": "arctic-outpost--only-offline_progress",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "016172637469632d6f7574706f7374",
+        "crc16_hex": "50aa",
+        "code": "IDLE1-05GQ4RVMD5HJTVVNEHR6YWVMA2N0"
+      },
+      {
+        "name": "arctic-outpost--only-upgrades",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "026172637469632d6f7574706f7374",
+        "crc16_hex": "3ad3",
+        "code": "IDLE1-09GQ4RVMD5HJTVVNEHR6YWVM7B9G"
+      },
+      {
+        "name": "arctic-outpost--only-prestige",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "046172637469632d6f7574706f7374",
+        "crc16_hex": "ee21",
+        "code": "IDLE1-0HGQ4RVMD5HJTVVNEHR6YWVMXRGG"
+      },
+      {
+        "name": "candy-factory--all-on",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0763616e64792d666163746f7279",
+        "crc16_hex": "9f4a",
+        "code": "IDLE1-0XHP2VK4F4PPCRB3EHQQ4YCZ98"
+      },
+      {
+        "name": "candy-factory--all-off",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0063616e64792d666163746f7279",
+        "crc16_hex": "358a",
+        "code": "IDLE1-01HP2VK4F4PPCRB3EHQQ4Y9NH8"
+      },
+      {
+        "name": "candy-factory--only-offline_progress",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0163616e64792d666163746f7279",
+        "crc16_hex": "d4fc",
+        "code": "IDLE1-05HP2VK4F4PPCRB3EHQQ4YEMZG"
+      },
+      {
+        "name": "candy-factory--only-upgrades",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0263616e64792d666163746f7279",
+        "crc16_hex": "f127",
+        "code": "IDLE1-09HP2VK4F4PPCRB3EHQQ4YFH4W"
+      },
+      {
+        "name": "candy-factory--only-prestige",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0463616e64792d666163746f7279",
+        "crc16_hex": "ba91",
+        "code": "IDLE1-0HHP2VK4F4PPCRB3EHQQ4YDTJ4"
+      },
+      {
+        "name": "coffee-roastery--all-on",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07636f666665652d726f617374657279",
+        "crc16_hex": "fb59",
+        "code": "IDLE1-0XHPYSK6CNJJTWKFC5SQ8SBJF7XNJ"
+      },
+      {
+        "name": "coffee-roastery--all-off",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00636f666665652d726f617374657279",
+        "crc16_hex": "032c",
+        "code": "IDLE1-01HPYSK6CNJJTWKFC5SQ8SBJF41JR"
+      },
+      {
+        "name": "coffee-roastery--only-offline_progress",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01636f666665652d726f617374657279",
+        "crc16_hex": "92bd",
+        "code": "IDLE1-05HPYSK6CNJJTWKFC5SQ8SBJF69BT"
+      },
+      {
+        "name": "coffee-roastery--only-upgrades",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02636f666665652d726f617374657279",
+        "crc16_hex": "264f",
+        "code": "IDLE1-09HPYSK6CNJJTWKFC5SQ8SBJF4K4Y"
+      },
+      {
+        "name": "coffee-roastery--only-prestige",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04636f666665652d726f617374657279",
+        "crc16_hex": "4fab",
+        "code": "IDLE1-0HHPYSK6CNJJTWKFC5SQ8SBJF57TP"
       },
       {
         "name": "cyber-city--all-on",
@@ -892,6 +1090,222 @@
         "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
         "config": {
           "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "arctic-outpost--lowercase",
+        "input": "idle1-0xgq4rvmd5hjtvvnehr6ywvmghc0",
+        "canonical": "IDLE1-0XGQ4RVMD5HJTVVNEHR6YWVMGHC0",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "arctic-outpost--hyphen-grouped",
+        "input": "IDLE1-0XGQ-4RVM-D5HJ-TVVN-EHR6-YWVM-GHC0",
+        "canonical": "IDLE1-0XGQ4RVMD5HJTVVNEHR6YWVMGHC0",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "arctic-outpost--lookalike-O-for-0",
+        "input": "IDLE1-OXGQ4RVMD5HJTVVNEHR6YWVMGHCO",
+        "canonical": "IDLE1-0XGQ4RVMD5HJTVVNEHR6YWVMGHC0",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "arctic-outpost--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IGQ4RVMD5HJTVVNEHR6YWVMHDI0",
+        "canonical": "IDLE1-01GQ4RVMD5HJTVVNEHR6YWVMHD10",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "arctic-outpost--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LGQ4RVMD5HJTVVNEHR6YWVMHDL0",
+        "canonical": "IDLE1-01GQ4RVMD5HJTVVNEHR6YWVMHD10",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "arctic-outpost--kitchen-sink",
+        "input": "idle1-oxgq-4rvm-d5hj-tvvn-ehr6-ywvm-ghco",
+        "canonical": "IDLE1-0XGQ4RVMD5HJTVVNEHR6YWVMGHC0",
+        "config": {
+          "theme_id": "arctic-outpost",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "candy-factory--lowercase",
+        "input": "idle1-0xhp2vk4f4ppcrb3ehqq4ycz98",
+        "canonical": "IDLE1-0XHP2VK4F4PPCRB3EHQQ4YCZ98",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "candy-factory--hyphen-grouped",
+        "input": "IDLE1-0XHP-2VK4-F4PP-CRB3-EHQQ-4YCZ-98",
+        "canonical": "IDLE1-0XHP2VK4F4PPCRB3EHQQ4YCZ98",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "candy-factory--lookalike-O-for-0",
+        "input": "IDLE1-OXHP2VK4F4PPCRB3EHQQ4YCZ98",
+        "canonical": "IDLE1-0XHP2VK4F4PPCRB3EHQQ4YCZ98",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "candy-factory--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IHP2VK4F4PPCRB3EHQQ4Y9NH8",
+        "canonical": "IDLE1-01HP2VK4F4PPCRB3EHQQ4Y9NH8",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "candy-factory--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LHP2VK4F4PPCRB3EHQQ4Y9NH8",
+        "canonical": "IDLE1-01HP2VK4F4PPCRB3EHQQ4Y9NH8",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "candy-factory--kitchen-sink",
+        "input": "idle1-oxhp-2vk4-f4pp-crb3-ehqq-4ycz-98",
+        "canonical": "IDLE1-0XHP2VK4F4PPCRB3EHQQ4YCZ98",
+        "config": {
+          "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "coffee-roastery--lowercase",
+        "input": "idle1-0xhpysk6cnjjtwkfc5sq8sbjf7xnj",
+        "canonical": "IDLE1-0XHPYSK6CNJJTWKFC5SQ8SBJF7XNJ",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "coffee-roastery--hyphen-grouped",
+        "input": "IDLE1-0XHP-YSK6-CNJJ-TWKF-C5SQ-8SBJ-F7XN-J",
+        "canonical": "IDLE1-0XHPYSK6CNJJTWKFC5SQ8SBJF7XNJ",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "coffee-roastery--lookalike-O-for-0",
+        "input": "IDLE1-OXHPYSK6CNJJTWKFC5SQ8SBJF7XNJ",
+        "canonical": "IDLE1-0XHPYSK6CNJJTWKFC5SQ8SBJF7XNJ",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "coffee-roastery--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IHPYSK6CNJJTWKFC5SQ8SBJF4IJR",
+        "canonical": "IDLE1-01HPYSK6CNJJTWKFC5SQ8SBJF41JR",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "coffee-roastery--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LHPYSK6CNJJTWKFC5SQ8SBJF4LJR",
+        "canonical": "IDLE1-01HPYSK6CNJJTWKFC5SQ8SBJF41JR",
+        "config": {
+          "theme_id": "coffee-roastery",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "coffee-roastery--kitchen-sink",
+        "input": "idle1-oxhp-ysk6-cnjj-twkf-c5sq-8sbj-f7xn-j",
+        "canonical": "IDLE1-0XHPYSK6CNJJTWKFC5SQ8SBJF7XNJ",
+        "config": {
+          "theme_id": "coffee-roastery",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true

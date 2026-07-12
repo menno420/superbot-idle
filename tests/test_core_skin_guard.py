@@ -17,7 +17,8 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # dragon-hoard distinctive nouns. Extended for catalog wave 2:
 # wizard-tower + royal-bakery + cyber-city distinctive nouns.
 # Extended for catalog wave 3: pirate-cove + ant-colony + idol-agency
-# distinctive nouns.
+# distinctive nouns. Extended for catalog wave 4: coffee-roastery +
+# arctic-outpost + candy-factory distinctive nouns.
 # Deliberately EXCLUDED as too generic for a guard that scans engine
 # prose/identifiers: "gold", "coin", "scale" ("scales/scaling" is
 # legitimate engine vocabulary), "surface", "station", "village",
@@ -27,6 +28,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # "queen", "nest", "worker(s)", "trail", "garden", "jelly", "fan(s)",
 # "studio", "record(s)", "stage", "debut", "graduate/graduation",
 # "agency"
+# — and from wave 4: "drum", "grinder", "blend", "shop", "core", "drill",
+# "team", "cache", "line", "factory", "batch", "shard", "crystal",
+# "recipe", "conveyor"
 # — the packs' truly distinctive nouns below carry the guard instead.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
@@ -50,7 +54,15 @@ FORBIDDEN_NOUNS = re.compile(
     r"|ant|ants|crumb|crumbs|pheromone|pheromones|forager|foragers"
     r"|leafcutter|leafcutters|fungus|instar|instars"
     r"|idol|idols|fandom|fandoms|fancam|fancams|livestream|livestreams"
-    r"|choreography|platinum|lightstick|lightsticks)\b",
+    r"|choreography|platinum|lightstick|lightsticks"
+    r"|coffee|roastery|roasteries|bean|beans|barista|baristas|espresso"
+    r"|arabica|crema|portafilter|portafilters|drip|roasting|roaster|roasters"
+    r"|arctic|outpost|outposts|snowpack|aurora|husky|huskies|sled|sleds"
+    r"|tundra|glacier|glaciers|permafrost|musher|mushers|expedition"
+    r"|expeditions"
+    r"|candy|candies|taffy|gumdrop|gumdrops|lollipop|lollipops|confection"
+    r"|confections|nougat|caramel|marshmallow|marshmallows|sherbet"
+    r"|sugar)\b",
     re.IGNORECASE,
 )
 
@@ -116,6 +128,15 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("an Idol Agency livestream studio")
     assert FORBIDDEN_NOUNS.search("the fandom shares a viral fancam")
     assert FORBIDDEN_NOUNS.search("choreography drills for a platinum record")
+    assert FORBIDDEN_NOUNS.search("a Coffee Roastery drip station")
+    assert FORBIDDEN_NOUNS.search("reserve blends of arabica beans")
+    assert FORBIDDEN_NOUNS.search("espresso crema pulled by the barista")
+    assert FORBIDDEN_NOUNS.search("an Arctic Outpost husky sled team")
+    assert FORBIDDEN_NOUNS.search("aurora shards drifting over the snowpack")
+    assert FORBIDDEN_NOUNS.search("a musher crossing the tundra glacier")
+    assert FORBIDDEN_NOUNS.search("a Candy Factory taffy puller")
+    assert FORBIDDEN_NOUNS.search("gumdrops dusted in sugar")
+    assert FORBIDDEN_NOUNS.search("a nougat caramel lollipop confection")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")
