@@ -14,9 +14,13 @@ A **save** is one canonical JSON string that captures a
 always trivially serializable by design (plain dicts and ints, integer-exact
 math); this contract makes that a versioned, validated seam instead of an
 accident. Whatever runtime eventually hosts the engine — the superbot-next
-plugin ([blocked upstream, PLUG-001](plugin-adapter-scoping.md)) or anything
-else — persists and restores game instances through these two functions and
-never needs to know the state's field-by-field shape.
+plugin ([PLUG-001 un-parked 2026-07-12; contract verified at superbot-next
+`docs/game-plugin-contract.md` @ `d3dba9b`](plugin-adapter-scoping.md)) or
+anything else — persists and restores game instances through these two
+functions and never needs to know the state's field-by-field shape. Under that
+contract persistence is **host-owned** (a plugin's `stores` facet is refused at
+the gate), so these saves ride the host store rather than a plugin-shipped
+backend.
 
 ## Scope: strings in, strings out — storage is the runtime's job
 
