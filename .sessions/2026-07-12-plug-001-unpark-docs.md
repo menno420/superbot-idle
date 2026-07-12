@@ -1,8 +1,8 @@
 # 2026-07-12 — PLUG-001 un-park: docs-only re-probe + contract verified
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** opus · high · idle-engine seat (PLUG-001 docs-only un-park) · 2026-07-12T00:1xZ (`date -u`)
+- **📊 Model:** opus · high · idle-engine seat (PLUG-001 docs-only un-park) · 2026-07-12T00:15Z–00:23Z (`date -u`)
   — family-level name from this session's OWN harness self-report (Q-0262 / inbox ORDER 001);
   no version/snapshot suffix, never from the Routines screen.
 
@@ -43,8 +43,12 @@ EMPTY (zero refs) — the exemplar lives in-tree at superbot-next for now.
 3. `docs/persistence.md` — updated the "blocked upstream" link text to the now-existing contract.
 4. `docs/AGENT_ORIENTATION.md` — flipped the contract note from UNVERIFIED to VERIFIED (2026-07-12).
 
-Landing: born-red card first (this file) + telemetry row; doc edits; local checks green; PR
-opened READY; heartbeat overwrite of `control/status.md`; card flipped complete as last commit.
+Landing: born-red card first (this file) + telemetry row; doc edits; local checks green; PR #72
+opened READY (substrate-gate + theme-gate both green 2026-07-12T00:22Z); heartbeat overwrite of
+`control/status.md`; this card flipped complete as the last commit. Verify: `python3 -m pytest -q`
+→ 1131 passed; `python3 bootstrap.py check --strict` (born-red advisory path) → all checks
+passed; `python3 tools/theme_gate.py themes` → all 12 packs valid. PR NOT auto-merged (worker
+does not merge its own PR) — left READY + green.
 
 ## 💡 Session idea
 
