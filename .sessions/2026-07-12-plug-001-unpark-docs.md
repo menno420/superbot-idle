@@ -3,8 +3,8 @@
 > **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · idle-engine seat (PLUG-001 docs-only un-park) · 2026-07-12T00:15Z–00:23Z (`date -u`)
-  — family-level name from this session's OWN harness self-report (Q-0262 / inbox ORDER 001);
-  no version/snapshot suffix, never from the Routines screen.
+  — versioned-family name (family + version, e.g. `fable-5`) from this session's OWN harness
+  self-report (Q-0262 / inbox ORDER 001); no build/snapshot/date suffix, never from the Routines screen.
 
 ## What happened
 
