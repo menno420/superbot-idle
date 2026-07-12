@@ -1,6 +1,6 @@
 # 2026-07-12 — PLUG-001 adapter slice: thin plugin/ shell exporting a SubsystemManifest
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · feature build · idle-engine seat (PLUG-001 adapter build) · 2026-07-12T21:06Z–21:40Z (`date -u`)
   — versioned-family name (family + version, e.g. `fable-5`) from this session's OWN harness
