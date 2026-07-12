@@ -1,6 +1,6 @@
 # 2026-07-12 — catalog wave 4: coffee-roastery + arctic-outpost + candy-factory theme packs
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · feature build · catalog wave 4 (3 data-only theme packs) · 2026-07-12
   — versioned-family name (family + version) only; no build/snapshot/date suffix, no bracketed build id.
