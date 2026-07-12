@@ -1,12 +1,19 @@
 # superbot-idle · status
-updated: 2026-07-11T19:37:36Z
-phase: ARCHIVED-READY / dormant — founding coordinator chat archived by owner order; all chat-only knowledge moved to durable homes (docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md, PR #70); wake loop DISARMED at close-out (ROUTINE RECORD below); lane sleeps until a resume trigger fires (QUEUE below)
+updated: 2026-07-12T10:17Z
+phase: RESUMED for ORDER 003 (pytest CI) — a P1 order landed in control/inbox.md (2026-07-12T08:30Z), waking the lane from ARCHIVED-READY; addressed by PR #74. Founding chat knowledge remains in durable homes (docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md, PR #70). Wake loop remains per ROUTINE RECORD below.
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
-last-shipped: close-out + archive prep (PR #70 + this heartbeat PR #71)
+last-shipped: ORDER 003 — pytest CI workflow (PR #74); prior: close-out + archive prep (PR #70 + heartbeat PR #71)
 blockers: none active — all holds upstream (SIM-001/Q-0264, PLUG-001, KIT-001; ⚑ blocks below)
-orders: acked=000-002 done=000-002
+orders: acked=000-003 done=000-002 (003 in-flight: PR #74 READY+green, awaiting owner required-check + merge)
+
+## ORDER 003 — pytest CI on PR + push (2026-07-12T08:30Z, P1)
+- ADDRESSED by **PR #74** (`order-003-pytest-ci`): adds `.github/workflows/pytest.yml`, a new workflow that runs `python3 -m pytest -q` on every `pull_request` and `push` to `main`. Job/check name `pytest`, so it shows as its own check-run.
+- Gap was real (verified at HEAD 45ff2bf, per inbox): `.github/workflows/` held only `substrate-gate.yml` + `theme-gate.yml`; grep for `pytest` in both returned nothing — no CI job executed the suite, so GREEN ≠ TESTED.
+- Style mirrors `theme-gate.yml` (ubuntu-latest, `actions/checkout@v4`, `actions/setup-python@v5`, `python-version: "3.x"`, `pip install --quiet pytest pyyaml jsonschema`). Invocation is the repo's canonical one (README / CONVENTIONS.md / docs/architecture.md).
+- Local verify before push: `python3 -m pytest -q` → 1131 passed in 12.26s; `bootstrap.py check --strict` (born-red advisory path) → all checks passed; `theme_gate.py themes` → 12 packs valid; workflow YAML parses.
+- Check-run state on PR #74: substrate-gate ✓ success, theme-gate ✓ success, **pytest ✓ success** (the new job — the done-when). See OA-003 below for the remaining owner-only step.
 
 ## Self-review 2026-07-11 (ORDER 002)
 
@@ -59,6 +66,13 @@ MOVED at close-out → `docs/retro/2026-07-11-lane-retro.md` § 1 (verbatim, wit
 
 **OA-002 — repo settings: make `theme-gate` a required status check on `main` — RESOLVED-VERIFIED**
 - Owner enabled theme-gate as a required check ~00:10Z; observed gating merges from PR #6 onward — auto-merge fires only after theme-gate concludes.
+
+**OA-003 — ⚑ OWNER ASK: add `pytest` as a REQUIRED status check on `main` (owner-only) — OPEN**
+- ORDER 003's done-when has two halves: (1) the pytest workflow green on a real PR — DONE (PR #74, the `pytest` check-run is green); (2) ⚑ the owner to mark it a required check — THIS ASK.
+- REQUEST: in GitHub repo Settings → Branches → branch protection for `main`, add the status check named **`pytest`** to the required checks (alongside the existing `substrate-gate` + `theme-gate`). This is branch-protection config, which only the owner can change — a worker cannot self-mark a required check.
+- WHY: until `pytest` is required, a PR can still merge green without the suite having passed (a run could be skipped/cancelled and merge would not be blocked). Making it required is what finally makes GREEN == TESTED for merges to `main`.
+- VERIFIED-NEEDED: a subsequent PR shows `pytest` listed among the required checks and auto-merge holds until it concludes.
+- DO NOT: this worker did NOT arm auto-merge and did NOT merge PR #74 — leaving the merge decision to the owner/coordinator per lane convention.
 
 ## PLATFORM-LIMITS
 - Two transient GitHub rate-limit hits ("API rate limit already exceeded for user ID 225413533"): PR #26 arming → REST fallback; PR #27 arming → paced retry succeeded. Recorded per PLATFORM-LIMITS; workers now pace GitHub calls.
