@@ -1,0 +1,26 @@
+# pytest v1 — runs the repo's pytest suite (tests/) on every PR and push.
+# LANE-OWNED: this file is separate from the kit-owned substrate-gate.yml
+# on purpose (adopt/upgrade regenerates that one in place and overwrites
+# hand edits). Closes the GREEN ≠ TESTED gap flagged in ORDER 003: before
+# this, .github/workflows/ ran only substrate-gate + theme-gate, so no CI
+# job ever executed the tests — a merge could be green yet untested. The
+# canonical local verify is `python3 -m pytest -q` (README / CONVENTIONS.md
+# / docs/architecture.md); this mirrors it in CI. Style follows
+# theme-gate.yml (ubuntu-latest, checkout@v4, setup-python@v5, "3.x").
+name: pytest
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: install test deps
+        run: python -m pip install --quiet pytest pyyaml jsonschema
+      - name: run pytest suite
+        run: python3 -m pytest -q
