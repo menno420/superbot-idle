@@ -56,8 +56,10 @@ themes/*.yaml` locally).
   provisioning contract (websites lane encodes, superbot-next plugin decodes).
 - [`plugin-adapter-scoping.md`](plugin-adapter-scoping.md) — mapping our four
   seams (setup-code decode, theme loader, engine API, render payloads) onto
-  superbot-next's plugin contract; contract currently UNVERIFIED (exemplar
-  repo empty), so it is a scoping/question doc, not a build order.
+  superbot-next's plugin contract; contract VERIFIED 2026-07-12 at superbot-next
+  `docs/game-plugin-contract.md` @ `d3dba9b` (binding; entry point group
+  `sb.plugins`, `MANIFEST`/`ENSURE_REFS`, pin/hash gate). PLUG-001 UN-PARKED;
+  still a scoping doc (no adapter built) — the adapter is the next slice.
 - [`render-layer.md`](render-layer.md) — the embed-payload contract:
   `idle_engine/render.py` turns state + theme into Discord-embed-shaped
   dicts (status/shop/prestige) with hard budget enforcement; the

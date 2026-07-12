@@ -1,10 +1,12 @@
 # Plugin-adapter scoping — mapping this engine onto superbot-next's plugin contract
 
-> **Status:** `plan` — scoping only, written 2026-07-11. **No adapter code
-> exists and none should be built from this doc alone**: the upstream
-> contract is UNVERIFIED (evidence below). This doc records what our side
-> of the seam already guarantees, and exactly what we still need from the
-> exemplar before an adapter can be scoped for real.
+> **Status:** `plan` — scoping only, written 2026-07-11; **re-probed
+> 2026-07-12 and the upstream contract is now VERIFIED** (see § Re-probe
+> 2026-07-12 below — it supersedes the 2026-07-11 UNVERIFIED verdict). **No
+> adapter code exists yet and none is built here**: this remains a scoping
+> doc. With the contract found, the next step is the adapter slice per this
+> doc — a separate, non-docs slice. This doc records what our side of the
+> seam already guarantees and now maps it onto the verified contract.
 
 ## Why this doc exists
 
@@ -28,11 +30,81 @@ session doesn't re-derive it.
 | `…/superbot-plugin-hello/master/README.md` | HTTP 404. |
 | `github.com/menno420/superbot-plugin-hello` (HTML page) | Repository **exists, is public, and is EMPTY** — "This repository is empty." No manifest, no files. |
 
-**Verdict: UNVERIFIED.** The exemplar repo has been created but not seeded;
-no reachable superbot-next doc publishes the manifest/plugin contract yet.
-Everything below the UNVERIFIED line is therefore a *question list*, not a
-design. Building a speculative manifest against a contract that lands later
-would be integrity-floor debt, so this slice ships **no** `plugin/` skeleton.
+**Verdict (2026-07-11): UNVERIFIED.** The exemplar repo has been created but
+not seeded; no reachable superbot-next doc publishes the manifest/plugin
+contract yet. Everything below the UNVERIFIED line is therefore a *question
+list*, not a design. Building a speculative manifest against a contract that
+lands later would be integrity-floor debt, so this slice ships **no**
+`plugin/` skeleton.
+
+> **This 2026-07-11 verdict is SUPERSEDED by the re-probe below (2026-07-12).**
+> The probe was not wrong — the filenames were hypothesized incorrectly; the
+> contract was published all along at a different path, found by listing the
+> repo tree.
+
+## Re-probe 2026-07-12 — contract FOUND (supersedes the UNVERIFIED verdict)
+
+Re-ran the probe on 2026-07-12. The two URLs the 2026-07-11 table recorded as
+404 are **still 404 today** — so the earlier evidence stands unchanged; the
+mistake was only in the guessed filenames, not the probe method:
+
+| Probe (raw URL) | Result 2026-07-12 |
+|---|---|
+| `raw.githubusercontent.com/menno420/superbot-next/main/docs/plugins.md` | **Still HTTP 404** (unchanged from 2026-07-11). |
+| `…/superbot-next/main/docs/plugin-contract.md` | **Still HTTP 404** (unchanged from 2026-07-11). |
+| Tree listing of `menno420/superbot-next` @ `d3dba9b` | **Contract FOUND** at `docs/game-plugin-contract.md` (Status: binding; owner decision 2026-07-09, ledger D-0056). |
+| `menno420/superbot-plugin-hello` (standalone HTML page) | **Still EMPTY** — zero refs. The working exemplar currently lives IN-TREE at superbot-next `examples/superbot-plugin-hello/`, pending an owner-created standalone repo. |
+
+**Verdict (2026-07-12): VERIFIED.** The plugin contract EXISTS and is binding.
+
+- **Canonical doc:** superbot-next `docs/game-plugin-contract.md` (binding; owner
+  decision 2026-07-09, ledger D-0056), at superbot-next HEAD `main` @
+  `d3dba9b53bf87ededee6ed4942a1e7c87e185add` (commit dated 2026-07-12).
+- **Host-side implementation is real, not just a spec:** `sb/app/plugin_host.py`
+  (loader/enforcer), `tools/plugin_pin.py` (pin/hash CLI), `plugins.lock.json`
+  (pin registry root), and a working in-tree exemplar at
+  `examples/superbot-plugin-hello/`.
+
+### Contract summary (from `docs/game-plugin-contract.md` @ `d3dba9b`)
+
+- **Entry point / discovery:** setuptools entry point group `sb.plugins`. A
+  plugin module exports `MANIFEST = SubsystemManifest(...)` (or a `MANIFESTS`
+  tuple), registers callables via `sb.spec.refs` decorators
+  (`@handler` / `@panel` / `@workflow` / `@provider`), and exposes an
+  idempotent `ENSURE_REFS`.
+- **v1 allowed facets** (what a plugin MAY declare): `commands`, `panels`,
+  `settings` (+ `bindings`), `events`, `capabilities`.
+- **Host-owned / refused at the gate** (a plugin may NOT declare these):
+  `stores`, `data_invariants`, `wizard_sections`.
+- **Pin / hash lifecycle:** install → `tools/plugin_pin.py --write` (sha256 of
+  the canonical manifest hash + a joint `compile_manifests`) → commit the pin
+  diff via a host PR → boot-time discovery + pin-verify + register
+  (`sb/app/main.py` step 9b). Hash drift or an unpinned plugin ⇒
+  `FAILED_STARTUP(plugin_gate)`.
+
+### How our side maps on (already-verified, in-repo)
+
+The four seams in the next section are unchanged and still ground truth. Against
+the verified contract they land as facets rather than open questions:
+
+- **Commands / panels** ← our `render_*` payloads (§ 4): the adapter registers
+  `@handler`/`@panel` refs that forward `idle_engine/render.py`'s
+  embed-shaped dicts verbatim.
+- **Settings (+bindings)** ← the decoded `SetupConfig` (§ 1): `decode_setup`
+  runs at the plugin trust boundary; the setup code / config enters through
+  the host's `settings` facet.
+- **Persistence** is **host-owned** (`stores` is refused at the gate), which
+  resolves the old open question (§ 4 / persistence.md): `GameState` saves
+  (`dump_state`/`load_state`) ride the host's store — the plugin never ships
+  its own storage backend.
+- **Events / capabilities** cover tick/offline triggers and any declared
+  permissions.
+
+**Next actionable step (NOT done here — this slice is docs-only):** scope and
+build the adapter slice per this doc — a thin `plugin/` shell exporting a
+`SubsystemManifest` over the four verified seams, pinned via
+`tools/plugin_pin.py`. That is a separate, non-docs slice; no adapter code is
+written in this docs-only un-park.
 
 ## Our side of the seam — VERIFIED (in-repo, source is ground truth)
 
@@ -81,9 +153,15 @@ validated against the platform caps (PLATFORM-LIMITS.md). The plugin
 forwards them verbatim to its embed constructor — zero formatting logic on
 the adapter side.
 
-## UNVERIFIED — what we need from the exemplar before scoping the adapter
+## ~~UNVERIFIED~~ ANSWERED — what we needed from the exemplar (historical)
 
-Exactly these, in priority order; none can be assumed:
+> **Superseded 2026-07-12.** The contract at superbot-next
+> `docs/game-plugin-contract.md` @ `d3dba9b` answers this question list — see
+> § Re-probe 2026-07-12 above for the resolutions. Kept here as the record of
+> what was open before verification; no longer a blocker.
+
+Exactly these were open, in priority order; each is now resolved by the
+verified contract (§ Re-probe 2026-07-12):
 
 1. **Manifest**: file name, format (TOML/YAML/JSON?), required fields
    (id, version, entry point, permissions?), and where it lives in the
@@ -103,11 +181,11 @@ Exactly these, in priority order; none can be assumed:
 6. **Dependency policy**: whether a plugin may vendor PyYAML (the theme
    loader's one non-stdlib import) or must pre-resolve packs to JSON.
 
-**Recommended ⚑ to the manager**: ask for the superbot-next plugin/manifest
-contract pointer (or a seeding ETA for `superbot-plugin-hello`). The moment
-the exemplar has content, re-run the probe table above and replace this
-section with the real mapping plus the minimal manifest skeleton — verified
-parts only.
+**~~Recommended ⚑ to the manager~~ RESOLVED 2026-07-12**: the pointer the ⚑
+asked for now exists — superbot-next `docs/game-plugin-contract.md` @
+`d3dba9b`. The probe was re-run (§ Re-probe 2026-07-12) and the real mapping is
+recorded there. PLUG-001 is UN-PARKED; the remaining work is the adapter slice
+(a separate, non-docs slice), not a contract hunt.
 
 ## Cross-links
 
