@@ -6,7 +6,7 @@
 > work always win over this file. Read it second (right after the working
 > agreement) and keep it current as the project moves.
 
-*Groomed 2026-07-11 against main `b6e6b68` (post-PR #35); suite 620 green.*
+*Groomed 2026-07-12 against main `c753bc8` (post-PR #35); suite 1131 green.*
 
 ## Stability baseline
 
@@ -32,9 +32,10 @@ Known-good and not to be re-audited without a reported regression:
   - `persistence.py` — SAVE FORMAT v1: canonical versioned
     `dump_state`/`load_state` + migration registry; contract in
     [`persistence.md`](persistence.md).
-- **Theme catalog: 9 packs**, all schema-v1, all with full `labels` blocks:
+- **Theme catalog: 12 packs**, all schema-v1, all with full `labels` blocks:
   egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
-  dragon-hoard, wizard-tower, royal-bakery, cyber-city. Waves 1–2 shipped
+  dragon-hoard, wizard-tower, royal-bakery, cyber-city, ant-colony,
+  idol-agency, pirate-cove. Waves 1–2 shipped
   with **zero schema pinches** — the frozen v1 schema fit all foreign content.
 - **Schema v1** (`docs/theme-schema.md` + machine twin
   `schema/theme.schema.json`, md↔json parity test-enforced): additive-only
@@ -52,7 +53,7 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (125 vectors: 45 valid with layer-by-layer intermediates, 55 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 620 passing** — unit + doc-parity tests plus a seeded
+- **Test suite: 1131 passing** — unit + doc-parity tests plus a seeded
   property/invariant layer (128 tests: tick/offline exact equivalence,
   per-pack determinism trajectories, conservation/monotonicity,
   render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz).
