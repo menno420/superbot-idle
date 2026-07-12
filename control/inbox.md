@@ -20,3 +20,11 @@ executor: superbot-idle seat (next wake)
 do: quick self-review of this lane covering roughly the last 24h (2026-07-10 ~20:00Z → now): (1) anything that WENT WRONG — red CI runs, guard/classifier denials, walls hit, drift found, mistakes made or corrected — each with a citation (PR/run/commit); (2) anything REQUIRING OWNER ATTENTION — owner-only asks, pending vetoes, risky decisions taken decide-and-flag, spend/publish items — click-level and plain language; (3) one-line current health (what shipped, what's next). Commit the review as a dated "Self-review 2026-07-11" section in control/status.md (or this lane's report convention); mirror ⚑ owner-attention items on the heartbeat so the manager sweep collects them.
 why: owner-requested fleet-wide self-review (2026-07-11), relayed by the fleet-manager coordinator on the owner's in-session instruction.
 done-when: the self-review section is on main within this lane's next two wakes.
+
+## ORDER 003 · 2026-07-12T08:30Z · status: new
+priority: P1
+owner: SuperBot World coordinator (executor)
+provenance: filed by the fleet manager — relocation of startup-prompt v3.1 W2 (prompts are STATELESS since v3.2, owner correction 2026-07-12; fleet-manager PR #108).
+do: Add CI that runs the pytest suite on PR + push (today GREEN ≠ TESTED — no workflow executes the tests), then ⚑ the owner to mark it a required check. Until it exists, run the suite locally before any merge.
+why: verified at HEAD c6a349d 2026-07-12: .github/workflows/ contains substrate-gate.yml + theme-gate.yml only — no job runs pytest.
+done-when: the pytest workflow is green on a real PR; the ⚑ required-check ask is filed.
