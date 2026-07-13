@@ -59,3 +59,54 @@ INTERPRETATION:
 (c) precedence: correctness and structural integrity outrank speed — no gate/verdict/golden-parity floor is relaxed.
 why: Context: owner asked why superbot-games fishing has 4 species vs the original's ~21; coordinator offered to batch-pin the remaining roster; owner said yes and generalized.
 done-when: future SIM-REQUESTs from this lane batch into full content waves; production-grade is adopted as the standing target; status.md reports this order acked.
+
+## ORDER 007 · 2026-07-13T22:14Z · status: new
+priority: P1
+from: Fleet Manager seat — EAP final-night fan-out (fm ORDER 045, Phase 3), relayed by coordinator dispatch 2026-07-13
+executor: superbot-idle seat (next wake)
+do: work the EAP final-night worklist below top-down across tonight's wakes — ORDER body relayed verbatim below.
+why: owner directive 2026-07-13 ~21:34Z (fm ORDER 045) — last day of the EAP; every seat gets a full night worklist.
+
+**EAP final-night worklist — owner directive relay (fm ORDER 045, Phase 3 fan-out).**
+
+Owner directive, quoted VERBATIM as recorded in fm ORDER 045: "I want you to find out the current state of all repos and
+dispatch instructions for all projects so they know what to do, find out if there still
+need to be improvements made in existing features or else if the idea lab made any good
+plans etc. the goal is to make sure each project has a full list to work on tonight since
+it's the last day of the EAP."
+
+Citations: fm ORDER 045, control/inbox.md @ ca1ce28 · docs/eap-final-night-worklists-2026-07-13.md @ ca1ce28 (doc last modified by commit e963183; landed via fm PR #178, merged 2026-07-13T22:07:14Z).
+
+**Your seat's full night worklist, copied faithfully from the doc:**
+
+## superbot-idle — swept @ `1f4d774`
+
+Honest thin list — engine complete, all 5 ORDERs done (SIM-001 graduation shipped
+#93; pytest CI shipped #74), zero open PRs; the queue is mostly waiting on others.
+
+1. Catalog wave 5 — 3 data-only theme packs; explicitly sanctioned standing filler, merge on theme-gate green alone (`docs/current-state.md` roadmap item 3 @`1f4d774`) `[standing]`
+2. SIM-REQUEST draft: min-visible-delta feltness floor — V038 ASK1 = CONFIRMED-INERT, needs its own sim; docs-only, unblocks a real tuning lane (`control/status.md` § ORDER 005 @`1f4d774`) `[improve]`
+3. Close the `1 skipped` CI hole — CI job checking out pinned superbot-next so `plugin/tests/test_manifest.py` actually exercises the adapter contract (`docs/current-state.md` stability § @`1f4d774`) `[improve]`
+4. Cross-repo pointer: the `plugins.lock.json` pin rides in superbot-next (its item 6) — track it, don't duplicate (`control/status.md` Next-3 @`1f4d774`) `[lane]`
+
+**Blocked (do not schedule):** PRESTIGE_BONUS_PERCENT 10→25 (parked behind the SIM-PINNED re-tuning ruling, outbox ask 18:45Z) · timed-events (SIM-002 + owner Q-block) · generator-purchase economy (owner Q-block) — both Q-blocks await fleet Q-numbers from fm · OA-003 mark `pytest` required (owner click).
+
+Why-tonight tags (from the worklists doc): `[lane]` unfinished lane work · `[standing]` standing/unconsumed
+ORDER · `[verdict]` sim verdict served/approved awaiting build · `[build-direct]`
+idea-engine plan marked buildable without a sim verdict · `[improve]`
+feature-improvement · `[drift]` docs/heartbeat drift fix · `[deadline]` window
+closes 07-14 · `[relay]` fm routing/relay debt.
+
+---
+
+**ORDER 031 idle-component split (reference).** fm ORDER 031 (mining/fishing/idle
+finalization + casino inventory/spec; owner's words include "same for fishing and
+the idle game") names superbot-idle in its owner set, but the sweep found it landed
+in no seat inbox (worklists doc cross-cutting finding 1 + fm self item 3 @ ca1ce28).
+The idle-game finalization component of ORDER 031 falls to THIS seat's list above;
+superbot-next carries the order as primary owner in its own dispatch (fm ORDER 031
+@ ca1ce28, fm control/inbox.md).
+
+
+provenance: relayed by the Fleet Manager seat per owner directive, coordinator dispatch 2026-07-13
+done-when: work the list top-down across tonight's wakes; ack in your inbox thread; heartbeat progress per item.
