@@ -35,6 +35,24 @@ manifest/plugin contract (read via raw; `superbot-plugin-hello` is its
 exemplar); no Discord-API calls inside engine core. No secret values in this
 repo, ever.
 
+## Try it (text REPL)
+
+`tools/play.py` is a runnable, text-only way to play the engine — it drives the
+real public API and renders through the shipped `render_*` views (no new
+mechanics, no economy numbers of its own):
+
+```
+python3 tools/play.py                    # default pack (egg-farm)
+python3 tools/play.py --pack royal-bakery # a two-generator pack
+python3 tools/play.py --list-packs        # show every shipped theme
+```
+
+In the loop: `status`, `shop`, `buy <id>`, `prestige [do]`, `offline <secs>`,
+`wait <secs>`, `achievements`, `pack <id>`, `help`, `quit`. It seeds a small
+starting grant of generators (`--start-count`, default 1) because the engine has
+no generator-purchase verb yet — that grant lives only in the entrypoint and
+changes no economy constant.
+
 ## Where to start
 
 1. `control/inbox.md` (orders) + `control/status.md` (the live heartbeat).
