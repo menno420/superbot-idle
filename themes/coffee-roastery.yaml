@@ -1,0 +1,63 @@
+# coffee-roastery — theme pack #13 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: coffee-roastery
+  name: Coffee Roastery
+  description: A corner roastery where the first crack of the morning turns green beans into a queue out the door.
+  emoji: "☕"
+  embed_color: "#6F4E37"
+
+currencies:
+  - id: primary
+    name: beans
+    description: Sacks of green coffee beans, weighed by the pound and hoarded like gold before the roast.
+    emoji: "🫘"
+  - id: prestige
+    name: reserve blends
+    description: Sealed tins of the roastery's finest reserve blends — the flavor of every batch you ever perfected.
+    emoji: "🥫"
+
+generators:
+  - id: tier1
+    name: drip station
+    description: A humble drip station that keeps the regulars caffeinated and the bean count ticking up all day.
+    emoji: "☕"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: roasting drum
+    description: A cast-iron roasting drum that tumbles raw beans to a glossy roast, filling the block with the smell of profit.
+    emoji: "🥁"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: calibrated burr grinder
+    description: A freshly calibrated burr grinder pulls a cleaner shot; the barista works faster and the drip line never stalls.
+    emoji: "⚙️"
+    target: tier1
+  - id: boost2
+    name: convection roast profile
+    description: A tuned convection profile roasts each batch evenly to first crack; the drum turns green beans golden twice as quick.
+    emoji: "🔥"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: sell the shop and franchise a new roastery
+  action_description: Hand over the keys, bottle your signature reserve blend, and open a gleaming new roastery across town — the aroma travels with you.
+  action_emoji: "🏪"
+
+labels:
+  offline_return: "While the shop was shuttered, the roaster kept the beans coming: {gains}"
+  status_title: "☕ Coffee Roastery — the morning count"
+  shop_title: "⚙️ The Roaster's Bench"
+  shop_description: Spend beans to keep the grind fine, the drum hot, and the espresso crema thick.
+  level: Roast level
+  prestige_progress: "lifetime beans toward the new roastery:"

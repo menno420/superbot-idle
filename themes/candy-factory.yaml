@@ -1,0 +1,63 @@
+# candy-factory — theme pack #15 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: candy-factory
+  name: Candy Factory
+  description: A whirring, sugar-dusted candy factory where the conveyor never sleeps and neither does your sweet tooth.
+  emoji: "🍬"
+  embed_color: "#EC5C9C"
+
+currencies:
+  - id: primary
+    name: candies
+    description: Foil-wrapped candies tumbling off the line by the crateload, too many to ever count by hand.
+    emoji: "🍬"
+  - id: prestige
+    name: sugar crystals
+    description: Jars of flawless sugar crystals, grown slow and pure — the distilled sweetness of every batch you ever ran.
+    emoji: "💎"
+
+generators:
+  - id: tier1
+    name: taffy puller
+    description: A taffy puller stretching and folding ribbons of candy in a hypnotic, endless glossy loop.
+    emoji: "🍭"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: gumdrop line
+    description: A rattling gumdrop line dusting row after row of jellies in sugar, faster than any hand could hope to.
+    emoji: "🟢"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: warmed pulling arms
+    description: Gently warmed arms keep the taffy supple; the puller stretches longer ribbons and never tears a batch.
+    emoji: "🌡️"
+    target: tier1
+  - id: boost2
+    name: recalibrated sugar duster
+    description: A recalibrated duster coats each gumdrop in a perfect shell of sugar; the line runs cleaner and twice as sweet.
+    emoji: "🧂"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: sell the recipe and open a new factory
+  action_description: Auction off the secret recipe, cash out your jarred sugar crystals, and cut the ribbon on a bigger factory downtown — the conveyor starts empty and hungry.
+  action_emoji: "🎀"
+
+labels:
+  offline_return: "While the lights were off, the conveyor kept the candies rolling: {gains}"
+  status_title: "🍬 Candy Factory — the batch tally"
+  shop_title: "🌡️ The Machine Floor"
+  shop_description: Spend candies to keep the taffy soft, the gumdrops shining, and the caramel from ever burning.
+  level: Batch level
+  prestige_progress: "lifetime candies toward the new factory:"
