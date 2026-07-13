@@ -1,12 +1,12 @@
 # superbot-idle · status
-updated: 2026-07-13T17:29Z
+updated: 2026-07-13T17:43Z
 phase: RESUMED for ORDER 003 (pytest CI) — a P1 order landed in control/inbox.md (2026-07-12T08:30Z), waking the lane from ARCHIVED-READY; addressed by PR #74. Meanwhile the PLUG-001 docs-only un-park landed via PR #72 (upstream superbot-next plugin contract VERIFIED to EXIST — see PLUG-001 section below). Founding chat knowledge remains in durable homes (docs/retro/2026-07-11-lane-retro.md + docs/retro/2026-07-11-archive-ready.md, PR #70). Wake loop remains per ROUTINE RECORD below.
 health: green
 kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
 last-shipped: ORDER 003 — pytest CI workflow (PR #74); prior: PLUG-001 docs-only un-park (PR #72), close-out + archive prep (PR #70 + heartbeat PR #71)
 blockers: SIM-001/Q-0264 and KIT-001 still open (⚑ blocks below). PLUG-001 CLEARED 2026-07-12 — contract found, un-parked (see PLUG-001 section below).
-orders: acked=000-005 done=000-004 claimed-by: 005 idle-lane-worker 2026-07-13T17:29Z (003 done-when met: PR #74 MERGED 2026-07-12T19:40:02Z with the `pytest` check green + the ⚑ required-check ask filed as OA-003 below; 004 = NIGHT REPORT section at end of this file; 005 claimed — SIM-001 VERDICT 038 graduation build in flight on `claude/economy-v1-sim-pinned`, work claim at control/claims/claude-economy-v1-sim-pinned.md)
+orders: acked=000-005 done=000-005 (003 done-when met: PR #74 MERGED 2026-07-12T19:40:02Z with the `pytest` check green + the ⚑ required-check ask filed as OA-003 below; 004 = NIGHT REPORT section at end of this file; 005 done-when met atomically with this line: the graduation PR #93 carries the table flip + A10 trend-form re-registration + this done-report in one landing — see § ORDER 005 at end of this file)
 
 ## ORDER 003 — pytest CI on PR + push (2026-07-12T08:30Z, P1)
 - ADDRESSED by **PR #74** (`order-003-pytest-ci`): adds `.github/workflows/pytest.yml`, a new workflow that runs `python3 -m pytest -q` on every `pull_request` and `push` to `main`. Job/check name `pytest`, so it shows as its own check-run.
@@ -148,3 +148,48 @@ notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instructi
 1. Host-side `plugins.lock.json` pin for the idle adapter (a superbot-next PR, via that lane).
 2. Act on the Q-0264 / A10 ruling when it lands (graduate or re-register the PROVISIONAL table).
 3. Catalog wave 5 on demand (data-only packs merge on theme-gate green alone).
+
+## ORDER 005 — SIM-001 VERDICT 038 consumed: economy table SIM-PINNED + A10 trend form (2026-07-13T17:43Z)
+
+> Frozen-archive note (same convention as the ORDER 004 section above): this
+> section is appended ONLY under the explicit at-HEAD ORDER 005
+> (control/inbox.md, 2026-07-13T13:40:58Z, P1), whose done-when requires this
+> file to report the order done. Doctrine conflict flagged, not resolved:
+> the seat brief calls this file a frozen ARCHIVE; the live ORDER at HEAD
+> outranks the brief (headlined in the session report).
+
+- CLAIM: work claim + claimed-by landed on main FIRST via fast-lane PR #92
+  (MERGED 2026-07-13T17:29:27Z, auto-merge enabler). No competing claim/PR
+  on economy-v1.md at claim time (control/claims/ scanned + zero open PRs).
+- SHIPPED via **PR #93** (`claude/economy-v1-sim-pinned`): seven-parameter
+  table in docs/design/economy-v1.md graduated PROVISIONAL → **SIM-PINNED**
+  citing sim-lab VERDICT 038 (SIM-001/Q-0264, CONDITIONAL); **A10
+  re-registered in TREND form (v2)** in the SAME PR, with a full
+  re-registration record (v1 wording preserved as superseded; evidence: 6
+  strict-gate violations all inside the 0.02 wiggle band, max 0.0166 ≈ 83%
+  of band; trend 0.9175→0.9661, exact 1398/1447). **ZERO parameter value
+  changes** — the seven table rows are byte-identical.
+- Companion docs/design/upgrades-prestige-v0.md badge flipped in the same PR
+  per economy-v1.md's own registered graduation semantics ("updating this
+  doc and upgrades-prestige-v0.md together").
+- RESUME TRIGGER (QUEUE above) partially fired per the ORDER: the Q-0264
+  trigger's SIM-001/V038 component (A10 wording + seven-parameter table) is
+  cleared by this relay; the trigger's other components (multiplier values,
+  achievements-inclusive sim, timed-events adoption) remain dormant.
+- Recorded from the verdict, no action taken: ASK1 CONFIRMED-INERT
+  (min-visible-delta feltness floor is engine-side, needs its own sim before
+  registering); ASK2 CONFIRMED (PRESTIGE_BONUS_PERCENT 10→25 = candidate
+  row, not a mandate; r2 0.9175→0.8006); co-consumer fm owner-queue E#52.
+- WALL (verbatim, sim-lab verdict payload out of reach): GitHub MCP →
+  `Access denied: repository "menno420/sim-lab" is not configured for this
+  session. Allowed repositories: menno420/superbot-games,
+  menno420/superbot-idle` — VERDICT 038 consumed from the ORDER's quoted
+  terms; the sim's fixtures.json `a10_trend_wording_proposed` was likewise
+  unreachable, so the final A10 v2 text is this seat's registration per the
+  verdict's own delegation.
+- FOLLOW-UP flagged (not this PR): tools/simulate.py still evaluates A10's
+  v1 strict gate (evaluate_criteria A10 branch + _o6_table) — needs a v2
+  trend-form update so harness output matches the registered criterion.
+- Verify: python3 -m pytest -q → 1260 passed, 1 skipped; bootstrap.py check
+  --strict red pre-flip only on this session's own born-red card (designed
+  hold), exit 0 after the close-out flip.
