@@ -61,3 +61,43 @@ labels:
   shop_description: Trade pastries for a warmer, busier bakehouse.
   level: Recipe mastery
   prestige_progress: "lifetime pastries toward the charter:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first hearth lit
+    description: Ten ovens firing at once — the bakehouse finally fills with the good noise.
+    emoji: "🔥"
+  - id: owned-2
+    name: guild bakehouse
+    description: A hundred ovens going; the morning queue winds clear around the square.
+    emoji: "🥐"
+  - id: owned-3
+    name: royal bakery empire
+    description: A thousand ovens — every town of note eats your crust by royal charter.
+    emoji: "🏰"
+  - id: lifetime-1
+    name: first thousand pastries
+    description: The first thousand pastries out of the oven, counted warm onto the cooling racks.
+    emoji: "🥐"
+  - id: lifetime-2
+    name: by appointment to the crown
+    description: A hundred thousand pastries; the palace now orders by the cartload.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: legend of the ovens
+    description: Ten million pastries. Rival bakers make pilgrimages just to smell the air.
+    emoji: "👑"
+  - id: prestige-1
+    name: first royal seal
+    description: The first wax seal of royal favor — one bakehouse chartered and thriving.
+    emoji: "👑"
+  - id: prestige-2
+    name: sealed charters
+    description: Five royal seals in the strongbox, one per bakehouse founded and fed.
+    emoji: "📜"
+  - id: prestige-3
+    name: baker to the realm
+    description: Twenty-five royal seals — the crown sets its table by your calendar.
+    emoji: "🏰"

@@ -61,3 +61,43 @@ labels:
   shop_description: Spend fan devotion on polish, practice, and a little stage magic.
   level: Spotlight level
   prestige_progress: "lifetime fans toward the graduation stage:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first fandom
+    description: Ten acts drilling at once — the agency finally sounds like a hit factory.
+    emoji: "🩰"
+  - id: owned-2
+    name: chart-topping roster
+    description: A hundred acts in rotation; the trending page is basically your roster.
+    emoji: "🎶"
+  - id: owned-3
+    name: entertainment empire
+    description: A thousand acts — every stadium in the country books through your desk.
+    emoji: "🏙️"
+  - id: lifetime-1
+    name: first thousand fans
+    description: The first thousand fans, won one encore and one shaky livestream at a time.
+    emoji: "💖"
+  - id: lifetime-2
+    name: sold-out arenas
+    description: A hundred thousand fans; the lightstick ocean stretches past the nosebleeds.
+    emoji: "🎟️"
+  - id: lifetime-3
+    name: household name
+    description: Ten million fans. Your groups trend before they have even announced.
+    emoji: "👑"
+  - id: prestige-1
+    name: first platinum record
+    description: The first platinum record on the wall — a fandom built up from absolute zero.
+    emoji: "💿"
+  - id: prestige-2
+    name: platinum wall
+    description: Five platinum records framed in a row; new trainees photograph them for luck.
+    emoji: "🏆"
+  - id: prestige-3
+    name: hall of fame
+    description: Twenty-five platinum records — the industry names its trophies after your eras.
+    emoji: "🌟"
