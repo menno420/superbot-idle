@@ -1,11 +1,14 @@
 # Upgrades + Prestige v0 — pre-registered curve shapes and parameters
 
-> **Status:** `binding` (shapes) + **PROVISIONAL** (parameters) — committed
-> 2026-07-11 with slice (b), BEFORE any tuning, per the integrity floor
-> (README § Integrity floor). Every parameter below is provisional pending
-> the economy design doc ([`economy-v1.md`](economy-v1.md), slice (d)) and
-> Simulator pinning via the Q-0264 pipeline (SIM-001 request registered there); changing a value in `idle_engine/economy.py` without
-> changing this doc in the same PR breaks the pre-registration contract.
+> **Status:** `binding` (shapes) + **SIM-PINNED** (parameters — graduated
+> from PROVISIONAL 2026-07-13 by sim-lab VERDICT 038 via SIM-001/Q-0264,
+> consumed per control/inbox.md ORDER 005; ZERO values changed at
+> graduation) — first committed 2026-07-11 with slice (b), BEFORE any
+> tuning, per the integrity floor (README § Integrity floor). Pinning
+> evidence + the A10 trend-form re-registration live in the economy design
+> doc ([`economy-v1.md`](economy-v1.md)); changing a value in
+> `idle_engine/economy.py` without changing this doc in the same PR still
+> breaks the pre-registration contract.
 
 ## Ownership (CORE/SKIN)
 
