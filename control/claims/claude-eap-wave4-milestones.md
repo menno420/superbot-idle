@@ -1,0 +1,1 @@
+- `claude/eap-wave4-milestones` · **wave-4 milestones flavoring** — data-only, 3 packs, ⚑ self-initiated per wave-5 card 💡 · themes/ + tests + .sessions/ + telemetry/ · 2026-07-13
