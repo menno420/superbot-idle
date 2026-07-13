@@ -1,6 +1,6 @@
 # 2026-07-13 — skin-pack milestones: flavor the 9 unskinned packs
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · feature build · skin-pack milestones — the 9 unskinned packs · 2026-07-13
 
@@ -26,6 +26,12 @@ numbers, no thresholds: the block is label-only by schema
 required `id`/`name`/`description`/`emoji`, thresholds/bonuses are engine-side
 per `docs/design/achievements-v0.md`), and every `prestige-*` id is legal
 because all nine packs declare a `prestige` block (gate check).
+
+Verify: `python3 tools/theme_gate.py themes` → all 12 pack(s) valid (schema
+v1); `python3 -m pytest -q` → 1131 passed (unchanged — the new packs
+glob-validate, no test edit needed); render-check confirmed dragon-hoard /
+wizard-tower now render flavored names (e.g. "⛏️ first coin seam", "🌌 archmage
+ascendant") where origin/main rendered `Milestone 1 … Milestone 9`.
 
 ## 💡 Session idea
 
