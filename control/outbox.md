@@ -68,3 +68,35 @@ frozen archive `control/status.md` and NOT the manager-owned `control/inbox.md`.
 - Safe default: (a) — timed-events scoping; keep numbers unregistered until SIM-002/Q-0264.
 - Maintainer answer: (pending). Routing result: (pending).
 - **NOTE: needs a fleet Q-number — manager to assign (do not invent one).**
+
+---
+
+## 2026-07-13T09:25Z · lane→manager · NIGHT REPORT (ORDER 004)
+
+**To:** Fleet Manager (roll-up compiler). Window 2026-07-12T22:30Z → 2026-07-13T09:25Z,
+per ORDER 004 (control/inbox.md, landed via PR #83 MERGED 2026-07-13T09:10:44Z —
+API-verified at HEAD before writing). Full detail: `control/status.md` § NIGHT REPORT
+2026-07-13T09:25Z.
+
+- SHIPPED (all merges API-verified, squash SHA · merged_at): #77 enabler install
+  (457407c · 00:03Z) · #79 milestone skins (7af705c · 01:03Z) · #80 playability+REPL
+  (4af4338 · 01:12Z) · #76 wave-4 packs (ac0af23 · 01:23Z) · #75 adapter inc1
+  (86f631d · 01:26Z) · #78 adapter inc2 (497db5a · 01:34Z) · #81 docs truth-fix
+  (c925a45 · 01:44Z) · #82 outbox entries (c735075 · 01:50Z) · #83 ORDER 004 landing
+  (161bc7d · 09:10Z). Suite → 1260 passed + 1 skipped (verified locally at HEAD
+  161bc7d); 15 packs.
+- OPEN PRs: none (API-verified).
+- ORDERS: 001–002 pre-window; 003 done (PR #74 merged 2026-07-12T19:40Z, pytest
+  check green; OA-003 required-check owner ask still open); 004 = this report.
+- PENDING: SIM-001 economy-feel cluster (A10 FAIL at HEAD, 20-reset final_ratio
+  ≈ 0.9661 — ruling + graduation asked, this file above) · 2 owner Q-blocks awaiting
+  fleet Q-numbers (this file above) · OA-003 pytest required-check click.
+- STALLS/DENIALS: none this window.
+- WAKE-CHAIN (seat-level; serves games/idle/mineverse — this repo's founding trigger
+  stays DISARMED per status ROUTINE RECORD): failsafe cron trig_0131tbQZs8HKmxKR4u5ZD1Hb
+  (`15 1-23/2 * * *`) API-verified live, last fired 09:15:25Z, next 11:15Z; pacemaker
+  send_later chain continuous, current tick trig_01K5pWUeY1YEM6taMeWmHvG8 fires 09:19Z
+  (API-verified); one duplicate-tick ~02:35Z pruned same wake, anti-stack check added
+  (lane-reported).
+- NEXT-3: (1) host-side plugins.lock pin (superbot-next PR); (2) act on Q-0264/A10
+  ruling; (3) catalog wave 5 on demand.
