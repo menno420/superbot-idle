@@ -61,3 +61,43 @@ labels:
   shop_description: Spend ectoplasm to make the haunting that little bit worse.
   level: Haunting level
   prestige_progress: "lifetime ectoplasm toward the séance:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first haunting
+    description: Ten spectres stirring at once — the manor finally earns the word haunted.
+    emoji: "🖼️"
+  - id: owned-2
+    name: restless household
+    description: A hundred spectres at work; no guest ever makes it past the foyer.
+    emoji: "🕸️"
+  - id: owned-3
+    name: manor of a thousand ghosts
+    description: A thousand spectres — the house holds more dead than the town holds living.
+    emoji: "🏰"
+  - id: lifetime-1
+    name: first thousand drops
+    description: A thousand drops of ectoplasm skimmed from the cold spots and bottled.
+    emoji: "🌫️"
+  - id: lifetime-2
+    name: spectral fortune
+    description: A hundred thousand drops; the cellar glows faintly up through the floorboards.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: legend of the manor
+    description: Ten million drops of ectoplasm. Ghost-hunters retire rather than knock.
+    emoji: "👑"
+  - id: prestige-1
+    name: first freed spirit
+    description: One restless spirit set free — and grateful enough now to owe you a favor.
+    emoji: "👻"
+  - id: prestige-2
+    name: grateful dead
+    description: Five freed spirits, each drifting back on cold nights to lend a colder hand.
+    emoji: "💀"
+  - id: prestige-3
+    name: master of séances
+    description: Twenty-five freed spirits — the veil parts for you like a held-open door.
+    emoji: "📿"
