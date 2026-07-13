@@ -45,12 +45,15 @@ IDOL_AGENCY = THEMES_DIR / "idol-agency.yaml"
 COFFEE_ROASTERY = THEMES_DIR / "coffee-roastery.yaml"
 ARCTIC_OUTPOST = THEMES_DIR / "arctic-outpost.yaml"
 CANDY_FACTORY = THEMES_DIR / "candy-factory.yaml"
+CLOCKWORK_ATELIER = THEMES_DIR / "clockwork-atelier.yaml"
+LIGHTHOUSE_KEEP = THEMES_DIR / "lighthouse-keep.yaml"
+RAMEN_STAND = THEMES_DIR / "ramen-stand.yaml"
 
 
-# --- the catalog ships fifteen packs, all gate-green --------------------------
+# --- the catalog ships eighteen packs, all gate-green -------------------------
 
 
-def test_catalog_ships_all_fifteen_packs():
+def test_catalog_ships_all_eighteen_packs():
     for pack in (
         EGG_FARM,
         SPACE_COLONY,
@@ -67,9 +70,12 @@ def test_catalog_ships_all_fifteen_packs():
         COFFEE_ROASTERY,
         ARCTIC_OUTPOST,
         CANDY_FACTORY,
+        CLOCKWORK_ATELIER,
+        LIGHTHOUSE_KEEP,
+        RAMEN_STAND,
     ):
         assert pack in ALL_PACKS, f"missing shipped pack {pack.name}"
-    assert len(ALL_PACKS) >= 15
+    assert len(ALL_PACKS) >= 18
 
 
 def test_whole_catalog_passes_gate_including_cross_pack_checks(capsys):
@@ -330,6 +336,54 @@ def test_candy_factory_nouns_resolve():
     assert theme.prestige.currency == "prestige"
     assert theme.prestige.measures == "primary"
     assert theme.prestige.action_name == "sell the recipe and open a new factory"
+
+
+def test_clockwork_atelier_nouns_resolve():
+    theme = load_theme(CLOCKWORK_ATELIER)
+    assert theme.theme_id == "clockwork-atelier"
+    assert theme.name == "Clockwork Atelier"
+    assert theme.currency_name("primary") == "cogs"
+    assert theme.currency_name("prestige") == "grand complications"
+    assert theme.generator_name("tier1") == "apprentice bench"
+    assert theme.generator_name("tier2") == "mainspring lathe"
+    assert theme.upgrade_name("boost1") == "jeweled bearings"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "wind the master clock"
+
+
+def test_lighthouse_keep_nouns_resolve():
+    theme = load_theme(LIGHTHOUSE_KEEP)
+    assert theme.theme_id == "lighthouse-keep"
+    assert theme.name == "Lighthouse Keep"
+    assert theme.currency_name("primary") == "lamplight"
+    assert theme.currency_name("prestige") == "fresnel lenses"
+    assert theme.generator_name("tier1") == "oil lantern"
+    assert theme.generator_name("tier2") == "fresnel array"
+    assert theme.upgrade_name("boost1") == "polished reflectors"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "hand over the keep"
+
+
+def test_ramen_stand_nouns_resolve():
+    theme = load_theme(RAMEN_STAND)
+    assert theme.theme_id == "ramen-stand"
+    assert theme.name == "Ramen Stand"
+    assert theme.currency_name("primary") == "bowls"
+    assert theme.currency_name("prestige") == "golden ladles"
+    assert theme.generator_name("tier1") == "stockpot burner"
+    assert theme.generator_name("tier2") == "noodle press"
+    assert theme.upgrade_name("boost1") == "overnight tare"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "roll the cart on"
 
 
 # --- every pack drives the engine end to end ---------------------------------

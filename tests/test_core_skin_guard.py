@@ -18,7 +18,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # wizard-tower + royal-bakery + cyber-city distinctive nouns.
 # Extended for catalog wave 3: pirate-cove + ant-colony + idol-agency
 # distinctive nouns. Extended for catalog wave 4: coffee-roastery +
-# arctic-outpost + candy-factory distinctive nouns.
+# arctic-outpost + candy-factory distinctive nouns. Extended for catalog
+# wave 5: clockwork-atelier + lighthouse-keep + ramen-stand distinctive
+# nouns.
 # Deliberately EXCLUDED as too generic for a guard that scans engine
 # prose/identifiers: "gold", "coin", "scale" ("scales/scaling" is
 # legitimate engine vocabulary), "surface", "station", "village",
@@ -31,6 +33,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # — and from wave 4: "drum", "grinder", "blend", "shop", "core", "drill",
 # "team", "cache", "line", "factory", "batch", "shard", "crystal",
 # "recipe", "conveyor"
+# — and from wave 5: "bench", "caliber", "complication", "movement",
+# "watch", "keep", "keeper", "beam", "counter", "queue", "press",
+# "burner", "cart", "tare", "dies"
 # — the packs' truly distinctive nouns below carry the guard instead.
 FORBIDDEN_NOUNS = re.compile(
     r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
@@ -62,7 +67,13 @@ FORBIDDEN_NOUNS = re.compile(
     r"|expeditions"
     r"|candy|candies|taffy|gumdrop|gumdrops|lollipop|lollipops|confection"
     r"|confections|nougat|caramel|marshmallow|marshmallows|sherbet"
-    r"|sugar)\b",
+    r"|sugar"
+    r"|clockwork|atelier|ateliers|horologist|horological|mainspring"
+    r"|mainsprings|escapement|escapements|cog|cogs|lathe|lathes"
+    r"|lighthouse|lighthouses|fresnel|lamplight|wick|wicks|headland"
+    r"|headlands|seaboard|lantern|lanterns"
+    r"|ramen|noodle|noodles|broth|broths|stockpot|stockpots|slurp"
+    r"|slurps|slurped|ladle|ladles|ladleful|bowl|bowls)\b",
     re.IGNORECASE,
 )
 
@@ -137,6 +148,15 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("a Candy Factory taffy puller")
     assert FORBIDDEN_NOUNS.search("gumdrops dusted in sugar")
     assert FORBIDDEN_NOUNS.search("a nougat caramel lollipop confection")
+    assert FORBIDDEN_NOUNS.search("a Clockwork Atelier mainspring lathe")
+    assert FORBIDDEN_NOUNS.search("cogs filed by the horologist")
+    assert FORBIDDEN_NOUNS.search("the escapement ticks in its case")
+    assert FORBIDDEN_NOUNS.search("a Lighthouse Keep fresnel array")
+    assert FORBIDDEN_NOUNS.search("lamplight thrown from the headland")
+    assert FORBIDDEN_NOUNS.search("a trimmed wick in the lantern")
+    assert FORBIDDEN_NOUNS.search("a Ramen Stand noodle press")
+    assert FORBIDDEN_NOUNS.search("bowls of broth from the stockpot")
+    assert FORBIDDEN_NOUNS.search("a golden ladle slurped clean")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")

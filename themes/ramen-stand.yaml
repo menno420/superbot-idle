@@ -1,0 +1,103 @@
+# ramen-stand — theme pack #18 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: ramen-stand
+  name: Ramen Stand
+  description: A one-lantern noodle cart in the night market, where the broth has simmered longer than the city has had streetlights.
+  emoji: "🍜"
+  embed_color: "#C0392B"
+
+currencies:
+  - id: primary
+    name: bowls
+    description: Steaming bowls served over the counter and slurped clean — the night market keeps score in empty bowls.
+    emoji: "🍜"
+  - id: prestige
+    name: golden ladles
+    description: Golden ladles hung above the stockpot — one for every corner where the cart sold out, packed up, and rolled on.
+    emoji: "🥄"
+
+generators:
+  - id: tier1
+    name: stockpot burner
+    description: A battered stockpot rolling at a low boil since before dawn; the broth does the advertising.
+    emoji: "🍲"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: noodle press
+    description: A hand-cranked noodle press turning flour and alkaline water into ribbons faster than the pot can drink them.
+    emoji: "🥢"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: overnight tare
+    description: A deeper, darker tare steeped overnight; one ladleful in the bowl and the regulars close their eyes.
+    emoji: "🧂"
+    target: tier1
+  - id: boost2
+    name: sharper brass dies
+    description: Fresh-cut brass dies fitted to the press; the noodles come out springier and the queue moves twice as fast.
+    emoji: "🔩"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: roll the cart on
+  action_description: Hang the last golden ladle, wipe down the counter, and wheel the cart to a new corner where nobody knows the broth yet.
+  action_emoji: "🏮"
+
+labels:
+  offline_return: "While you napped behind the curtain, the stockpot never stopped rolling: {gains}"
+  status_title: "🍜 Ramen Stand — the night market tally"
+  shop_title: "🏮 The Cart's Back Shelf"
+  shop_description: Spend bowls on deeper broth, springier noodles, and a lantern bright enough to summon the whole street.
+  level: Ladle level
+  prestige_progress: "lifetime bowls toward rolling the cart on:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first full counter
+    description: Ten burners going at once — the steam column marks the stand from three alleys away.
+    emoji: "🥢"
+  - id: owned-2
+    name: hundred-burner kitchen
+    description: A hundred burners; the night market quietly rearranges itself around your queue.
+    emoji: "🔥"
+  - id: owned-3
+    name: noodle empire
+    description: A thousand burners — every alley in the city smells faintly of your broth.
+    emoji: "🏮"
+  - id: lifetime-1
+    name: first thousand bowls
+    description: The first thousand bowls, slurped clean and stacked into a wobbling porcelain tower.
+    emoji: "🍜"
+  - id: lifetime-2
+    name: queue around the block
+    description: A hundred thousand bowls; strangers queue on rumor alone and leave as regulars.
+    emoji: "🚶"
+  - id: lifetime-3
+    name: broth of legend
+    description: Ten million bowls. Cooks across the city bow to a cart they have only heard described.
+    emoji: "👑"
+  - id: prestige-1
+    name: first golden ladle
+    description: The first corner conquered — one golden ladle, still warm from the stockpot.
+    emoji: "🥄"
+  - id: prestige-2
+    name: rack of ladles
+    description: Five golden ladles clinking overhead; the cart sounds like a wind chime when it rolls.
+    emoji: "🏆"
+  - id: prestige-3
+    name: the wandering legend
+    description: Twenty-five golden ladles — the cart is a myth that keeps arriving exactly where the city is hungriest.
+    emoji: "🌙"
