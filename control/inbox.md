@@ -61,6 +61,12 @@ why: Context: owner asked why superbot-games fishing has 4 species vs the origin
 done-when: future SIM-REQUESTs from this lane batch into full content waves; production-grade is adopted as the standing target; status.md reports this order acked.
 
 ## ORDER 007 · 2026-07-13T22:14Z · status: new
+priority: P1
+from: Fleet Manager seat — EAP final-night fan-out (fm ORDER 045, Phase 3), relayed by coordinator dispatch 2026-07-13
+executor: superbot-idle seat (next wake)
+do: work the EAP final-night worklist below top-down across tonight's wakes — ORDER body relayed verbatim below.
+why: owner directive 2026-07-13 ~21:34Z (fm ORDER 045) — last day of the EAP; every seat gets a full night worklist.
+
 **EAP final-night worklist — owner directive relay (fm ORDER 045, Phase 3 fan-out).**
 
 Owner directive, quoted VERBATIM as recorded in fm ORDER 045: "I want you to find out the current state of all repos and
