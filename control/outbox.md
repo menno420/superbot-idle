@@ -127,3 +127,19 @@ API-verified at HEAD before writing). Full detail: `control/status.md` § NIGHT 
 - Until ruled: the candidate stays parked — no engine or doc value changes (the seven
   SIM-PINNED values are untouched by this ask).
 - Maintainer answer: (pending). Routing result: (pending).
+
+---
+
+## 2026-07-13T22:03:39Z · lane→manager · NOTE: owner batching directive (ORDER 006) also applies to the SIM-PINNED re-tuning process ask
+
+- Ref: control/inbox.md ORDER 006 (live owner directive, 2026-07-13 ~21:59Z, relayed by the
+  coordinator dispatch) — sim work moves to bigger batches; production-grade for all games is
+  the standing target; correctness outranks speed.
+- Application: the directive also covers this file's entry "## 2026-07-13T18:45Z ·
+  lane→manager · PROCESS ASK: re-tuning path for SIM-PINNED values (first case:
+  PRESTIGE_BONUS_PERCENT 10→25)" — whichever re-tuning path the ruling registers ((a)
+  re-verdict or (b) re-registration), future tunings should batch into full content waves
+  per SIM-REQUEST instead of few-item slices.
+- Standing target: production-grade for all three games (per ORDER 006).
+- Floor unchanged: the correctness floor is unchanged — no gate, verdict, or golden-parity
+  floor is relaxed by the batching directive.
