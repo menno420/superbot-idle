@@ -246,5 +246,5 @@ MANIFEST = SubsystemManifest(
     panels=(idle_status_spec(),),
     settings=SETTINGS,
     events=EVENTS,
-    capabilities=("idle",),
+    capabilities=("idle.game.play",),
 )
