@@ -1,0 +1,3 @@
+# Claim
+
+- `claude/simulate-status-parity` · **derive the two leftover PROVISIONAL strings in tools/simulate.py from TABLE_STATUS** — the module docstring's INTEGRITY FLOOR bullet and render_summary's stderr header still say PROVISIONAL and now disagree with TABLE_STATUS = "SIM-PINNED" (#99); rewire both to derive from the constant, extend test_table_status_matches_registered_doc_badge to pin them, and append the SIM-PINNED re-tuning process ask (PRESTIGE_BONUS_PERCENT 10→25 candidate, ASK2) to control/outbox.md; ZERO parameter/criterion changes · expected files: tools/simulate.py, tests/test_simulate.py, control/outbox.md, .sessions/2026-07-13-simulate-status-parity.md, telemetry/model-usage.jsonl · 2026-07-13
