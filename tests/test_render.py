@@ -144,8 +144,10 @@ def test_status_prestige_currency_reads_persistent_balance(egg_farm):
 
 def test_shop_costs_and_affordability(egg_farm):
     # boost1 level 0 costs base_rate 1 * 60 s = 60 eggs (economy v0 table).
-    broke = GameState(balances={"primary": 59})
-    rich = GameState(balances={"primary": 60})
+    # Own a coop so boost1 is a live buy (its target generator is non-zero):
+    # a 0-owned target is annotated as a trap buy, tested separately.
+    broke = GameState(balances={"primary": 59}, owned={"tier1": 1})
+    rich = GameState(balances={"primary": 60}, owned={"tier1": 1})
     shop_broke = render_shop(broke, egg_farm)
     shop_rich = render_shop(rich, egg_farm)
     (field_broke,) = shop_broke["fields"]
@@ -497,9 +499,12 @@ def test_shop_without_description_pins_pre_composition_bytes():
     renders the bare cost line BYTE-IDENTICALLY to the pre-composition layer:
     no newline, no trailing scaffolding."""
     theme = _shop_theme("")
-    (field,) = render_shop(GameState(balances={"primary": 60}), theme)["fields"]
+    # Own the target generator so the row is a live buy (a 0-owned target is
+    # annotated as a trap buy — covered by test_shop_annotates_trap_buy).
+    owned = {"tier1": 1}
+    (field,) = render_shop(GameState(balances={"primary": 60}, owned=owned), theme)["fields"]
     assert field["value"] == "✅ Lv 0 → 1 · 60 🔹 points"
-    (field,) = render_shop(GameState(), theme)["fields"]
+    (field,) = render_shop(GameState(owned=owned), theme)["fields"]
     assert field["value"] == "🔒 Lv 0 → 1 · 60 🔹 points"
 
 
@@ -577,9 +582,11 @@ def test_achievements_is_deterministic_and_exactly_shaped(egg_farm):
     assert flavor == egg_farm.milestones["owned-1"].description
     by_name = {f["name"]: f["value"] for f in embed["fields"]}
     # lifetime-1 (threshold 1,000) is REACHED (5,000) but not yet AWARDED:
-    # the mark reflects the earned set, never live progress.
-    assert by_name["🧺 first thousand eggs"].startswith("🔒 5,000 / 1,000")
-    assert by_name["🥇 first golden egg"].startswith("🔒 3 / 1")
+    # the mark reflects the earned set, never live progress. Display shows the
+    # "ready to claim" glyph with the numerator CAPPED at the threshold, so it
+    # never reads as a past-100%-but-locked bug (was "🔒 5,000 / 1,000").
+    assert by_name["🧺 first thousand eggs"].startswith("⏳ 1,000 / 1,000")
+    assert by_name["🥇 first golden egg"].startswith("⏳ 1 / 1")
     _assert_budgets(embed)
 
 
@@ -606,8 +613,10 @@ def test_achievements_neutral_fallback_is_byte_pinned(egg_farm_no_milestones):
         "value": "🔒 2 / 10",
         "inline": True,
     }
-    assert embed["fields"][3]["value"] == "🔒 5,000 / 1,000"
-    assert embed["fields"][6]["value"] == "🔒 3 / 1"
+    # Reached-but-unawarded slots render the "ready" glyph, numerator capped
+    # at the threshold (not the past-100% "🔒 5,000 / 1,000" that read as a bug).
+    assert embed["fields"][3]["value"] == "⏳ 1,000 / 1,000"
+    assert embed["fields"][6]["value"] == "⏳ 1 / 1"
     assert "\n" not in embed["fields"][0]["value"]  # no flavor line composed
     assert embed["title"] == "🥚 Egg Farm"
     assert embed["description"] == egg_farm_no_milestones.description
