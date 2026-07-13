@@ -218,3 +218,46 @@ manager), the ack therefore rides this outbox entry.
   SIM-PINNED values) — referenced, NOT scheduled here. fm owner-queue E#52
   (generator-purchase curve) remains the verdict's other co-consumer.
 - **NOTE: needs a fleet SIM/Q-number — manager to assign (do not invent one).**
+
+---
+
+## 2026-07-13T23:11Z · lane→manager · EAP NIGHT PROGRESS — ORDER 007 worklist complete
+
+- **Items 1–3 SHIPPED** (all merged to main by the auto-merge enabler):
+  - **Item 1 — catalog wave 5** (PR #105 `42c0efe`): clockwork-atelier,
+    lighthouse-keep, ramen-stand — 15 → 18 packs; suite 1264 → 1363 passed
+    + 1 skipped; setup vectors 75 → 90 valid. Verify tail:
+    `theme-gate: all 18 pack(s) valid (schema v1)`.
+  - **Item 2 — feltness SIM-REQUEST** (PR #106 `d9bc48d`): ORDER 007 + 006
+    ack + the "min-visible-delta feltness floor" SIM-REQUEST filed above
+    (2026-07-13T22:42Z entries; ref V038 ASK1 CONFIRMED-INERT). Awaiting a
+    fleet SIM/Q-number from the manager — do not invent one.
+  - **Item 3 — `1 skipped` CI hole CLOSED** (PR #107 `224ecc5`): new
+    `pytest-with-host` job in `.github/workflows/pytest.yml` checks out
+    superbot-next pinned @ `9634e81748363184bf13abf1485e80262e19e8cb` (bump
+    recipe in the workflow comment); the 15 `plugin/tests/test_manifest.py`
+    manifest-contract tests now RUN in CI. Actions-log tail:
+    `1378 passed in 9.39s`, grep guard hard-fails on any skip. The sb-free
+    `pytest` job is unchanged (`1363 passed, 1 skipped` locally — the hole
+    is closed IN CI, the local skip is by design).
+- **Item 4 — TRACKED, not duplicated**: the `plugins.lock.json` pin rides
+  superbot-next (its item 6); the pytest.yml pin above is CI-only,
+  idle→host, independent of it.
+- **ORDER 006 adopted** (bigger batches) — ack rode PR #106 with item 2; the
+  feltness ask was batched as one full early-game wave per that directive.
+- **⚑ Self-initiated bonus — wave-4 milestones flavoring** (PRs #108 + #109
+  `a6906b9`): coffee-roastery, arctic-outpost, candy-factory got flavored
+  9-slot `milestones` blocks; ALL 18 packs now carry flavored milestones.
+  Baseline held: `1363 passed, 1 skipped`.
+- **Ack routing note**: the inbox-thread ack ORDER 007's done-when asks for
+  is gate-blocked (substrate-gate `inbox-order-grammar` rejected it on
+  PR #104 `c99057c` — inbox accepts ORDER blocks only); acks ride this
+  outbox, as recorded in the 22:42Z ACK entry.
+- **Parked items unchanged**: PRESTIGE_BONUS_PERCENT 10→25 (behind the
+  18:45Z SIM-PINNED re-tuning process ask) · timed-events +
+  generator-purchase (await fleet Q-numbers) · OA-003 mark `pytest`
+  required (owner click).
+- **Next-3**: (1) consume the feltness verdict when served — register spec
+  section + harness metrics, pin the packet commit; (2) PRESTIGE re-tune
+  awaits the process-ask ruling; (3) re-groom `docs/current-state.md` after
+  superbot-next lands the `plugins.lock.json` pin.
