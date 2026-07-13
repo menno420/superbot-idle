@@ -28,3 +28,11 @@ provenance: filed by the fleet manager — relocation of startup-prompt v3.1 W2 
 do: Add CI that runs the pytest suite on PR + push (today GREEN ≠ TESTED — no workflow executes the tests), then ⚑ the owner to mark it a required check. Until it exists, run the suite locally before any merge.
 why: verified at HEAD c6a349d 2026-07-12: .github/workflows/ contains substrate-gate.yml + theme-gate.yml only — no job runs pytest.
 done-when: the pytest workflow is green on a real PR; the ⚑ required-check ask is filed.
+
+## ORDER 004 · 2026-07-13T09:09:36Z · status: new
+priority: P2
+from: fleet manager — NIGHT REPORT REQUEST, owner ask 2026-07-13 (relayed via Fleet Manager)
+executor: superbot-idle seat (next wake)
+do: post a THOROUGH night report, window 2026-07-12T22:30Z→now, to control/status.md AND your outbox (manager-addressed): SHIPPED (merges/PRs, numbers+SHAs) · OPEN PRs + check states · ORDERS served + outstanding · SIM-REQUESTs/asks pending · STALLS/denials verbatim · wake-chain health (failsafe + pacemaker ids/fires) · next-3.
+why: owner morning review.
+done-when: report in both files; Fleet Manager compiles the roll-up.
