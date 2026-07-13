@@ -6,7 +6,7 @@
 > work always win over this file. Read it second (right after the working
 > agreement) and keep it current as the project moves.
 
-*Groomed 2026-07-12 against main `c753bc8` (post-PR #35); suite 1131 green.*
+*Groomed 2026-07-13 against main `497db5a` (post-PR #78); suite 1260 green.*
 
 ## Stability baseline
 
@@ -32,10 +32,11 @@ Known-good and not to be re-audited without a reported regression:
   - `persistence.py` — SAVE FORMAT v1: canonical versioned
     `dump_state`/`load_state` + migration registry; contract in
     [`persistence.md`](persistence.md).
-- **Theme catalog: 12 packs**, all schema-v1, all with full `labels` blocks:
+- **Theme catalog: 15 packs**, all schema-v1, all with full `labels` blocks:
   egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
   dragon-hoard, wizard-tower, royal-bakery, cyber-city, ant-colony,
-  idol-agency, pirate-cove. Waves 1–2 shipped
+  idol-agency, pirate-cove, coffee-roastery, arctic-outpost, candy-factory.
+  Waves 1–4 shipped
   with **zero schema pinches** — the frozen v1 schema fit all foreign content.
 - **Schema v1** (`docs/theme-schema.md` + machine twin
   `schema/theme.schema.json`, md↔json parity test-enforced): additive-only
@@ -53,7 +54,7 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (125 vectors: 45 valid with layer-by-layer intermediates, 55 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1131 passing** — unit + doc-parity tests plus a seeded
+- **Test suite: 1260 passing** — unit + doc-parity tests plus a seeded
   property/invariant layer (128 tests: tick/offline exact equivalence,
   per-pack determinism trajectories, conservation/monotonicity,
   render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz).
@@ -61,17 +62,21 @@ Known-good and not to be re-audited without a reported regression:
 
 ## What does NOT exist (do not assume it)
 
-- **No bot runtime and no plugin adapter yet.** Nothing here talks to Discord.
+- **No live bot runtime yet — nothing here talks to Discord.** But the plugin
+  adapter now EXISTS (see the end of this bullet).
   The upstream blocker is CLEARED: as of 2026-07-12 the superbot-next plugin
   contract is VERIFIED to EXIST at superbot-next `docs/game-plugin-contract.md`
   @ `d3dba9b` (binding; owner decision 2026-07-09 — upstream provenance in
   `docs/plugin-adapter-scoping.md`), with a real
   host-side loader (`sb/app/plugin_host.py`), pin CLI (`tools/plugin_pin.py`),
   and an in-tree exemplar (`examples/superbot-plugin-hello/`). **PLUG-001 is
-  UN-PARKED.** The standalone `menno420/superbot-plugin-hello` repo is still
-  EMPTY (exemplar lives in-tree for now). The adapter itself is still unbuilt —
-  it is the next slice, scoped in `docs/plugin-adapter-scoping.md` (§ Re-probe
-  2026-07-12).
+  UN-PARKED and BUILT.** The standalone `menno420/superbot-plugin-hello` repo is
+  still EMPTY (exemplar lives in-tree for now). The adapter itself now EXISTS at
+  `plugin/` (PRs #75 + #78): a thin shell exporting a `SubsystemManifest` —
+  command + `idle.status` panel + `idle` capability, `SettingSpec` knobs,
+  lifecycle `EventSpec`s, and verbatim `idle_engine.render` forwarding —
+  scoped in `docs/plugin-adapter-scoping.md` (§ Re-probe 2026-07-12). Live
+  host-side wiring (state injection, `plugins.lock.json` pin) stays host-side.
 - **No storage backend.** `GameState` now has a versioned save FORMAT
   ([`persistence.md`](persistence.md): `dump_state`/`load_state`), but where
   the save strings live is the future plugin's job; nothing is stored
