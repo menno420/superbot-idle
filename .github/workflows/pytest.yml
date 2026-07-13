@@ -24,3 +24,50 @@ jobs:
         run: python -m pip install --quiet pytest pyyaml jsonschema
       - name: run pytest suite
         run: python3 -m pytest -q
+
+  # pytest-with-host — closes the `1 skipped` hole (ORDER 007 item 3;
+  # docs/current-state.md stability §): plugin/tests/test_manifest.py opens
+  # with `pytest.importorskip("sb.spec.manifest")`, so without the host the
+  # 15 adapter-contract tests NEVER run in CI (two live-boot bug classes
+  # already slipped through — #85 capability facet, the liveboot-fixes
+  # events/command-shape pair). This job checks out superbot-next at a
+  # PINNED commit and exposes its pure-stdlib `sb` package via PYTHONPATH
+  # (no pip install: the host pyproject would drag requirements.txt —
+  # discord.py etc. — which the manifest tests don't need), turning the
+  # module-level skip into real runs. The sb-free job above stays intact:
+  # the suite must remain green WITHOUT the host too.
+  #
+  # PIN: superbot-next main @ 9634e81 (2026-07-13; the plugin/pyproject.toml
+  # [host] contract SHA d3dba9b is an ancestor). CI-only pin, idle→host
+  # direction — NOT a duplicate of the host-side plugins.lock.json (which
+  # pins THIS plugin for the host's boot; bumps are independent). To bump:
+  # `git ls-remote https://github.com/menno420/superbot-next main`, update
+  # `ref:` below, confirm this job stays green.
+  pytest-with-host:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: menno420/superbot-next
+          ref: 9634e81748363184bf13abf1485e80262e19e8cb
+          path: superbot-next
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: install test deps
+        run: python -m pip install --quiet pytest pyyaml jsonschema
+      - name: run pytest suite with sb host importable (manifest module must RUN, not skip)
+        # --ignore=superbot-next: the repo has no pytest config (rootdir
+        # collection), so without it the host checkout's OWN test tree
+        # would be collected. The grep guard makes 0 skips a hard
+        # requirement — if the pinned host ever stops satisfying
+        # importorskip("sb.spec.manifest"), this job fails loudly instead
+        # of silently re-opening the 1-skipped hole.
+        run: |
+          PYTHONPATH="$GITHUB_WORKSPACE/superbot-next" python3 -m pytest -q --ignore=superbot-next | tee /tmp/host-pytest.txt
+          test "${PIPESTATUS[0]}" -eq 0
+          if grep -qE '[0-9]+ skipped' /tmp/host-pytest.txt; then
+            echo "skip detected: the pinned host no longer un-skips plugin/tests/test_manifest.py — the 1-skipped hole re-opened"
+            exit 1
+          fi
