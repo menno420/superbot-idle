@@ -1,6 +1,6 @@
 # 2026-07-13 — playability fixes (display/UX/new-entrypoint slice)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · feature build · 2026-07-13 · display/render/entrypoint only (NO economy tuning)
 
@@ -38,8 +38,33 @@ render / new-file only.
 
 ## Verify
 
-_(filled at close-out — reproduce-then-fix strings, full pytest, theme_gate,
-bootstrap --require-session-log, play.py smoke.)_
+**Reproduce-then-fix (driver against the real render layer):**
+
+Fix #1 (`render_achievements`, egg-farm, lifetime 5,000 ≥ threshold 1,000, unawarded):
+- BEFORE: `🔒 5,000 / 1,000` (lifetime-1), `🔒 3 / 1` (prestige-1) — past 100%, locked.
+- AFTER:  `⏳ 1,000 / 1,000` (lifetime-1), `⏳ 1 / 1` (prestige-1) — ready glyph, capped.
+
+Fix #2 (`render_shop`, royal-bakery, boost2 → tier2 with tier2 0-owned):
+- BEFORE: `✅ Recipe mastery 0 → 1 · 300 🥐 pastries` — affordable, invites a wasted buy.
+- AFTER:  `⚠️ Recipe mastery 0 → 1 · 300 🥐 pastries · requires 🧱 brick oven`.
+- boost1 → tier1 (owned) stays `✅ Recipe mastery 0 → 1 · 60 🥐 pastries` (unannotated).
+
+**Green gates:**
+- `python3 -m pytest -q` → **1157 passed** (baseline 1131 + 7 render-playability
+  + 19 play-entrypoint = 1157; 4 pre-existing render pins updated to the
+  corrected strings).
+- `python3 tools/theme_gate.py themes` → all **12 pack(s) valid (schema v1)**,
+  unchanged (no theme file touched).
+- `python3 bootstrap.py check --require-session-log --session-log <this card>`
+  → complete (post-flip).
+- `python3 tools/play.py --help` runs clean; `demo_step()` renders one
+  tick+render without error.
+
+**Economy safety:** zero economy constant changed — no cost curve, `base_rate`,
+prestige threshold/award, offline factor, `PRESTIGE_BONUS_PERCENT`, or engine
+rate floor. `idle_engine/economy.py`, `engine.py`, `upgrades.py`, `prestige.py`,
+`achievements.py`, and every `themes/*.yaml` are untouched; the diff is
+`render.py` (display), `tools/play.py` (new entrypoint), tests, and README.
 
 ## 💡 Session idea
 
