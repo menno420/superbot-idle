@@ -1,0 +1,3 @@
+# Claim — `idle-liveboot-fixes`
+
+- `idle-liveboot-fixes` · **two idle-source LIVE-boot fixes** — (1) events facet declared but never entered `KNOWN_EVENTS` at runtime: add `register_event_specs(list(EVENTS))` at module import AND in `_ensure_refs` (mirrors in-tree `sb/manifest/xp.py:165,180`); (2) `/idle` declared as BOTH a root command AND a group parent → discord.py `CommandAlreadyRegistered` at live startup: make the root `idle` command PREFIX-only so `/idle status|shop|prestige` are the sole slash surface (prefix + panel behavior preserved) · `plugin/superbot_idle_plugin/manifest.py` + `plugin/tests/test_manifest.py` · 2026-07-13

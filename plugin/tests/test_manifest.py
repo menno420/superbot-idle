@@ -31,6 +31,25 @@ def test_idle_command_routes_to_the_panel() -> None:
     assert cmd.route is not None and cmd.route.name == m.PANEL_ID
 
 
+def test_root_idle_is_prefix_only_no_slash_collision() -> None:
+    # FIX 3: the root ``idle`` command is PREFIX-only. As kind=BOTH it emitted a
+    # standalone ``/idle`` app command whose name collided with the ``idle``
+    # slash Group built from the grouped subcommands (host
+    # sb/adapters/discord/command_tree.py register_app_commands/_group_for →
+    # discord.py CommandAlreadyRegistered → live boot fails before the gateway).
+    # PREFIX keeps ``!idle`` + the status panel while leaving the slash tree to
+    # the group; the panel is still reachable (prefix route + @panel ref).
+    from sb.spec.commands import CommandKind
+
+    (root,) = [c for c in m.MANIFEST.commands if c.name == "idle" and not c.group]
+    assert root.kind == CommandKind.PREFIX
+    assert root.route is not None and root.route.name == m.PANEL_ID
+    # The three live views remain the ONLY slash surface, all under group "idle".
+    slash = [c for c in m.MANIFEST.commands if str(c.kind) in ("slash", "both")]
+    assert {c.name for c in slash} == {"status", "shop", "prestige"}
+    assert all(c.group == "idle" for c in slash)
+
+
 def test_v1_contract_facets_only() -> None:
     # stores / data_invariants / wizard_sections are host-owned in v1.
     assert m.MANIFEST.stores == ()
@@ -109,6 +128,34 @@ def test_events_declared() -> None:
     # offline-return carries the credited gains + the timing window.
     fields = {f.name for f in by_name["idle.offline_return"].payload_schema}
     assert {"last_seen", "now", "gains"} <= fields
+
+
+def test_events_registered_in_known_events_on_import() -> None:
+    # FIX 1: declaring EVENTS on the manifest never populates the runtime
+    # registry — the module must call register_event_specs at import (mirroring
+    # sb/manifest/xp.py:165). Without it idle.tick / idle.offline_return stay
+    # unknown at live boot.
+    from sb.spec.events import KNOWN_EVENTS
+
+    by_name = {e.name: e for e in m.MANIFEST.events}
+    for name in ("idle.tick", "idle.offline_return"):
+        assert name in KNOWN_EVENTS, name
+        assert KNOWN_EVENTS[name] == by_name[name]
+
+
+def test_event_registration_is_idempotent() -> None:
+    # register_event_specs is a no-op on an identical re-registration; ENSURE_REFS
+    # re-registers (sb/manifest/xp.py:180 discipline), so repeated calls must not
+    # raise EventRedefined and must leave the registry stable.
+    from sb.spec.events import KNOWN_EVENTS
+
+    m.ENSURE_REFS()
+    m.ENSURE_REFS()
+    before = dict(KNOWN_EVENTS)
+    m.ENSURE_REFS()
+    assert dict(KNOWN_EVENTS) == before
+    for name in ("idle.tick", "idle.offline_return"):
+        assert name in KNOWN_EVENTS
 
 
 # --- inc2: render-forwarding handlers -----------------------------------------
