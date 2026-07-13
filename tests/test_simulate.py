@@ -8,6 +8,7 @@ right synthetic inputs.
 """
 
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -19,6 +20,7 @@ from idle_engine.economy import (
     UPGRADE_COST_GROWTH_NUM,
 )
 from tools.simulate import (
+    A10_CRITERION_VERSION,
     QUICK_HORIZON_S,
     evaluate_criteria,
     run_report,
@@ -143,7 +145,10 @@ def test_each_criterion_reds_on_its_own_violation():
         "A7": {"s2_8h_min_levels_per_early_visit": 1},  # a 1-level visit
         "A8": {"s3_max_purchase_gap": 3_600},  # 3600/14400 = 25%, not < 25%
         "A9": {"s3_reset_durations": [14_400, 7_199, 6_000]},  # d2 < 50% of d1
-        "A10": {"o6_durations": [1_000, 900, 700, 650, 640]},  # ratio dips then rises
+        # v2 TREND violation: every step dips only 0.01 (inside the wiggle
+        # band) but the ratio sequence 0.95, 0.94, 0.93 FALLS overall —
+        # final consecutive ratio < first.
+        "A10": {"o6_durations": [1_000_000, 950_000, 893_000, 830_490]},
     }
     for cid, patch in violations.items():
         measures = {**_green_measures(), **patch}
@@ -152,6 +157,50 @@ def test_each_criterion_reds_on_its_own_violation():
         if cid not in ("A3", "A6"):  # A3's patch legitimately moves A6 too
             others = [c for c in criteria if c["id"] not in (cid, "A6")]
             assert all(c["pass"] for c in others), (cid, [c for c in others if not c["pass"]])
+
+
+def test_a10_v2_trend_form_semantics():
+    """A10 v2 (TREND form, VERDICT 038 re-registration) pinned red/green.
+
+    v2's registered delta from v1's strict per-step gate: a single-step
+    ratio decrease within the 0.02 wiggle band no longer fails on its own —
+    the gate is the TREND (final consecutive ratio >= first).
+    """
+    def a10(o6):
+        measures = {**_green_measures(), "o6_durations": o6}
+        return _result(evaluate_criteria(measures), "A10")["pass"]
+
+    # In-band dip (0.90 -> 0.89), trend rises to 0.95: v1 FAILED this
+    # shape, v2 passes it — the exact shape VERDICT 038 graduated on.
+    assert a10([100_000, 90_000, 80_100, 76_095])
+    # Same rising trend but the dip is 0.03 > the 0.02 band: FAIL.
+    assert not a10([100_000, 90_000, 78_300, 76_734])
+    # Dip of exactly 0.02 (0.90 -> 0.88), trend recovers to 0.90: "within
+    # a 0.02 wiggle band" is inclusive, and final == first satisfies >=.
+    assert a10([100_000, 90_000, 79_200, 71_280])
+    # Fewer than 2 resets: unmeasurable fails loud, never skips.
+    assert not a10([1_000])
+
+
+def test_a10_criterion_version_matches_registered_doc_form():
+    """Doc↔harness criterion-version parity guard.
+
+    docs/design/economy-v1.md registers A10 with a version token in its
+    acceptance-criteria row ("| A10 | O6 — v2, TREND form ..."); the
+    harness exposes the version it implements as A10_CRITERION_VERSION.
+    Re-register the criterion without syncing tools/simulate.py (or bump
+    the harness without re-registering) and this goes red — same pattern
+    as the parameter-table mirror in tests/test_economy_design_doc.py.
+    """
+    doc = REPO_ROOT / "docs" / "design" / "economy-v1.md"
+    text = doc.read_text(encoding="utf-8")
+    match = re.search(r"^\|\s*A10\s*\|\s*O6\s*—\s*(v\d+)\b", text, re.M)
+    assert match, "economy-v1.md lost its versioned A10 acceptance-criteria row"
+    assert match.group(1) == A10_CRITERION_VERSION, (
+        f"criterion drift: economy-v1.md registers A10 {match.group(1)} but "
+        f"tools/simulate.py implements {A10_CRITERION_VERSION} — bump both "
+        "sides in the same PR"
+    )
 
 
 def test_band_endpoints_are_inclusive_and_a8_is_strict():

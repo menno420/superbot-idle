@@ -144,12 +144,15 @@ AMBIGUITIES = [
     },
     {
         "id": "AMB-6",
-        "where": "A10 'each reset's duration ratio non-decreasing toward 1'",
+        "where": "A10 v1 'each reset's duration ratio non-decreasing toward 1'",
         "reading": (
-            "Implemented as: the sequence r_k = duration_k / duration_(k-1) "
-            "(exact rationals, k = 2..20) is non-decreasing "
-            "(r_(k+1) >= r_k). The 'toward 1' clause is reported (final "
-            "ratio) but not separately gated."
+            "RESOLVED by the v2 TREND re-registration (economy-v1.md § A10 "
+            "re-registration record, VERDICT 038): the gate is now final "
+            "consecutive ratio >= first (exact rationals, r_k = duration_k "
+            "/ duration_(k-1)), with any single-step ratio decrease "
+            "tolerated within a 0.02 wiggle band of its predecessor. v1's "
+            "strict per-step gate was the ambiguity; kept on this list as "
+            "the record of the choice and its resolution."
         ),
     },
     {
@@ -512,15 +515,19 @@ def _o6_table(o6_resets):
             }
         )
         prev = r["duration"]
-    non_decreasing = all(b >= a for a, b in zip(ratios, ratios[1:]))
+    trend_rises, max_step_decrease, _ = _a10_v2_gate(ratios)
     return {
         "rows": rows,
-        # A10's literal gate: consecutive duration ratios never decrease.
-        "ratios_non_decreasing": non_decreasing,
+        # A10's v2 TREND gate (economy-v1.md § A10 re-registration record,
+        # VERDICT 038): the ratio trend rises toward 1, and single-step
+        # decreases stay within the registered 0.02 wiggle band.
+        "a10_trend_rises_toward_1": trend_rises,
+        "a10_max_step_decrease": _fraction_fields(max_step_decrease),
+        "a10_steps_within_wiggle_band": max_step_decrease <= A10_WIGGLE_BAND,
         # O6's requested flag: shrinkage is super-geometric when the ratio
         # TREND falls (each reset shrinks proportionally more than the last);
-        # measured as final ratio < first ratio. Distinct from the strict
-        # A10 gate, which also trips on integer-floor wiggles.
+        # measured as final ratio < first ratio. Same trend reading A10 v2
+        # gates on, kept as its own reported flag per the O6 spec.
         "super_geometric_shrinkage_flag": bool(ratios) and ratios[-1] < ratios[0],
         "first_ratio": _fraction_fields(ratios[0]) if ratios else None,
         "final_ratio": _fraction_fields(ratios[-1]) if ratios else None,
@@ -528,6 +535,33 @@ def _o6_table(o6_resets):
 
 
 # --- acceptance criteria (pure — unit-testable with synthetic measures) ---------
+
+#: Implemented A10 criterion version — MUST match the version token in the
+#: registered A10 row of docs/design/economy-v1.md § "Acceptance criteria"
+#: ("O6 — v2, TREND form ..."); doc↔harness parity is test-enforced
+#: (tests/test_simulate.py), so re-registering the criterion without syncing
+#: this harness (or vice versa) goes red. Bump BOTH sides in the same PR.
+A10_CRITERION_VERSION = "v2"
+
+#: v2's registered single-step tolerance: a ratio decrease is a tolerated
+#: wiggle iff it stays within 0.02 of its predecessor (exact rational; the
+#: VERDICT 038 evidence run's worst step was 0.0166 ≈ 83% of this band).
+A10_WIGGLE_BAND = Fraction(2, 100)
+
+
+def _a10_v2_gate(ratios: list[Fraction]) -> tuple[bool, Fraction, bool]:
+    """A10 v2 TREND form on consecutive duration ratios (exact rationals).
+
+    Returns (trend_rises_toward_1, max_step_decrease, steps_within_band):
+    the trend rises iff the final consecutive ratio >= the first, and every
+    single-step decrease must stay within A10_WIGGLE_BAND (inclusive) of
+    its predecessor.
+    """
+    trend_rises = bool(ratios) and ratios[-1] >= ratios[0]
+    max_step_decrease = max(
+        (a - b for a, b in zip(ratios, ratios[1:]) if b < a), default=Fraction(0)
+    )
+    return trend_rises, max_step_decrease, max_step_decrease <= A10_WIGGLE_BAND
 
 
 def evaluate_criteria(measures: dict) -> list[dict]:
@@ -616,13 +650,22 @@ def evaluate_criteria(measures: dict) -> list[dict]:
     ratios = [
         Fraction(b, a) for a, b in zip(o6, o6[1:]) if a > 0
     ]
-    ok10 = len(o6) >= 2 and all(b >= a for a, b in zip(ratios, ratios[1:]))
+    trend_rises, max_step_decrease, within_band = _a10_v2_gate(ratios)
+    ok10 = len(o6) >= 2 and trend_rises and within_band
     detail10 = (
-        f"{len(o6)} resets; consecutive duration ratios non-decreasing (AMB-6)"
+        f"{len(o6)} resets; {A10_CRITERION_VERSION} TREND form (VERDICT 038 "
+        "re-registration): final consecutive ratio >= first, single-step "
+        "decreases within the 0.02 wiggle band (AMB-6 resolved)"
         + ("" if len(o6) >= FULL_O6_RESETS else " — fewer than 20 resets simulated")
     )
-    add("A10", "O6", "duration ratios non-decreasing (sub-exponential)",
-        {"resets": len(o6), "final_ratio": _fraction_fields(ratios[-1]) if ratios else None},
+    add("A10", "O6",
+        "trend rises toward 1 (final ratio >= first); step decreases <= 0.02",
+        {
+            "resets": len(o6),
+            "first_ratio": _fraction_fields(ratios[0]) if ratios else None,
+            "final_ratio": _fraction_fields(ratios[-1]) if ratios else None,
+            "max_step_decrease": _fraction_fields(max_step_decrease),
+        },
         ok10, detail10)
 
     return results
