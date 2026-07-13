@@ -6,7 +6,8 @@
 > work always win over this file. Read it second (right after the working
 > agreement) and keep it current as the project moves.
 
-*Groomed 2026-07-13 against main `497db5a` (post-PR #78); suite 1260 green.*
+*Groomed 2026-07-13 against main `05a99f5` (post-PR #88); suite 1260 passed,
+1 skipped.*
 
 ## Stability baseline
 
@@ -54,7 +55,9 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (125 vectors: 45 valid with layer-by-layer intermediates, 55 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1260 passing** — unit + doc-parity tests plus a seeded
+- **Test suite: 1260 passing, 1 skipped** (the `plugin/tests/test_manifest.py`
+  module `importorskip`s the `sb` host package, absent in this repo's CI) —
+  unit + doc-parity tests plus a seeded
   property/invariant layer (128 tests: tick/offline exact equivalence,
   per-pack determinism trajectories, conservation/monotonicity,
   render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz).
@@ -72,19 +75,27 @@ Known-good and not to be re-audited without a reported regression:
   and an in-tree exemplar (`examples/superbot-plugin-hello/`). **PLUG-001 is
   UN-PARKED and BUILT.** The standalone `menno420/superbot-plugin-hello` repo is
   still EMPTY (exemplar lives in-tree for now). The adapter itself now EXISTS at
-  `plugin/` (PRs #75 + #78): a thin shell exporting a `SubsystemManifest` —
-  command + `idle.status` panel + `idle` capability, `SettingSpec` knobs,
-  lifecycle `EventSpec`s, and verbatim `idle_engine.render` forwarding —
-  scoped in `docs/plugin-adapter-scoping.md` (§ Re-probe 2026-07-12). Live
+  `plugin/` (PRs #75 + #78, refined by #85 + #86): a thin shell exporting a
+  `SubsystemManifest` — prefix command + `idle.status` panel +
+  `idle.game.play` capability (3-part host-compilable facet since #85
+  `3e22f69`; was bare `idle`), `SettingSpec` knobs, lifecycle `EventSpec`s
+  (registered into the runtime registry at import AND in `_ensure_refs`
+  since #86 `b03cc96`, which also fixed the `/idle` root-command/group
+  collision that broke the host's LIVE boot), and verbatim
+  `idle_engine.render` forwarding — scoped in
+  `docs/plugin-adapter-scoping.md` (§ Re-probe 2026-07-12). Live
   host-side wiring (state injection, `plugins.lock.json` pin) stays host-side.
 - **No storage backend.** `GameState` now has a versioned save FORMAT
   ([`persistence.md`](persistence.md): `dump_state`/`load_state`), but where
   the save strings live is the future plugin's job; nothing is stored
   anywhere today.
-- **Economy numbers are PROVISIONAL**, not tuned. Every parameter is
-  pre-registered (`docs/design/upgrades-prestige-v0.md`,
-  `docs/design/economy-v1.md`) and awaits Simulator verdict (**SIM-001**,
-  Q-0264 — still awaiting manager relay). No tuning until then.
+- **Economy numbers are PROVISIONAL**, not tuned — but the Simulator verdict
+  has now LANDED: **SIM-001 verdict V038** arrived via the Q-0264 relay
+  (PR #88 `05a99f5`, `control/inbox.md` ORDER 005). Verdict is CONDITIONAL:
+  graduate the seven-parameter PROVISIONAL table → SIM-PINNED, conditional on
+  re-registering target A10 in trend form in the same PR (doc-only change in
+  `docs/design/economy-v1.md`, ZERO parameter changes). Numbers stay
+  provisional until that graduation PR merges.
 - **No generator purchase path** — generator counts are fixed; target T10 is
   pre-registered for the future mechanic.
 - **No website encoder here** — the websites lane encodes setup codes; this
@@ -94,38 +105,103 @@ Known-good and not to be re-audited without a reported regression:
 
 (Verify against live source control — this section is a dated snapshot.)
 
-- **Upgrade-description shop composition** (render/schema/themes/tests) — a
-  concurrent worker slice, in flight as of 2026-07-11. The parked seam is
-  documented at the end of `docs/render-layer.md`.
+- Nothing in flight as of this groom (2026-07-13, main `05a99f5`): zero open
+  PRs, `control/claims/` holds only this groom's claim. (A previous revision
+  listed "upgrade-description shop composition" as in flight — that slice in
+  fact SHIPPED 2026-07-11 as PRs #36 `9047539` + #38 `0835adb`; the
+  render-layer seam it referenced was un-parked by #38 and is now
+  `docs/render-layer.md` § Shop composition.)
 
-## Roadmap (groomed 2026-07-11 — ordered, blockers marked)
+## Roadmap (groomed 2026-07-13 — ordered, blockers marked)
 
-1. **Shop composition** — IN FLIGHT (see above).
-2. **Plugin adapter build** — **UN-PARKED / ready (PLUG-001 unblocked
-   2026-07-12)**: the superbot-next plugin contract is VERIFIED at
-   `docs/game-plugin-contract.md` @ `d3dba9b`. Next step = scope+build the
-   adapter slice per `docs/plugin-adapter-scoping.md` § Re-probe 2026-07-12
-   (thin `plugin/` shell exporting a `SubsystemManifest` over the four verified
-   seams, pinned via `tools/plugin_pin.py`). Not built yet — a separate,
-   non-docs slice.
-3. **Economy tuning / parameter graduation** — **BLOCKED (SIM-001)**: awaits
-   the fleet Simulator run against the pre-registered targets T1–T10;
-   parameters stay provisional until the verdict.
-4. **Memoized rate table** — needs a bot runtime to be worth anything
-   (perf work without a caller is speculative); deferred until the adapter
-   unblocks.
-5. **Catalog wave 3** — optional volume; the schema is proven (zero pinches
-   across 8 foreign packs), so more packs are merge-on-gate-green filler,
-   not risk reduction.
-6. **Setup-code v2 version-bound ruling** — deferred BY DESIGN to the PR
+1. **Economy parameter graduation (ORDER 005 / SIM-001 verdict V038)** —
+   **UNBLOCKED, next up**: verdict V038 landed via PR #88 `05a99f5`
+   (`control/inbox.md` ORDER 005). Ship the graduation PR: economy-v1.md
+   seven-parameter table PROVISIONAL → SIM-PINNED + A10 re-registered in
+   trend form, same PR, zero parameter changes.
+2. **Memoized rate table** — needs a bot runtime to be worth anything
+   (perf work without a caller is speculative); deferred until live host
+   wiring exists.
+3. **Catalog wave 5** — optional volume; the schema is proven (zero pinches
+   across 12 foreign packs, waves 1–4), so more packs are
+   merge-on-gate-green filler, not risk reduction.
+4. **Setup-code v2 version-bound ruling** — deferred BY DESIGN to the PR
    that defines v2 (bound the version integer + `prefix-version-overflow`
    vector; see `.sessions/2026-07-11-leading-zero-version-fix.md` § idea).
 
+(Removed from the roadmap as SHIPPED: shop composition — PRs #36+#38,
+2026-07-11; plugin adapter build — PRs #75+#78 plus #85/#86 fixes, see
+"Recently shipped". Live host-side wiring remains host-side work, not this
+repo's.)
+
 ## Recently shipped (newest first)
 
-(Merged work only, newest first. Fuller narrative per slice: the matching
-`.sessions/` card and `control/status.md` § SHIPPED RECORD.)
+(Merged work only, newest first, short merge SHAs from main history. Fuller
+narrative per slice: the matching `.sessions/` card and `control/status.md`
+§ SHIPPED RECORD.)
 
+- **SIM-001 verdict V038 relay** (PR #88 `05a99f5`): Q-0264 fan-out delivers
+  the Simulator verdict — CONDITIONAL graduation of the seven-parameter
+  economy table, A10 re-registered in trend form (ORDER 005).
+- **Stale-claims prune** (PR #87 `3a4fa5f`, merged 2026-07-13T13:31Z):
+  removed `control/claims/` files already merged as #85/#86.
+- **LIVE-boot source fixes** (PR #86 `b03cc96`): plugin lifecycle
+  `EventSpec`s actually registered (import + `_ensure_refs`); `/idle`
+  root-command vs group-parent collision fixed (root → prefix-only).
+- **Capability facet fix** (PR #85 `3e22f69`): bare `idle` capability →
+  3-part host-compilable `idle.game.play`.
+- **ORDER 004 night report** (PRs #83 `161bc7d` + #84 `d992c56`):
+  owner-requested night report in status + outbox.
+- **Lane→manager outbox** (PR #82 `c735075`): SIM-001 follow-up + two owner
+  questions opened.
+- **Current-state truth-fix** (PR #81 `c925a45`): stale counts corrected
+  (12→15 packs, 1131→1260 tests) + 5 merged claim files pruned.
+- **Playability polish** (PR #80 `4af4338`): ready-glyph milestones,
+  trap-buy shop guard, playable REPL (display/render/new-file only).
+- **Flavored milestone content** (PR #79 `7af705c`): the 9 unskinned packs
+  get themed milestone nouns.
+- **PLUG-001 adapter** (PRs #75 `86f631d` + #78 `497db5a`): thin `plugin/`
+  shell exporting a `SubsystemManifest`; inc2 adds settings + lifecycle
+  events + live render forwarding.
+- **Auto-merge enabler workflow** (PR #77 `457407c`): arms squash auto-merge
+  on non-draft claude/* PRs (owner directive, fm ORDER 029).
+- **Catalog wave 4** (PR #76 `ac0af23`): coffee-roastery, arctic-outpost,
+  candy-factory — 15 packs.
+- **pytest CI** (PRs #73 `45ff2bf` + #74 `c753bc8`, ORDER 003): suite runs
+  on PR + push.
+- **PLUG-001 un-parked** (PR #72 `e724d6f`): docs cite the verified
+  superbot-next plugin contract @ `d3dba9b`.
+- **Close-out + archive prep** (PRs #70 `a1be14b` + #71 `c6a349d`): retro
+  capture, lane flipped ARCHIVED-READY (since resumed).
+- **Timed-events scoping** (PRs #67 `0f73944` + #68 `043f587`): design doc,
+  piecewise-exact offline recommendation, no code.
+- **Golden save corpus** (PRs #65 `292f808` + #66 `593dee1`):
+  `tests/vectors/saves.v2.json`, 45 vectors, regenerate-or-red; suite
+  1040 → 1131.
+- **Append-only-ledger union hygiene** (PRs #62 `dd3688a` + #63 `f2da248`):
+  `.gitattributes` merge=union for the jsonl ledgers.
+- **Bounded theme multipliers** (PRs #58 `bfc641f` + #61 `f14a68d`):
+  schema-bounded `rate_multiplier_pct` (90..110), catalog stays neutral
+  pending sim.
+- **Buy-max math** (PRs #59 `7236217` + #60 `7b9923c`): exact bulk cost,
+  bisected max-affordable at 10^3000 scale, atomic `purchase_upgrades`.
+- **Achievements/milestones layer** (PRs #53 `4c427d4` + #56 `125390f`):
+  engine milestones, save format v2 + first v1→v2 migration; suite
+  838 → 943.
+- **SIM-001 executable harness** (PRs #52 `563e982` + #54 `097813a`):
+  `tools/simulate.py` runs pre-registered scenarios S1–S3 on the real
+  engine.
+- **ORDER 001 model attribution** (PRs #47 `58b86ae` + #48 `b02f71c`):
+  `📊 Model:` line standing rule in `.sessions/README.md`.
+- **Catalog wave 3** (PRs #43 `2e680f5` + #44 `6ea4640`): pirate-cove,
+  ant-colony, idol-agency — 12 packs.
+- **State serialization v1** (PRs #40 `b864d9e` + #41 `20da9c9`):
+  `idle_engine/persistence.py` + `docs/persistence.md`.
+- **Shop composition** (PRs #36 `9047539` + #38 `0835adb`): themed upgrade
+  descriptions composed into the shop view; exact-cap arithmetic
+  768+1+139+116=1024; schema description cap 1024→768.
+- **Docs grooming** (PRs #35 `b6e6b68` + #37 `4b6594d`): current-state
+  rewrite, decisions D-0002..D-0007 ledgered.
 - **Catalog wave 2** (PRs #33+#34): wizard-tower, royal-bakery, cyber-city —
   9 packs; suite 533 → 620.
 - **Property/invariant suite + plugin-adapter scoping** (PRs #30+#31):
