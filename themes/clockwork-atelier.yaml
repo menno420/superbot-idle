@@ -1,0 +1,103 @@
+# clockwork-atelier — theme pack #16 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: clockwork-atelier
+  name: Clockwork Atelier
+  description: A candlelit workshop of gears and patience, where every tick of the city's clocks was filed into being by hand.
+  emoji: "🕰️"
+  embed_color: "#B08D57"
+
+currencies:
+  - id: primary
+    name: cogs
+    description: Brass cogs cut, polished, and counted into felt-lined drawers — the atelier's whole ledger turns on them.
+    emoji: "⚙️"
+  - id: prestige
+    name: grand complications
+    description: Finished grand complications ticking softly under glass — one for every master clock ever wound down and sold.
+    emoji: "⌚"
+
+generators:
+  - id: tier1
+    name: apprentice bench
+    description: An apprentice's workbench where shaky hands file teeth into blanks until each little cog sings true.
+    emoji: "🔧"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: mainspring lathe
+    description: A treadle-driven lathe that spins out mainsprings and gear trains faster than the apprentices can crate them.
+    emoji: "🛞"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: jeweled bearings
+    description: Ruby bearings set into every pivot; the bench work glides where it used to grind.
+    emoji: "💎"
+    target: tier1
+  - id: boost2
+    name: tempered spring steel
+    description: A hotter temper and a slower quench; every spring off the lathe holds twice the wind.
+    emoji: "🔥"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: wind the master clock
+  action_description: Strike midnight on the master clock, sell every movement on the wall, and carry one grand complication into a brand-new atelier.
+  action_emoji: "🕛"
+
+labels:
+  offline_return: "While the shop stood dark, the escapements kept perfect time: {gains}"
+  status_title: "🕰️ Clockwork Atelier — the horologist's ledger"
+  shop_title: "🗄️ The Parts Drawer"
+  shop_description: Spend cogs on finer tools, truer springs, and a workshop that hums like a tuned movement.
+  level: Caliber level
+  prestige_progress: "lifetime cogs toward midnight on the master clock:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first gear train
+    description: Ten benches turning at once — the whole shop ticks like one patient movement.
+    emoji: "⚙️"
+  - id: owned-2
+    name: hundred-bench workshop
+    description: A hundred benches; visitors mistake the workshop's hum for a cathedral organ.
+    emoji: "🔧"
+  - id: owned-3
+    name: horological empire
+    description: A thousand benches — every tower clock in the country keeps your time.
+    emoji: "🏛️"
+  - id: lifetime-1
+    name: first thousand cogs
+    description: The first thousand cogs, filed smooth, polished bright, and racked by size.
+    emoji: "🗜️"
+  - id: lifetime-2
+    name: guild-mark famous
+    description: A hundred thousand cogs; the guild stamps your mark without looking twice.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: keeper of the hours
+    description: Ten million cogs. Somewhere, every clock striking noon owes you a tooth.
+    emoji: "👑"
+  - id: prestige-1
+    name: first grand complication
+    description: The first master clock wound down — one grand complication, ticking softly in its case.
+    emoji: "⌚"
+  - id: prestige-2
+    name: cabinet of complications
+    description: Five grand complications behind glass; apprentices dust them holding their breath.
+    emoji: "🗝️"
+  - id: prestige-3
+    name: midnight dynasty
+    description: Twenty-five grand complications — time itself seems to pause and check your work.
+    emoji: "🌌"
