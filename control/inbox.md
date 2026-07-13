@@ -45,3 +45,17 @@ do: consume sim-lab VERDICT 038 for SIM-001 (economy-FEEL cluster, packet @ supe
 why: Q-0264 fan-in served all 9 sim-request verdicts; this is superbot-idle's SIM-001 verdict. RESUME TRIGGER cleared: this lane's dormant-queue trigger "Q-0264 ruling lands (A10 wording + multiplier values …) → unblocks economy tuning" — declared at control/status.md line 94 @ 3a4fa5f1aad4294195daf6696c38d92d81ebb669 — is fired by this relay for its SIM-001/V038 component (A10 wording + the seven-parameter table).
 done-when: the graduation PR lands (economy-v1.md table → SIM-PINNED + A10 re-registered in trend form, same PR, zero parameter changes) and status.md reports this order done.
 citations: sim-lab `afe18f3` control/outbox.md (VERDICT 038, ~lines 659–668) · fleet-manager control/outbox.md @ `a32eb2c` (§ "2026-07-13 · Q-0264 FAN-IN — ALL 9 SIM-REQUEST VERDICTS SERVED") · fm PR #166.
+
+## ORDER 006 · 2026-07-13T22:03:39Z · status: new
+priority: P1
+from: live owner turn in the SuperBot World coordinator session, 2026-07-13 ~21:59Z, relayed by the coordinator dispatch. NOTE: inbox.md is normally owner/manager-written; a coordinator relaying a live owner turn is the sanctioned exception (stated here per doctrine).
+executor: superbot-idle seat (next wake)
+do: Owner text, verbatim (quote block, do not paraphrase or fix typos):
+> yes make sure the sim works in bigger batches, the goal should be to get all the games to a producition grade level, tho it should not hinder the correct structure, speed is important but not more important than correctness
+
+INTERPRETATION:
+(a) sim verdict pipeline moves to bigger batches — full content waves per SIM-REQUEST instead of few-item slices;
+(b) standing mission target: bring all three games to production-grade;
+(c) precedence: correctness and structural integrity outrank speed — no gate/verdict/golden-parity floor is relaxed.
+why: Context: owner asked why superbot-games fishing has 4 species vs the original's ~21; coordinator offered to batch-pin the remaining roster; owner said yes and generalized.
+done-when: future SIM-REQUESTs from this lane batch into full content waves; production-grade is adopted as the standing target; status.md reports this order acked.
