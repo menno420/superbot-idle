@@ -1,0 +1,1 @@
+- `claude/eap-night-groom` · **current-state groom + outbox night entry** — truthful records, EAP night close · docs/ + control/outbox.md + .sessions/ + telemetry/ · 2026-07-13
