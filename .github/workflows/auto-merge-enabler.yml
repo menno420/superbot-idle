@@ -113,6 +113,13 @@ jobs:
           # green, no arm) — the workflow re-runs on `synchronize`, so
           # the close-out push that flips the card to `complete` arms it
           # then. Card-less PRs (claims, heartbeats) arm at open.
+          # HARDENED 2026-07-13 to superbot-games' live guard semantics
+          # (.github/workflows/auto-merge-enabler.yml @ d6a9526):
+          # `drafted` (the kit auto-draft state, also not-final) refuses
+          # to arm like `in-progress`, and Status-badge parsing tolerates
+          # emoji/backtick prefixes ("✅ `complete`", "🚧 in-progress") —
+          # the old regex read a decorated badge as <no Status badge>
+          # and would have ARMED an in-progress-card PR.
           # SECURITY: card paths and contents are PR-controlled — they
           # are read via the API and parsed in Python only, passed as
           # argv/env, NEVER interpolated into this script body.
@@ -155,15 +162,17 @@ jobs:
               raw = gh_api("-H", "Accept: application/vnd.github.raw+json",
                            f"repos/{repo}/contents/"
                            f"{urllib.parse.quote(path)}?ref={head}")
-              m = re.search(r"\*\*Status:\*\*\s*`?([A-Za-z-]+)`?", raw)
+              # Tolerate emoji / backtick prefixes before the status
+              # token ("✅ `complete`", "`in-progress`", "in-progress").
+              m = re.search(r"\*\*Status:\*\*[^A-Za-z\n]*([A-Za-z-]+)", raw)
               status = m.group(1) if m else "<no Status badge>"
               print(f"card {path} @ {head[:12]}: status={status}")
-              if status == "in-progress":
+              if status in ("in-progress", "drafted"):
                   in_progress.append(path)
 
           skip = 1 if in_progress else 0
           if skip:
-              print("in-progress session card(s) in this PR's diff — "
+              print("in-progress/drafted session card(s) in this PR's diff — "
                     "refusing to arm; the close-out push that flips the card "
                     "to `complete` re-runs this workflow via `synchronize` "
                     "and arms then: " + ", ".join(in_progress))
