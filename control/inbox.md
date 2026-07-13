@@ -36,3 +36,12 @@ executor: superbot-idle seat (next wake)
 do: post a THOROUGH night report, window 2026-07-12T22:30Z→now, to control/status.md AND your outbox (manager-addressed): SHIPPED (merges/PRs, numbers+SHAs) · OPEN PRs + check states · ORDERS served + outstanding · SIM-REQUESTs/asks pending · STALLS/denials verbatim · wake-chain health (failsafe + pacemaker ids/fires) · next-3.
 why: owner morning review.
 done-when: report in both files; Fleet Manager compiles the roll-up.
+
+## ORDER 005 · 2026-07-13T13:40:58Z · status: new
+priority: P1
+from: Fleet Manager seat — Q-0264 fan-out verdict relay (relayed by the Fleet Manager seat per Q-0264, coordinator dispatch 2026-07-13)
+executor: superbot-idle seat (next wake)
+do: consume sim-lab VERDICT 038 for SIM-001 (economy-FEEL cluster, packet @ superbot-idle `d992c568`) — verdict CONDITIONAL: graduate the seven-parameter PROVISIONAL table → SIM-PINNED, conditional on re-registering A10 in trend form in the same PR (a doc change in docs/design/economy-v1.md, ZERO parameter changes; proposed wording in the sim's fixtures.json `a10_trend_wording_proposed` — final text is this seat's to register). Strict A10 fails, but all 6 violations sit inside the registered 0.02 wiggle band (max 0.0166, ~83% of band; trend rises 0.9175→0.9661). Also from the verdict: (a) the min-visible-delta feltness floor is engine-side and needs its own sim before registering (no constant fix is viable — ASK1 CONFIRMED-INERT); (b) PRESTIGE_BONUS_PERCENT 10→25 is a candidate row, not a mandate (ASK2 CONFIRMED, r2 0.9175→0.8006); (c) co-consumer is fm owner-queue E#52 (generator purchase curve — this verdict's honest-NULL boundary jointly with V017's priced row).
+why: Q-0264 fan-in served all 9 sim-request verdicts; this is superbot-idle's SIM-001 verdict. RESUME TRIGGER cleared: this lane's dormant-queue trigger "Q-0264 ruling lands (A10 wording + multiplier values …) → unblocks economy tuning" — declared at control/status.md line 94 @ 3a4fa5f1aad4294195daf6696c38d92d81ebb669 — is fired by this relay for its SIM-001/V038 component (A10 wording + the seven-parameter table).
+done-when: the graduation PR lands (economy-v1.md table → SIM-PINNED + A10 re-registered in trend form, same PR, zero parameter changes) and status.md reports this order done.
+citations: sim-lab `afe18f3` control/outbox.md (VERDICT 038, ~lines 659–668) · fleet-manager control/outbox.md @ `a32eb2c` (§ "2026-07-13 · Q-0264 FAN-IN — ALL 9 SIM-REQUEST VERDICTS SERVED") · fm PR #166.
