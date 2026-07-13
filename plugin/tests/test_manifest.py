@@ -39,7 +39,11 @@ def test_v1_contract_facets_only() -> None:
 
 
 def test_capabilities() -> None:
-    assert m.MANIFEST.capabilities == ("idle",)
+    # The host namespace validator (superbot-next sb/namespace/validate.py,
+    # _CAPABILITY_PARTS=3) requires an ``a.b.c`` capability facet. ``idle.game.play``
+    # follows the host's established ``<subsystem>.game.<action>`` games convention
+    # (blackjack.game.play, casino.game.play, counting.game.play, chain.game.play).
+    assert m.MANIFEST.capabilities == ("idle.game.play",)
 
 
 def test_panel_ref_registered_on_import() -> None:
