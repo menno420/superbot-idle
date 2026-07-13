@@ -91,6 +91,10 @@ visit for S2; O6 runs a dedicated 20-reset S3 ladder with no horizon cap.
   shrinkage is NOT super-geometric; `super_geometric_shrinkage_flag` is
   false). Whether A10's wording intends the strict gate the harness
   implements or the trend reading is exactly the kind of call Q-0264 owns.
+  (That call has since been made: VERDICT 038 re-registered A10 as **v2,
+  TREND form** — economy-v1.md § A10 re-registration record — and the
+  harness now evaluates v2, so this run's A10 row would read PASS if
+  re-evaluated; the committed JSON stays as the v1-era record.)
   A second signal for the Simulator: within the 14-day horizon the S3 run
   reaches ~80k resets (late resets shrink to seconds), which the ruling may
   care about even though no criterion covers it.
@@ -106,12 +110,12 @@ Mirrored in the report's `ambiguities` field; ids match `tools/simulate.py`.
 | AMB-3 | `apply_prestige` wipes `owned` | reference world fixes tier1 count at 1 (no purchase path) → harness re-seeds `{"tier1": 1}` after every reset |
 | AMB-4 | A7 "every visit before first prestige" | visits strictly earlier than the prestige visit; inclusive variant reported as auxiliary |
 | AMB-5 | A8 "gap between consecutive purchases" | purchase-to-purchase only; lead-in and tail spans reported as auxiliary |
-| AMB-6 | A10 "non-decreasing toward 1" | exact-rational consecutive ratios must never decrease; "toward 1" reported, not gated |
+| AMB-6 | A10 v1 "non-decreasing toward 1" | RESOLVED by the v2 TREND re-registration (economy-v1.md § A10 re-registration record, VERDICT 038): gate = final consecutive ratio ≥ first, single-step decreases within a 0.02 wiggle band; the harness implements v2 (`A10_CRITERION_VERSION`, doc↔harness parity test-enforced) |
 | AMB-7 | buy-then-prestige at one visit/second | purchases at the reset moment execute and are recorded, then wiped (doc blesses this order) |
 | AMB-8 | A2 "by t = 15 min" | boundary inclusive (t ≤ 900 s) |
 | AMB-9 | band endpoints | all bands closed at both ends except A8's strict "< 25%" |
 | AMB-10 | O3 samples at action times | samples record the post-action state |
-| AMB-11 | O6 super-geometric flag | flag = ratio TREND falls (final < first), distinct from A10's strict gate |
+| AMB-11 | O6 super-geometric flag | flag = ratio TREND falls (final < first) — the same trend reading A10 v2 now gates on, kept as its own reported flag per the O6 spec |
 
 ## What guards it
 
