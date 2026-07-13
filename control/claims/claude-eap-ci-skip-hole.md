@@ -1,0 +1,1 @@
+- `claude/eap-ci-skip-hole` · **close the 1-skipped CI hole** — CI checks out pinned superbot-next so plugin/tests/test_manifest.py runs (worklist item 3) · .github/workflows/ + .sessions/ + telemetry/ · 2026-07-13

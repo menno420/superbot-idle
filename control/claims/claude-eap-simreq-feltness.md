@@ -1,0 +1,1 @@
+- `claude/eap-simreq-feltness` · **SIM-REQUEST draft: min-visible-delta feltness floor** — docs-only, V038 ASK1 follow-up (worklist item 2) · control/outbox.md · 2026-07-13

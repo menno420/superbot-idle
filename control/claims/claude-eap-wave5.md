@@ -1,0 +1,1 @@
+- `claude/eap-wave5-packs` · **catalog wave 5** — 3 data-only theme packs (worklist item 1) · themes/ + .sessions/ + telemetry/ · 2026-07-13
