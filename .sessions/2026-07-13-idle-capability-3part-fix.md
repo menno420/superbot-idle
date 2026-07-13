@@ -1,6 +1,6 @@
 # 2026-07-13 — idle capability facet fix: bare `idle` → 3-part `idle.game.play`
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · bugfix · idle-engine seat (plugin capability 3-part fix) · 2026-07-13T09:3xZ (`date -u`)
 
@@ -54,3 +54,19 @@ Card born RED (`in-progress`) in the first commit alongside the telemetry row +
 `control/claims/idle-capability-3part-fix.md`; then the one-line manifest fix + the
 test update; card flipped `complete` as the last commit. PR opened READY; NOT
 auto-merged (worker does not merge its own PR).
+
+## 💡 Session idea
+
+idle's plugin CI is deliberately sb-free (`importorskip`), which is why a
+host-invalid capability string shipped unnoticed. A tiny OPTIONAL CI lane —
+`pip install 'superbot-next @ git+…' && pytest plugin/tests -q` on a schedule
+(not blocking, not on the sb-free critical path) — would surface exactly this
+class of host-contract drift at authoring time instead of at the host's
+coexistence proof. Belongs as a follow-up order, not this fix.
+
+## ⟲ Previous-session review
+
+PLUG-001 inc2 (PR #78) declared `capabilities=("idle",)` and proved the plugin
+against the host contract doc, but never ran the host's actual namespace
+validator — the sb-free-CI gap this session closes. The forwarding/settings/events
+seams it built are untouched here; only the capability facet string changed.
