@@ -61,3 +61,43 @@ labels:
   shop_description: Spend beans to keep the grind fine, the drum hot, and the espresso crema thick.
   level: Roast level
   prestige_progress: "lifetime beans toward the new roastery:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first full counter
+    description: Ten drip stations steaming at once — the morning rush finally meets its match.
+    emoji: "☕"
+  - id: owned-2
+    name: hundred-station roastery
+    description: A hundred drip stations; the whole block wakes to your grinder before its own alarm.
+    emoji: "⚙️"
+  - id: owned-3
+    name: caffeine empire
+    description: A thousand drip stations — visitors navigate the district by aroma alone.
+    emoji: "🏙️"
+  - id: lifetime-1
+    name: first thousand beans
+    description: The first thousand beans weighed, roasted, and logged in the cupping journal.
+    emoji: "🫘"
+  - id: lifetime-2
+    name: neighborhood habit
+    description: A hundred thousand beans; regulars order the usual at a counter they never really leave.
+    emoji: "📓"
+  - id: lifetime-3
+    name: ten-million-bean legend
+    description: Ten million beans. Baristas apprentice here just to say they did.
+    emoji: "👑"
+  - id: prestige-1
+    name: first reserve tin
+    description: The first shop franchised — one sealed tin of reserve blend, label still tacky.
+    emoji: "🥫"
+  - id: prestige-2
+    name: the tasting shelf
+    description: Five reserve tins lined behind the bar — a flight of every roastery you ever perfected.
+    emoji: "🏆"
+  - id: prestige-3
+    name: reserve dynasty
+    description: Twenty-five reserve tins — a franchise empire measured in first cracks.
+    emoji: "🌟"

@@ -61,3 +61,43 @@ labels:
   shop_description: Spend candies to keep the taffy soft, the gumdrops shining, and the caramel from ever burning.
   level: Batch level
   prestige_progress: "lifetime candies toward the new factory:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first pulling floor
+    description: Ten taffy pullers folding in unison — the whole floor moves like slow, glossy clockwork.
+    emoji: "🍭"
+  - id: owned-2
+    name: hundred-puller works
+    description: A hundred taffy pullers; the factory windows fog with sugar and passersby press their noses to the glass.
+    emoji: "🏭"
+  - id: owned-3
+    name: confection empire
+    description: A thousand taffy pullers — the town smells of caramel for a mile in every direction, and no one complains.
+    emoji: "🎪"
+  - id: lifetime-1
+    name: first thousand candies
+    description: The first thousand candies wrapped, crated, and stacked by the loading door.
+    emoji: "🍬"
+  - id: lifetime-2
+    name: sweet-tooth famous
+    description: A hundred thousand candies; dentists in three counties know your wrapper on sight.
+    emoji: "🦷"
+  - id: lifetime-3
+    name: ten-million-candy legend
+    description: Ten million candies. Children trade the rare wrappers like treasure maps.
+    emoji: "👑"
+  - id: prestige-1
+    name: first crystal jar
+    description: The first recipe sold — one jar of flawless sugar crystals, heavy as a promise.
+    emoji: "💎"
+  - id: prestige-2
+    name: the crystal cabinet
+    description: Five crystal jars glittering in the front office — one for every factory the recipe outgrew.
+    emoji: "🏆"
+  - id: prestige-3
+    name: sugar dynasty
+    description: Twenty-five crystal jars — a dynasty of factories, each sweeter than the last.
+    emoji: "🌟"
