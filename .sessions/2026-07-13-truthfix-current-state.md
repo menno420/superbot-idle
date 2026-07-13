@@ -1,6 +1,6 @@
 # 2026-07-13 — truth-fix current-state + prune merged claim files
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · low · docs-only · truth-fix current-state counts + prune merged claims · 2026-07-13
 
@@ -9,8 +9,8 @@
 Housekeeping docs slice. Tonight's merges (PRs #75/#76/#78/#79/#80) moved the
 ground truth out from under `docs/current-state.md`, which still read the
 pre-merge world set by PR #75: **12** theme packs and a **1131** test suite,
-plus present-tense "does NOT exist" claims that named the plugin adapter and a
-playable entrypoint as absent. All three are now false.
+plus a present-tense "does NOT exist" claim that named the plugin adapter as
+still-unbuilt. All of those are now false.
 
 Measured ground truth on `main` before writing (verify-first):
 
@@ -22,11 +22,13 @@ Measured ground truth on `main` before writing (verify-first):
 Truth-fixed only present-tense numbers/claims in `docs/current-state.md`:
 pack count 12 → 15 (with the three wave-4 packs added to the listed catalog
 set), suite 1131 → 1260, groomed-date/SHA line refreshed to 2026-07-13 against
-current main, and the stale "no plugin adapter / no entrypoint / unskinned
-milestones" present-tense claims corrected to match reality (adapter now EXISTS
-at `plugin/`, `tools/play.py` EXISTS, all packs carry flavored milestones).
-Dated historical "Recently shipped" / "Roadmap" snapshot sections were left
-untouched — only false present-tense claims were edited.
+current main, and the stale "no plugin adapter yet / adapter still unbuilt"
+present-tense claim corrected to match reality (adapter now EXISTS at `plugin/`
+via PRs #75 + #78; only a live bot runtime is still absent). The doc carried no
+absence-claim about `tools/play.py` or skinned milestones, so nothing to fix
+there. Dated snapshot sections ("Recently shipped", "In flight", the
+2026-07-11 "Roadmap") were left untouched — only false present-tense claims in
+the stability-baseline and "does NOT exist" sections were edited.
 
 Then pruned the five merged claim files per the delete-at-close convention
 (each verified `merged:true` via the GitHub API before deletion):
