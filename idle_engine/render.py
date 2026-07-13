@@ -36,7 +36,11 @@ from __future__ import annotations
 import re
 from typing import TYPE_CHECKING
 
-from idle_engine.achievements import milestone_earned, milestone_progress
+from idle_engine.achievements import (
+    milestone_earned,
+    milestone_progress,
+    milestone_reached,
+)
 from idle_engine.engine import offline_progress, production_per_second
 from idle_engine.prestige import prestige_award, prestige_eligible
 from idle_engine.upgrades import upgrade_cost
@@ -79,6 +83,22 @@ _NEUTRAL_LEVEL_LABEL = "Lv"
 # derived spec list (generic engine vocabulary, like "Lv" — never a
 # theme noun).
 _NEUTRAL_MILESTONE_LABEL = "Milestone"
+
+# Neutral status glyphs — generic scaffolding, never theme nouns (like the
+# ✅/🔒 marks already used across the views). ``_MILESTONE_READY_MARK`` flags a
+# milestone whose live progress has reached the threshold but which the
+# runtime has not yet banked via ``award_milestones`` (a "ready to claim"
+# state) — distinct from 🔒 (still short of the threshold), so a reached
+# milestone never renders as a past-100%-but-locked line that reads as a bug.
+_MILESTONE_READY_MARK = "⏳"  # ⏳ hourglass — reached, awaiting the award action
+
+# ``_UPGRADE_UNAVAILABLE_MARK`` / ``_REQUIRES_LABEL`` flag a shop upgrade whose
+# target generator is 0-owned: purchasing it multiplies a rate of zero, so it
+# spends currency for no observable effect. Display-only — purchase mechanics
+# and costs are unchanged; the annotation warns rather than blocks. "requires"
+# is generic engine vocabulary (like "Lv"), never a theme noun.
+_UPGRADE_UNAVAILABLE_MARK = "⚠️"  # ⚠️ — target generator not yet owned
+_REQUIRES_LABEL = "requires"
 
 
 class RenderBudgetError(ValueError):
@@ -285,10 +305,27 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
         cost = upgrade_cost(spec, level)
         affordable = state.balances.get(spec.cost_currency, 0) >= cost
         currency = theme.currencies[spec.cost_currency]
-        mark = "✅" if affordable else "\U0001f512"
+        target_owned = state.owned.get(spec.target, 0)
+        if target_owned == 0:
+            # Trap-buy guard (display only): this upgrade multiplies the rate
+            # of a generator the player owns ZERO of, so a purchase spends
+            # currency for no observable effect. Mark it unavailable and name
+            # the generator it needs, instead of an affordable ✅ that invites
+            # a wasted buy. Purchase logic and costs are UNCHANGED — the
+            # annotation warns, it does not block.
+            mark = _UPGRADE_UNAVAILABLE_MARK
+            target = theme.generators.get(spec.target)
+            requires = (
+                _labelled(target.emoji, target.name) if target is not None else spec.target
+            )
+            suffix = f" · {_REQUIRES_LABEL} {requires}"
+        else:
+            mark = "✅" if affordable else "\U0001f512"
+            suffix = ""
         cost_line = (
             f"{mark} {level_label} {_format_amount(level)} → {_format_amount(level + 1)}"
             f" · {_format_amount(cost)} {_labelled(currency.emoji, currency.name)}"
+            f"{suffix}"
         )
         description = upgrade.description or ""
         if len(description) > SHOP_FLAVOR_LIMIT:
@@ -375,9 +412,20 @@ def render_achievements(state: GameState, theme: Theme) -> dict:
     """
     fields = []
     for position, spec in enumerate(theme.milestone_specs(), 1):
-        earned = milestone_earned(state, spec)
-        mark = "✅" if earned else "\U0001f512"
-        progress = spec.threshold if earned else milestone_progress(state, spec)
+        if milestone_earned(state, spec):
+            mark = "✅"
+            progress = spec.threshold
+        elif milestone_reached(state, spec):
+            # Reached the threshold, but awarding is the runtime's explicit
+            # action (award_milestones) and has not run yet. Show a distinct
+            # "ready" glyph and CAP the numerator at the threshold, so this
+            # never renders as "5,000 / 1,000 🔒" (past 100% but locked, which
+            # reads as a bug). Display-only: the earned SET is unchanged.
+            mark = _MILESTONE_READY_MARK
+            progress = spec.threshold
+        else:
+            mark = "\U0001f512"
+            progress = milestone_progress(state, spec)
         line = f"{mark} {_format_amount(progress)} / {_format_amount(spec.threshold)}"
         themed = theme.milestones.get(spec.spec_id)
         if themed is not None:

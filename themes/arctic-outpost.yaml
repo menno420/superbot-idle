@@ -1,0 +1,63 @@
+# arctic-outpost — theme pack #14 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: arctic-outpost
+  name: Arctic Outpost
+  description: A wind-battered research outpost on the polar ice, where every metre of snowpack hides another season of science.
+  emoji: "🧊"
+  embed_color: "#4FA8D8"
+
+currencies:
+  - id: primary
+    name: snowpack
+    description: Cores of dense, ancient snowpack, hauled in by the sled and stacked in the cold vault.
+    emoji: "❄️"
+  - id: prestige
+    name: aurora shards
+    description: Impossible slivers of frozen aurora light — the outpost's proof that it stared at the sky and won.
+    emoji: "🌌"
+
+generators:
+  - id: tier1
+    name: ice-core drill
+    description: A tireless ice-core drill biting down through the glacier, spitting up frozen snowpack ring by ring.
+    emoji: "🪛"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: husky sled team
+    description: A yipping husky sled team that ranges the tundra and drags home more snowpack than any drill alone.
+    emoji: "🛷"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: heated drill bit
+    description: A heated bit keeps the ice-core drill from seizing in the cold; it cuts through permafrost without a single stall.
+    emoji: "🔩"
+    target: tier1
+  - id: boost2
+    name: seasoned lead musher
+    description: A seasoned lead musher reads the tundra by instinct; the huskies run truer and haul heavier every trip.
+    emoji: "🥾"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: pack up and chart a new expedition
+  action_description: Strike the tents, seal the aurora shards in the flight case, and chart a fresh expedition to untouched ice — the map is blank again and so is the horizon.
+  action_emoji: "🧭"
+
+labels:
+  offline_return: "While the blizzard pinned you inside, the sled team kept working the ice: {gains}"
+  status_title: "🧊 Arctic Outpost — the field log"
+  shop_title: "🔩 The Supply Cache"
+  shop_description: Spend snowpack to keep the drill turning and the huskies fed through the long dark.
+  level: Expedition level
+  prestige_progress: "lifetime snowpack toward the new expedition:"

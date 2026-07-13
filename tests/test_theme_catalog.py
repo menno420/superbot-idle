@@ -42,12 +42,15 @@ CYBER_CITY = THEMES_DIR / "cyber-city.yaml"
 PIRATE_COVE = THEMES_DIR / "pirate-cove.yaml"
 ANT_COLONY = THEMES_DIR / "ant-colony.yaml"
 IDOL_AGENCY = THEMES_DIR / "idol-agency.yaml"
+COFFEE_ROASTERY = THEMES_DIR / "coffee-roastery.yaml"
+ARCTIC_OUTPOST = THEMES_DIR / "arctic-outpost.yaml"
+CANDY_FACTORY = THEMES_DIR / "candy-factory.yaml"
 
 
-# --- the catalog ships twelve packs, all gate-green ---------------------------
+# --- the catalog ships fifteen packs, all gate-green --------------------------
 
 
-def test_catalog_ships_all_twelve_packs():
+def test_catalog_ships_all_fifteen_packs():
     for pack in (
         EGG_FARM,
         SPACE_COLONY,
@@ -61,9 +64,12 @@ def test_catalog_ships_all_twelve_packs():
         PIRATE_COVE,
         ANT_COLONY,
         IDOL_AGENCY,
+        COFFEE_ROASTERY,
+        ARCTIC_OUTPOST,
+        CANDY_FACTORY,
     ):
         assert pack in ALL_PACKS, f"missing shipped pack {pack.name}"
-    assert len(ALL_PACKS) >= 12
+    assert len(ALL_PACKS) >= 15
 
 
 def test_whole_catalog_passes_gate_including_cross_pack_checks(capsys):
@@ -276,6 +282,54 @@ def test_idol_agency_nouns_resolve():
     assert theme.prestige.currency == "prestige"
     assert theme.prestige.measures == "primary"
     assert theme.prestige.action_name == "graduate and debut a new group"
+
+
+def test_coffee_roastery_nouns_resolve():
+    theme = load_theme(COFFEE_ROASTERY)
+    assert theme.theme_id == "coffee-roastery"
+    assert theme.name == "Coffee Roastery"
+    assert theme.currency_name("primary") == "beans"
+    assert theme.currency_name("prestige") == "reserve blends"
+    assert theme.generator_name("tier1") == "drip station"
+    assert theme.generator_name("tier2") == "roasting drum"
+    assert theme.upgrade_name("boost1") == "calibrated burr grinder"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "sell the shop and franchise a new roastery"
+
+
+def test_arctic_outpost_nouns_resolve():
+    theme = load_theme(ARCTIC_OUTPOST)
+    assert theme.theme_id == "arctic-outpost"
+    assert theme.name == "Arctic Outpost"
+    assert theme.currency_name("primary") == "snowpack"
+    assert theme.currency_name("prestige") == "aurora shards"
+    assert theme.generator_name("tier1") == "ice-core drill"
+    assert theme.generator_name("tier2") == "husky sled team"
+    assert theme.upgrade_name("boost1") == "heated drill bit"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "pack up and chart a new expedition"
+
+
+def test_candy_factory_nouns_resolve():
+    theme = load_theme(CANDY_FACTORY)
+    assert theme.theme_id == "candy-factory"
+    assert theme.name == "Candy Factory"
+    assert theme.currency_name("primary") == "candies"
+    assert theme.currency_name("prestige") == "sugar crystals"
+    assert theme.generator_name("tier1") == "taffy puller"
+    assert theme.generator_name("tier2") == "gumdrop line"
+    assert theme.upgrade_name("boost1") == "warmed pulling arms"
+    assert theme.upgrades["boost1"].target == "tier1"
+    assert theme.upgrades["boost2"].target == "tier2"
+    assert theme.prestige.currency == "prestige"
+    assert theme.prestige.measures == "primary"
+    assert theme.prestige.action_name == "sell the recipe and open a new factory"
 
 
 # --- every pack drives the engine end to end ---------------------------------

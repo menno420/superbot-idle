@@ -61,3 +61,43 @@ labels:
   shop_description: Burn credits on gear that keeps the grid paying you first.
   level: Firmware rev
   prestige_progress: "lifetime credits toward the upload:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first node cluster
+    description: Ten data havens online at once — the block finally shows up on the grid map.
+    emoji: "🗄️"
+  - id: owned-2
+    name: district uplink
+    description: A hundred installations humming; the district reroutes its traffic through you.
+    emoji: "🌆"
+  - id: owned-3
+    name: citywide grid
+    description: A thousand installations — the whole rain-slick sprawl runs on your dark fiber now.
+    emoji: "🛰️"
+  - id: lifetime-1
+    name: first thousand credits
+    description: The first clean thousand credits, laundered through accounts that don't exist.
+    emoji: "💳"
+  - id: lifetime-2
+    name: shadow fortune
+    description: A hundred thousand credits routed so far into the dark they cast no ledger shadow.
+    emoji: "💰"
+  - id: lifetime-3
+    name: grid legend
+    description: Ten million credits. The old syndicates study your ledgers like scripture.
+    emoji: "👑"
+  - id: prestige-1
+    name: first code fragment
+    description: One legacy code fragment recovered — proof a mind once outlived its body.
+    emoji: "💾"
+  - id: prestige-2
+    name: fragment cache
+    description: Five fragments of pre-collapse code, archived behind ice no ice can reach.
+    emoji: "🧬"
+  - id: prestige-3
+    name: ascended intelligence
+    description: Twenty-five fragments — you no longer log into the grid; you are the grid.
+    emoji: "🧠"
