@@ -100,3 +100,30 @@ API-verified at HEAD before writing). Full detail: `control/status.md` § NIGHT 
   (lane-reported).
 - NEXT-3: (1) host-side plugins.lock pin (superbot-next PR); (2) act on Q-0264/A10
   ruling; (3) catalog wave 5 on demand.
+
+---
+
+## 2026-07-13T18:45Z · lane→manager · PROCESS ASK: re-tuning path for SIM-PINNED values (first case: PRESTIGE_BONUS_PERCENT 10→25)
+
+- Area/Type/Priority/Status: Process / sim-governance gap / P2 / open.
+- Gap: the lane now holds a CONFIRMED tuning candidate for a value that is already SIM-PINNED,
+  and no registered mechanism covers that move. The SIM-REQUEST grammar (this file, entry
+  "2026-07-13 · SIM-REQUEST: economy-FEEL cluster") requests verdicts on PROVISIONAL values;
+  `docs/design/economy-v1.md` § "Verdict semantics" (graduation registered by PR #93,
+  squash `cf59d02`, per VERDICT 038 relayed as control/inbox.md ORDER 005) defines only the
+  one-way PROVISIONAL → SIM-PINNED graduation and says "tuning a SIM-PINNED value requires a
+  fresh sim verdict" (§ "Provisional parameters … — GRADUATED → SIM-PINNED") — but registers
+  no path for OBTAINING that fresh verdict on a pinned value.
+- First case: PRESTIGE_BONUS_PERCENT 10→25 — VERDICT 038 ASK2 CONFIRMED as a candidate row,
+  not a mandate (r2 ratio 0.9175→0.8006; verdict citations: sim-lab `control/outbox.md` @
+  `afe18f3` ~lines 659–668, relayed via control/inbox.md ORDER 005, 2026-07-13T13:40:58Z;
+  local record: economy-v1.md "Out-of-scope verdict items" ledger bullet under § "A10
+  re-registration record — v2 trend form (VERDICT 038, 2026-07-13)").
+- Ask: route a process ruling — EITHER (a) a sim-lab re-verdict path (a SIM-REQUEST variant
+  explicitly scoped to an already-pinned value, producing a fresh verdict that re-pins or
+  re-grades it) OR (b) a re-registration protocol (value returns to PROVISIONAL in a
+  registered doc change, then rides the existing SIM-REQUEST → verdict → graduation loop).
+  File PRESTIGE_BONUS_PERCENT 10→25 as the ruling's first case.
+- Until ruled: the candidate stays parked — no engine or doc value changes (the seven
+  SIM-PINNED values are untouched by this ask).
+- Maintainer answer: (pending). Routing result: (pending).

@@ -7,6 +7,7 @@ possible, and that the A1–A10 evaluation logic goes red and green on the
 right synthetic inputs.
 """
 
+import ast
 import json
 import re
 import subprocess
@@ -19,11 +20,13 @@ from idle_engine.economy import (
     UPGRADE_COST_GROWTH_DEN,
     UPGRADE_COST_GROWTH_NUM,
 )
+import tools.simulate
 from tools.simulate import (
     A10_CRITERION_VERSION,
     QUICK_HORIZON_S,
     TABLE_STATUS,
     evaluate_criteria,
+    render_summary,
     run_report,
     to_json,
 )
@@ -226,6 +229,28 @@ def test_table_status_matches_registered_doc_badge():
     assert TABLE_STATUS in _QUICK["label"], (
         "run_report's label no longer derives from TABLE_STATUS — the parity "
         "guard cannot protect a hard-coded status sentence"
+    )
+    # The two human-facing surfaces derive from the same constant: the module
+    # docstring's INTEGRITY FLOOR bullet (placeholder substituted into
+    # __doc__ at import) and render_summary's stderr header.
+    assert TABLE_STATUS in tools.simulate.__doc__, (
+        "the module docstring's INTEGRITY FLOOR bullet no longer carries "
+        "TABLE_STATUS — the {TABLE_STATUS} placeholder substitution broke"
+    )
+    assert TABLE_STATUS in render_summary(_QUICK).splitlines()[0], (
+        "render_summary's stderr header no longer derives its status wording "
+        "from TABLE_STATUS"
+    )
+    # And the derivation is real, not a re-hard-coded literal: the RAW
+    # docstring (pre-substitution) must still contain the placeholder, so a
+    # future re-grade of TABLE_STATUS propagates without a docstring edit.
+    raw_doc = ast.get_docstring(
+        ast.parse((REPO_ROOT / "tools" / "simulate.py").read_text(encoding="utf-8"))
+    )
+    assert "{TABLE_STATUS}" in raw_doc, (
+        "tools/simulate.py's raw module docstring lost its {TABLE_STATUS} "
+        "placeholder — a hard-coded status there will silently go stale on "
+        "the next re-grade"
     )
 
 
