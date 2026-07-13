@@ -61,3 +61,43 @@ labels:
   shop_description: Spend snowpack to keep the drill turning and the huskies fed through the long dark.
   level: Expedition level
   prestige_progress: "lifetime snowpack toward the new expedition:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first drill line
+    description: Ten ice-core drills chewing the glacier at once — the vault finally fills faster than the storms can bury it.
+    emoji: "🪛"
+  - id: owned-2
+    name: hundred-drill traverse
+    description: A hundred drills strung across the shelf; the ice hums like a struck wire from camp to camp.
+    emoji: "⛏️"
+  - id: owned-3
+    name: polar empire
+    description: A thousand drills — satellites photograph the grid and analysts assume it is a city.
+    emoji: "🏔️"
+  - id: lifetime-1
+    name: first thousand cores
+    description: The first thousand measures of snowpack, labelled and racked in the cold vault.
+    emoji: "❄️"
+  - id: lifetime-2
+    name: deep-time archive
+    description: A hundred thousand measures; the vault now holds more winters than recorded history.
+    emoji: "🗄️"
+  - id: lifetime-3
+    name: ten-million-core legend
+    description: Ten million measures of snowpack. Glaciologists cite the outpost the way sailors cite the pole star.
+    emoji: "👑"
+  - id: prestige-1
+    name: first aurora shard
+    description: The first expedition charted — one aurora shard, still flickering faintly in its flight case.
+    emoji: "🌌"
+  - id: prestige-2
+    name: shard constellation
+    description: Five aurora shards in the case; open it in the dark and the tent glows like the sky came inside.
+    emoji: "✨"
+  - id: prestige-3
+    name: keeper of the lights
+    description: Twenty-five aurora shards — a career of expeditions, measured in pieces of the sky.
+    emoji: "🌠"
