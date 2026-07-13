@@ -61,3 +61,43 @@ labels:
   shop_description: Spend coins now to make the hoard grow faster. It is an investment.
   level: Menace level
   prestige_progress: "lifetime gold toward the burning:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first coin seam
+    description: Ten earners toiling at once — the pile is finally deep enough to sleep on.
+    emoji: "⛏️"
+  - id: owned-2
+    name: hundred-earner hoard
+    description: A hundred earners digging and tithing below; the mountain hums with your wealth.
+    emoji: "🏔️"
+  - id: owned-3
+    name: hoard of legend
+    description: A thousand earners — knights write their wills before they ride out for you.
+    emoji: "🐉"
+  - id: lifetime-1
+    name: first thousand coins
+    description: A thousand coins counted onto the pile, each one warm and gleaming and yours.
+    emoji: "🪙"
+  - id: lifetime-2
+    name: gleaming fortune
+    description: A hundred thousand coins; the hoard is large enough to have its own weather.
+    emoji: "💰"
+  - id: lifetime-3
+    name: wealth beyond song
+    description: Ten million coins. Bards run out of adjectives and simply start again.
+    emoji: "👑"
+  - id: prestige-1
+    name: first ancient scale
+    description: One iridescent scale shed at the first rebirth — you fly on, older and wiser.
+    emoji: "🐲"
+  - id: prestige-2
+    name: scaled reserve
+    description: Five ancient scales, each the memory of a hoard you dared to burn.
+    emoji: "✨"
+  - id: prestige-3
+    name: elder wyrm
+    description: Twenty-five scales — the eldest dragons speak your name in the high cold air.
+    emoji: "👑"
