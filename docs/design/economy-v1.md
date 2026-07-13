@@ -248,6 +248,7 @@ with ZERO value changes. Both docs updated together per the semantics above.
   evaluates A10's v1 strict gate (`evaluate_criteria` A10 branch +
   `_o6_table`); until it is updated to v2, a harness A10 FAIL under v1 is
   expected and does NOT contradict this registration.
+  **Done (PR #95, main `2ac6c5d`):** the harness now evaluates v2 — the note above is historical.
 - Out-of-scope verdict items recorded for the ledger: ASK1 CONFIRMED-INERT
   (min-visible-delta feltness floor is engine-side, needs its own sim before
   registering — no constant fix viable); ASK2 CONFIRMED
