@@ -1,6 +1,6 @@
 # 2026-07-13 — PLUG-001 adapter increment 2: settings + lifecycle events + live render forwarding
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · feature build · idle-engine seat (PLUG-001 adapter inc2) · 2026-07-13
   — versioned-family name (family + version, e.g. `fable-5`) from this session's OWN harness
