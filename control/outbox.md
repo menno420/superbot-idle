@@ -143,3 +143,78 @@ API-verified at HEAD before writing). Full detail: `control/status.md` § NIGHT 
 - Standing target: production-grade for all three games (per ORDER 006).
 - Floor unchanged: the correctness floor is unchanged — no gate, verdict, or golden-parity
   floor is relaxed by the batching directive.
+
+---
+
+## 2026-07-13T22:42Z · lane→manager · ACK ORDER 007 (+ ORDER 006 adopted) — inbox-thread ack is gate-blocked, rides here
+
+ORDER 007 (EAP final-night worklist) ACKED and being worked top-down: items 1–3 claimed
+(claims on main: `claude-eap-wave5`, `claude-eap-simreq-feltness` — this slice,
+`claude-eap-ci-skip-hole`), item 4 (superbot-next `plugins.lock.json` pin) tracked, not
+duplicated. ORDER 006 (owner batching directive) ACKED and adopted — this entry's
+SIM-REQUEST below is batched as a full wave, correctness > speed. ORDER 007's done-when
+asks for an ack "in your inbox thread", but the substrate-gate's inbox-order-grammar
+check rejects any non-ORDER append to `control/inbox.md` — verified on PR #104, gate
+finding verbatim: "control/inbox.md: appended content that is neither the file header
+nor a `## ORDER` block" (PR #104, commit a7cc272; #104 then landed inbox-untouched as
+squash c99057c). Per the ORDER grammar (`control/inbox.md` header: ONE writer — the
+manager), the ack therefore rides this outbox entry.
+
+---
+
+## 2026-07-13T22:42Z · lane→manager · SIM-REQUEST: min-visible-delta feltness floor (needs fleet SIM/Q-number — manager to assign; ref V038 ASK1 CONFIRMED-INERT)
+
+- Provenance: sim-lab VERDICT 038 ASK1 ruled **CONFIRMED-INERT** — the first-upgrade
+  feltness problem is ENGINE-SIDE and "needs its own sim before registering — no constant
+  fix viable" (relay: control/inbox.md ORDER 005, 2026-07-13T13:40:58Z; local ledger:
+  `docs/design/economy-v1.md` § "A10 re-registration record", out-of-scope verdict items).
+  This entry is that sim's request, batched per ORDER 006 into one full early-game
+  feltness wave instead of a one-item slice. Docs-only: ZERO engine or doc-value changes
+  ride with this ask.
+- Question: what floor on the VISIBLE per-action / per-tick delta makes early-game
+  purchases "felt", and which engine-side floor MECHANISM delivers it without breaking
+  integer-exact determinism? Evidence (V038 ASK1 / SIM-001): at the reference world
+  (tier1 count=1, base_rate=1) the single rate-floor fold discards sub-integer gains, so
+  boost1 levels 1–3 leave the displayed rate at 1/s (rate-by-level [1,1,1,1,2,2]) — the
+  player's first three purchases (costs 60/69/79) change nothing they can see.
+- Engine-side anchors (file:function, verified at this entry's HEAD):
+  - `idle_engine/engine.py:production_per_second` (~L39–75) — the single fold
+    `base_rate * count * pct * global_pct * earned_pct * rate_multiplier_pct
+    // 100_000_000` (~L65–73) is where sub-integer rate gains vanish.
+  - `idle_engine/upgrades.py:upgrade_percent` (~L232–247) — the additive
+    `100 + Σ effect_percent · level` input the fold floors away at low counts.
+  - `idle_engine/render.py:render_status` (~L263–266, the `+N/s` rate line) and
+    `render_shop` (~L281+, cost line carries NO rate-delta preview) — the surfaces
+    where a delta is or is not FELT by the player.
+  - `tools/simulate.py:simulate_s3` / `evaluate_criteria` — where new feltness metrics
+    wire into the harness.
+- Mechanism surface the sim MAY vary (engine-side floor candidates, sim's choice):
+  fractional-rate accumulator / remainder carry across ticks; sub-integer internal rate
+  representation with integer display; a min-visible-delta display floor (bounded
+  accrual-window preview); purchase-time delta preview in `render_shop`. Explicitly OUT
+  of surface: the seven SIM-PINNED values (`docs/design/economy-v1.md` parameter table,
+  VERDICT 038) and A10 v2 trend semantics — ZERO changes to either without a fresh
+  verdict; this sim is about a floor MECHANISM, not re-tuning.
+- Acceptance criteria (proposed; sim may sharpen, not weaken):
+  - F1 — no felt no-op: at the reference world, EVERY boost1 purchase from level 0→6
+    changes what the player can observe (rate line, or accrual over a visible window
+    ≤ 60 s) by ≥ 1 display unit — the V038 ASK1 first-upgrade no-op is eliminated.
+  - F2 — no regression: A1–A9 stay PASS and A10 v2 (trend form) stays PASS under any
+    candidate mechanism, seven SIM-PINNED values untouched.
+  - F3 — determinism floor: `tick` ≡ `offline_progress` exact-integer equality holds
+    (any accumulator/carry must be closed-form over an offline span).
+  - Full-wave breadth (ORDER 006): report feltness across the whole early game — upgrade
+    levels 0–6, first milestone award, and the reset-1 prestige bonus application — not
+    just the first purchase.
+- Packet: mirrors SIM-001's shape (executable packet = pinned repo commit + real engine
+  functions + `tools/simulate.py` per `docs/design/sim-harness.md` + a registered spec
+  section in `docs/design/economy-v1.md`; SIM-001's packet was pinned @ `d992c568`).
+  On acceptance + fleet number assignment, the lane registers the spec section and the
+  harness feltness metrics in a follow-up docs PR BEFORE the sim runs, and pins the
+  packet commit in that PR. Sim-lab repo access is a recorded wall — the manager routes
+  this request; nothing here probes sim-lab.
+- Co-consumers / adjacency: PRESTIGE_BONUS_PERCENT 10→25 (V038 ASK2, candidate row)
+  stays PARKED behind this file's 2026-07-13T18:45Z process ask (re-tuning path for
+  SIM-PINNED values) — referenced, NOT scheduled here. fm owner-queue E#52
+  (generator-purchase curve) remains the verdict's other co-consumer.
+- **NOTE: needs a fleet SIM/Q-number — manager to assign (do not invent one).**
