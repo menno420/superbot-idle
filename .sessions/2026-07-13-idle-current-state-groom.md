@@ -1,6 +1,6 @@
 # 2026-07-13 — docs/current-state.md groom: record #82–#88, kill the stale "in flight" line
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** Fable-class (Claude 5 family) · docs groom · idle seat (current-state truth pass) · 2026-07-13T13:49Z (`date -u`)
 
@@ -37,4 +37,29 @@ flip complete last.
 
 ## Close-out
 
-_(pending — written at flip)_
+Groom shipped as PR #89 (head `49753ed`): `docs/current-state.md` re-grounded
+against main HEAD `05a99f5` — #35–#88 recorded in "Recently shipped", the
+contradicted "In flight: shop composition" line removed, SIM-001/roadmap/adapter
+claims fixed, docs-gate badge shape preserved. Claim
+`control/claims/idle-current-state-groom.md` released in the flip commit.
+Flip written 2026-07-13T14:00Z (`date -u`).
+
+## 💡 Session idea
+
+idle's substrate-gate CI runs bootstrap check WITHOUT `--strict`, so an
+in-progress born-red card does not hold the merge red — auto-merge
+landed/nearly landed this PR before its card flipped. Fix: make the
+substrate-gate workflow run `check --strict` but exempt exactly the card whose
+branch matches the PR head, so born-red actually blocks auto-merge as designed.
+
+## ⟲ Previous-session review
+
+Verified `2026-07-13-idle-liveboot-fixes.md` (PR #86) against source: both
+claimed fixes are real in `plugin/superbot_idle_plugin/manifest.py` —
+`register_event_specs(list(EVENTS))` fires at module import (`:186`) AND inside
+`_ensure_refs` (`:204`), and the root `idle` CommandSpec is
+`kind=CommandKind.PREFIX` (`:226`) — and all three promised guard tests exist
+in `plugin/tests/test_manifest.py` (`:34`, `:133`, `:146`). The card's guard
+recipe names exact anchors (function + file + test target), which is precisely
+the recipe discipline `.sessions/README.md` asks for — this groom leaned on
+those anchors instead of re-deriving them.
