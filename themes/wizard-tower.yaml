@@ -61,3 +61,43 @@ labels:
   shop_description: Trade raw mana for a taller, stranger, more studious tower.
   level: Circle
   prestige_progress: "lifetime mana toward the ascension:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first circle
+    description: Ten workings running at once — the tower finally hums the way a wizard's should.
+    emoji: "🖋️"
+  - id: owned-2
+    name: conclave of floors
+    description: A hundred workings underway; each floor mutters a different discipline.
+    emoji: "📚"
+  - id: owned-3
+    name: tower beyond counting
+    description: A thousand workings — the stairwell no longer agrees on how tall you are.
+    emoji: "🏰"
+  - id: lifetime-1
+    name: first thousand mana
+    description: The first thousand drops of mana, distilled from moonlit air and jarred.
+    emoji: "🔮"
+  - id: lifetime-2
+    name: brimming reservoir
+    description: A hundred thousand drops of mana; the cellar sigils glow through the stone.
+    emoji: "💧"
+  - id: lifetime-3
+    name: wellspring of legend
+    description: Ten million drops of mana. Rival towers send apprentices just to measure the air.
+    emoji: "👑"
+  - id: prestige-1
+    name: first starlight
+    description: One shard of crystallized starlight — proof of a plane survived and left behind.
+    emoji: "✨"
+  - id: prestige-2
+    name: starlit reserve
+    description: Five shards of crystallized starlight, cold and patient in their velvet case.
+    emoji: "🌟"
+  - id: prestige-3
+    name: archmage ascendant
+    description: Twenty-five shards — you step between planes the way others step between rooms.
+    emoji: "🌌"
