@@ -22,6 +22,7 @@ from idle_engine.economy import (
 from tools.simulate import (
     A10_CRITERION_VERSION,
     QUICK_HORIZON_S,
+    TABLE_STATUS,
     evaluate_criteria,
     run_report,
     to_json,
@@ -203,6 +204,31 @@ def test_a10_criterion_version_matches_registered_doc_form():
     )
 
 
+def test_table_status_matches_registered_doc_badge():
+    """Doc↔harness parameter-table status parity guard.
+
+    docs/design/economy-v1.md carries the table's registered status as the
+    badge on its Status line ("**SIM-PINNED** (every numeric parameter ...",
+    graduated by VERDICT 038); the harness derives run_report's label wording
+    from TABLE_STATUS. Re-grade the table without syncing tools/simulate.py
+    (or bump the harness without re-registering) and this goes red — same
+    pattern as the A10 criterion-version guard above.
+    """
+    doc = REPO_ROOT / "docs" / "design" / "economy-v1.md"
+    text = doc.read_text(encoding="utf-8")
+    match = re.search(r"·\s*\*\*([A-Z][A-Z-]+)\*\*\s*\(every numeric", text)
+    assert match, "economy-v1.md lost its parameter-table status badge"
+    assert match.group(1) == TABLE_STATUS, (
+        f"table-status drift: economy-v1.md registers {match.group(1)} but "
+        f"tools/simulate.py reports {TABLE_STATUS} — bump both sides in the "
+        "same PR"
+    )
+    assert TABLE_STATUS in _QUICK["label"], (
+        "run_report's label no longer derives from TABLE_STATUS — the parity "
+        "guard cannot protect a hard-coded status sentence"
+    )
+
+
 def test_report_stamps_criteria_versions_from_parity_pinned_constant():
     """Run-artifact provenance: the report records the criterion version it
     was judged under, sourced from the SAME constant the parity guard above
@@ -248,7 +274,7 @@ def test_unmeasured_values_fail_loud_never_skip():
 def test_quick_report_shape_and_labels():
     report = _QUICK
     assert report["report"] == "SIM-001"
-    assert "PROVISIONAL" in report["label"] and "not the verdict" in report["label"]
+    assert TABLE_STATUS in report["label"] and "not the verdict" in report["label"]
     assert report["mode"] == "quick"
     assert report["quick_mode_warning"] is not None
     for key in ("O1_time_to_first_upgrade_s", "O2_purchase_timelines",

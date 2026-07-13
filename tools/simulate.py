@@ -543,6 +543,16 @@ def _o6_table(o6_resets):
 #: this harness (or vice versa) goes red. Bump BOTH sides in the same PR.
 A10_CRITERION_VERSION = "v2"
 
+#: Registered status of the seven-parameter table — MUST match the
+#: parameter-status badge on docs/design/economy-v1.md's Status line
+#: ("**SIM-PINNED** (every numeric parameter ..."); doc↔harness parity is
+#: test-enforced (tests/test_simulate.py), so a future re-grade of the table
+#: without syncing the report label (or vice versa) goes red instead of the
+#: report silently emitting a stale status. Bump BOTH sides in the same PR.
+#: (VERDICT 038 graduated the table PROVISIONAL → SIM-PINNED 2026-07-13,
+#: PR #93.)
+TABLE_STATUS = "SIM-PINNED"
+
 #: v2's registered single-step tolerance: a ratio decrease is a tolerated
 #: wiggle iff it stays within 0.02 of its predecessor (exact rational; the
 #: VERDICT 038 evidence run's worst step was 0.0166 ≈ 83% of this band).
@@ -711,10 +721,10 @@ def run_report(quick: bool = False) -> dict:
     return {
         "report": "SIM-001",
         "label": (
-            "PROVISIONAL / UNOFFICIAL — harness output is INPUT to the Q-0264 "
-            "verdict, not the verdict. Parameters remain PROVISIONAL until the "
-            "fleet Simulator seat / manager rules (economy-v1.md, verdict "
-            "semantics)."
+            "UNOFFICIAL — harness output is INPUT to the Q-0264 verdict, not "
+            f"the verdict. The seven-parameter table is {TABLE_STATUS} per "
+            "docs/design/economy-v1.md (VERDICT 038; tuning a pinned value "
+            "requires a fresh sim verdict)."
         ),
         "spec": "docs/design/economy-v1.md § Simulation request — SIM-001 (Q-0264)",
         "harness": "tools/simulate.py",
