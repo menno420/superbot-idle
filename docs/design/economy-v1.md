@@ -1,8 +1,12 @@
 # Economy v1 — pre-registered pacing targets, cost curves, and simulation request (Q-0264)
 
-> **Status:** `binding` (targets + shapes) · **PROVISIONAL** (every numeric
-> parameter) — committed 2026-07-11, slice (d), BEFORE any tuning, per the
-> integrity floor (README § Integrity floor). This doc PRE-REGISTERS what the
+> **Status:** `binding` (targets + shapes) · **SIM-PINNED** (every numeric
+> parameter — graduated PROVISIONAL → SIM-PINNED 2026-07-13 by sim-lab
+> VERDICT 038, SIM-001/Q-0264, CONDITIONAL; condition met by the A10
+> trend-form re-registration in this same PR, ZERO values changed; relay:
+> control/inbox.md ORDER 005) — first committed 2026-07-11, slice (d),
+> BEFORE any tuning, per the integrity floor (README § Integrity floor).
+> This doc PRE-REGISTERS what the
 > economy is supposed to feel like as falsifiable numbers, then hands the
 > fleet's Simulator (Q-0264 pipeline) an executable request whose acceptance
 > criteria are those same numbers. Parameter table parity with
@@ -102,18 +106,25 @@ generator-cost slice inherits a target instead of inventing one post hoc.
   where the only available action is waiting, hours before prestige is
   reachable — the classic idle-game dead zone).
 
-## Provisional parameters (test-pinned to `idle_engine/economy.py`)
+## Provisional parameters (test-pinned to `idle_engine/economy.py`) — GRADUATED → SIM-PINNED (VERDICT 038, 2026-07-13)
 
-**Every value in this table is PROVISIONAL.** They shipped in slice (b) for
-mechanics correctness, not balance truth. **No tuning happens until SIM-001
-results land**; when a value changes, this table, the rationale above, and
+**Every value in this table is SIM-PINNED** (graduated from PROVISIONAL on
+2026-07-13 by sim-lab VERDICT 038 — SIM-001/Q-0264, CONDITIONAL; the
+condition, re-registering A10 in trend form, is met in this same PR; ZERO
+values changed at graduation). Pinning evidence: the SIM-001 run
+(`docs/design/sim-results-2026-07-11-provisional.json`) — A1–A9 PASS within
+bands, A10 PASS under the trend-form reading re-registered below (all 6
+strict-gate violations inside the 0.02 wiggle band, max 0.0166 ≈ 83% of
+band; trend rises 0.9175 → 0.9661). They shipped in slice (b) for mechanics
+correctness; tuning a SIM-PINNED value requires a fresh sim verdict, and
+when a value changes, this table, the rationale above, and
 `docs/design/upgrades-prestige-v0.md` change in the SAME PR (test-enforced
 parity below). **Themes carry no economy numbers** — theme packs are nouns
 plus schema-bounded multiplier slots only, and no bounded multiplier is
 currently used by any shipped pack; the one legacy theme-side number
 (`generators[].base_rate`, bounded 1–1000) is slated to move engine-side.
 
-| Parameter | Provisional value |
+| Parameter | Sim-pinned value (VERDICT 038 — unchanged at graduation) |
 |---|---|
 | `UPGRADE_BASE_COST_SECONDS` | 60 |
 | `UPGRADE_COST_GROWTH_NUM` | 115 |
@@ -199,7 +210,7 @@ continuing through **at least 3 prestige resets** where reachable (S2/S3):
 | A7 | O2 for S2(N=2) and S2(N=8): every visit before first prestige buys ≥ 2 levels (T7) |
 | A8 | O2 for S3: max gap between consecutive purchases before first prestige < 25% of the run's duration (T8) |
 | A9 | O4: resets 2 and 3 each take 50–100% of the preceding reset's duration (T9) |
-| A10 | O6: cumulative bonus growth across 20 resets is sub-exponential (each reset's duration ratio non-decreasing toward 1) |
+| A10 | O6 — v2, TREND form (re-registered 2026-07-13 per VERDICT 038; supersedes v1's strict per-step gate): cumulative bonus growth across 20 resets is sub-exponential, judged on the trend — the consecutive reset-duration ratio sequence rises toward 1 across the window (final consecutive ratio ≥ first consecutive ratio), and any single-step ratio decrease stays within a 0.02 wiggle band of its predecessor |
 
 **Verdict semantics**: ALL PASS → the parameter table graduates
 PROVISIONAL → SIM-PINNED in a follow-up PR updating this doc and
@@ -208,3 +219,38 @@ criterion broke and by how much; new parameter values are RE-REGISTERED here
 (new doc version, same-PR engine change) before any engine tuning lands.
 T10 is out of SIM-001's scope (mechanic not yet implemented) and carries no
 criterion.
+
+**OUTCOME (2026-07-13):** sim-lab VERDICT 038 — CONDITIONAL. A1–A9 PASS;
+A10 strict FAIL but ruled a graduation with A10 re-registered in TREND form
+in the same PR (done above); the table graduated PROVISIONAL → SIM-PINNED
+with ZERO value changes. Both docs updated together per the semantics above.
+
+#### A10 re-registration record — v2 trend form (VERDICT 038, 2026-07-13)
+
+- **v1 wording (superseded):** "cumulative bonus growth across 20 resets is
+  sub-exponential (each reset's duration ratio non-decreasing toward 1)" — a
+  strict per-step gate that trips on integer-floor noise (harness ambiguities
+  AMB-6 / AMB-11, `sim-harness.md`).
+- **Evidence for the trend reading** (SIM-001 run,
+  `docs/design/sim-results-2026-07-11-provisional.json`): 6 single-step
+  violations, ALL inside the 0.02 wiggle band registered with the verdict
+  (max step 0.0166 ≈ 83% of band); the consecutive-ratio trend rises
+  0.9175 → 0.9661 (exact final ratio 1398/1447), toward 1 — shrinkage is not
+  super-exponential, which is the criterion's registered intent.
+- **Provenance:** sim-lab VERDICT 038 (sim-lab `control/outbox.md` @
+  `afe18f3`, ~lines 659–668), relayed as `control/inbox.md` ORDER 005
+  (2026-07-13T13:40:58Z). The sim proposed wording in its fixtures.json
+  (`a10_trend_wording_proposed` — outside this repo's reach, recorded as a
+  wall); per the verdict the FINAL text is this seat's to register, and the
+  v2 row above is that registration, written from the verdict's quoted
+  terms.
+- **Harness note (follow-up, not this PR):** `tools/simulate.py` still
+  evaluates A10's v1 strict gate (`evaluate_criteria` A10 branch +
+  `_o6_table`); until it is updated to v2, a harness A10 FAIL under v1 is
+  expected and does NOT contradict this registration.
+- Out-of-scope verdict items recorded for the ledger: ASK1 CONFIRMED-INERT
+  (min-visible-delta feltness floor is engine-side, needs its own sim before
+  registering — no constant fix viable); ASK2 CONFIRMED
+  (`PRESTIGE_BONUS_PERCENT` 10→25 is a candidate row, NOT a mandate — value
+  unchanged here; r2 0.9175→0.8006); co-consumer fm owner-queue E#52
+  (generator purchase curve, jointly with V017's priced row).
