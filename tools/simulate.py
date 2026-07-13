@@ -17,9 +17,13 @@ INTEGRITY FLOOR — what this tool is and is not:
   looping ``tick`` one second at a time because the engine's rates are
   constant integers between actions (tick/offline equivalence is
   test-enforced in ``tests/test_properties.py``).
-- Its output is INPUT to the Q-0264 verdict, NOT the verdict. Every economy
-  parameter remains PROVISIONAL until the fleet Simulator seat / manager
-  rules on graduation (economy-v1.md § "Verdict semantics").
+- Its output is INPUT to a sim-lab verdict, NOT the verdict. The
+  seven-parameter table's registered status is {TABLE_STATUS} per
+  docs/design/economy-v1.md — the placeholder on this line is substituted
+  into ``__doc__`` at import time from the ``TABLE_STATUS`` constant below
+  (a literal docstring cannot interpolate; doc↔harness parity is
+  test-enforced in ``tests/test_simulate.py``). Tuning a pinned value
+  requires a fresh sim verdict (economy-v1.md § "Verdict semantics").
 - It is deterministic: stdlib-only, no wall clock, no randomness. Two runs
   with the same flags produce byte-identical JSON.
 
@@ -553,6 +557,13 @@ A10_CRITERION_VERSION = "v2"
 #: PR #93.)
 TABLE_STATUS = "SIM-PINNED"
 
+# The module docstring's INTEGRITY FLOOR bullet carries the table status via
+# a literal {TABLE_STATUS} placeholder (a docstring literal cannot
+# interpolate); substitute it here so the rendered ``__doc__`` derives from
+# the single constant above — the parity guard in tests/test_simulate.py
+# pins both the substituted docstring and the raw placeholder.
+__doc__ = (__doc__ or "").replace("{TABLE_STATUS}", TABLE_STATUS)
+
 #: v2's registered single-step tolerance: a ratio decrease is a tolerated
 #: wiggle iff it stays within 0.02 of its predecessor (exact rational; the
 #: VERDICT 038 evidence run's worst step was 0.0166 ≈ 83% of this band).
@@ -815,7 +826,8 @@ def run_report(quick: bool = False) -> dict:
 def render_summary(report: dict) -> str:
     lines = [
         "SIM-001 harness — per-criterion summary "
-        "(PROVISIONAL: input to Q-0264, not the verdict)",
+        f"(table {TABLE_STATUS}: harness output is input to a verdict, "
+        "not the verdict)",
         f"mode: {report['mode']}",
         f"{'id':<4} {'verdict':<8} {'band':<38} measured",
         "-" * 78,
