@@ -180,6 +180,9 @@
    "target": "O6"
   }
  ],
+ "criteria_versions": {
+  "A10": "v1"
+ },
  "harness": "tools/simulate.py",
  "label": "PROVISIONAL / UNOFFICIAL \u2014 harness output is INPUT to the Q-0264 verdict, not the verdict. Parameters remain PROVISIONAL until the fleet Simulator seat / manager rules (economy-v1.md, verdict semantics).",
  "measures": {

@@ -72,6 +72,7 @@ Top-level fields of the JSON report:
 | `outputs` | O1–O6 exactly as named in economy-v1.md |
 | `measures` | the flat per-criterion inputs (unit-testable seam) |
 | `criteria` | A1–A10 rows: band, measured value, PASS/FAIL, detail |
+| `criteria_versions` | provenance stamp: the criterion version each row was judged under (e.g. `{"A10": "v2"}`), from the SAME constants the doc↔harness parity guard pins |
 | `all_pass` | conjunction of the ten rows |
 | `ambiguities` | every non-obvious spec reading (list below) |
 | `auxiliary` | extra context (gap lead-in/tail, burst minima, reset counts) |
@@ -94,7 +95,9 @@ visit for S2; O6 runs a dedicated 20-reset S3 ladder with no horizon cap.
   (That call has since been made: VERDICT 038 re-registered A10 as **v2,
   TREND form** — economy-v1.md § A10 re-registration record — and the
   harness now evaluates v2, so this run's A10 row would read PASS if
-  re-evaluated; the committed JSON stays as the v1-era record.)
+  re-evaluated; the committed JSON stays as the v1-era record — retro-stamped
+  2026-07-13 with `"criteria_versions": {"A10": "v1"}` so the version it was
+  judged under is machine-readable, recorded numbers untouched.)
   A second signal for the Simulator: within the 14-day horizon the S3 run
   reaches ~80k resets (late resets shrink to seconds), which the ruling may
   care about even though no criterion covers it.

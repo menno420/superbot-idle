@@ -791,6 +791,12 @@ def run_report(quick: bool = False) -> dict:
         },
         "measures": measures,
         "criteria": criteria,
+        # Run-artifact provenance: which criterion version each row above was
+        # judged under, sourced from the SAME constants the doc↔harness parity
+        # guard pins (tests/test_simulate.py) — a committed run stays
+        # self-describing across re-registrations, so v1-era evidence can
+        # never silently pass as v2-era (and vice versa).
+        "criteria_versions": {"A10": A10_CRITERION_VERSION},
         "all_pass": all(c["pass"] for c in criteria),
         "ambiguities": AMBIGUITIES,
     }

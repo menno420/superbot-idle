@@ -203,6 +203,17 @@ def test_a10_criterion_version_matches_registered_doc_form():
     )
 
 
+def test_report_stamps_criteria_versions_from_parity_pinned_constant():
+    """Run-artifact provenance: the report records the criterion version it
+    was judged under, sourced from the SAME constant the parity guard above
+    pins — committed runs stay self-describing across re-registrations
+    (the v1-era run on record carries the retro-stamp {"A10": "v1"})."""
+    assert _QUICK["criteria_versions"] == {"A10": A10_CRITERION_VERSION}
+    v1_run = REPO_ROOT / "docs" / "design" / "sim-results-2026-07-11-provisional.json"
+    stamped = json.loads(v1_run.read_text(encoding="utf-8"))["criteria_versions"]
+    assert stamped == {"A10": "v1"}
+
+
 def test_band_endpoints_are_inclusive_and_a8_is_strict():
     """AMB-9 pinned: closed bands at both ends; A8 strictly below 25%."""
     measures = {
