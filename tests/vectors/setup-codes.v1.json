@@ -21,6 +21,7 @@
     "ant-colony",
     "arctic-outpost",
     "candy-factory",
+    "clockwork-atelier",
     "coffee-roastery",
     "cyber-city",
     "deep-sea-station",
@@ -28,8 +29,10 @@
     "egg-farm",
     "haunted-manor",
     "idol-agency",
+    "lighthouse-keep",
     "pirate-cove",
     "potion-brewery",
+    "ramen-stand",
     "royal-bakery",
     "space-colony",
     "wizard-tower"
@@ -41,8 +44,8 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 75,
-    "tolerance": 91,
+    "valid": 90,
+    "tolerance": 109,
     "errors": 25
   },
   "vectors": {
@@ -241,6 +244,71 @@
         "payload_hex": "0463616e64792d666163746f7279",
         "crc16_hex": "ba91",
         "code": "IDLE1-0HHP2VK4F4PPCRB3EHQQ4YDTJ4"
+      },
+      {
+        "name": "clockwork-atelier--all-on",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07636c6f636b776f726b2d6174656c696572",
+        "crc16_hex": "2e1e",
+        "code": "IDLE1-0XHPRVV3DDVPYWKB5NGQ8SBCD5JQ4BGY"
+      },
+      {
+        "name": "clockwork-atelier--all-off",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00636c6f636b776f726b2d6174656c696572",
+        "crc16_hex": "247a",
+        "code": "IDLE1-01HPRVV3DDVPYWKB5NGQ8SBCD5JQ493T"
+      },
+      {
+        "name": "clockwork-atelier--only-offline_progress",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01636c6f636b776f726b2d6174656c696572",
+        "crc16_hex": "929b",
+        "code": "IDLE1-05HPRVV3DDVPYWKB5NGQ8SBCD5JQ54MV"
+      },
+      {
+        "name": "clockwork-atelier--only-upgrades",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02636c6f636b776f726b2d6174656c696572",
+        "crc16_hex": "4ff9",
+        "code": "IDLE1-09HPRVV3DDVPYWKB5NGQ8SBCD5JQ4KZS"
+      },
+      {
+        "name": "clockwork-atelier--only-prestige",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04636c6f636b776f726b2d6174656c696572",
+        "crc16_hex": "f37c",
+        "code": "IDLE1-0HHPRVV3DDVPYWKB5NGQ8SBCD5JQ5WVW"
       },
       {
         "name": "coffee-roastery--all-on",
@@ -698,6 +766,71 @@
         "code": "IDLE1-0HMP8VVC5NGPESBECDWKAFR"
       },
       {
+        "name": "lighthouse-keep--all-on",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "076c69676874686f7573652d6b656570",
+        "crc16_hex": "7537",
+        "code": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE"
+      },
+      {
+        "name": "lighthouse-keep--all-off",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "006c69676874686f7573652d6b656570",
+        "crc16_hex": "8d42",
+        "code": "IDLE1-01P6JSV8EHM6YXBKCMPPPSB5E26M4"
+      },
+      {
+        "name": "lighthouse-keep--only-offline_progress",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "016c69676874686f7573652d6b656570",
+        "crc16_hex": "1cd3",
+        "code": "IDLE1-05P6JSV8EHM6YXBKCMPPPSB5E0ED6"
+      },
+      {
+        "name": "lighthouse-keep--only-upgrades",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "026c69676874686f7573652d6b656570",
+        "crc16_hex": "a821",
+        "code": "IDLE1-09P6JSV8EHM6YXBKCMPPPSB5E2M22"
+      },
+      {
+        "name": "lighthouse-keep--only-prestige",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "046c69676874686f7573652d6b656570",
+        "crc16_hex": "c1c5",
+        "code": "IDLE1-0HP6JSV8EHM6YXBKCMPPPSB5E30WA"
+      },
+      {
         "name": "pirate-cove--all-on",
         "config": {
           "theme_id": "pirate-cove",
@@ -826,6 +959,71 @@
         "payload_hex": "04706f74696f6e2d62726577657279",
         "crc16_hex": "f0e9",
         "code": "IDLE1-0HR6YX39DXQ2TRKJCNVPAWKSY3MG"
+      },
+      {
+        "name": "ramen-stand--all-on",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0772616d656e2d7374616e64",
+        "crc16_hex": "ad4b",
+        "code": "IDLE1-0XS62VB5DRPQ6X31DSJATJR"
+      },
+      {
+        "name": "ramen-stand--all-off",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0072616d656e2d7374616e64",
+        "crc16_hex": "44c4",
+        "code": "IDLE1-01S62VB5DRPQ6X31DSJ49H0"
+      },
+      {
+        "name": "ramen-stand--only-offline_progress",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0172616d656e2d7374616e64",
+        "crc16_hex": "08ab",
+        "code": "IDLE1-05S62VB5DRPQ6X31DSJ0HAR"
+      },
+      {
+        "name": "ramen-stand--only-upgrades",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0272616d656e2d7374616e64",
+        "crc16_hex": "da5b",
+        "code": "IDLE1-09S62VB5DRPQ6X31DSJDMPR"
+      },
+      {
+        "name": "ramen-stand--only-prestige",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0472616d656e2d7374616e64",
+        "crc16_hex": "7fbb",
+        "code": "IDLE1-0HS62VB5DRPQ6X31DSJ7ZER"
       },
       {
         "name": "royal-bakery--all-on",
@@ -1234,6 +1432,78 @@
         "canonical": "IDLE1-0XHP2VK4F4PPCRB3EHQQ4YCZ98",
         "config": {
           "theme_id": "candy-factory",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "clockwork-atelier--lowercase",
+        "input": "idle1-0xhprvv3ddvpywkb5ngq8sbcd5jq4bgy",
+        "canonical": "IDLE1-0XHPRVV3DDVPYWKB5NGQ8SBCD5JQ4BGY",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "clockwork-atelier--hyphen-grouped",
+        "input": "IDLE1-0XHP-RVV3-DDVP-YWKB-5NGQ-8SBC-D5JQ-4BGY",
+        "canonical": "IDLE1-0XHPRVV3DDVPYWKB5NGQ8SBCD5JQ4BGY",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "clockwork-atelier--lookalike-O-for-0",
+        "input": "IDLE1-OXHPRVV3DDVPYWKB5NGQ8SBCD5JQ4BGY",
+        "canonical": "IDLE1-0XHPRVV3DDVPYWKB5NGQ8SBCD5JQ4BGY",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "clockwork-atelier--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IHPRVV3DDVPYWKB5NGQ8SBCD5JQ493T",
+        "canonical": "IDLE1-01HPRVV3DDVPYWKB5NGQ8SBCD5JQ493T",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "clockwork-atelier--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LHPRVV3DDVPYWKB5NGQ8SBCD5JQ493T",
+        "canonical": "IDLE1-01HPRVV3DDVPYWKB5NGQ8SBCD5JQ493T",
+        "config": {
+          "theme_id": "clockwork-atelier",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "clockwork-atelier--kitchen-sink",
+        "input": "idle1-oxhp-rvv3-ddvp-ywkb-5ngq-8sbc-d5jq-4bgy",
+        "canonical": "IDLE1-0XHPRVV3DDVPYWKB5NGQ8SBCD5JQ4BGY",
+        "config": {
+          "theme_id": "clockwork-atelier",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true
@@ -1745,6 +2015,78 @@
         "note": "lowercase + hyphen groups + look-alike folds combined"
       },
       {
+        "name": "lighthouse-keep--lowercase",
+        "input": "idle1-0xp6jsv8ehm6yxbkcmpppsb5e1tke",
+        "canonical": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "lighthouse-keep--hyphen-grouped",
+        "input": "IDLE1-0XP6-JSV8-EHM6-YXBK-CMPP-PSB5-E1TK-E",
+        "canonical": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "lighthouse-keep--lookalike-O-for-0",
+        "input": "IDLE1-OXP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "canonical": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "lighthouse-keep--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5EITKE",
+        "canonical": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "lighthouse-keep--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5ELTKE",
+        "canonical": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "lighthouse-keep--kitchen-sink",
+        "input": "idle1-oxp6-jsv8-ehm6-yxbk-cmpp-psb5-eltk-e",
+        "canonical": "IDLE1-0XP6JSV8EHM6YXBKCMPPPSB5E1TKE",
+        "config": {
+          "theme_id": "lighthouse-keep",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
         "name": "pirate-cove--lowercase",
         "input": "idle1-0xr6jwk1ehjjtrvfesjgfv0",
         "canonical": "IDLE1-0XR6JWK1EHJJTRVFESJGFV0",
@@ -1882,6 +2224,78 @@
         "canonical": "IDLE1-0XR6YX39DXQ2TRKJCNVPAWKSKA80",
         "config": {
           "theme_id": "potion-brewery",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "ramen-stand--lowercase",
+        "input": "idle1-0xs62vb5drpq6x31dsjatjr",
+        "canonical": "IDLE1-0XS62VB5DRPQ6X31DSJATJR",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "ramen-stand--hyphen-grouped",
+        "input": "IDLE1-0XS6-2VB5-DRPQ-6X31-DSJA-TJR",
+        "canonical": "IDLE1-0XS62VB5DRPQ6X31DSJATJR",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "ramen-stand--lookalike-O-for-0",
+        "input": "IDLE1-OXS62VB5DRPQ6X31DSJATJR",
+        "canonical": "IDLE1-0XS62VB5DRPQ6X31DSJATJR",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "ramen-stand--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XS62VB5DRPQ6X3IDSJATJR",
+        "canonical": "IDLE1-0XS62VB5DRPQ6X31DSJATJR",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "ramen-stand--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XS62VB5DRPQ6X3LDSJATJR",
+        "canonical": "IDLE1-0XS62VB5DRPQ6X31DSJATJR",
+        "config": {
+          "theme_id": "ramen-stand",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "ramen-stand--kitchen-sink",
+        "input": "idle1-oxs6-2vb5-drpq-6x3l-dsja-tjr",
+        "canonical": "IDLE1-0XS62VB5DRPQ6X31DSJATJR",
+        "config": {
+          "theme_id": "ramen-stand",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true

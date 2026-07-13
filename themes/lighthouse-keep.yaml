@@ -1,0 +1,103 @@
+# lighthouse-keep — theme pack #17 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: lighthouse-keep
+  name: Lighthouse Keep
+  description: A salt-bitten tower on the last headland, where one stubborn flame argues with the fog and wins.
+  emoji: "🗼"
+  embed_color: "#1B5E8A"
+
+currencies:
+  - id: primary
+    name: lamplight
+    description: Measures of stored lamplight, wound out of oil and mirror-shine — the coast's only currency after dark.
+    emoji: "🔆"
+  - id: prestige
+    name: fresnel lenses
+    description: Retired fresnel lenses, each a jewel of ground glass that once threw its light nine miles out to sea.
+    emoji: "💠"
+
+generators:
+  - id: tier1
+    name: oil lantern
+    description: A storm-proof oil lantern trimmed every evening; its small glow keeps the near rocks honest.
+    emoji: "🏮"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: fresnel array
+    description: A rotating fresnel array that gathers one flame into a blade of light and sweeps it across the shipping lane.
+    emoji: "🔦"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: polished reflectors
+    description: Silvered reflectors set behind the wick; the lantern spends the same oil and throws twice the shine.
+    emoji: "🪞"
+    target: tier1
+  - id: boost2
+    name: counterweight drive
+    description: A rewound counterweight drive spins the array smooth and constant; the beam never stutters again.
+    emoji: "⚖️"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: hand over the keep
+  action_description: Log the last watch, hand the keys to a new keeper, and carry one retired lens up the coast to raise a taller tower.
+  action_emoji: "🌅"
+
+labels:
+  offline_return: "While you slept in the watch room, the beam kept sweeping the channel: {gains}"
+  status_title: "🗼 Lighthouse Keep — the night watch log"
+  shop_title: "🧰 The Keeper's Store Room"
+  shop_description: Spend lamplight on brighter wicks, truer glass, and a tower the fog cannot argue with.
+  level: Watch level
+  prestige_progress: "lifetime lamplight toward handing over the keep:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first watch lit
+    description: Ten lamps burning at once — from the sea, the headland finally looks inhabited.
+    emoji: "🕯️"
+  - id: owned-2
+    name: coastline constellation
+    description: A hundred lamps; sailors steer by your headland before they trust their own charts.
+    emoji: "✨"
+  - id: owned-3
+    name: keeper of the coast
+    description: A thousand lamps — the whole seaboard blinks to your rhythm after dusk.
+    emoji: "🗺️"
+  - id: lifetime-1
+    name: first thousand measures
+    description: The first thousand measures of lamplight, logged in a salt-stained ledger.
+    emoji: "📔"
+  - id: lifetime-2
+    name: storm-proven
+    description: A hundred thousand measures of lamplight; captains toast a tower they have never once visited.
+    emoji: "⛈️"
+  - id: lifetime-3
+    name: the light that never failed
+    description: Ten million measures of lamplight. Not one wreck on your watch — the charts mark this coast as kind.
+    emoji: "👑"
+  - id: prestige-1
+    name: first retired lens
+    description: The first keep handed over — one fresnel lens, heavier than its story.
+    emoji: "💠"
+  - id: prestige-2
+    name: gallery of lenses
+    description: Five retired lenses catching the sun in the tower's base; visitors whisper without knowing why.
+    emoji: "🏛️"
+  - id: prestige-3
+    name: dynasty of keepers
+    description: Twenty-five retired lenses — every light on the coast traces its flame back to yours.
+    emoji: "🌅"
