@@ -110,4 +110,3 @@ superbot-next carries the order as primary owner in its own dispatch (fm ORDER 0
 
 provenance: relayed by the Fleet Manager seat per owner directive, coordinator dispatch 2026-07-13
 done-when: work the list top-down across tonight's wakes; ack in your inbox thread; heartbeat progress per item.
-- 2026-07-13T22:34:15Z · ack · superbot-idle EAP night runner — worklist claimed (items 1–3; item 4 tracked, no PR), working top-down; provenance: ORDER 007 done-when + live owner kickoff 2026-07-13 relayed by coordinator dispatch.
