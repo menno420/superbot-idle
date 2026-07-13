@@ -18,29 +18,53 @@ superbot-idle is built in ${primary_language}.
 
 ## Orientation — read first, in order
 
+0. **Preflight — land on origin's HEAD before reading anything else:**
+   `git fetch origin main && git reset --hard origin/main` (or
+   `git checkout -B main origin/main`). A warm container clone can lag
+   origin by dozens of commits, and a stale clone reads stale orders.
+   Mechanics + safety notes: `docs/AGENT_ORIENTATION.md` § "Start every
+   session".
 1. This file — the working agreement.
-2. `docs/current-state.md` — what is true right now.
-3. `docs/CAPABILITIES.md` — what sessions here CAN and CANNOT do (verified).
-   Never declare a wall or a missing credential without its discovery rule:
-   check the file → check the env → attempt once + capture the exact error →
-   append the finding same session.
-4. `docs/AGENT_ORIENTATION.md` — the task-specific reading router.
+2. `HANDOFF.md` at repo root (when present) — the previous session's trail:
+   newest session card + where to pick up. Regenerated at every session
+   boot, untracked by design — read it before re-deriving history from
+   `git log`/`git show`; never commit or edit it.
+3. `docs/current-state.md` — what is true right now.
+
+That is the whole boot set. Everything else is routed, **not front-loaded**
+(reading every planted doc up front buys ceremony, not context — measured):
+open `docs/AGENT_ORIENTATION.md` when a task needs its reading route,
+`docs/SKILLS.md` (the skill index) **before improvising a procedure for a
+recurring action**, and
+`docs/CAPABILITIES.md` (the verified can/cannot ledger) **before declaring
+any wall or missing credential** — its discovery rule: check the file →
+check the env → attempt once + capture the exact error → append the finding
+same session — and `docs/ROUTINES.md` (the wake-chain/trigger doctrine)
+**before arming, deleting, or auditing any scheduled trigger/routine**.
+
+## Kit machinery — search hygiene
+
+`bootstrap.py` (~12k generated lines) and `.substrate/` (kit state + a byte
+backup of the previous dist) are substrate-kit machinery, not project code.
+Exclude them from repo-wide searches: `grep -r --exclude=bootstrap.py
+--exclude-dir=.substrate …`, or ripgrep `rg -g '!bootstrap.py' -g
+'!.substrate' …`.
 
 ## Architecture — layers & import rules
 
-${architecture_layers}
+Three layers, one hard seam: (1) ENGINE CORE - pure-domain Python (tick, generators, currencies, upgrades, prestige, offline progress), no Discord API calls, no theme content hard-coded; (2) THEME PACKS - themes/<name>.yaml, DATA ONLY against the published schema, bounded multipliers, never code; (3) TOOLING/GATE - the theme-gate validator + tests + CI. Player-visible nouns live ONLY in layer 2 - one in engine code is a bug, fixed on sight.
 
 ## Verifying a change
 
 Run before every push:
 
 ```
-${verify_command}
+python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additionally validate via the theme-gate step once ORDER 000 lands it in CI)
 ```
 
 ## How the maintainer works
 
-${owner_profile}
+The owner designs in fragments and relies on agents to build the fuller shape (understand-and-reflect); volume-first founding doctrine (superbot router Q-0266): maximize correct committed output now - CORRECT over BEST, refinement is consolidation-phase; decide-and-flag reversible calls (Q-0240); real money / external accounts are NEVER self-authorized (six-field OWNER-ACTION instead).
 
 ## Workflow adoption
 
