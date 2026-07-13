@@ -1,0 +1,3 @@
+# Claim
+
+- `claude/a10-v2-provenance` · **criteria_versions run-artifact provenance + v1-era artifact relabel + economy-v1.md stale harness-note pointer** — stamp a `criteria_versions` provenance object (from the parity-pinned A10_CRITERION_VERSION constant) into tools/simulate.py's report JSON, retro-stamp docs/design/sim-results-2026-07-11-provisional.json as A10-v1-era evidence (ZERO recorded numbers changed), and add a one-line done-(PR #95) pointer to economy-v1.md's stale "Harness note" bullet · expected files: tools/simulate.py, tests/test_simulate.py, docs/design/sim-harness.md, docs/design/sim-results-2026-07-11-provisional.json, docs/design/economy-v1.md, .sessions/2026-07-13-a10-v2-provenance.md, telemetry/model-usage.jsonl · 2026-07-13
