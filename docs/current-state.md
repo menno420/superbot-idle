@@ -6,8 +6,9 @@
 > work always win over this file. Read it second (right after the working
 > agreement) and keep it current as the project moves.
 
-*Groomed 2026-07-13 against main `05a99f5` (post-PR #88); suite 1260 passed,
-1 skipped.*
+*Groomed 2026-07-13 against main `221ade1` (post-PR #110, EAP night close);
+suite 1363 passed, 1 skipped sb-free — 1378 passed in CI with the pinned
+host (see stability baseline).*
 
 ## Stability baseline
 
@@ -33,17 +34,19 @@ Known-good and not to be re-audited without a reported regression:
   - `persistence.py` — SAVE FORMAT v1: canonical versioned
     `dump_state`/`load_state` + migration registry; contract in
     [`persistence.md`](persistence.md).
-- **Theme catalog: 15 packs**, all schema-v1, all with full `labels` blocks:
+- **Theme catalog: 18 packs**, all schema-v1, all with full `labels` blocks
+  AND flavored 9-slot `milestones` blocks (waves 4+5 flavored 2026-07-13,
+  PRs #105/#109 — zero neutral `Milestone 1 … 9` scaffolding remains):
   egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
   dragon-hoard, wizard-tower, royal-bakery, cyber-city, ant-colony,
-  idol-agency, pirate-cove, coffee-roastery, arctic-outpost, candy-factory.
-  Waves 1–4 shipped
+  idol-agency, pirate-cove, coffee-roastery, arctic-outpost, candy-factory,
+  clockwork-atelier, lighthouse-keep, ramen-stand. Waves 1–5 shipped
   with **zero schema pinches** — the frozen v1 schema fit all foreign content.
 - **Schema v1** (`docs/theme-schema.md` + machine twin
   `schema/theme.schema.json`, md↔json parity test-enforced): additive-only
   within v1; unknown keys rejected; optional blocks so far: `upgrades`,
-  `prestige`, `labels` (every label slot optional with a neutral fallback —
-  packs without the block render byte-identically).
+  `prestige`, `labels`, `milestones` (every label slot optional with a
+  neutral fallback — packs without the block render byte-identically).
 - **theme-gate** (`tools/theme_gate.py`, required CI check): JSON-Schema
   validation plus referential checks — `produces`/`target`/prestige-currency
   references resolve; per-pack id uniqueness; `theme.id` == filename stem;
@@ -53,11 +56,19 @@ Known-good and not to be re-audited without a reported regression:
 - **Setup codes v1** (`IDLE1-` Crockford-base32 + CRC-16, FROZEN):
   encode/decode/catalog-validate with a distinct error taxonomy;
   cross-language vector file `tests/vectors/setup-codes.v1.json`
-  (125 vectors: 45 valid with layer-by-layer intermediates, 55 tolerance,
+  (224 vectors: 90 valid with layer-by-layer intermediates, 109 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1260 passing, 1 skipped** (the `plugin/tests/test_manifest.py`
-  module `importorskip`s the `sb` host package, absent in this repo's CI) —
-  unit + doc-parity tests plus a seeded
+- **Test suite: 1363 passing, 1 skipped sb-free; 1378 passing in CI with the
+  pinned host.** The old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
+  ORDER 007 item 3): `plugin/tests/test_manifest.py` still `importorskip`s
+  the `sb` host package — so the sb-free suite still shows 1 skipped
+  locally — but the `pytest-with-host` job in `.github/workflows/pytest.yml`
+  checks out superbot-next pinned @
+  `9634e81748363184bf13abf1485e80262e19e8cb` (bump recipe in the workflow
+  comment), exposes `sb` via `PYTHONPATH`, and RUNS the 15 manifest-contract
+  tests on every PR (`1378 passed`; a grep guard hard-fails the job on any
+  skip). The sb-free `pytest` job is unchanged. Suite content: unit +
+  doc-parity tests plus a seeded
   property/invariant layer (128 tests: tick/offline exact equivalence,
   per-pack determinism trajectories, conservation/monotonicity,
   render-budget fuzz at 10^3000 scale, 4000-corruption setup-code fuzz).
@@ -89,13 +100,17 @@ Known-good and not to be re-audited without a reported regression:
   ([`persistence.md`](persistence.md): `dump_state`/`load_state`), but where
   the save strings live is the future plugin's job; nothing is stored
   anywhere today.
-- **Economy numbers are PROVISIONAL**, not tuned — but the Simulator verdict
-  has now LANDED: **SIM-001 verdict V038** arrived via the Q-0264 relay
-  (PR #88 `05a99f5`, `control/inbox.md` ORDER 005). Verdict is CONDITIONAL:
-  graduate the seven-parameter PROVISIONAL table → SIM-PINNED, conditional on
-  re-registering target A10 in trend form in the same PR (doc-only change in
-  `docs/design/economy-v1.md`, ZERO parameter changes). Numbers stay
-  provisional until that graduation PR merges.
+- **Economy numbers are SIM-PINNED, not owner-tuned** — the graduation PR
+  SHIPPED (PR #93 `cf59d02`, ORDER 005 / VERDICT 038): the seven-parameter
+  table in `docs/design/economy-v1.md` is PROVISIONAL → SIM-PINNED with A10
+  re-registered in trend form, zero parameter changes. Re-tuning any
+  SIM-PINNED value needs a fresh verdict — the process ask for that path
+  (first case: PRESTIGE_BONUS_PERCENT 10→25) is open in `control/outbox.md`
+  (2026-07-13T18:45Z entry) and the change stays PARKED behind it. The
+  early-game FELTNESS problem (V038 ASK1, CONFIRMED-INERT) is engine-side
+  and awaits its own sim — SIM-REQUEST filed 2026-07-13T22:42Z
+  (`control/outbox.md`, "min-visible-delta feltness floor"), awaiting a
+  fleet SIM/Q-number from the manager.
 - **No generator purchase path** — generator counts are fixed; target T10 is
   pre-registered for the future mechanic.
 - **No website encoder here** — the websites lane encodes setup codes; this
@@ -105,34 +120,36 @@ Known-good and not to be re-audited without a reported regression:
 
 (Verify against live source control — this section is a dated snapshot.)
 
-- Nothing in flight as of this groom (2026-07-13, main `05a99f5`): zero open
-  PRs, `control/claims/` holds only this groom's claim. (A previous revision
-  listed "upgrade-description shop composition" as in flight — that slice in
-  fact SHIPPED 2026-07-11 as PRs #36 `9047539` + #38 `0835adb`; the
-  render-layer seam it referenced was un-parked by #38 and is now
-  `docs/render-layer.md` § Shop composition.)
+- Nothing in flight as of this groom (2026-07-13 night, main `221ade1`):
+  zero open build PRs besides this groom's own, `control/claims/` holds only
+  this groom's claim (`claude-eap-night-groom`, deleted when the groom's
+  card flips). ORDER 007's worklist items 1–3 all SHIPPED tonight (see
+  "Recently shipped"); item 4 is a cross-repo pointer that rides
+  superbot-next, tracked, not duplicated here.
 
-## Roadmap (groomed 2026-07-13 — ordered, blockers marked)
+## Roadmap (groomed 2026-07-13 night — ordered, blockers marked)
 
-1. **Economy parameter graduation (ORDER 005 / SIM-001 verdict V038)** —
-   **UNBLOCKED, next up**: verdict V038 landed via PR #88 `05a99f5`
-   (`control/inbox.md` ORDER 005). Ship the graduation PR: economy-v1.md
-   seven-parameter table PROVISIONAL → SIM-PINNED + A10 re-registered in
-   trend form, same PR, zero parameter changes.
+1. **Feltness sim consumption (V038 ASK1)** — **BLOCKED on the fleet
+   number**: the "min-visible-delta feltness floor" SIM-REQUEST is filed
+   (`control/outbox.md` 2026-07-13T22:42Z, PR #106 `d9bc48d`) and awaits a
+   fleet SIM/Q-number from the manager; when the verdict is served, register
+   the spec section + harness metrics, then build the winning floor
+   mechanism.
 2. **Memoized rate table** — needs a bot runtime to be worth anything
    (perf work without a caller is speculative); deferred until live host
    wiring exists.
-3. **Catalog wave 5** — optional volume; the schema is proven (zero pinches
-   across 12 foreign packs, waves 1–4), so more packs are
-   merge-on-gate-green filler, not risk reduction.
-4. **Setup-code v2 version-bound ruling** — deferred BY DESIGN to the PR
+3. **Setup-code v2 version-bound ruling** — deferred BY DESIGN to the PR
    that defines v2 (bound the version integer + `prefix-version-overflow`
    vector; see `.sessions/2026-07-11-leading-zero-version-fix.md` § idea).
 
-(Removed from the roadmap as SHIPPED: shop composition — PRs #36+#38,
-2026-07-11; plugin adapter build — PRs #75+#78 plus #85/#86 fixes, see
-"Recently shipped". Live host-side wiring remains host-side work, not this
-repo's.)
+(Removed from the roadmap as SHIPPED: economy parameter graduation — PR #93
+`cf59d02`, ORDER 005; catalog wave 5 — PR #105 `42c0efe`, 2026-07-13, see
+"Recently shipped". Removed earlier as shipped: shop composition — PRs
+#36+#38; plugin adapter build — PRs #75+#78 plus #85/#86 fixes. Live
+host-side wiring remains host-side work, not this repo's. Still PARKED, not
+roadmap: PRESTIGE_BONUS_PERCENT 10→25 — behind the 18:45Z process ask;
+timed-events + generator-purchase — await fleet Q-numbers; OA-003 mark
+`pytest` required — owner click.)
 
 ## Recently shipped (newest first)
 
@@ -140,6 +157,30 @@ repo's.)
 narrative per slice: the matching `.sessions/` card and `control/status.md`
 § SHIPPED RECORD.)
 
+- **Wave-4 milestones flavoring** (PRs #108 + #109 `a6906b9`, EAP night,
+  ⚑ self-initiated): coffee-roastery, arctic-outpost, candy-factory get
+  flavored 9-slot `milestones` blocks — ALL 18 packs now read finished.
+- **CI skip-hole closed** (PR #107 `224ecc5`, ORDER 007 item 3): new
+  `pytest-with-host` job runs the suite against superbot-next pinned
+  @ `9634e81` — the 15 manifest-contract tests RUN in CI (`1378 passed`),
+  grep guard hard-fails on any skip.
+- **Catalog wave 5** (PR #105 `42c0efe`, ORDER 007 item 1):
+  clockwork-atelier, lighthouse-keep, ramen-stand — 15 → 18 packs; suite
+  1264 → 1363; setup vectors 75 → 90 valid.
+- **ORDER 007+006 ack + feltness SIM-REQUEST** (PR #106 `d9bc48d`, ORDER 007
+  item 2): min-visible-delta feltness floor sim requested via outbox
+  (awaiting fleet number; ref V038 ASK1 CONFIRMED-INERT).
+- **ORDER 007 claims + ack routing** (PR #104 `c99057c`): EAP-night slices
+  claimed; the inbox-thread ack was REJECTED by substrate-gate
+  `inbox-order-grammar` (inbox accepts ORDER blocks only) — acks ride
+  `control/outbox.md`.
+- **Mid-day span #89–#103** (compact): current-state groom to `05a99f5`
+  (#89); enabler born-red hardening + kit v1.15.0 (#90, #91); **ORDER 005
+  graduation — economy table PROVISIONAL → SIM-PINNED + A10 trend form**
+  (PR #93 `cf59d02`); A10 v2 harness sync + provenance stamps (#95, #97);
+  sim-report table-status parity (#99, #100); owner ORDER 006 (bigger
+  batches) landed (#101); ORDER 007 relay (#103); control traffic
+  (#92/#94/#96/#98/#102).
 - **SIM-001 verdict V038 relay** (PR #88 `05a99f5`): Q-0264 fan-out delivers
   the Simulator verdict — CONDITIONAL graduation of the seven-parameter
   economy table, A10 re-registered in trend form (ORDER 005).
