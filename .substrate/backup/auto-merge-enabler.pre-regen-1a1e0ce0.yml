@@ -15,12 +15,8 @@
 # session PR merges itself the moment the required checks go green.
 # INERT until two one-time repo settings exist (owner UI):
 #   1. Settings → General → Pull Requests → "Allow auto-merge" = ON.
-#   2. A ruleset/branch protection on main REQUIRING status checks.
-#      LIVE STATE (verified 2026-07-13, run 29255821474 step "rules"):
-#      main requires 'substrate-gate' + 'theme-gate' ONLY. 'pytest'
-#      runs in CI (pytest.yml) but is NOT a required context — an
-#      armed PR with a red pytest still merges; run the suite before
-#      merge until the owner adds 'pytest' to the ruleset (ORDER 003).
+#   2. A ruleset/branch protection on main REQUIRING the 'pytest' and
+#      'substrate-gate' status checks.
 # With NO required check (superbot-idle's state at install time), arming
 # would merge a PR INSTANTLY — the refuse-to-arm guard below counts
 # required contexts and refuses on zero rather than inverting the gate.
@@ -76,7 +72,7 @@ jobs:
           echo "required contexts ($count): $contexts"
           echo "required=$count" >> "$GITHUB_OUTPUT"
           if [ "$count" = "0" ]; then
-            echo "::warning::the base branch requires no status-check CONTEXTS — arming would merge instantly. Refusing to arm; re-require 'substrate-gate' and 'theme-gate' on main first (Settings → Branches/Rulesets). NOTE: 'pytest' is NOT a required context on this repo — run the suite manually before merging until the owner requires it (ORDER 003)."
+            echo "::warning::the base branch requires no status-check CONTEXTS — arming would merge instantly. Refusing to arm; make 'pytest' and 'substrate-gate' required checks on main first (Settings → Branches/Rulesets)."
           fi
       - name: Re-check the do-not-automerge label FRESH (stale-payload race guard)
         id: label
@@ -207,5 +203,5 @@ jobs:
           if gh pr merge --auto --squash "$PR" --repo "$GITHUB_REPOSITORY" --body "Head-ref: $HEAD_REF"; then
             echo "Auto-merge enabled for PR #$PR — it merges when the required checks are green."
           else
-            echo "::warning::Could not enable auto-merge for PR #$PR. Confirm: (1) 'Allow auto-merge' is ON, (2) main requires the 'substrate-gate' + 'theme-gate' checks ('pytest' is NOT required on this repo — run it manually), (3) the token has Pull requests + Contents write. On a repo shape where GitHub structurally refuses the arm, REST merge-on-green is the landing path instead."
+            echo "::warning::Could not enable auto-merge for PR #$PR. Confirm: (1) 'Allow auto-merge' is ON, (2) main requires the 'pytest' + 'substrate-gate' checks, (3) the token has Pull requests + Contents write. On a repo shape where GitHub structurally refuses the arm, REST merge-on-green is the landing path instead."
           fi

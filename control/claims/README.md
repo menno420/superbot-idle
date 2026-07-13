@@ -36,6 +36,7 @@ Discover claims with `ls control/claims/` — this README never lists them.
    (Keep the backticks around the branch/scope token and the ISO date — the
    `check_claims` checker parses both; an unparseable claim is invisible to
    its duplicate scan.)
+   Grammar source of truth: the bullet's regexes (backticked token + ISO date) are kit-owned constants in the kit's `src/engine/grammar.py` (EAP §6.8) — the SAME module `check_claims` consumes; agreement is pinned by the kit's `tests/test_grammar.py`.
 3. **Land the claim on main FAST** (claims are `control/**` traffic — they
    ride the CI control fast lane), then re-read this directory at HEAD before
    you build: if both lanes do this, the second claimer always sees the first.
