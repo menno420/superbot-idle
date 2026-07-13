@@ -6,7 +6,7 @@ kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
 last-shipped: ORDER 003 — pytest CI workflow (PR #74); prior: PLUG-001 docs-only un-park (PR #72), close-out + archive prep (PR #70 + heartbeat PR #71)
 blockers: SIM-001/Q-0264 and KIT-001 still open (⚑ blocks below). PLUG-001 CLEARED 2026-07-12 — contract found, un-parked (see PLUG-001 section below).
-orders: acked=000-003 done=000-002 (003 in-flight: PR #74 READY+green, awaiting owner required-check + merge)
+orders: acked=000-004 done=000-004 (003 done-when met: PR #74 MERGED 2026-07-12T19:40:02Z with the `pytest` check green + the ⚑ required-check ask filed as OA-003 below; 004 = NIGHT REPORT section at end of this file)
 
 ## ORDER 003 — pytest CI on PR + push (2026-07-12T08:30Z, P1)
 - ADDRESSED by **PR #74** (`order-003-pytest-ci`): adds `.github/workflows/pytest.yml`, a new workflow that runs `python3 -m pytest -q` on every `pull_request` and `push` to `main`. Job/check name `pytest`, so it shows as its own check-run.
@@ -105,3 +105,46 @@ notes: seeded 2026-07-10 by the dispatch copilot at the owner's direct instructi
 - Every economy parameter stays PROVISIONAL (no tuning) until the Simulator's verdict; ALL-PASS graduates them sim-pinned, any FAIL gets re-registered in the doc before an engine change lands.
 - PROVISIONAL RUN COMPLETE 2026-07-11 (unofficial, harness PR #54, results docs/design/sim-results-2026-07-11-provisional.json): A1–A9 PASS within bands; A10 FAILS the strict literal reading (consecutive prestige-duration ratios wiggle at integer-floor steps 0.9175→0.9080 at reset 3; trend rises toward 1, final 0.9661 — shrinkage not super-geometric). RULING NEEDED (Q-0264): does the pre-registered A10 wording mean the strict non-decreasing gate (FAIL stands → re-register before tuning) or the trend reading (PASS)? Auxiliary signal for the ruling: optimal play reaches ~80,796 resets in 14 days (late resets ~13 s each) — uncovered by any criterion, likely wants a pre-registered cap/cooldown criterion in v2 of the doc. Spec ambiguities AMB-1..11 recorded in the harness doc. Parameters remain PROVISIONAL; no tuning done.
 - INTERACTION NOTE (PR #56): achievements shift pacing +5..45% for earning players; tools/simulate.py currently models a zero-achievements player — the Q-0264 ruling/next sim round should pin achievements-inclusive scenarios (recorded in achievements-v0.md § What the Simulator must pin).
+
+## NIGHT REPORT 2026-07-13T09:25Z (ORDER 004 — owner ask 2026-07-13, fm relay)
+
+> This file is a frozen archive (overwrite-at-close convention); this section is
+> appended ONLY under the explicit at-HEAD ORDER 004 (control/inbox.md, landed via
+> PR #83, MERGED 2026-07-13T09:10:44Z — API-verified before writing). Window:
+> 2026-07-12T22:30Z → 2026-07-13T09:25Z.
+
+### SHIPPED (merges API-verified; squash SHA on main · merged_at UTC)
+- #77 ci: auto-merge-enabler install (fm ORDER 029) — 457407c · 00:03:09Z
+- #79 feat(themes): flavored milestones for the 9 unskinned packs — 7af705c · 01:03:48Z
+- #80 playability: ready-glyph milestones + trap-buy guard + tools/play.py REPL — 4af4338 · 01:12:29Z
+- #76 catalog wave 4: coffee-roastery, arctic-outpost, candy-factory (12→15 packs) — ac0af23 · 01:23:35Z
+- #75 PLUG-001 adapter inc1: thin plugin/ exporting a SubsystemManifest — 86f631d · 01:26:30Z
+- #78 PLUG-001 adapter inc2: settings + events + live render forwarding — 497db5a · 01:34:21Z
+- #81 docs truth-fix: 12→15 packs, 1131→1260 tests + claim prune — c925a45 · 01:44:12Z
+- #82 outbox: SIM-001 follow-up + 2 owner Q-blocks — c735075 · 01:50:23Z
+- #83 control: ORDER 004 landing (manager-written) — 161bc7d · 09:10:44Z
+- Suite → **1260 passed, 1 skipped** — VERIFIED locally at HEAD 161bc7d (`python3 -m pytest -q`); 15 theme packs.
+
+### OPEN PRs + check states
+- None — zero open PRs (API-verified 2026-07-13T09:15Z).
+
+### ORDERS served + outstanding
+- 001–002 done pre-window; 003 done (PR #74 merged 2026-07-12T19:40:02Z pre-window, pytest check green; ⚑ required-check ask = OA-003, still awaiting the owner click); 004 = this report. Outstanding: none.
+
+### SIM-REQUESTs / asks pending
+- SIM-001 economy-FEEL cluster (control/outbox.md 2026-07-13, ref Q-0264): first-upgrade no-op, weak prestige payoff, and the A10 ruling — harness at HEAD is A1–A9 PASS / **A10 FAIL** under the strict reading (20-reset final_ratio ≈ 0.9661, trend rising toward 1) + graduation decision.
+- 2 owner Q-blocks awaiting fleet Q-numbers (control/outbox.md): generator-purchase economy (P1) · content-depth/endgame (P2).
+- OA-003 (above): owner to mark `pytest` a required check on main.
+
+### STALLS / denials (verbatim)
+- None this window in this repo.
+
+### Wake-chain health (SEAT-LEVEL — one chain serves games/idle/mineverse; the order asks per-repo, the chain is per-seat; this repo's own founding trigger stays DISARMED per ROUTINE RECORD above)
+- Failsafe cron `trig_0131tbQZs8HKmxKR4u5ZD1Hb` "SuperBot World failsafe wake", cron `15 1-23/2 * * *` — API-verified live 2026-07-13T09:16Z: enabled, last fired 09:15:25Z, next 11:15:00Z. Overnight fires 01:15/03:15/05:15/07:15 on schedule (lane-reported; API exposes only the last fire).
+- send_later pacemaker chain continuous; current tick `trig_01K5pWUeY1YEM6taMeWmHvG8` fires 09:19Z (API-verified live).
+- One duplicate-tick incident ~02:35Z detected and pruned the same wake; anti-stack check added since (lane-reported).
+
+### Next-3
+1. Host-side `plugins.lock.json` pin for the idle adapter (a superbot-next PR, via that lane).
+2. Act on the Q-0264 / A10 ruling when it lands (graduate or re-register the PROVISIONAL table).
+3. Catalog wave 5 on demand (data-only packs merge on theme-gate green alone).
