@@ -1,3 +1,0 @@
-# Claim
-
-- `claude/report-table-status` · **pin run_report table-status label to economy-v1.md via constant + parity test** — replace the stale hard-coded "Parameters remain PROVISIONAL…" sentence in tools/simulate.py's run_report with wording derived from a module-level SIM-PINNED status constant, plus a doc↔harness parity test that regexes the status token out of docs/design/economy-v1.md (mirrors the A10_CRITERION_VERSION guard from #95); ZERO parameter/criterion changes · expected files: tools/simulate.py, tests/test_simulate.py, .sessions/2026-07-13-report-table-status.md, telemetry/model-usage.jsonl · 2026-07-13
