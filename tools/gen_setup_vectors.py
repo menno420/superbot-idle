@@ -54,6 +54,20 @@ from idle_engine.provisioning import (  # noqa: E402
 VECTORS_PATH = REPO_ROOT / "tests" / "vectors" / "setup-codes.v1.json"
 THEMES_DIR = REPO_ROOT / "themes"
 
+#: The regenerate-or-red failure hint. The vector file is catalog-coupled
+#: BY DESIGN (its only inputs are the shipped ``themes/*.yaml`` stems and
+#: the codec), so a drift red usually means the CATALOG changed — not that
+#: the codec broke. Surfaced verbatim by the consumer suite
+#: (``tests/test_setup_vectors.py``) so the red itself tells the developer
+#: what probably happened and exactly how to fix it.
+DRIFT_HINT = (
+    "tests/vectors/setup-codes.v1.json drifted from the live codec/catalog "
+    "(regenerate-or-red). Did the catalog change — a themes/*.yaml pack "
+    "added, removed, or renamed? That is the usual cause: the vector file "
+    "is catalog-coupled by design. If the change is deliberate, regenerate "
+    "and commit the file with: python3 tools/gen_setup_vectors.py"
+)
+
 #: Feature names in flags-byte bit order (the v1 contract's field table).
 FEATURES = tuple(sorted(provisioning.FEATURE_BITS, key=provisioning.FEATURE_BITS.get))
 

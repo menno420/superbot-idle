@@ -26,7 +26,7 @@ import pytest
 
 from idle_engine import provisioning
 from idle_engine.provisioning import SetupConfig, decode_setup, encode_setup
-from tools.gen_setup_vectors import VECTORS_PATH, render
+from tools.gen_setup_vectors import DRIFT_HINT, VECTORS_PATH, render
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 THEMES_DIR = REPO_ROOT / "themes"
@@ -46,12 +46,23 @@ def _config(vector) -> SetupConfig:
 # --- regenerate-or-red ---------------------------------------------------------
 
 
+def _assert_byte_identical_to_regeneration(committed: str) -> None:
+    assert committed == render(), DRIFT_HINT
+
+
 def test_committed_vector_file_is_byte_identical_to_regeneration():
-    committed = VECTORS_PATH.read_text(encoding="utf-8")
-    assert committed == render(), (
-        "tests/vectors/setup-codes.v1.json drifted from the live codec/catalog — "
-        "regenerate with: python3 tools/gen_setup_vectors.py (regenerate-or-red)"
-    )
+    _assert_byte_identical_to_regeneration(VECTORS_PATH.read_text(encoding="utf-8"))
+
+
+def test_drift_red_names_the_catalog_question_and_the_regen_command():
+    # The hint is the developer-facing contract of a drift red: it must
+    # name the likely cause (a catalog change) and the exact fix.
+    with pytest.raises(AssertionError) as excinfo:
+        _assert_byte_identical_to_regeneration(render() + "# drifted\n")
+    message = str(excinfo.value)
+    assert "Did the catalog change" in message
+    assert "themes/*.yaml" in message
+    assert "python3 tools/gen_setup_vectors.py" in message
 
 
 # --- file shape: what a foreign consumer relies on -------------------------------
@@ -77,9 +88,10 @@ def test_counts_match_the_vector_arrays():
 
 
 def test_every_shipped_pack_has_valid_vectors():
+    # This is the red a pack add/remove hits first — carry the same hint.
     shipped = sorted(path.stem for path in THEMES_DIR.glob("*.yaml"))
-    assert shipped == DOC["themes"]
-    assert {v["config"]["theme_id"] for v in VALID} == set(shipped)
+    assert shipped == DOC["themes"], DRIFT_HINT
+    assert {v["config"]["theme_id"] for v in VALID} == set(shipped), DRIFT_HINT
 
 
 def test_valid_vectors_cover_all_on_all_off_and_each_single_feature():
