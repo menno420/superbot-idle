@@ -1,8 +1,8 @@
-# substrate-kit upgrade report — v1.7.1 → v1.15.0
+# substrate-kit upgrade report — v1.15.0 → v1.16.0
 
-> Generated 2026-07-13 by `bootstrap.py upgrade`. Rollback: `python3 bootstrap.py upgrade --rollback`.
+> Generated 2026-07-14 by `bootstrap.py upgrade`. Rollback: `python3 bootstrap.py upgrade --rollback`.
 
-**Docs:** consumer-edited: 5 · diverged: 2 · template-improved: 6 · unchanged: 10
+**Docs:** consumer-edited: 6 · diverged: 1 · template-improved: 6 · unchanged: 11
 
 | planted doc | class | note |
 |---|---|---|
@@ -18,26 +18,28 @@
 | docs/owner-profile.md | unchanged | template identical across versions |
 | docs/AGENT_ORIENTATION.md | diverged | both the template and the doc moved — manual merge |
 | docs/current-state.md | consumer-edited | template unchanged — consumer-owned, nothing to apply |
-| docs/question-router.md | template-improved | consumer-untouched + template improved — safe to apply with `upgrade --apply-docs` |
+| docs/question-router.md | unchanged | template identical across versions |
 | docs/CAPABILITIES.md | template-improved | consumer-untouched + template improved — safe to apply with `upgrade --apply-docs` |
-| docs/SKILLS.md | unchanged | template identical across versions |
-| docs/ROUTINES.md | unchanged | template identical across versions |
+| docs/SKILLS.md | template-improved | consumer-untouched + template improved — safe to apply with `upgrade --apply-docs` |
+| docs/ROUTINES.md | template-improved | consumer-untouched + template improved — safe to apply with `upgrade --apply-docs` |
+| docs/reading-path.md | unchanged | template identical across versions |
 | docs/ideas/README.md | unchanged | template identical across versions |
 | .session-journal.md | unchanged | template identical across versions |
-| control/README.md | template-improved | consumer-untouched + template improved — safe to apply with `upgrade --apply-docs` |
+| control/README.md | unchanged | template identical across versions |
 | control/inbox.md | consumer-edited | template unchanged — consumer-owned, nothing to apply |
-| control/status.md | diverged | both the template and the doc moved — manual merge |
+| control/status.md | consumer-edited | template unchanged — consumer-owned, nothing to apply |
 | control/claims/README.md | template-improved | consumer-untouched + template improved — safe to apply with `upgrade --apply-docs` |
 | scripts/env-setup.sh | unchanged | template identical across versions |
 
 ## ⚠️ Gate carve-outs (host additions the kit-owned regen could not keep)
 
-- carve-out: .github/workflows/auto-merge-enabler.yml — host-added step 'Skip arming while the PR's own in-diff session card is in-progress' in job 'enable-auto-merge'
-- carve-out: full pre-regen enabler banked at .substrate/backup/auto-merge-enabler.pre-regen-1a1e0ce0.yml — host additions were NOT carried into the regenerated kit-owned enabler; move them into a separate workflow file (e.g. .github/workflows/host-ci.yml) and commit that before shipping this upgrade/adopt PR. [carried from the previous upgrade report]
+- carve-out: .github/workflows/auto-merge-enabler.yml — host-added step 'Skip arming while the PR's own in-diff session card is in-progress' in job 'enable-auto-merge' [carried from the previous upgrade report]
+- carve-out: full pre-regen enabler banked at .substrate/backup/auto-merge-enabler.pre-regen-1a0c5ec3.yml — host additions were NOT carried into the regenerated kit-owned enabler; move them into a separate workflow file (e.g. .github/workflows/host-ci.yml) and commit that before shipping this upgrade/adopt PR. [carried from the previous upgrade report]
 
 ## Carve-out scan
 
 - carve-out scan: .github/workflows/substrate-gate.yml — ran, 0 found
+- carve-out scan: .github/workflows/auto-merge-enabler.yml — ran, 0 found
 - carve-out scan: 2 carve-out line(s) reported above (see the ⚠️ section).
 
 ## Capability-ledger seed refresh
@@ -48,15 +50,15 @@ This upgrade ships the venue-scoped capability ledger (grounded-skills §4.2): e
 
 ## Seat-digest refresh
 
-- seat-digest: regenerated docs/seat-digest.md (derived render — skills index + venue-filtered walls re-rendered from the current tree; venue filter preserved from the committed doc).
+- seat-digest: docs/seat-digest.md already current — nothing to refresh.
 
 ## Applied (--apply-docs)
 
 - applied: CONSTITUTION.md (template@new, hash re-recorded)
 - applied: docs/collaboration-model.md (template@new, hash re-recorded)
-- applied: docs/question-router.md (template@new, hash re-recorded)
 - applied: docs/CAPABILITIES.md (template@new, hash re-recorded)
-- applied: control/README.md (template@new, hash re-recorded)
+- applied: docs/SKILLS.md (template@new, hash re-recorded)
+- applied: docs/ROUTINES.md (template@new, hash re-recorded)
 - applied: control/claims/README.md (template@new, hash re-recorded)
 
 ## Template deltas for diverged docs
@@ -66,76 +68,29 @@ This upgrade ships the venue-scoped capability ledger (grounded-skills §4.2): e
 ```diff
 --- docs/AGENT_ORIENTATION.md (template@old, current slots)
 +++ docs/AGENT_ORIENTATION.md (template@new, current slots)
-@@ -7,11 +7,24 @@
- 
- ## Start every session
- 
--1. `.claude/CLAUDE.md` — the working agreement.
--2. `docs/current-state.md` — the living status ledger.
--3. `docs/CAPABILITIES.md` — verified session capabilities & walls (the
--   discovery rule lives there; append what you learn).
--4. This file — task-specific reading routes.
-+**Preflight first — land on origin's HEAD before reading anything else:**
-+
-+```
-+git fetch origin main && git reset --hard origin/main
-+```
-+
-+(or `git checkout -B main origin/main`; substitute your default branch).
-+Then verify: local HEAD (`git rev-parse HEAD`) must equal
-+`git ls-remote origin main`. A warm container clone can lag origin by
-+dozens of commits, and a stale clone reads stale orders and stale state —
-+every orientation read below assumes this step already ran. The hard reset
-+discards uncommitted local changes by design: at session START there should
-+be none; if `git status` shows work you did not author, stop and report it
-+instead of resetting over it.
-+
-+The boot set lives in the working agreement — `CONSTITUTION.md` — and its
-+orientation guidance (one list, one home). This file is not boot reading —
-+open it when a task needs a route into the deeper docs.
- 
- ## Binding contracts
- 
-@@ -28,11 +41,20 @@
- `docs/collaboration-model.md` · `docs/helper-policy.md` ·
+@@ -42,8 +42,9 @@
  `docs/repo-navigation-map.md` · `docs/ai-project-workflow.md` ·
  `docs/owner-profile.md` · `docs/current-state.md` · `docs/decisions.md` ·
--`docs/question-router.md` · `docs/CAPABILITIES.md` · `docs/ideas/README.md` — plus the root
-+`docs/question-router.md` · `docs/CAPABILITIES.md` · `docs/SKILLS.md` ·
-+`docs/ROUTINES.md` · `docs/ideas/README.md` — plus the root
- `CONSTITUTION.md` (the working agreement) and `.session-journal.md`.
-+
-+Recurring action? **`docs/SKILLS.md`** — the skill index — names every
-+kit-shipped skill and when to reach for it; check it before improvising a
-+procedure.
-+
-+Arming, deleting, or auditing a scheduled trigger/routine/wake chain?
-+**`docs/ROUTINES.md`** — binding choice, delivery verification,
-+probe-not-record, scheduler-health signatures, pacing — read it before
-+touching the trigger registry.
+ `docs/question-router.md` · `docs/CAPABILITIES.md` · `docs/SKILLS.md` ·
+-`docs/ROUTINES.md` · `docs/ideas/README.md` — plus the root
+-`CONSTITUTION.md` (the working agreement) and `.session-journal.md`.
++`docs/ROUTINES.md` · `docs/reading-path.md` · `docs/ideas/README.md` —
++plus the root `CONSTITUTION.md` (the working agreement) and
++`.session-journal.md`.
  
+ Recurring action? **`docs/SKILLS.md`** — the skill index — names every
+ kit-shipped skill and when to reach for it; check it before improvising a
+@@ -54,6 +55,11 @@
+ probe-not-record, scheduler-health signatures, pacing — read it before
+ touching the trigger registry.
+ 
++Reading or acting across sibling repos in a fleet? **`docs/reading-path.md`**
++— the standing read authorization, the one-command fleet orient, the
++sibling/truth-file map, tiered depth, truth rules — read it before burning
++turns re-discovering what you may read.
++
  ## Verifying any change
  
--```
--python3 -m pytest -q && python3 bootstrap.py check --strict (theme packs additionally validate via the theme-gate step once ORDER 000 lands it in CI)
--```
-+See the working agreement (`CONSTITUTION.md`) and its verify guidance
-+(one home, never two copies).
-```
-
-### control/status.md
-
-```diff
---- control/status.md (template@old, current slots)
-+++ control/status.md (template@new, current slots)
-@@ -13,3 +13,8 @@
- The `kit:` line is your kit self-report (substrate-coordinator visibility): keep the version in
- sync with your vendored kit on every upgrade, `check:` = your last `check --strict` verdict,
- `engaged:` = the post-adopt engagement gate (yes once `check` reports ENGAGED/green live CI).
-+Keep the `kit:` token PLAIN — the bold-label form `- **kit:** v1.2.3 · check: green · engaged: yes`
-+does NOT parse and the fleet registry reads it as no `kit:` line at all (grammar + the valid
-+bold-label-before-plain-token shape: `control/README.md` § "status.md format"). And this line is
-+a self-report, not version truth — self-reports chronically lag; the kit repo's generated
-+`docs/adopters.md` and your committed tree are the version truth to defer to.
+ See the working agreement (`CONSTITUTION.md`) and its verify guidance
 ```
 
