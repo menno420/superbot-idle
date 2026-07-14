@@ -13,6 +13,7 @@ with its own nouns. Plus the checks per-file JSON Schema cannot express:
 `.yaml`/`.yml` stem twins now that the stem rule holds per file).
 """
 
+import dataclasses
 from pathlib import Path
 
 import pytest
@@ -48,6 +49,18 @@ CANDY_FACTORY = THEMES_DIR / "candy-factory.yaml"
 CLOCKWORK_ATELIER = THEMES_DIR / "clockwork-atelier.yaml"
 LIGHTHOUSE_KEEP = THEMES_DIR / "lighthouse-keep.yaml"
 RAMEN_STAND = THEMES_DIR / "ramen-stand.yaml"
+
+# The slot sets every pack must fill, derived from egg-farm THE TEMPLATE
+# (same pattern as the per-slot assertions below): the nine canonical
+# engine-derived milestone slot ids (owned-1..3, lifetime-1..3,
+# prestige-1..3) and the six themed label slots.
+_EGG_FARM_TEMPLATE = load_theme(EGG_FARM)
+MILESTONE_SLOTS = frozenset(_EGG_FARM_TEMPLATE.milestones)
+LABEL_SLOTS = frozenset(
+    f.name
+    for f in dataclasses.fields(_EGG_FARM_TEMPLATE.labels)
+    if getattr(_EGG_FARM_TEMPLATE.labels, f.name) is not None
+)
 
 
 # --- the catalog ships eighteen packs, all gate-green -------------------------
@@ -109,6 +122,25 @@ def test_pack_fills_every_egg_farm_slot(pack):
     assert theme.prestige.measures in theme.currencies
     assert theme.prestige.action_name and theme.prestige.action_description
     assert theme.prestige.action_emoji
+    # milestones: all nine canonical slots the template fills, each skinned —
+    # no pack ships the neutral `Milestone 1 … 9` scaffolding again
+    assert len(MILESTONE_SLOTS) == 9
+    assert set(theme.milestones) == MILESTONE_SLOTS, (
+        f"{pack.stem} must skin every canonical milestone slot"
+    )
+    assert MILESTONE_SLOTS == {
+        spec.spec_id for spec in theme.milestone_specs()
+    }, f"{pack.stem}: template slots must be exactly the engine-derived set"
+    for milestone in theme.milestones.values():
+        assert milestone.name and milestone.description and milestone.emoji
+    # labels: the full themed block, all six slots the template fills
+    assert theme.labels is not None, f"{pack.stem} must fill the labels block"
+    assert len(LABEL_SLOTS) == 6
+    for slot in sorted(LABEL_SLOTS):
+        value = getattr(theme.labels, slot)
+        assert isinstance(value, str) and value.strip(), (
+            f"{pack.stem} must fill the labels.{slot} slot"
+        )
 
 
 # --- the new packs' nouns resolve through the loader -------------------------

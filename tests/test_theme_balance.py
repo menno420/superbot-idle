@@ -85,6 +85,14 @@ def test_balance_entries_reject_unknown_fields():
     assert set(items["required"]) == {"generator", "rate_multiplier_pct"}
 
 
+def test_balance_cap_pairs_with_generator_cap():
+    # one entry per generator: raising generators.maxItems without balance's
+    # would silently let the balance block under-cover the roster
+    schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    props = schema["properties"]
+    assert props["balance"]["maxItems"] == props["generators"]["maxItems"]
+
+
 # --- gate: red on out-of-bounds or wrong type, green in bounds ---------------
 
 
