@@ -1,1 +1,0 @@
-- `claude/improve-catalog-ratchet` · **catalog ratchet tests** — milestones/labels slot assertions + balance/generators maxItems pin · tests/test_theme_catalog.py + tests/test_theme_balance.py + .sessions/ + telemetry/ · 2026-07-14
