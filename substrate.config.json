@@ -1,7 +1,10 @@
 {
   "automerge": {
     "branch_patterns": [
-      "claude/*"
+      "claim/*",
+      "claude/*",
+      "close-out/*",
+      "control/*"
     ],
     "required_context": "substrate-gate"
   },
