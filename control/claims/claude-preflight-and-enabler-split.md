@@ -1,1 +1,0 @@
-- `claude/preflight-and-enabler-split` · **preflight script + enabler card-guard split** · scripts/preflight.py + .github/workflows/ + substrate.config.json · 2026-07-14
