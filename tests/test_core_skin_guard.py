@@ -2,7 +2,15 @@
 
 The engine is theme-agnostic by contract (README, CONVENTIONS). This
 test greps every engine module (and the generic theme-gate tool) for
-egg-farm nouns; any hit means theme content leaked into core.
+distinctive theme-pack nouns; any hit means theme content leaked into
+core.
+
+Structure: FORBIDDEN_NOUNS_BY_PACK maps every shipped pack id
+(themes/<id>.yaml) to its distinctive guard nouns; the tuples compile
+into one word-boundary regex. A coverage test asserts the dict keys
+equal the shipped catalog, so adding a pack without registering its
+guard nouns is red — a pack with genuinely no distinctive noun must say
+so with an explicit empty tuple.
 """
 
 import re
@@ -10,17 +18,6 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-# Word-boundary match so e.g. "when" does not trip on "hen".
-# Extended for slice (b): upgrade/prestige nouns (henhouse, golden [eggs]).
-# Extended for slice (c): space-colony + potion-brewery distinctive nouns.
-# Extended for catalog growth: haunted-manor + deep-sea-station +
-# dragon-hoard distinctive nouns. Extended for catalog wave 2:
-# wizard-tower + royal-bakery + cyber-city distinctive nouns.
-# Extended for catalog wave 3: pirate-cove + ant-colony + idol-agency
-# distinctive nouns. Extended for catalog wave 4: coffee-roastery +
-# arctic-outpost + candy-factory distinctive nouns. Extended for catalog
-# wave 5: clockwork-atelier + lighthouse-keep + ramen-stand distinctive
-# nouns.
 # Deliberately EXCLUDED as too generic for a guard that scans engine
 # prose/identifiers: "gold", "coin", "scale" ("scales/scaling" is
 # legitimate engine vocabulary), "surface", "station", "village",
@@ -37,43 +34,107 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # "watch", "keep", "keeper", "beam", "counter", "queue", "press",
 # "burner", "cart", "tare", "dies"
 # — the packs' truly distinctive nouns below carry the guard instead.
+#
+# One entry per shipped pack, in catalog-growth order. Nouns are plain
+# literals (both spellings listed where the pack uses an accent, e.g.
+# séance/seance); they are re.escape()d and joined into a single
+# word-boundary alternation so e.g. "when" does not trip on "hen".
+FORBIDDEN_NOUNS_BY_PACK: dict[str, tuple[str, ...]] = {
+    "egg-farm": (
+        "egg", "eggs", "chicken", "chickens", "coop", "coops", "farm",
+        "farms", "hen", "hens", "henhouse", "henhouses", "golden",
+    ),
+    "space-colony": (
+        "colony", "colonies", "oxygen", "solar", "hydroponics",
+        "artifact", "artifacts",
+    ),
+    "potion-brewery": (
+        "potion", "potions", "cauldron", "cauldrons", "brewery",
+        "breweries", "alchemist", "alchemists", "arcane", "grimoire",
+        "grimoires",
+    ),
+    "haunted-manor": (
+        "manor", "manors", "haunted", "ectoplasm", "séance", "séances",
+        "seance", "seances", "spirit", "spirits", "poltergeist",
+        "poltergeists", "phantom", "phantoms",
+    ),
+    "deep-sea-station": (
+        "pearl", "pearls", "abyssal", "trench", "trenches", "oyster",
+        "oysters", "submersible", "submersibles", "kelp", "plankton",
+        "relic", "relics",
+    ),
+    "dragon-hoard": (
+        "dragon", "dragons", "hoard", "hoards", "kobold", "kobolds",
+        "lair", "lairs", "pickaxe", "pickaxes", "tribute", "tributes",
+    ),
+    "wizard-tower": (
+        "wizard", "wizards", "mana", "scribe", "scribes", "quill",
+        "quills", "starlight", "astral", "enchanted",
+    ),
+    "royal-bakery": (
+        "bakery", "bakeries", "bakehouse", "bakehouses", "pastry",
+        "pastries", "sourdough", "dough", "flour", "hearth", "hearths",
+        "oven", "ovens",
+    ),
+    "cyber-city": (
+        "cyber", "neon", "uplink", "overclock", "overclocked",
+        "cryo-coolant",
+    ),
+    "pirate-cove": (
+        "pirate", "pirates", "doubloon", "doubloons", "smuggler",
+        "smugglers", "skiff", "skiffs", "tavern", "taverns", "rum",
+        "quartermaster", "quartermasters", "cove", "coves",
+    ),
+    "ant-colony": (
+        "ant", "ants", "crumb", "crumbs", "pheromone", "pheromones",
+        "forager", "foragers", "leafcutter", "leafcutters", "fungus",
+        "instar", "instars",
+    ),
+    "idol-agency": (
+        "idol", "idols", "fandom", "fandoms", "fancam", "fancams",
+        "livestream", "livestreams", "choreography", "platinum",
+        "lightstick", "lightsticks",
+    ),
+    "coffee-roastery": (
+        "coffee", "roastery", "roasteries", "bean", "beans", "barista",
+        "baristas", "espresso", "arabica", "crema", "portafilter",
+        "portafilters", "drip", "roasting", "roaster", "roasters",
+    ),
+    "arctic-outpost": (
+        "arctic", "outpost", "outposts", "snowpack", "aurora", "husky",
+        "huskies", "sled", "sleds", "tundra", "glacier", "glaciers",
+        "permafrost", "musher", "mushers", "expedition", "expeditions",
+    ),
+    "candy-factory": (
+        "candy", "candies", "taffy", "gumdrop", "gumdrops", "lollipop",
+        "lollipops", "confection", "confections", "nougat", "caramel",
+        "marshmallow", "marshmallows", "sherbet", "sugar",
+    ),
+    "clockwork-atelier": (
+        "clockwork", "atelier", "ateliers", "horologist", "horological",
+        "mainspring", "mainsprings", "escapement", "escapements", "cog",
+        "cogs", "lathe", "lathes",
+    ),
+    "lighthouse-keep": (
+        "lighthouse", "lighthouses", "fresnel", "lamplight", "wick",
+        "wicks", "headland", "headlands", "seaboard", "lantern",
+        "lanterns",
+    ),
+    "ramen-stand": (
+        "ramen", "noodle", "noodles", "broth", "broths", "stockpot",
+        "stockpots", "slurp", "slurps", "slurped", "ladle", "ladles",
+        "ladleful", "bowl", "bowls",
+    ),
+}
+
 FORBIDDEN_NOUNS = re.compile(
-    r"\b(egg|eggs|chicken|chickens|coop|coops|farm|farms|hen|hens"
-    r"|henhouse|henhouses|golden"
-    r"|colony|colonies|oxygen|solar|hydroponics|artifact|artifacts"
-    r"|potion|potions|cauldron|cauldrons|brewery|breweries|alchemist"
-    r"|alchemists|arcane|grimoire|grimoires"
-    r"|manor|manors|haunted|ectoplasm|s[eé]ance|s[eé]ances|spirit|spirits"
-    r"|poltergeist|poltergeists|phantom|phantoms"
-    r"|pearl|pearls|abyssal|trench|trenches|oyster|oysters|submersible"
-    r"|submersibles|kelp|plankton|relic|relics"
-    r"|dragon|dragons|hoard|hoards|kobold|kobolds|lair|lairs|pickaxe"
-    r"|pickaxes|tribute|tributes"
-    r"|wizard|wizards|mana|scribe|scribes|quill|quills|starlight"
-    r"|astral|enchanted"
-    r"|bakery|bakeries|bakehouse|bakehouses|pastry|pastries|sourdough"
-    r"|dough|flour|hearth|hearths|oven|ovens"
-    r"|cyber|neon|uplink|overclock|overclocked|cryo-coolant"
-    r"|pirate|pirates|doubloon|doubloons|smuggler|smugglers|skiff|skiffs"
-    r"|tavern|taverns|rum|quartermaster|quartermasters|cove|coves"
-    r"|ant|ants|crumb|crumbs|pheromone|pheromones|forager|foragers"
-    r"|leafcutter|leafcutters|fungus|instar|instars"
-    r"|idol|idols|fandom|fandoms|fancam|fancams|livestream|livestreams"
-    r"|choreography|platinum|lightstick|lightsticks"
-    r"|coffee|roastery|roasteries|bean|beans|barista|baristas|espresso"
-    r"|arabica|crema|portafilter|portafilters|drip|roasting|roaster|roasters"
-    r"|arctic|outpost|outposts|snowpack|aurora|husky|huskies|sled|sleds"
-    r"|tundra|glacier|glaciers|permafrost|musher|mushers|expedition"
-    r"|expeditions"
-    r"|candy|candies|taffy|gumdrop|gumdrops|lollipop|lollipops|confection"
-    r"|confections|nougat|caramel|marshmallow|marshmallows|sherbet"
-    r"|sugar"
-    r"|clockwork|atelier|ateliers|horologist|horological|mainspring"
-    r"|mainsprings|escapement|escapements|cog|cogs|lathe|lathes"
-    r"|lighthouse|lighthouses|fresnel|lamplight|wick|wicks|headland"
-    r"|headlands|seaboard|lantern|lanterns"
-    r"|ramen|noodle|noodles|broth|broths|stockpot|stockpots|slurp"
-    r"|slurps|slurped|ladle|ladles|ladleful|bowl|bowls)\b",
+    r"\b("
+    + "|".join(
+        re.escape(noun)
+        for nouns in FORBIDDEN_NOUNS_BY_PACK.values()
+        for noun in nouns
+    )
+    + r")\b",
     re.IGNORECASE,
 )
 
@@ -84,6 +145,20 @@ THEME_AGNOSTIC_SOURCES = sorted(REPO_ROOT.glob("idle_engine/**/*.py")) + [
 
 def test_guard_scans_a_nonempty_engine():
     assert len(THEME_AGNOSTIC_SOURCES) >= 4  # package + state + engine + theme + tool
+
+
+def test_every_shipped_pack_registers_guard_nouns():
+    # Ratchet: the noun table's keys must equal the shipped catalog.
+    # A new themes/<id>.yaml is red here until the pack registers its
+    # distinctive nouns (or an explicit empty tuple documenting that it
+    # has none); a removed pack is red until its stale entry is dropped.
+    shipped = {path.stem for path in (REPO_ROOT / "themes").glob("*.yaml")}
+    registered = set(FORBIDDEN_NOUNS_BY_PACK)
+    assert shipped == registered, (
+        "FORBIDDEN_NOUNS_BY_PACK is out of sync with themes/*.yaml:\n"
+        f"  shipped but unregistered: {sorted(shipped - registered)}\n"
+        f"  registered but not shipped: {sorted(registered - shipped)}"
+    )
 
 
 def test_engine_sources_contain_no_theme_nouns():
