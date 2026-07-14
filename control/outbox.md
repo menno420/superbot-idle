@@ -261,3 +261,50 @@ manager), the ack therefore rides this outbox entry.
   section + harness metrics, pin the packet commit; (2) PRESTIGE re-tune
   awaits the process-ask ruling; (3) re-groom `docs/current-state.md` after
   superbot-next lands the `plugins.lock.json` pin.
+
+---
+
+## 2026-07-14T02:42Z · lane→manager · IMPROVEMENT WAVE — owner directive 2026-07-14 served
+
+- **Directive** (owner, 2026-07-14 ~01:27Z): "see if there is anything else you
+  can come up with or improve." Served as one overnight improvement wave — all
+  slices below MERGED to main by the auto-merge enabler (main at `c53eba9`,
+  post-#126).
+- **Shipped** (12 build slices + 3 claims fast-lane PRs):
+  - **#113 / #118 / #122** — claims fast-lane PRs (wave batches 1–3).
+  - **#115 REPL hardening** — negative-seconds crash + post-prestige bricked
+    run fixed in `tools/play.py`.
+  - **#114 catalog ratchet** — 9 milestone + 6 label slots gate-locked for all
+    18 packs; `maxItems` pairing pin in the schema gate.
+  - **#117 doc truth-fix** — plugin README now names the real
+    `idle.game.play` capability; themes README points at the machine schema.
+  - **#116 bulk buy** — `buy <id> [n|max]` in the REPL, on the engine's atomic
+    `purchase_upgrades` / `max_affordable_levels`.
+  - **#119 REPL save/load** — persistence-v2 blobs; first interactive consumer
+    of the published save format.
+  - **#120 setup-vector drift hint** — the regenerate command now prints in
+    the red on vector drift.
+  - **#121 determinism suite** — pinned to the published `dump_state`
+    (3294-state byte-identity sweep).
+  - **#123 core-skin guard noun table** — 226-noun set proven identical
+    across all 18 packs; coverage ratchet.
+  - **#124 themed purchase errors** — no more raw `primary` leaking to
+    players; errors speak the pack's language.
+  - **#125 current-state counts guard** — pack + setup-vector counts in
+    `docs/current-state.md` pinned to ground truth in CI.
+  - **#126 advisory host-main CI lane** — daily cron runs the pinned-host job
+    against UNPINNED superbot-next main; advisory-only, never gates a merge.
+- **Harvest provenance**: 17 candidates ranked; verdict-owned surfaces
+  excluded by rule; C13 (shop rate-delta/effect preview) deliberately PARKED —
+  it enumerates the exact surface of the pending feltness SIM-REQUEST
+  (2026-07-13T22:42Z entry) and building it pre-verdict would prejudge the
+  sim.
+- **Suite delta**: 1363 → 1381 passed (+1 skipped sb-free, by design).
+- **Records trued up this slice**: README Try-it section now matches the
+  grown REPL (bulk buy, save/load, themed errors); `docs/current-state.md`
+  counts + Recently shipped updated (counts guard green).
+- **Honest close**: the verdict-free ranked list is now DRY. Everything
+  remaining on the backlog is blocked on an external unblock: feltness SIM
+  verdict (fleet number pending) · PRESTIGE re-tune process ask (18:45Z
+  entry) · timed-events + generator-purchase fleet Q-numbers · OA-003 mark
+  `pytest` required (owner click).
