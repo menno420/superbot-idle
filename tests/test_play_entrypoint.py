@@ -9,6 +9,7 @@ economy retune.
 """
 
 import importlib.util
+import re
 import sys
 from pathlib import Path
 
@@ -138,6 +139,44 @@ def test_dispatch_buy_more_than_affordable_is_graceful_and_atomic():
     same, out = play.dispatch(session, "buy boost1 max")
     assert same is session
     assert "cannot afford a single level" in out
+
+
+def test_dispatch_buy_insufficient_speaks_the_packs_language():
+    """A failed purchase names the THEMED currency and upgrade — never the
+    raw engine ids ('primary', 'boost1') no rendered view has ever shown the
+    player — across all three buy paths, while keeping the engine's exact
+    have/need numbers on the single-buy (engine-exception) path. Numbers are
+    asserted by shape, not value, per this file's no-economy-pinning rule."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    # Single buy on a fresh zero-egg save: the engine ValueError path.
+    same, out = play.dispatch(session, "buy boost1")
+    assert same is session  # atomic refusal: nothing bought, nothing spent
+    assert "🥚 eggs" in out and "🏠 bigger henhouse" in out
+    assert "primary" not in out and "boost1" not in out
+    assert re.search(r"have \d+, need \d+", out)  # info content intact
+    # Bulk count path (pre-check refusal, zero affordable).
+    same, out = play.dispatch(session, "buy boost1 3")
+    assert same is session
+    assert "🥚 eggs" in out and "🏠 bigger henhouse" in out
+    assert "primary" not in out and "boost1" not in out
+    # Max path (argmax says zero).
+    same, out = play.dispatch(session, "buy boost1 max")
+    assert same is session
+    assert "🥚 eggs" in out and "🏠 bigger henhouse" in out
+    assert "primary" not in out and "boost1" not in out
+
+
+def test_dispatch_buy_partially_affordable_refusal_is_themed():
+    """The 'can only afford N' refusal (budget covers some but not all of
+    the requested levels) is themed too, and now says what you hold."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    session = play.advance(session, 200)  # enough for some levels, not 10^9
+    same, out = play.dispatch(session, "buy boost1 1000000000")
+    assert same is session
+    assert "can only afford" in out
+    assert "🥚 eggs" in out and "🏠 bigger henhouse" in out
+    assert "primary" not in out and "boost1" not in out
+    assert re.search(r"you have \d+", out)
 
 
 def test_dispatch_negative_seconds_is_graceful():
