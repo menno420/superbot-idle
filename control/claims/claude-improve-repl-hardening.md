@@ -1,1 +1,0 @@
-- `claude/improve-repl-hardening` · **REPL hardening** — negative-seconds crash fix + post-prestige re-grant (reproduced bugs) · tools/play.py + tests/test_play_entrypoint.py + .sessions/ + telemetry/ · 2026-07-14
