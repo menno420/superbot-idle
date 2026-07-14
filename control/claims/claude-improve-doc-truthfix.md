@@ -1,0 +1,1 @@
+- `claude/improve-doc-truthfix` · **doc truth-fix** — plugin README capability string + themes README forthcoming line · plugin/README.md + themes/README.md + .sessions/ + telemetry/ · 2026-07-14

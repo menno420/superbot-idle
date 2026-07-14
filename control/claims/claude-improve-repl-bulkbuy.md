@@ -1,0 +1,1 @@
+- `claude/improve-repl-bulkbuy` · **REPL bulk buy** — buy <id> [n|max] via existing purchase_upgrades/max_affordable_levels · tools/play.py + tests/ + .sessions/ + telemetry/ · 2026-07-14
