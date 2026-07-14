@@ -4,9 +4,10 @@ A thin, out-of-tree `plugin/` shell that maps the pure idle engine onto
 superbot-next's **game-plugin contract**
 ([`docs/game-plugin-contract.md`](https://github.com/menno420/superbot-next/blob/d3dba9b/docs/game-plugin-contract.md)
 @ `d3dba9b`, binding). It exports a `SubsystemManifest` (commands +
-one `idle.status` status panel + `settings` + `events` + the `idle`
-capability) through the `sb.plugins` entry-point group; the host discovers it
-at boot, verifies it against its committed `plugins.lock.json` pin,
+one `idle.status` status panel + `settings` + `events` + the
+`idle.game.play` capability) through the `sb.plugins` entry-point group;
+the host discovers it at boot, verifies it against its committed
+`plugins.lock.json` pin,
 joint-compiles it with the in-tree manifests, and registers it on the live
 seams.
 
