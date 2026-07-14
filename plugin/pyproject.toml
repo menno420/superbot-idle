@@ -1,8 +1,9 @@
 # superbot-idle-plugin — the idle-engine game-plugin adapter (PLUG-001).
 #
-# One command (`!idle` / `/idle`) + one status panel (`idle.status`), declared
-# as a SubsystemManifest and exported through the `sb.plugins` entry-point
-# group. The superbot-next host discovers it at boot (sb/app/plugin_host.py),
+# Four commands (`!idle` + `status` / `shop` / `prestige` subcommands), three
+# render handlers, and one status panel (`idle.status`), declared as a
+# SubsystemManifest and exported through the `sb.plugins` entry-point group.
+# The superbot-next host discovers it at boot (sb/app/plugin_host.py),
 # verifies it against the committed pin registry (plugins.lock.json),
 # joint-compiles it with the in-tree manifests, and registers it on the same
 # live seams — see docs/game-plugin-contract.md @ d3dba9b in the host repo.
