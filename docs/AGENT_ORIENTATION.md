@@ -29,7 +29,9 @@ The planted doc set (this router reaches every live doc — keep it that way):
 `docs/repo-navigation-map.md` · `docs/ai-project-workflow.md` ·
 `docs/owner-profile.md` · `docs/current-state.md` · `docs/decisions.md` ·
 `docs/question-router.md` · `docs/CAPABILITIES.md` · `docs/SKILLS.md` ·
-`docs/ROUTINES.md` · `docs/ideas/README.md` — plus the root
+`docs/ROUTINES.md` · `docs/ideas/README.md` ·
+`docs/audits/2026-07-13-fleet-cleanup-audit.md` (external fleet-wide
+cleanup/audit pass, EAP final night) — plus the root
 `CONSTITUTION.md` (the working agreement) and `.session-journal.md`.
 
 ## Verifying any change
