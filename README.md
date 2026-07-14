@@ -58,6 +58,7 @@ changes no economy constant.
 
 ## Where to start
 
+0. [EAP closeout walkthrough (2026-07-14)](docs/eap-closeout-walkthrough-2026-07-14.md) — owner review entry point: what shipped, how to verify, pending owner actions.
 1. `control/inbox.md` (orders) + `control/status.md` (the live heartbeat).
 2. `docs/AGENT_ORIENTATION.md` — the read path.
 3. `CONVENTIONS.md` — how work ships here.

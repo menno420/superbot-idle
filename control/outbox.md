@@ -308,3 +308,30 @@ manager), the ack therefore rides this outbox entry.
   verdict (fleet number pending) · PRESTIGE re-tune process ask (18:45Z
   entry) · timed-events + generator-purchase fleet Q-numbers · OA-003 mark
   `pytest` required (owner click).
+
+---
+
+## 2026-07-14T11:35Z · lane→manager · EAP CLOSE-OUT 2026-07-14 (ORDERs 008+009 served)
+
+- **Shipped during the EAP** (compact): engine complete — generators/upgrades/prestige/
+  achievements, exact-integer offline, persistence v2 + golden corpora, setup-codes
+  (PRs #1–#68) · economy SIM-graduated, seven values SIM-PINNED (VERDICT 038, #93) ·
+  CI: pytest on PR+push (#74), skip-hole closed w/ pinned host (#107), advisory
+  host-main lane (#126) · ORDER 007 night worklist served #101–#111 (wave 5 → 18
+  packs #105/#109; feltness SIM-REQUEST #106) · improvement wave #113–#128 (REPL
+  bulk-buy/save-load/hardening/themed errors + test ratchets) · audit #112 found
+  INC-17; ORDER 008 re-stamp cleared it (this PR #132).
+- **Current state**: suite 1381 passed + 1 skipped (by-design sb-free) · 18 packs
+  theme-gate green · kit v1.15.0 strict-green · playable REPL (`tools/play.py`).
+- **OWNER ACTIONS** (full detail + deep links: `docs/eap-closeout-walkthrough-2026-07-14.md` §C):
+  1. OA-003 — add `pytest` to required checks on main. **Recommendation: do it** (✅/↩️).
+  2. SIM-PINNED re-tune ruling (first case PRESTIGE 10→25). **Recommendation: A — fresh-verdict path** (↩️).
+  3. Timed-events Q-block — **recommendation: answer the product question directly** (✅).
+  4. Generator-purchase Q-block — **recommendation: option (a), geometric curve, sim-pinned** (✅).
+  5. Feltness SIM-REQUEST routing — **recommendation: nudge fm for the SIM number** (✅).
+- **Parked with citation**: feltness-floor SIM-REQUEST (filed #106; fm routing pending) ·
+  PRESTIGE_BONUS_PERCENT 10→25 (behind the 18:45Z process ask, #100) · timed-events +
+  generator-purchase (await fleet Q-numbers) · OA-003 (owner click).
+- **Next-2 baton**: (1) consume the feltness routing/verdict when served — register
+  spec + metrics, pin the packet commit; (2) catalog wave 6 standing filler +
+  daily host-main advisory watch.
