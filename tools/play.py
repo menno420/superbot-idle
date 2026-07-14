@@ -64,6 +64,7 @@ from idle_engine import (  # noqa: E402  (path shim must precede the import)
     GameState,
     apply_prestige,
     award_milestones,
+    bulk_upgrade_cost,
     load_theme,
     max_affordable_levels,
     prestige_eligible,
@@ -74,6 +75,7 @@ from idle_engine import (  # noqa: E402  (path shim must precede the import)
     render_shop,
     render_status,
     tick,
+    upgrade_cost,
 )
 from idle_engine.engine import apply_offline_progress  # noqa: E402
 from idle_engine.persistence import SaveError, dump_state, load_state  # noqa: E402
@@ -232,17 +234,38 @@ _HELP = """Commands:
 _BUY_USAGE = "Usage: buy <upgrade-id> [count|max] (count must be an integer >= 1)"
 
 
+def _themed_currency(theme: Theme, currency_id: str) -> str:
+    """Themed label for a currency id — render.py's one composition rule,
+    ``{emoji} {name}`` (e.g. ``primary`` -> ``🥚 eggs``), so purchase
+    refusals speak the same language as every rendered view. A pack always
+    declares every currency its specs reference (theme-load validation),
+    so the raw-id fallback is defense only."""
+    currency = theme.currencies.get(currency_id)
+    return f"{currency.emoji} {currency.name}" if currency else repr(currency_id)
+
+
+def _themed_upgrade(theme: Theme, upgrade_id: str) -> str:
+    """Themed ``{emoji} {name}`` label for an upgrade id (same rule)."""
+    upgrade = theme.upgrades.get(upgrade_id)
+    return f"{upgrade.emoji} {upgrade.name}" if upgrade else repr(upgrade_id)
+
+
 def _buy(session: Session, upgrade_id: str, count_arg: str = "") -> tuple[Session, str]:
     specs = {s.spec_id: s for s in session.theme.upgrade_specs()}
     spec = specs.get(upgrade_id)
     if spec is None:
         valid = ", ".join(specs) or "(none)"
         return session, f"No upgrade {upgrade_id!r}. Valid: {valid}"
+    # Failure messages are themed (the player has never seen an engine id
+    # like 'primary' — every view renders '🥚 eggs'); success and the
+    # unknown-id menu keep raw ids, because those are what the player types.
+    label = _themed_upgrade(session.theme, upgrade_id)
+    currency = _themed_currency(session.theme, spec.cost_currency)
     try:
         if not count_arg:
             # Single-level buy: the original verb, byte-identical behavior.
-            state = purchase_upgrade(session.state, spec)
             n = 1
+            state = purchase_upgrade(session.state, spec)
         else:
             # Bulk buy via the engine's atomic bulk API (all-or-nothing spend).
             # Affordability is pre-checked with the exact engine argmax so an
@@ -254,7 +277,9 @@ def _buy(session: Session, upgrade_id: str, count_arg: str = "") -> tuple[Sessio
                 n = affordable
                 if n == 0:
                     return session, (
-                        f"Cannot buy {upgrade_id!r}: cannot afford a single level."
+                        f"Cannot buy {label}: cannot afford a single level — "
+                        f"the next costs {upgrade_cost(spec, level)} {currency}, "
+                        f"you have {budget}."
                     )
             else:
                 try:
@@ -265,17 +290,34 @@ def _buy(session: Session, upgrade_id: str, count_arg: str = "") -> tuple[Sessio
                     return session, _BUY_USAGE
                 if n > affordable:
                     have = (
-                        f"can only afford {affordable}"
+                        f"can only afford {affordable} — "
+                        f"you have {budget} {currency}"
                         if affordable
-                        else "cannot afford a single level"
+                        else "cannot afford a single level — "
+                        f"the next costs {upgrade_cost(spec, level)} {currency}, "
+                        f"you have {budget}"
                     )
                     plural = "s" if n != 1 else ""
                     return session, (
-                        f"Cannot buy {n} level{plural} of {upgrade_id!r}: {have}."
+                        f"Cannot buy {n} level{plural} of {label}: {have}."
                     )
             state = purchase_upgrades(session.state, spec, n)
-    except ValueError as exc:
-        return session, f"Cannot buy {upgrade_id!r}: {exc}"
+    except ValueError:
+        # The engine's insufficiency errors (ValueError / BulkPurchaseError)
+        # are message-only f-strings carrying raw engine ids and NO
+        # structured fields — so rather than string surgery on the message,
+        # re-render the same facts from the unchanged session state: the
+        # purchase is atomic (nothing was spent on failure), so the level,
+        # balance, and exact engine cost recomputed here are precisely the
+        # numbers the engine just refused on. Engine text is untouched.
+        level = session.state.upgrades.get(spec.spec_id, 0)
+        balance = session.state.balances.get(spec.cost_currency, 0)
+        need = bulk_upgrade_cost(spec, level, n)
+        span = f"level {level + 1}" if n == 1 else f"levels {level + 1}..{level + n}"
+        return session, (
+            f"Cannot buy {label}: not enough {currency} for {span} — "
+            f"have {balance}, need {need}."
+        )
     _, _, _, milestones = _spec_bundle(session.theme)
     state = award_milestones(state, milestones)
     bought = Session(theme=session.theme, state=state, now=session.now, log=session.log)
