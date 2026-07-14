@@ -110,3 +110,10 @@ superbot-next carries the order as primary owner in its own dispatch (fm ORDER 0
 
 provenance: relayed by the Fleet Manager seat per owner directive, coordinator dispatch 2026-07-13
 done-when: work the list top-down across tonight's wakes; ack in your inbox thread; heartbeat progress per item.
+
+## ORDER 008 · 2026-07-14T07:46Z · status: new
+priority: P2
+do: overwrite-re-stamp `control/status.md`'s top block per `control/README.md`: fresh `updated:` stamp, `orders:` line carrying the ORDER 006/007 dispositions (served via PRs #101–#111 per the night record), and the `kit:` line re-derived from the tree (v1.15.0 — the remembered v1.7.1 is the INC-40 class). Execution rides the OQ-HEARTBEAT-DOCTRINE-RULING verdict (fm `docs/owner-queue.md`); recommendation A (overwrite-per-session) is the fm default.
+why: INC-17 — heartbeat frozen at `updated: 2026-07-13T17:43Z` / `done=000-005` while ORDERs 006/007 were served and 2026-07-14 work shipped (re-verified live at dispatch).
+done-when: idle's roster row shows no heartbeat-vs-commits divergence marker at the next fm regen.
+provenance: relayed by the Fleet Manager seat, coordinator dispatch 2026-07-14, fm docs/dispatch-log.md @ 1694bfc
