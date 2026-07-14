@@ -47,10 +47,13 @@ python3 tools/play.py --pack royal-bakery # a two-generator pack
 python3 tools/play.py --list-packs        # show every shipped theme
 ```
 
-In the loop: `status`, `shop`, `buy <id>`, `prestige [do]`, `offline <secs>`,
-`wait <secs>`, `achievements`, `pack <id>`, `help`, `quit`. It seeds a small
-starting grant of generators (`--start-count`, default 1) because the engine has
-no generator-purchase verb yet — that grant lives only in the entrypoint and
+In the loop: `status`, `shop`, `buy <id> [n|max]` (bulk buy — `max` takes every
+affordable level), `prestige [do]`, `offline <secs>`, `wait <secs>`,
+`achievements`, `save` / `load <blob>` (one-line saves via the published
+persistence format), `pack <id>`, `help`, `quit`. Errors speak the active pack's
+language, and bad input never crashes the loop. It seeds a small starting grant
+of generators (`--start-count`, default 1) because the engine has no
+generator-purchase verb yet — that grant lives only in the entrypoint and
 changes no economy constant.
 
 ## Where to start

@@ -7,8 +7,8 @@
 > agreement) and keep it current as the project moves.
 
 *Groomed 2026-07-13 against main `221ade1` (post-PR #110, EAP night close);
-suite 1363 passed, 1 skipped sb-free — 1378 passed in CI with the pinned
-host (see stability baseline).*
+improvement-wave touch-up 2026-07-14 against main `c53eba9` (post-PR #126);
+suite 1381 passed, 1 skipped sb-free (see stability baseline).*
 
 ## Stability baseline
 
@@ -58,8 +58,9 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (224 vectors: 90 valid with layer-by-layer intermediates, 109 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1363 passing, 1 skipped sb-free; 1378 passing in CI with the
-  pinned host.** The old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
+- **Test suite: 1381 passing, 1 skipped sb-free; the pinned-host CI job runs
+  the 15 extra manifest-contract tests on top of that with zero skips.** The
+  old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
   ORDER 007 item 3): `plugin/tests/test_manifest.py` still `importorskip`s
   the `sb` host package — so the sb-free suite still shows 1 skipped
   locally — but the `pytest-with-host` job in `.github/workflows/pytest.yml`
@@ -157,6 +158,17 @@ timed-events + generator-purchase — await fleet Q-numbers; OA-003 mark
 narrative per slice: the matching `.sessions/` card and `control/status.md`
 § SHIPPED RECORD.)
 
+- **Improvement wave** (PRs #113–#126, owner directive 2026-07-14, 12 build
+  slices + 3 claims-fast-lane PRs, compact): REPL hardening — negative-seconds
+  crash + post-prestige bricked run (#115); catalog ratchet — 9 milestone + 6
+  label slots gate-locked for all 18 packs (#114); doc truth-fixes —
+  `idle.game.play` in the plugin README + themes-README schema pointer (#117);
+  REPL bulk buy `buy <id> [n|max]` (#116); REPL `save`/`load` on persistence-v2
+  blobs (#119); setup-vector drift hint (#120); determinism suite pinned to
+  published `dump_state` (#121); core-skin guard noun table, 226 nouns ×
+  18 packs (#123); themed purchase errors (#124); current-state counts guard
+  (#125); advisory host-main CI lane, daily cron vs unpinned superbot-next
+  main (#126). Suite 1363 → 1381.
 - **Wave-4 milestones flavoring** (PRs #108 + #109 `a6906b9`, EAP night,
   ⚑ self-initiated): coffee-roastery, arctic-outpost, candy-factory get
   flavored 9-slot `milestones` blocks — ALL 18 packs now read finished.
