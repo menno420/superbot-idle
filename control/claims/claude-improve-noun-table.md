@@ -1,0 +1,1 @@
+- `claude/improve-noun-table` · **core-skin guard noun table** — FORBIDDEN_NOUNS_BY_PACK dict refactor, test-only · tests/test_core_skin_guard.py + .sessions/ + telemetry/ · 2026-07-14

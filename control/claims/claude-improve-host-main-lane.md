@@ -1,0 +1,1 @@
+- `claude/improve-host-main-lane` · **scheduled advisory host-main CI lane** — cron copy of pytest-with-host against unpinned superbot-next main, advisory-only · .github/workflows/ + .sessions/ + telemetry/ · 2026-07-14
