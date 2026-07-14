@@ -88,6 +88,28 @@ def test_dispatch_unknown_and_bad_buy_are_graceful():
     assert "No upgrade" in out
 
 
+def test_dispatch_negative_seconds_is_graceful():
+    """`wait -5` / `offline -5` must not escape as a ValueError traceback."""
+    session = play.new_session(play.load_pack("egg-farm"))
+    for verb in ("wait", "offline"):
+        same, out = play.dispatch(session, f"{verb} -5")
+        assert same is session  # no time moved, no state change
+        assert f"Usage: {verb} <seconds>" in out
+
+
+def test_prestige_do_regrants_starting_generators():
+    """A prestige reset must re-seed the runtime starting grant, or the run
+    is unrecoverable (the engine has no generator purchase verb yet)."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    spec = session.theme.prestige_spec()
+    session = play.advance(session, spec.threshold + 1)  # cross eligibility
+    reset, out = play.dispatch(session, "prestige do")
+    assert "starting generators re-granted" in out
+    assert reset.state.owned == {"tier1": 1}  # grant re-applied, not 0-owned
+    moved, _ = play.dispatch(reset, "wait 10")
+    assert moved.state.balances.get("primary", 0) > 0  # production accrues again
+
+
 @pytest.mark.parametrize(
     "pack", sorted(p.stem for p in (REPO_ROOT / "themes").glob("*.yaml"))
 )
