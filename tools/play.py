@@ -14,7 +14,9 @@ It reimplements no mechanics — production is ``tick`` /
 (and, for ``buy <id> <n>`` / ``buy <id> max``, the engine's atomic bulk API
 ``purchase_upgrades`` / ``max_affordable_levels``), resets are
 ``prestige_eligible`` / ``apply_prestige``, milestone banking is
-``award_milestones``. The one runtime choice local to this file is a starting
+``award_milestones``, and saves are ``dump_state`` / ``load_state`` (the frozen
+persistence-v2 format — the engine serializes, this runtime owns where the
+string goes, here: your clipboard). The one runtime choice local to this file is a starting
 grant of generators (``--start-count``, default 1): the engine has no generator
 purchase verb yet (a separate, economy-number-bearing slice), so without a
 starting grant a fresh save produces nothing and there is no loop to watch.
@@ -30,6 +32,8 @@ Commands (type ``help`` in the loop):
     pack <id>         switch to another shipped theme pack (fresh save)
     wait <secs>       advance the clock by <secs> without other action
     achievements      the milestone view
+    save              print this run as one canonical save line (copy it)
+    load <blob>       restore a run from a save line (replaces this session)
     help / quit
 
 Usage::
@@ -72,6 +76,7 @@ from idle_engine import (  # noqa: E402  (path shim must precede the import)
     tick,
 )
 from idle_engine.engine import apply_offline_progress  # noqa: E402
+from idle_engine.persistence import SaveError, dump_state, load_state  # noqa: E402
 from idle_engine.provisioning import decode_setup, validate_against_catalog  # noqa: E402
 from idle_engine.theme import Theme  # noqa: E402
 
@@ -217,6 +222,8 @@ _HELP = """Commands:
   offline <secs>         credit <secs> of offline production, then show status
   wait <secs>            advance the clock by <secs>
   achievements           the milestone view
+  save                   print this run as one canonical save line (copy it)
+  load <blob>            restore a run from a save line (replaces this session)
   pack <id>              switch to another shipped theme pack (fresh save)
   help                   this message
   quit                   leave the game"""
@@ -299,6 +306,33 @@ def _prestige(session: Session, arg: str, start_count: int = 1) -> tuple[Session
     return reset, "\n".join(lines) + "\n" + view_status(reset)
 
 
+def _load(session: Session, blob: str) -> tuple[Session, str]:
+    """Replace the session state with a save blob (persistence v2).
+
+    The blob is AUTHORITATIVE: nothing is re-granted on load (a save
+    already carries its own ``owned`` — the starting grant is a
+    fresh-save/post-prestige runtime choice only), and the session clock
+    is rebased to the loaded ``last_seen`` so the restored run resumes
+    from its own "now": no phantom offline time is displayed or
+    creditable, and an immediate ``save`` re-emits the identical blob.
+
+    Refusals catch the persistence layer's real error taxonomy
+    (:class:`SaveError` covers malformed JSON, unknown versions, wrong
+    field sets/types, negative quantities) plus ``RecursionError`` for
+    hostile oversized/deeply-nested input, which escapes ``json.loads``
+    as neither — never a bare except, same session object returned.
+    """
+    try:
+        state = load_state(blob)
+    except (SaveError, RecursionError) as exc:
+        reason = "save is nested too deeply" if isinstance(exc, RecursionError) else exc
+        return session, f"Cannot load save: {reason}"
+    loaded = Session(
+        theme=session.theme, state=state, now=state.last_seen, log=session.log
+    )
+    return loaded, "Save loaded.\n" + view_status(loaded)
+
+
 def _pack(session: Session, theme_id: str, start_count: int) -> tuple[Session, str]:
     try:
         theme = load_pack(theme_id)
@@ -349,6 +383,17 @@ def dispatch(
             return session, f"Usage: {verb} <seconds> (seconds must be >= 0)"
         moved = (go_offline if verb == "offline" else advance)(session, seconds)
         return moved, view_status(moved)
+    if verb == "save":
+        # One canonical line (dump_state is deterministic): copy-pasteable
+        # as-is after `load`. Engine-produced states are always dumpable.
+        return session, dump_state(session.state)
+    if verb == "load":
+        # Take the RAW remainder of the line, not the split args: load_state
+        # accepts any JSON spelling, including blobs containing whitespace.
+        rest = command.strip().split(None, 1)
+        if len(rest) < 2:
+            return session, "Usage: load <save-blob> (get one with 'save')"
+        return _load(session, rest[1])
     if verb == "pack":
         if not arg:
             return session, "Available packs: " + ", ".join(available_packs())
