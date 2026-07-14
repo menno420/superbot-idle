@@ -1,0 +1,1 @@
+- `claude/improve-themed-errors` · **themed insufficient-funds message** — REPL buy errors name the themed currency, not engine ids · tools/play.py + tests + .sessions/ + telemetry/ · 2026-07-14

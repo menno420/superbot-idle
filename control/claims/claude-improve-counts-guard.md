@@ -1,0 +1,1 @@
+- `claude/improve-counts-guard` · **current-state counts guard** — test pins pack-count + vector-count claims in docs/current-state.md to ground truth · tests/ + .sessions/ + telemetry/ · 2026-07-14
