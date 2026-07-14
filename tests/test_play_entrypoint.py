@@ -88,6 +88,58 @@ def test_dispatch_unknown_and_bad_buy_are_graceful():
     assert "No upgrade" in out
 
 
+def test_dispatch_buy_count_buys_n_levels_in_one_command():
+    """`buy <id> 3` climbs 3 levels via the engine's atomic bulk purchase."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    session = play.advance(session, 2000)  # earn enough eggs for several levels
+    bought, out = play.dispatch(session, "buy boost1 3")
+    assert bought.state.upgrades.get("boost1", 0) == 3
+    assert "3 levels" in out and "boost1" in out
+    # `buy <id> 1` is the single-level buy, same wording as the bare verb.
+    one_more, out = play.dispatch(bought, "buy boost1 1")
+    assert one_more.state.upgrades.get("boost1", 0) == 4
+    assert "a level" in out
+
+
+def test_dispatch_buy_max_buys_exactly_all_affordable():
+    """`buy <id> max` buys every affordable level — and afterwards not even
+    one more level is affordable (the defining property of the argmax)."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    session = play.advance(session, 600)
+    bought, out = play.dispatch(session, "buy boost1 max")
+    assert bought.state.upgrades.get("boost1", 0) >= 1
+    assert out.startswith("Bought")
+    # Maxed means maxed: an immediate repeat (no time passed, no new income)
+    # must afford nothing, and must say so gracefully without changing state.
+    same, out = play.dispatch(bought, "buy boost1 max")
+    assert same is bought
+    assert "cannot afford a single level" in out
+
+
+def test_dispatch_buy_bad_count_is_graceful():
+    """`buy <id> 0/-3/garbage` must not traceback or spend anything."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    session = play.advance(session, 200)
+    for bad in ("0", "-3", "banana", "2.5"):
+        same, out = play.dispatch(session, f"buy boost1 {bad}")
+        assert same is session  # nothing bought, nothing spent
+        assert "Usage: buy" in out
+
+
+def test_dispatch_buy_more_than_affordable_is_graceful_and_atomic():
+    """A count beyond the budget spends NOTHING (atomic refusal) and answers
+    instantly even for an absurd count (no pricing of 10^9 levels)."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    same, out = play.dispatch(session, "buy boost1 1000000000")
+    assert same is session
+    assert "Cannot buy 1000000000 levels" in out
+    assert "cannot afford a single level" in out
+    # And `max` on a zero-egg fresh save is the same graceful refusal.
+    same, out = play.dispatch(session, "buy boost1 max")
+    assert same is session
+    assert "cannot afford a single level" in out
+
+
 def test_dispatch_negative_seconds_is_graceful():
     """`wait -5` / `offline -5` must not escape as a ValueError traceback."""
     session = play.new_session(play.load_pack("egg-farm"))

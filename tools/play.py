@@ -10,8 +10,10 @@ commands, and renders every view through the existing ``render_*`` functions.
 
 NEW FILE, zero engine change: it only *drives* the public engine + render API.
 It reimplements no mechanics — production is ``tick`` /
-``apply_offline_progress``, purchases are ``purchase_upgrade`` / ``upgrade_cost``,
-resets are ``prestige_eligible`` / ``apply_prestige``, milestone banking is
+``apply_offline_progress``, purchases are ``purchase_upgrade`` / ``upgrade_cost``
+(and, for ``buy <id> <n>`` / ``buy <id> max``, the engine's atomic bulk API
+``purchase_upgrades`` / ``max_affordable_levels``), resets are
+``prestige_eligible`` / ``apply_prestige``, milestone banking is
 ``award_milestones``. The one runtime choice local to this file is a starting
 grant of generators (``--start-count``, default 1): the engine has no generator
 purchase verb yet (a separate, economy-number-bearing slice), so without a
@@ -21,7 +23,8 @@ Commands (type ``help`` in the loop):
 
     status            balances, generator rates, offline gains
     shop              the upgrade shop (cost lines + trap-buy warnings)
-    buy <id>          buy one level of upgrade <id>
+    buy <id> [n|max]  buy n levels of upgrade <id> (default 1); ``max`` buys
+                      every level the balance covers
     prestige          show the prestige view; ``prestige do`` performs the reset
     offline <secs>    credit <secs> of offline production, then show status
     pack <id>         switch to another shipped theme pack (fresh save)
@@ -58,8 +61,10 @@ from idle_engine import (  # noqa: E402  (path shim must precede the import)
     apply_prestige,
     award_milestones,
     load_theme,
+    max_affordable_levels,
     prestige_eligible,
     purchase_upgrade,
+    purchase_upgrades,
     render_achievements,
     render_prestige,
     render_shop,
@@ -207,7 +212,7 @@ def view_achievements(session: Session) -> str:
 _HELP = """Commands:
   status                 balances, generator rates, offline gains
   shop                   the upgrade shop (cost lines + trap-buy warnings)
-  buy <id>               buy one level of upgrade <id>
+  buy <id> [n|max]       buy n levels of <id> (default 1); 'max' = all affordable
   prestige [do]          show the prestige view; 'prestige do' performs a reset
   offline <secs>         credit <secs> of offline production, then show status
   wait <secs>            advance the clock by <secs>
@@ -217,20 +222,58 @@ _HELP = """Commands:
   quit                   leave the game"""
 
 
-def _buy(session: Session, upgrade_id: str) -> tuple[Session, str]:
+_BUY_USAGE = "Usage: buy <upgrade-id> [count|max] (count must be an integer >= 1)"
+
+
+def _buy(session: Session, upgrade_id: str, count_arg: str = "") -> tuple[Session, str]:
     specs = {s.spec_id: s for s in session.theme.upgrade_specs()}
     spec = specs.get(upgrade_id)
     if spec is None:
         valid = ", ".join(specs) or "(none)"
         return session, f"No upgrade {upgrade_id!r}. Valid: {valid}"
     try:
-        state = purchase_upgrade(session.state, spec)
+        if not count_arg:
+            # Single-level buy: the original verb, byte-identical behavior.
+            state = purchase_upgrade(session.state, spec)
+            n = 1
+        else:
+            # Bulk buy via the engine's atomic bulk API (all-or-nothing spend).
+            # Affordability is pre-checked with the exact engine argmax so an
+            # absurd count is refused instantly instead of pricing it out.
+            level = session.state.upgrades.get(spec.spec_id, 0)
+            budget = session.state.balances.get(spec.cost_currency, 0)
+            affordable = max_affordable_levels(spec, level, budget)
+            if count_arg.lower() == "max":
+                n = affordable
+                if n == 0:
+                    return session, (
+                        f"Cannot buy {upgrade_id!r}: cannot afford a single level."
+                    )
+            else:
+                try:
+                    n = int(count_arg)
+                except ValueError:
+                    return session, _BUY_USAGE
+                if n < 1:
+                    return session, _BUY_USAGE
+                if n > affordable:
+                    have = (
+                        f"can only afford {affordable}"
+                        if affordable
+                        else "cannot afford a single level"
+                    )
+                    plural = "s" if n != 1 else ""
+                    return session, (
+                        f"Cannot buy {n} level{plural} of {upgrade_id!r}: {have}."
+                    )
+            state = purchase_upgrades(session.state, spec, n)
     except ValueError as exc:
         return session, f"Cannot buy {upgrade_id!r}: {exc}"
     _, _, _, milestones = _spec_bundle(session.theme)
     state = award_milestones(state, milestones)
     bought = Session(theme=session.theme, state=state, now=session.now, log=session.log)
-    return bought, f"Bought a level of {upgrade_id!r}.\n" + view_shop(bought)
+    levels = "a level" if n == 1 else f"{n} levels"
+    return bought, f"Bought {levels} of {upgrade_id!r}.\n" + view_shop(bought)
 
 
 def _prestige(session: Session, arg: str, start_count: int = 1) -> tuple[Session, str]:
@@ -293,8 +336,8 @@ def dispatch(
         return session, view_achievements(session)
     if verb == "buy":
         if not arg:
-            return session, "Usage: buy <upgrade-id>"
-        return _buy(session, arg)
+            return session, "Usage: buy <upgrade-id> [count|max]"
+        return _buy(session, arg, args[1] if len(args) > 1 else "")
     if verb == "prestige":
         return _prestige(session, arg, start_count)
     if verb in ("offline", "wait"):
