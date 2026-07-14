@@ -1,0 +1,71 @@
+# host-main-advisory v1 — ADVISORY-ONLY scheduled drift check against
+# UNPINNED superbot-next main. LANE-OWNED (like pytest.yml; the kit-owned
+# substrate-gate.yml is regenerated in place — keep hand-edited lanes
+# separate).
+#
+# Why this exists: pytest.yml's pytest-with-host job runs the adapter-
+# contract tests against superbot-next at a PINNED commit, so the pin rots
+# silently — host main moves, idle CI stays green on the old SHA, and a
+# real contract break only surfaces when someone bumps the pin. Requested
+# by three session cards: 2026-07-13-eap-ci-skip-hole.md (💡: "a scheduled
+# (cron) variant of pytest-with-host that checks out superbot-next main
+# (unpinned) … non-blocking, alert-only"), 2026-07-13-idle-capability-
+# 3part-fix.md (💡: optional scheduled lane, "not blocking, not on the
+# sb-free critical path"), 2026-07-13-idle-liveboot-fixes.md (💡: same
+# lane for live-path host-contract drift).
+#
+# ADVISORY SEMANTICS — this workflow may (and should) fail loudly; that is
+# its job. It has NO pull_request/push triggers, so it never appears on a
+# PR and never gates a merge. A RED run means one of:
+#   - superbot-next main moved incompatibly (drift: the current pin in
+#     pytest.yml still passes, but the next bump will break), or
+#   - the adapter contract itself broke (plugin/ no longer satisfies the
+#     host), or
+#   - the skip-guard tripped: host main stopped satisfying
+#     importorskip("sb.spec.manifest"), silently re-opening the
+#     `1 skipped` hole — a skip here is a failure even against main.
+# Fix path: bump the PIN in pytest.yml's pytest-with-host job per its
+# "PIN:" comment (git ls-remote superbot-next main, update ref:, confirm
+# green) once the adapter is compatible with the new host — or fix the
+# adapter in plugin/.
+#
+# NOTE: scheduled workflows only run from the default branch, so this lane
+# activates on merge to main. Steps mirror pytest.yml::pytest-with-host
+# exactly (host checkout path, PYTHONPATH exposure, --ignore, grep
+# skip-guard) except ref: main replaces the pinned SHA.
+name: host-main-advisory
+on:
+  schedule:
+    # 05:17 UTC daily — after the (European) owner's overnight, before the
+    # working day, and off the :00 boundary (GitHub delays/drops cron jobs
+    # queued at whole-hour peaks).
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+jobs:
+  pytest-with-host-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: menno420/superbot-next
+          ref: main
+          path: superbot-next
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: install test deps
+        run: python -m pip install --quiet pytest pyyaml jsonschema
+      - name: run pytest suite with sb host (main, unpinned) importable — manifest module must RUN, not skip
+        # Mirrors pytest.yml::pytest-with-host verbatim: --ignore keeps the
+        # host checkout's own test tree out of rootdir collection; the grep
+        # guard makes 0 skips a hard requirement — a skip means host main
+        # no longer satisfies importorskip("sb.spec.manifest") and the
+        # 1-skipped hole re-opened even against main.
+        run: |
+          PYTHONPATH="$GITHUB_WORKSPACE/superbot-next" python3 -m pytest -q --ignore=superbot-next | tee /tmp/host-pytest.txt
+          test "${PIPESTATUS[0]}" -eq 0
+          if grep -qE '[0-9]+ skipped' /tmp/host-pytest.txt; then
+            echo "skip detected: host main no longer un-skips plugin/tests/test_manifest.py — the 1-skipped hole re-opened"
+            exit 1
+          fi
