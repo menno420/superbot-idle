@@ -6,7 +6,7 @@ kit: v1.7.1 · check: green
 boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verified via bootstrap.py --version, check --strict green, calibration posted
 last-shipped: ORDER 003 — pytest CI workflow (PR #74); prior: PLUG-001 docs-only un-park (PR #72), close-out + archive prep (PR #70 + heartbeat PR #71)
 blockers: SIM-001/Q-0264 and KIT-001 still open (⚑ blocks below). PLUG-001 CLEARED 2026-07-12 — contract found, un-parked (see PLUG-001 section below).
-orders: acked=000-005 done=000-005 (003 done-when met: PR #74 MERGED 2026-07-12T19:40:02Z with the `pytest` check green + the ⚑ required-check ask filed as OA-003 below; 004 = NIGHT REPORT section at end of this file; 005 done-when met atomically with this line: the graduation PR #93 carries the table flip + A10 trend-form re-registration + this done-report in one landing — see § ORDER 005 at end of this file)
+orders: acked=000-005 done=000-005 (003 done-when met: PR #74 MERGED 2026-07-12T19:40:02Z with the `pytest` check green + the ⚑ required-check ask filed as OA-003 below; 004 = NIGHT REPORT section at end of this file; 005 done-when met atomically with this line: the graduation PR #93 carries the table flip + A10 trend-form re-registration + this done-report in one landing — see § ORDER 005 at end of this file) claimed-by: 008+009 eap-closeout-lane 2026-07-14T11:28:12Z
 
 ## ORDER 003 — pytest CI on PR + push (2026-07-12T08:30Z, P1)
 - ADDRESSED by **PR #74** (`order-003-pytest-ci`): adds `.github/workflows/pytest.yml`, a new workflow that runs `python3 -m pytest -q` on every `pull_request` and `push` to `main`. Job/check name `pytest`, so it shows as its own check-run.
