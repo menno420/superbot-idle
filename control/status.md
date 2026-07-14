@@ -7,7 +7,7 @@ boot: 2026-07-10 — idle-engine seat synced seed HEAD 28fac02, kit v1.7.1 verif
 last-shipped: EAP closeout (PR #132: this re-stamp + docs/eap-closeout-walkthrough-2026-07-14.md + outbox close-out summary); prior: improvement-wave records (PR #128), EAP night docs groom + outbox (PR #111)
 blockers: none (parked items cited in § ORDERS 006–009 dispositions below)
 orders: acked=000-009 done=000-009 (006 acked+adopted via PR #106; 007 served via PRs #101–#111; 008 = this overwrite; 009 = walkthrough + outbox close-out, PR #132 — see § ORDERS 006–009 dispositions below; 000–005 records unchanged in the sections below)
-⚑ needs-owner: OA-003 — add `pytest` to required status checks on main (Settings → Branches); all pending clicks/decisions with recommendations: docs/eap-closeout-walkthrough-2026-07-14.md § C
+⚑ needs-owner: OA-003 — WHAT: add `pytest` as a required status check on main. WHERE: https://github.com/menno420/superbot-idle/settings/branches → `main` protection rule → required status checks. HOW: add `pytest` alongside `substrate-gate` + `theme-gate` (click only). RISK: ✅ safe · ↩️ reversible (uncheck to undo). WHY-IT-MATTERS: until then a PR can merge with the test suite red (GREEN ≠ TESTED). UNBLOCKS: merge-on-green becomes trustworthy for every future PR. VERIFIED-NEEDED: branch-protection settings are owner/admin-only — standing since PR #74 (OA-003); agent sessions hold no repo admin scope. Full pending-decision list with recommendations: docs/eap-closeout-walkthrough-2026-07-14.md § C.
 notes: EAP final day — INC-17 heartbeat freeze cleared by this re-stamp; kit line re-derived from the tree, not from memory.
 
 ## ORDERS 006–009 — dispositions (2026-07-14)
