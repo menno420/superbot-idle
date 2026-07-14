@@ -162,6 +162,93 @@ def test_prestige_do_regrants_starting_generators():
     assert moved.state.balances.get("primary", 0) > 0  # production accrues again
 
 
+def test_dispatch_save_prints_one_canonical_loadable_line():
+    """`save` prints exactly the persistence-v2 canonical blob: one line,
+    copy-pasteable, and loadable back into an equal state."""
+    from idle_engine.persistence import dump_state, load_state
+
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    session = play.advance(session, 60)
+    same, blob = play.dispatch(session, "save")
+    assert same is session  # save is read-only
+    assert blob == dump_state(session.state)
+    assert "\n" not in blob
+    assert load_state(blob) == session.state
+
+
+def test_dispatch_save_load_round_trip_preserves_state_and_rate():
+    """save -> (fresh, diverged session) -> load restores the exact state,
+    and production resumes at the saved run's rate, not the fresh one's."""
+    original = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    original = play.advance(original, 2000)
+    original, _ = play.dispatch(original, "buy boost1 3")  # a run worth keeping
+    _, blob = play.dispatch(original, "save")
+
+    fresh = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    restored, out = play.dispatch(fresh, f"load {blob}")
+    assert out.startswith("Save loaded.")
+    assert restored.state == original.state
+    # Rate correct: the same wait credits the same production on both.
+    a, _ = play.dispatch(original, "wait 10")
+    b, _ = play.dispatch(restored, "wait 10")
+    assert b.state.balances == a.state.balances
+    # And an immediate re-save round-trips to the identical blob.
+    _, blob_again = play.dispatch(restored, "save")
+    assert blob_again == blob
+
+
+def test_dispatch_load_malformed_blob_is_graceful():
+    """Garbage, wrong versions, mutant field sets, floats, negatives, and
+    hostile deeply-nested input all refuse with a message — same session
+    object back, no traceback (the persistence error taxonomy, caught)."""
+    session = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    _, blob = play.dispatch(session, "save")
+    for bad in (
+        "banana",  # not JSON at all
+        "[1,2,3]",  # JSON, not an object
+        '{"state_version":99}',  # unknown version
+        '{"state_version":2}',  # missing fields
+        blob.replace('"last_seen":', '"last_seen_x":'),  # mutant field set
+        blob.replace('"last_seen":0', '"last_seen":0.5'),  # float smuggling
+        blob.replace('"tier1":1', '"tier1":-1'),  # negative quantity
+        "[" * 50000,  # hostile oversized/deep nesting
+    ):
+        same, out = play.dispatch(session, f"load {bad}")
+        assert same is session
+        assert out.startswith("Cannot load save:")
+    # A bare `load` is a usage message, matching the house style.
+    same, out = play.dispatch(session, "load")
+    assert same is session
+    assert "Usage: load" in out
+
+
+def test_dispatch_load_then_status_renders_without_phantom_offline():
+    """A loaded session renders: `status` works, the clock sits at the
+    save's own last_seen, so no phantom offline time is shown or credited."""
+    original = play.new_session(play.load_pack("egg-farm"), start_count=1)
+    original = play.advance(original, 120)
+    _, blob = play.dispatch(original, "save")
+    late = play.advance(play.new_session(play.load_pack("egg-farm")), 5000)
+    restored, _ = play.dispatch(late, f"load {blob}")
+    assert restored.now == restored.state.last_seen == 120  # clock rebased
+    _, status = play.dispatch(restored, "status")
+    assert "Egg Farm" in status
+    # `offline 0` at the rebased clock credits nothing (no phantom time).
+    same_balances, _ = play.dispatch(restored, "offline 0")
+    assert same_balances.state.balances == restored.state.balances
+
+
+def test_dispatch_load_does_not_regrant_anything():
+    """The blob is authoritative: loading an empty-owned save into a granted
+    session must NOT re-seed the starting grant (unlike fresh/prestige)."""
+    empty = play.new_session(play.load_pack("egg-farm"), start_count=0)
+    _, blob = play.dispatch(empty, "save")
+    granted = play.new_session(play.load_pack("egg-farm"), start_count=3)
+    restored, _ = play.dispatch(granted, f"load {blob}")
+    assert restored.state.owned == {}  # not re-granted
+    assert restored.state == empty.state
+
+
 @pytest.mark.parametrize(
     "pack", sorted(p.stem for p in (REPO_ROOT / "themes").glob("*.yaml"))
 )
