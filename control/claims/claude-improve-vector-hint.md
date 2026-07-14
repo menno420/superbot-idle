@@ -1,1 +1,0 @@
-- `claude/improve-vector-hint` · **setup-vector regen hint** — add "did the catalog change?" guidance to the regenerate-or-red failure text · tools/gen_setup_vectors.py + tests · .sessions/ + telemetry/ · 2026-07-14
