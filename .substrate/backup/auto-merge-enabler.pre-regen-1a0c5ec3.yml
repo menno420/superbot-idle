@@ -1,0 +1,211 @@
+# superbot-idle auto-merge enabler — HAND-INSTALLED (not kit-wired).
+# PROVENANCE: installed 2026-07-12 by the fleet-manager coordinator's
+# hands per the owner's live directive (fleet-manager coordinator chat,
+# 2026-07-12T23:00Z — uniform PR-landing workflows fleet-wide; explicit
+# standing permission to merge all PRs), recorded as fm inbox ORDER 029.
+# Adapted from menno420/idea-engine
+# .github/workflows/auto-merge-enabler.yml @
+# 8d0cd53e85b5f45d77c7ef2813cc168e9e5e9898 (all guards kept).
+# NOTE: substrate-kit's `bootstrap.py adopt/upgrade --wire-enforcement`
+# regenerates a file of this NAME in place — if that ever runs here,
+# re-apply the host customizations below (branch allowlist, required-
+# check names, in-progress-card skip) after the regenerate.
+#
+# Arms GitHub-native auto-merge on agent PRs at open, so a born-red
+# session PR merges itself the moment the required checks go green.
+# INERT until two one-time repo settings exist (owner UI):
+#   1. Settings → General → Pull Requests → "Allow auto-merge" = ON.
+#   2. A ruleset/branch protection on main REQUIRING status checks.
+#      LIVE STATE (verified 2026-07-13, run 29255821474 step "rules"):
+#      main requires 'substrate-gate' + 'theme-gate' ONLY. 'pytest'
+#      runs in CI (pytest.yml) but is NOT a required context — an
+#      armed PR with a red pytest still merges; run the suite before
+#      merge until the owner adds 'pytest' to the ruleset (ORDER 003).
+# With NO required check (superbot-idle's state at install time), arming
+# would merge a PR INSTANTLY — the refuse-to-arm guard below counts
+# required contexts and refuses on zero rather than inverting the gate.
+#
+# CARVE-OUT: label `do-not-automerge` = never armed
+# (job-level check + a fresh API re-read to defeat the stale-payload
+# label race). The label is advisory routing; the required check
+# going red is the enforcement.
+name: auto-merge-enabler
+on:
+  pull_request:
+    # `synchronize` (every push to the PR head) re-arms: arming is
+    # idempotent and never merges anything itself — the merge stays
+    # gated by the required checks. This narrows the green-behind
+    # stall: a fix-push or `git merge origin/<base>` re-arms on the
+    # up-to-date head.
+    types: [opened, reopened, ready_for_review, synchronize]
+permissions:
+  contents: write
+  pull-requests: write
+concurrency:
+  group: auto-merge-enabler-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  enable-auto-merge:
+    # HOST CUSTOMIZATION (superbot-idle): allowlist derived from the
+    # last ~12 PR head branches at install time — `claude/` (agent
+    # sessions), `control/` (heartbeats), `claim/` (fast-lane claims),
+    # `close-out/` (lane close-outs). Unprefixed heads seen in history
+    # (order-003-pytest-ci, plug-001-unpark-docs, timed-events-scoping,
+    # golden-save-corpus) simply don't arm — safe no-op, they land
+    # manually. Extend the list when a new agent branch prefix earns
+    # its place.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.draft == false &&
+      (startsWith(github.head_ref, 'claude/') || startsWith(github.head_ref, 'control/') || startsWith(github.head_ref, 'claim/') || startsWith(github.head_ref, 'close-out/')) &&
+      !contains(github.event.pull_request.labels.*.name, 'do-not-automerge')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse to arm unless the base branch requires status CONTEXTS
+        id: rules
+        env:
+          GH_TOKEN: ${{ secrets.ROUTINE_PAT || secrets.GITHUB_TOKEN }}
+        run: |
+          # Count required check CONTEXTS, not rules: a
+          # required_status_checks RULE with an empty context list
+          # still lets an armed PR merge with nothing to wait for.
+          contexts="$(gh api "repos/$GITHUB_REPOSITORY/rules/branches/${{ github.base_ref }}" \
+            --jq '[.[] | select(.type == "required_status_checks")
+                   | .parameters.required_status_checks // [] | .[].context]')"
+          count="$(printf '%s' "$contexts" | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')"
+          echo "required contexts ($count): $contexts"
+          echo "required=$count" >> "$GITHUB_OUTPUT"
+          if [ "$count" = "0" ]; then
+            echo "::warning::the base branch requires no status-check CONTEXTS — arming would merge instantly. Refusing to arm; re-require 'substrate-gate' and 'theme-gate' on main first (Settings → Branches/Rulesets). NOTE: 'pytest' is NOT a required context on this repo — run the suite manually before merging until the owner requires it (ORDER 003)."
+          fi
+      - name: Re-check the do-not-automerge label FRESH (stale-payload race guard)
+        id: label
+        if: steps.rules.outputs.required != '0'
+        env:
+          GH_TOKEN: ${{ secrets.ROUTINE_PAT || secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+        run: |
+          # The event payload snapshots labels at PR-open time; an
+          # MCP-created PR gets its label in a SECOND call right
+          # after create. Wait a grace beat, then re-read labels
+          # from the API and refuse to arm if the label is present
+          # NOW (the kit #22 incident class).
+          sleep 15
+          labels="$(gh api "repos/$GITHUB_REPOSITORY/issues/$PR/labels" --jq '[.[].name] | join(",")')"
+          echo "labels on re-read: $labels"
+          case ",$labels," in
+            *,do-not-automerge,*)
+              echo "do-not-automerge present on re-read — refusing to arm."
+              echo "skip=1" >> "$GITHUB_OUTPUT" ;;
+            *)
+              echo "skip=0" >> "$GITHUB_OUTPUT" ;;
+          esac
+      - name: Skip arming while the PR's own in-diff session card is in-progress
+        id: card
+        if: steps.rules.outputs.required != '0' && steps.label.outputs.skip == '0'
+        env:
+          # HOST CUSTOMIZATION (superbot-idle — arm-at-open race guard,
+          # adapted from idea-engine's PR #80/#81 close-out race): arming
+          # at `opened` squash-merges a green PR fast, out-racing every
+          # multi-commit plan — the session close-out (card flip + claim
+          # delete) then arrives on a merged PR and needs a follow-up PR.
+          # This repo's card convention makes intent machine-readable: a
+          # session card ADDED born-red (`**Status:** in-progress`,
+          # .sessions/README.md) means "more commits are coming". So: if
+          # this PR's diff adds/modifies a `.sessions/*.md` card whose
+          # Status badge still says `in-progress`, SKIP arming (exit
+          # green, no arm) — the workflow re-runs on `synchronize`, so
+          # the close-out push that flips the card to `complete` arms it
+          # then. Card-less PRs (claims, heartbeats) arm at open.
+          # HARDENED 2026-07-13 to superbot-games' live guard semantics
+          # (.github/workflows/auto-merge-enabler.yml @ d6a9526):
+          # `drafted` (the kit auto-draft state, also not-final) refuses
+          # to arm like `in-progress`, and Status-badge parsing tolerates
+          # emoji/backtick prefixes ("✅ `complete`", "🚧 in-progress") —
+          # the old regex read a decorated badge as <no Status badge>
+          # and would have ARMED an in-progress-card PR.
+          # SECURITY: card paths and contents are PR-controlled — they
+          # are read via the API and parsed in Python only, passed as
+          # argv/env, NEVER interpolated into this script body.
+          GH_TOKEN: ${{ secrets.ROUTINE_PAT || secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os, re, subprocess, sys, urllib.parse
+
+          repo = os.environ["GITHUB_REPOSITORY"]
+          pr = os.environ["PR"]
+          head = os.environ["HEAD_SHA"]
+
+          def gh_api(*args):
+              # argv-only (never a shell string): PR-controlled values can
+              # ride as arguments but can never splice into a command.
+              r = subprocess.run(["gh", "api", *args],
+                                 capture_output=True, text=True)
+              if r.returncode != 0:
+                  print(r.stderr, file=sys.stderr)
+                  sys.exit(1)  # fail LOUD: an unreadable diff must not arm
+              return r.stdout
+
+          def parse_line(line):
+              v = json.loads(line)
+              return json.loads(v) if isinstance(v, str) else v
+
+          entries = [parse_line(line) for line in gh_api(
+              f"repos/{repo}/pulls/{pr}/files?per_page=100",
+              "--paginate", "--jq", ".[] | @json").splitlines() if line]
+          cards = [e["filename"] for e in entries
+                   if e["filename"].startswith(".sessions/")
+                   and e["filename"].endswith(".md")
+                   and e["filename"] != ".sessions/README.md"
+                   and e.get("status") != "removed"]
+
+          in_progress = []
+          for path in cards:
+              raw = gh_api("-H", "Accept: application/vnd.github.raw+json",
+                           f"repos/{repo}/contents/"
+                           f"{urllib.parse.quote(path)}?ref={head}")
+              # Tolerate emoji / backtick prefixes before the status
+              # token ("✅ `complete`", "`in-progress`", "in-progress").
+              m = re.search(r"\*\*Status:\*\*[^A-Za-z\n]*([A-Za-z-]+)", raw)
+              status = m.group(1) if m else "<no Status badge>"
+              print(f"card {path} @ {head[:12]}: status={status}")
+              if status in ("in-progress", "drafted"):
+                  in_progress.append(path)
+
+          skip = 1 if in_progress else 0
+          if skip:
+              print("in-progress/drafted session card(s) in this PR's diff — "
+                    "refusing to arm; the close-out push that flips the card "
+                    "to `complete` re-runs this workflow via `synchronize` "
+                    "and arms then: " + ", ".join(in_progress))
+          elif cards:
+              print("all in-diff session cards are past in-progress — "
+                    "arming may proceed.")
+          else:
+              print("no session card in this PR's diff — "
+                    "arming may proceed (the card-less fast-lane class).")
+          with open(os.environ["GITHUB_OUTPUT"], "a") as f:
+              f.write(f"skip={skip}\n")
+          PY
+      - name: Enable native auto-merge (squash)
+        if: steps.rules.outputs.required != '0' && steps.label.outputs.skip == '0' && steps.card.outputs.skip == '0'
+        env:
+          # Prefer a PAT so the eventual merge attributes to a real
+          # user; GITHUB_TOKEN is the fallback.
+          GH_TOKEN: ${{ secrets.ROUTINE_PAT || secrets.GITHUB_TOKEN }}
+          PR: ${{ github.event.pull_request.number }}
+          # HOST CUSTOMIZATION (kept from idea-engine — squash head-ref
+          # provenance): the default squash subject `<title> (#N)` carries
+          # NO branch name, so squash-only history starves every
+          # history-derived branch survey. `--body` below stamps the
+          # source branch into the squash commit body as a `Head-ref:`
+          # line. Passed via env, never interpolated (injection-safe).
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          if gh pr merge --auto --squash "$PR" --repo "$GITHUB_REPOSITORY" --body "Head-ref: $HEAD_REF"; then
+            echo "Auto-merge enabled for PR #$PR — it merges when the required checks are green."
+          else
+            echo "::warning::Could not enable auto-merge for PR #$PR. Confirm: (1) 'Allow auto-merge' is ON, (2) main requires the 'substrate-gate' + 'theme-gate' checks ('pytest' is NOT required on this repo — run it manually), (3) the token has Pull requests + Contents write. On a repo shape where GitHub structurally refuses the arm, REST merge-on-green is the landing path instead."
+          fi
