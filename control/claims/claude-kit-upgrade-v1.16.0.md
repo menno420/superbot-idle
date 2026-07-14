@@ -1,1 +1,0 @@
-- `claude/kit-upgrade-v1.16.0` · **kit upgrade v1.15.0 → v1.16.0** — vendored substrate-kit bump via canonical two-command flow, kit-owned files only · bootstrap.py + .substrate/ + kit-owned docs + .sessions/ + telemetry/ · 2026-07-14
