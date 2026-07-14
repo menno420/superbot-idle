@@ -46,7 +46,7 @@ from __future__ import annotations
 
 import argparse
 import sys
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -233,7 +233,7 @@ def _buy(session: Session, upgrade_id: str) -> tuple[Session, str]:
     return bought, f"Bought a level of {upgrade_id!r}.\n" + view_shop(bought)
 
 
-def _prestige(session: Session, arg: str) -> tuple[Session, str]:
+def _prestige(session: Session, arg: str, start_count: int = 1) -> tuple[Session, str]:
     if session.theme.prestige is None:
         return session, "This pack has no prestige track."
     if arg != "do":
@@ -242,8 +242,18 @@ def _prestige(session: Session, arg: str) -> tuple[Session, str]:
     if not prestige_eligible(session.state, spec):
         return session, "Not eligible to prestige yet.\n" + view_prestige(session)
     state = apply_prestige(session.state, spec)
+    # The engine reset correctly wipes ``owned``; re-seed the starting grant
+    # exactly as session startup does (the module docstring's runtime-grant
+    # choice: the engine has no generator purchase verb yet, so a 0-owned
+    # post-prestige run would have no way to produce anything ever again).
+    lines = ["Prestiged — bonus banked."]
+    if start_count:
+        state = replace(
+            state, owned={gid: start_count for gid in session.theme.generators}
+        )
+        lines.append("run reset — starting generators re-granted")
     reset = Session(theme=session.theme, state=state, now=session.now, log=session.log)
-    return reset, "Prestiged — run reset, bonus banked.\n" + view_status(reset)
+    return reset, "\n".join(lines) + "\n" + view_status(reset)
 
 
 def _pack(session: Session, theme_id: str, start_count: int) -> tuple[Session, str]:
@@ -261,8 +271,9 @@ def dispatch(
     """Apply one command, returning the (possibly new) session and its output.
 
     Pure: no stdin/stdout, no wall clock. ``start_count`` is the grant used
-    when the ``pack`` command starts a fresh save. Raises :class:`QuitGame`
-    for ``quit``/``exit`` so the loop can unwind.
+    when the ``pack`` command starts a fresh save and re-applied after a
+    ``prestige do`` reset. Raises :class:`QuitGame` for ``quit``/``exit`` so
+    the loop can unwind.
     """
     parts = command.strip().split()
     if not parts:
@@ -285,12 +296,14 @@ def dispatch(
             return session, "Usage: buy <upgrade-id>"
         return _buy(session, arg)
     if verb == "prestige":
-        return _prestige(session, arg)
+        return _prestige(session, arg, start_count)
     if verb in ("offline", "wait"):
         try:
             seconds = int(arg)
         except ValueError:
             return session, f"Usage: {verb} <seconds>"
+        if seconds < 0:
+            return session, f"Usage: {verb} <seconds> (seconds must be >= 0)"
         moved = (go_offline if verb == "offline" else advance)(session, seconds)
         return moved, view_status(moved)
     if verb == "pack":
