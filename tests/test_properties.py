@@ -8,7 +8,9 @@ engine's published invariants:
    span into ticks, summed tick earnings equal the single closed-form
    ``offline_progress`` credit, exactly (integer math, no drift).
 2. **Determinism** — the same seed drives byte-identical GameState
-   trajectories across two independent runs, for every shipped pack.
+   trajectories across two independent runs, for every shipped pack —
+   snapshotted in the PUBLISHED save format (``dump_state``), so the
+   suite pins the exact bytes consumers will store.
 3. **Monotonicity/conservation** — balances never go negative; spending
    never touches lifetime; prestige awards are monotone in lifetime;
    a prestige reset never increases any run balance.
@@ -28,7 +30,6 @@ repo deliberately takes no ``hypothesis`` dependency.
 """
 
 import dataclasses
-import json
 import string
 from pathlib import Path
 from random import Random
@@ -43,6 +44,7 @@ from idle_engine.engine import (
     production_per_second,
     tick,
 )
+from idle_engine.persistence import dump_state
 from idle_engine.prestige import (
     PrestigeSpec,
     apply_prestige,
@@ -219,20 +221,16 @@ def test_apply_offline_progress_equals_tick_of_elapsed(seed):
 
 
 def _canon(state: GameState) -> bytes:
-    """Canonical byte serialization of a GameState (sorted keys)."""
-    return json.dumps(
-        {
-            "balances": state.balances,
-            "owned": state.owned,
-            "last_seen": state.last_seen,
-            "upgrades": state.upgrades,
-            "lifetime": state.lifetime,
-            "prestige": state.prestige,
-            "milestones": state.milestones,
-        },
-        sort_keys=True,
-        separators=(",", ":"),
-    ).encode("ascii")
+    """Canonical bytes of a GameState — the PUBLISHED save format itself.
+
+    Delegating to :func:`idle_engine.persistence.dump_state` (rather than
+    re-implementing the field list/sort_keys/separators here) means the
+    byte-identical-trajectory tests pin the REAL format consumers will
+    store: the determinism driver and the save format can never drift
+    apart. ``dump_state`` is ASCII by contract (``ensure_ascii``), so the
+    strict encode below is a free extra check.
+    """
+    return dump_state(state).encode("ascii")
 
 
 def _drive_trajectory(theme, seed: int) -> list[bytes]:

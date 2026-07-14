@@ -1,1 +1,0 @@
-- `claude/improve-canon-dumpstate` · **property-suite canonical serialization** — replace hand-rolled _canon with published dump_state in determinism driver · tests/test_properties.py + .sessions/ + telemetry/ · 2026-07-14
