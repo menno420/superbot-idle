@@ -1,0 +1,1 @@
+- `claude/reconcile-race-fix` · **fix reconcile TOCTOU race in automerge-card-guard workflow** · .github/workflows/automerge-card-guard.yml · 2026-07-15
