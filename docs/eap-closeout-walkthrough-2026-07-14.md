@@ -37,7 +37,10 @@ merge-on-green over ~120 lane PRs (2026-07-10 → 2026-07-14). Compact record:
 
 State: engine complete and playable via a text REPL; 18 theme packs; suite
 1381 passed + 1 skipped (the skip is by-design sb-free; CI's
-`pytest-with-host` job runs it against pinned superbot-next); kit v1.15.0.
+`pytest-with-host` job runs it against pinned superbot-next); kit v1.16.0
+(v1.15.0 was correct when this walkthrough landed via PR #132; the bump
+rode PR #134 `3df5449` later the same day — verify live with
+`python3 bootstrap.py --version`).
 
 ```bash
 pip install jsonschema                 # the one non-stdlib test dep
