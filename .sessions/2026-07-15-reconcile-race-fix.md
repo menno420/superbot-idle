@@ -1,6 +1,6 @@
 # 2026-07-15 — fix reconcile race: tolerate auto-merge landing before the provenance stamp
 
-> **Status:** `in-progress`
+> **Status:** ✅ `complete`
 > **Branch:** `claude/reconcile-race-fix` · claim `control/claims/claude-reconcile-race-fix.md`
 
 - **📊 Model:** fable-5 · medium · runtime bugfix — tolerate the auto-merge-lands-first window in the card-guard's Head-ref provenance branch · session opened 2026-07-15T21:41Z (`date -u`)
