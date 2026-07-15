@@ -1,6 +1,6 @@
 # 2026-07-15 — truth refresh: kit version claims in docs
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 > **Branch:** `claude/truth-refresh` · claim `control/claims/claude-truth-refresh.md`
 
 - **📊 Model:** fable-5 · medium · docs-only — truth refresh: correct stale kit-version claims (v1.15.0 → measured v1.16.0) in docs/ + current-state truth-stamp re-groom · session opened 2026-07-15T04:18Z (`date -u`)
