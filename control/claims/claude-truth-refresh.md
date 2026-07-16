@@ -1,1 +1,0 @@
-- `claude/truth-refresh` · **truth refresh: kit version claims in docs** · docs/current-state.md + docs/eap-closeout-walkthrough-2026-07-14.md · 2026-07-15
