@@ -1,6 +1,6 @@
 # 2026-07-16 — idle engine test coverage: defensive-guard edge cases
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 > **Branch:** `claude/idle-test-coverage` · claim `control/claims/claude-idle-test-coverage.md`
 
 - **📊 Model:** opus-4.8 · high · test writing — autonomous overnight project work: add sb-free unit coverage for `idle_engine/` defensive guards (negative counts/levels/balances, non-int spec fields) that had zero test coverage · session opened 2026-07-16T21:50Z (`date -u`)
