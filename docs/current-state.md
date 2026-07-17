@@ -123,10 +123,10 @@ Known-good and not to be re-audited without a reported regression:
 
 (Verify against live source control — this section is a dated snapshot.)
 
-- Nothing in flight as of the 2026-07-15 truth refresh (main `8a7275d`):
-  zero open PRs (verified via the API at refresh time), `control/claims/`
-  holds only this refresh's own claim (`claude-truth-refresh`, deleted
-  when its card flips). Context: **EAP is EXTENDED through 2026-07-21**
+- Nothing in flight as of the 2026-07-17 owner-live fresh-start cleanup
+  (main HEAD): zero open PRs, and `control/claims/` holds only its README
+  after this cleanup swept the stale `claude-idle-test-coverage` claim (its
+  work merged as PR #146). Context: **EAP is EXTENDED through 2026-07-21**
   (inbox ORDER 010, PR #139) — the 2026-07-14 dormancy orders are
   superseded pending the owner's per-seat reboot go; routines stay
   un-armed until then.
