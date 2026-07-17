@@ -1,6 +1,6 @@
 # 2026-07-17 — engine: add pure prestige-preview helpers (ENG-9)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · feature build · idle-engine seat (prestige helpers) · 2026-07-17T23:03Z (`date -u`)
 
