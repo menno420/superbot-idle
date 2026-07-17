@@ -1,8 +1,8 @@
 # 2026-07-17 — persistence migration fixtures: pin the structural next-bump guards on the migration registry
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** neutral builder-agent · high · tests · idle-engine seat (persistence migration coverage) · 2026-07-17T23:28Z (`date -u`)
+- **📊 Model:** neutral builder-agent · high · test writing · idle-engine seat (persistence migration coverage) · 2026-07-17T23:28Z (`date -u`)
 
 ## What / why
 
