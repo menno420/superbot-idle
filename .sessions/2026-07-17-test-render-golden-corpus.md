@@ -1,6 +1,6 @@
 # 2026-07-17 — tests: render golden corpus across all theme packs (TEST-2)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · test writing · render golden-corpus seat · 2026-07-17T23:47Z (`date -u`)
 
@@ -48,4 +48,33 @@ Card born RED (`in-progress`) in the first commit alongside
 `control/claims/claude-test-render-golden-corpus.md`; then the generator, test,
 and corpus artifact; card flipped `complete` as the last commit to clear the
 born-red HOLD so substrate-gate goes green and the landing workflow can merge on
-all-green. PR opened READY; the worker does not merge its own PR.
+all-green. PR opened READY (#157); the worker does not merge its own PR.
+
+## Result
+
+`tools/gen_render_vectors.py` renders all four views for all **19** shipped
+packs at the fixed state → **76** golden embeds in
+`tests/vectors/render-embeds.v1.json`. The fixed state exercises every meaningful
+branch across the corpus: earned/reached/locked milestone marks (✅ / ⏳ / 🔒)
+on all 19 packs, the trap-buy `requires` annotation on 18, plus offline-gain
+lines and afford/lock shop marks. `python3 -m pytest -q` green (1526 passed, 1
+skipped); a second regeneration + `git diff --exit-code` proved determinism (no
+diff); `bootstrap.py check --strict` showed only the expected born-red HOLD.
+
+## 💡 Session idea
+
+The corpus captures render output at ONE fixed state. A natural follow-up is a
+second fixed state — a brand-new save (all-zero, no offline gains, everything
+locked) — so the corpus also pins the empty/first-launch embeds every pack shows
+a new player, the other end of the render range from this mid-run state.
+
+## ⟲ Previous-session review
+
+The prior overnight render slice (`test-render-offline-dropline`, TEST) closed
+the last branch gap in `render.py` from the INSIDE — pinning one budget-boundary
+drop to 100% branch coverage. This slice is its cross-pack complement: instead of
+one branch it pins the whole rendered SURFACE of all 19 packs from the OUTSIDE,
+so a SKIN change (a pack noun/emoji edit) or a render composition change reds a
+snapshot even where line coverage already passed. Same born-red session-gate
+discipline; same regenerate-or-red vector convention as the saves/setup-code
+corpora, now extended to the render layer.
