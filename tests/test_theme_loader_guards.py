@@ -1,0 +1,197 @@
+"""Structural-shape guards in :func:`idle_engine.theme.load_theme`.
+
+``load_theme`` validates a theme pack in two passes. The *semantic* pass —
+unknown currency references, unknown/duplicate milestone slots, bad offline
+templates, unknown label slots — is already pinned by ``tests/test_theme.py``.
+This module pins the *structural* pass that runs first: the guards that reject a
+pack whose SHAPE is wrong before any id can be resolved. A pack that is not a
+mapping, a missing ``theme`` block, ``currencies``/``generators`` that are not
+non-empty lists, non-mapping items inside the ``currencies``/``generators``/
+``balance``/``upgrades``/``milestones`` blocks, a duplicate upgrade id, and the
+"when present, must be a (non-empty) list/mapping" guards on the optional
+``upgrades``/``prestige``/``labels``/``milestones`` blocks must all fail loud.
+
+Every case builds the smallest malformed pack that reaches its target guard,
+dumps it to a tmp YAML file, and asserts the guard's exact message fragment —
+mirroring the accept/reject discipline ``tests/test_engine_guards.py`` set for
+the pure-domain math. Sb-free by construction: opaque ids only, no theme nouns,
+no host import.
+"""
+
+import re
+
+import pytest
+import yaml
+
+from idle_engine import load_theme
+
+
+def _base_pack() -> dict:
+    """The smallest structurally valid pack: one currency, one generator."""
+    return {
+        "theme": {
+            "id": "t",
+            "name": "T",
+            "description": "d",
+            "emoji": "x",
+            "embed_color": "#000000",
+        },
+        "currencies": [
+            {"id": "primary", "name": "coins", "description": "d", "emoji": "c"},
+        ],
+        "generators": [
+            {
+                "id": "tier1",
+                "name": "gen",
+                "description": "d",
+                "emoji": "g",
+                "produces": "primary",
+                "base_rate": 1,
+            },
+        ],
+    }
+
+
+def _valid_upgrade() -> dict:
+    return {
+        "id": "boost1",
+        "name": "up",
+        "description": "d",
+        "emoji": "u",
+        "target": "tier1",
+    }
+
+
+def _load(pack, tmp_path):
+    path = tmp_path / "pack.yaml"
+    path.write_text(yaml.safe_dump(pack), encoding="utf-8")
+    return load_theme(path)
+
+
+# --- top-level shape ---------------------------------------------------------
+
+
+def test_rejects_non_mapping_pack(tmp_path):
+    # A YAML list (not a mapping) at the document root.
+    with pytest.raises(ValueError, match="theme pack must be a mapping"):
+        _load(["not", "a", "mapping"], tmp_path)
+
+
+def test_rejects_missing_theme_mapping(tmp_path):
+    pack = _base_pack()
+    del pack["theme"]
+    with pytest.raises(ValueError, match="missing 'theme' mapping"):
+        _load(pack, tmp_path)
+
+
+# --- currencies block --------------------------------------------------------
+
+
+def test_rejects_empty_currencies_list(tmp_path):
+    pack = _base_pack()
+    pack["currencies"] = []
+    with pytest.raises(ValueError, match="'currencies' must be a non-empty list"):
+        _load(pack, tmp_path)
+
+
+def test_rejects_non_mapping_currency_item(tmp_path):
+    pack = _base_pack()
+    pack["currencies"] = ["not-a-mapping"]
+    with pytest.raises(ValueError, match=re.escape("currencies[0] must be a mapping")):
+        _load(pack, tmp_path)
+
+
+# --- generators block --------------------------------------------------------
+
+
+def test_rejects_empty_generators_list(tmp_path):
+    pack = _base_pack()
+    pack["generators"] = []
+    with pytest.raises(ValueError, match="'generators' must be a non-empty list"):
+        _load(pack, tmp_path)
+
+
+def test_rejects_non_mapping_generator_item(tmp_path):
+    pack = _base_pack()
+    pack["generators"] = ["not-a-mapping"]
+    with pytest.raises(ValueError, match=re.escape("generators[0] must be a mapping")):
+        _load(pack, tmp_path)
+
+
+# --- balance block (optional) ------------------------------------------------
+
+
+def test_rejects_non_mapping_balance_item(tmp_path):
+    pack = _base_pack()
+    pack["balance"] = ["not-a-mapping"]
+    with pytest.raises(ValueError, match=re.escape("balance[0] must be a mapping")):
+        _load(pack, tmp_path)
+
+
+# --- upgrades block (optional) -----------------------------------------------
+
+
+def test_rejects_empty_upgrades_list(tmp_path):
+    pack = _base_pack()
+    pack["upgrades"] = []
+    with pytest.raises(
+        ValueError, match="'upgrades', when present, must be a non-empty list"
+    ):
+        _load(pack, tmp_path)
+
+
+def test_rejects_non_mapping_upgrade_item(tmp_path):
+    pack = _base_pack()
+    pack["upgrades"] = ["not-a-mapping"]
+    with pytest.raises(ValueError, match=re.escape("upgrades[0] must be a mapping")):
+        _load(pack, tmp_path)
+
+
+def test_rejects_duplicate_upgrade_id(tmp_path):
+    pack = _base_pack()
+    pack["upgrades"] = [_valid_upgrade(), _valid_upgrade()]
+    with pytest.raises(ValueError, match="duplicate upgrade id"):
+        _load(pack, tmp_path)
+
+
+# --- prestige block (optional) -----------------------------------------------
+
+
+def test_rejects_non_mapping_prestige_block(tmp_path):
+    pack = _base_pack()
+    pack["prestige"] = ["not", "a", "mapping"]
+    with pytest.raises(
+        ValueError, match="'prestige', when present, must be a mapping"
+    ):
+        _load(pack, tmp_path)
+
+
+# --- labels block (optional) -------------------------------------------------
+
+
+def test_rejects_empty_labels_mapping(tmp_path):
+    pack = _base_pack()
+    pack["labels"] = {}
+    with pytest.raises(
+        ValueError, match="'labels', when present, must be a non-empty mapping"
+    ):
+        _load(pack, tmp_path)
+
+
+# --- milestones block (optional) ---------------------------------------------
+
+
+def test_rejects_empty_milestones_list(tmp_path):
+    pack = _base_pack()
+    pack["milestones"] = []
+    with pytest.raises(
+        ValueError, match="'milestones', when present, must be a non-empty list"
+    ):
+        _load(pack, tmp_path)
+
+
+def test_rejects_non_mapping_milestone_item(tmp_path):
+    pack = _base_pack()
+    pack["milestones"] = ["not-a-mapping"]
+    with pytest.raises(ValueError, match=re.escape("milestones[0] must be a mapping")):
+        _load(pack, tmp_path)
