@@ -1,8 +1,8 @@
 # 2026-07-17 — tests: cover tools/play.py main() REPL loop (TEST-11)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** neutral builder-agent · high · test coverage · play-entrypoint seat (REPL loop) · 2026-07-17T23:10Z (`date -u`)
+- **📊 Model:** neutral builder-agent · high · test writing · play-entrypoint seat (REPL loop) · 2026-07-17T23:10Z (`date -u`)
 
 ## What / why
 
@@ -56,3 +56,15 @@ is a golden-transcript smoke test that pins one full scripted session's rendered
 output for a fixed pack + seed, giving `main()` a regression tripwire on the
 *shape* of what a player sees — kept behind a small vector the same way the
 render views are pinned.
+
+## ⟲ Previous-session review
+
+The prior overnight slices grew the engine surface (`time_to_afford`, ENG-8;
+prestige-preview helpers, ENG-9) and their tests, all driving the pure engine
+API. This slice is the entrypoint-side sibling: instead of adding a helper it
+hardens the human-facing `main()` loop that already stitches those helpers into
+a playable session, closing the 72% coverage hole end-to-end review flagged.
+It keeps the same born-red session-gate discipline (card red until the final
+flip) and the same no-economy-pinning test convention as
+`tests/test_play_entrypoint.py` — transcript substrings, never economy numbers —
+so it stays green across any out-of-scope retune.
