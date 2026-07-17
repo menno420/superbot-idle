@@ -26,7 +26,10 @@ from idle_engine.prestige import (
     PrestigeSpec,
     apply_prestige,
     prestige_award,
+    prestige_award_if_reset,
     prestige_eligible,
+    seconds_to_next_prestige_award,
+    seconds_to_prestige_eligible,
 )
 from idle_engine.achievements import (
     MilestoneSpec,
@@ -81,6 +84,7 @@ __all__ = [
     "milestone_reached",
     "offline_progress",
     "prestige_award",
+    "prestige_award_if_reset",
     "prestige_eligible",
     "production_per_second",
     "purchase_upgrade",
@@ -89,6 +93,8 @@ __all__ = [
     "render_prestige",
     "render_shop",
     "render_status",
+    "seconds_to_next_prestige_award",
+    "seconds_to_prestige_eligible",
     "tick",
     "time_to_afford",
     "upgrade_cost",

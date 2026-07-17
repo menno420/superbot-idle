@@ -21,6 +21,7 @@ from collections.abc import Iterable
 from math import isqrt
 
 from idle_engine.state import GameState
+from idle_engine.upgrades import time_to_afford
 
 
 def _require_int(value: int, name: str, minimum: int) -> None:
@@ -107,3 +108,72 @@ def prestige_percent(state: GameState, prestige_specs: Iterable[PrestigeSpec]) -
             raise ValueError(f"prestige balance for {spec.awards!r} must be >= 0")
         percent += spec.bonus_percent * held
     return percent
+
+
+# --- read-only reset previews -------------------------------------------------
+#
+# Pure lookups over the award mechanic above: what a reset would pay right now,
+# and — at a given measured-currency production rate — how long until that
+# payout first unlocks and until it ticks up. They change nothing; they never
+# fork the award formula (they call :func:`prestige_award`) and the eta helpers
+# reuse the engine's integer-exact :func:`time_to_afford` primitive, so the
+# whole surface agrees to the second with no float leakage.
+
+
+def prestige_award_if_reset(state: GameState, spec: PrestigeSpec) -> int:
+    """Preview: prestige currency a reset would bank RIGHT NOW.
+
+    The read-only, preview-named entry point onto the reset payoff — it
+    delegates to :func:`prestige_award` (the mechanic is never forked), so
+    the UI can ask "what would I get?" without invoking the reset path, and
+    the answer is identical to what :func:`apply_prestige` would credit.
+    Reports the award for the measured lifetime as-is, even below the
+    eligibility threshold (where a reset is not yet allowed): a preview is a
+    lookup, not a gate — pair it with :func:`prestige_eligible` when the
+    caller needs to know whether the reset can actually happen.
+    """
+    return prestige_award(state, spec)
+
+
+def seconds_to_prestige_eligible(
+    state: GameState, spec: PrestigeSpec, rate: int
+) -> int | None:
+    """Whole seconds until this run's lifetime reaches the eligibility threshold.
+
+    ``rate`` is the per-second production of the measured currency
+    (``spec.measures``) — the caller passes it in (e.g. from
+    :func:`idle_engine.engine.production_per_second`), keeping this a pure
+    function of its inputs. The affordability dual applied to a lifetime
+    target: delegates to :func:`time_to_afford` with the threshold as the
+    cost and lifetime as the balance, so it inherits the engine's
+    integer-exact contract — ``0`` once lifetime is at or over the threshold
+    (already eligible), the ``None`` never-sentinel when nothing is produced
+    (``rate == 0``) and not yet eligible, otherwise the exact integer ceil of
+    the shortfall over ``rate``.
+    """
+    lifetime = state.lifetime.get(spec.measures, 0)
+    return time_to_afford(cost=spec.threshold, balance=lifetime, rate=rate)
+
+
+def seconds_to_next_prestige_award(
+    state: GameState, spec: PrestigeSpec, rate: int
+) -> int | None:
+    """Whole seconds until the reset award grows by one whole unit.
+
+    With the current award ``A = isqrt(lifetime // award_divisor)``, the next
+    unit ``A + 1`` unlocks once lifetime reaches ``(A + 1) ** 2 *
+    award_divisor`` — the exact lifetime at which the integer square root
+    steps up. ``rate`` is the measured currency's per-second production,
+    passed in by the caller (see :func:`seconds_to_prestige_eligible`).
+    Delegates to :func:`time_to_afford` against that next-unit target, so the
+    ``None`` never-sentinel (``rate == 0``) and the integer-exact ceil-division
+    carry over unchanged. Because ``A`` is a floor, lifetime is always strictly
+    below the next-unit target, so the result is always ``>= 1`` at a positive
+    rate.
+    """
+    lifetime = state.lifetime.get(spec.measures, 0)
+    if lifetime < 0:
+        raise ValueError(f"lifetime for {spec.measures!r} must be >= 0")
+    next_award = prestige_award(state, spec) + 1
+    next_target = next_award * next_award * spec.award_divisor
+    return time_to_afford(cost=next_target, balance=lifetime, rate=rate)
