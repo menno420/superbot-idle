@@ -19,6 +19,7 @@ from idle_engine.upgrades import (
     max_affordable_levels,
     purchase_upgrade,
     purchase_upgrades,
+    time_to_afford,
     upgrade_cost,
 )
 from idle_engine.prestige import (
@@ -89,6 +90,7 @@ __all__ = [
     "render_shop",
     "render_status",
     "tick",
+    "time_to_afford",
     "upgrade_cost",
     "validate_embed",
 ]

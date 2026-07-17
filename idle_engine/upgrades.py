@@ -179,6 +179,37 @@ def max_affordable_levels(spec: UpgradeSpec, from_level: int, budget: int) -> in
     return lo
 
 
+def time_to_afford(cost: int, balance: int, rate: int) -> int | None:
+    """Whole seconds until ``balance`` grows to ``cost`` at ``rate`` units/sec.
+
+    The affordability dual of :func:`max_affordable_levels` ("how many can
+    I buy with budget X now?" vs. "when can I afford this one?"). Returns:
+
+    - ``0`` when ``balance`` already covers ``cost`` (affordable now);
+    - ``None`` — the "never" sentinel — when the shortfall can never close
+      because nothing is produced (``rate == 0``) and it is not yet
+      affordable;
+    - otherwise the exact integer seconds, the ceil of the remaining
+      shortfall over ``rate``: ``(cost - balance + rate - 1) // rate``,
+      evaluated in big-int arithmetic with a single floor so every
+      platform agrees to the second (no float, no rounding drift — the
+      engine's integer-exact convention).
+
+    ``cost``, ``balance`` and ``rate`` are non-negative integers (a
+    production rate is never negative — a negative one is a corrupt state
+    and fails loud, mirroring the module's other guards).
+    """
+    _require_positive_int(cost, "cost", minimum=0)
+    _require_positive_int(balance, "balance", minimum=0)
+    _require_positive_int(rate, "rate", minimum=0)
+    shortfall = cost - balance
+    if shortfall <= 0:
+        return 0
+    if rate == 0:
+        return None
+    return (shortfall + rate - 1) // rate
+
+
 def purchase_upgrade(state: GameState, spec: UpgradeSpec) -> GameState:
     """Spend ``spec.cost_currency`` to raise the upgrade one level.
 
