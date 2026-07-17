@@ -1,0 +1,2306 @@
+{
+  "format": "superbot-idle-render-vectors",
+  "format_version": 1,
+  "generated_by": "tools/gen_render_vectors.py \u2014 DO NOT EDIT BY HAND; regenerate with: python3 tools/gen_render_vectors.py",
+  "contract": "idle_engine/render.py",
+  "views": [
+    "status",
+    "shop",
+    "prestige",
+    "achievements"
+  ],
+  "state_recipe": {
+    "last_seen": 1000000,
+    "now": 1003600,
+    "currency_balance": 50000,
+    "owned_total_at_award": 15,
+    "owned_total_displayed": 150,
+    "lifetime_at_award": 1500,
+    "lifetime_displayed": 150000,
+    "prestige_at_award": 3,
+    "prestige_displayed": 7,
+    "upgrade_level_cycle": [
+      0,
+      1,
+      2
+    ]
+  },
+  "themes": [
+    "ant-colony",
+    "apiary",
+    "arctic-outpost",
+    "candy-factory",
+    "clockwork-atelier",
+    "coffee-roastery",
+    "cyber-city",
+    "deep-sea-station",
+    "dragon-hoard",
+    "egg-farm",
+    "haunted-manor",
+    "idol-agency",
+    "lighthouse-keep",
+    "pirate-cove",
+    "potion-brewery",
+    "ramen-stand",
+    "royal-bakery",
+    "space-colony",
+    "wizard-tower"
+  ],
+  "counts": {
+    "packs": 19,
+    "embeds": 76
+  },
+  "vectors": [
+    {
+      "pack": "ant-colony",
+      "theme_id": "ant-colony",
+      "views": {
+        "status": {
+          "title": "\ud83d\udc1c Ant Colony \u2014 the nest tally",
+          "description": "A humming underground nest where a million tiny jaws turn the picnic upstairs into an empire.\n\nWhile you were above ground, the workers never once stopped: +1,054,800 \ud83c\udf5e crumbs",
+          "color": 9132587,
+          "fields": [
+            {
+              "name": "\ud83c\udf5e crumbs",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf6f royal jelly",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc1c forager trail",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf44 fungus garden",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83c\udf44 The Chamber of Provisions",
+          "description": "Trade crumbs to grow the nest, one instinct at a time.",
+          "color": 9132587,
+          "fields": [
+            {
+              "name": "\ud83e\uddea stronger pheromone markers",
+              "value": "\u2705 Instar level 0 \u2192 1 \u00b7 60 \ud83c\udf5e crumbs\nA bolder scent line no forager can lose; the trail marches straighter, faster, heavier-laden.",
+              "inline": false
+            },
+            {
+              "name": "\ud83c\udf43 leafcutter caravans",
+              "value": "\u26a0\ufe0f Instar level 1 \u2192 2 \u00b7 345 \ud83c\udf5e crumbs \u00b7 requires \ud83c\udf44 fungus garden\nSquads of leafcutters ferry fresh cuttings on the hour; the fungus garden never goes hungry.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\udc51 crown a new queen",
+          "description": "Raise a daughter queen on royal jelly and send her skyward with half the nest \u2014 a new empire begins from one brave flight.",
+          "color": 9132587,
+          "fields": [
+            {
+              "name": "\ud83c\udf5e crumbs",
+              "value": "\u2705 lifetime crumbs toward the new queen: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf6f royal jelly",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83d\udc1c Ant Colony",
+          "description": "A humming underground nest where a million tiny jaws turn the picnic upstairs into an empire.",
+          "color": 9132587,
+          "fields": [
+            {
+              "name": "\ud83d\udc1c first swarm",
+              "value": "\u2705 10 / 10\nTen forager trails marching at once \u2014 the nest finally sounds like a proper colony.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc1c hundred-trail nest",
+              "value": "\u23f3 100 / 100\nA hundred trails hauling home; the picnic upstairs has started to worry.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfdb\ufe0f underground empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand trails \u2014 the lawn is hollow beneath, and every inch of it is yours.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf5e first thousand crumbs",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand crumbs hauled down the tunnels and stacked in the larder.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f larder overflowing",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand crumbs; the storage chambers spill out into the corridors.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 crumb legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million crumbs. Beetles tell their larvae stories about this nest.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf6f first royal jelly",
+              "value": "\u2705 1 / 1\nThe first golden droplet of royal jelly \u2014 a young queen's whole inheritance.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uded7 royal reserve",
+              "value": "\u23f3 5 / 5\nFive measures of royal jelly, cellared for the daughters yet to take wing.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 dynasty of queens",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five measures of royal jelly \u2014 an unbroken line of crowned flights.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "apiary",
+      "theme_id": "apiary",
+      "views": {
+        "status": {
+          "title": "\ud83d\udc1d Apiary \u2014 the morning hive check",
+          "description": "A sun-warmed row of hives at the meadow's edge, where ten thousand wings turn clover and linden bloom into slow amber gold.\n\nWhile you were away from the bee yard, the colony never stopped foraging: +1,054,800 \ud83c\udf6f honey",
+          "color": 15770880,
+          "fields": [
+            {
+              "name": "\ud83c\udf6f honey",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 royal jelly",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc1d worker bee",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddc4\ufe0f honey super",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83c\udf6f The Honey House",
+          "description": "Spend capped honey on richer pasture, drawn comb, and a calmer, busier bee yard.",
+          "color": 15770880,
+          "fields": [
+            {
+              "name": "\ud83c\udf40 clover-rich pasture",
+              "value": "\u2705 Frame level 0 \u2192 1 \u00b7 60 \ud83c\udf6f honey\nA field reseeded thick with clover and linden; every forager comes home heavier and leaves again sooner.",
+              "inline": false
+            },
+            {
+              "name": "\ud83e\ude9f drawn comb foundation",
+              "value": "\u26a0\ufe0f Frame level 1 \u2192 2 \u00b7 345 \ud83c\udf6f honey \u00b7 requires \ud83d\uddc4\ufe0f honey super\nPre-drawn wax foundation slotted into every frame; the colony skips the building and goes straight to storing.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\udc1d split the hive",
+          "description": "When the brood box brims, lift the crowded frames into a fresh box, let the old queen swarm to new ground, and begin the apiary again with a jar of royal jelly set aside.",
+          "color": 15770880,
+          "fields": [
+            {
+              "name": "\ud83c\udf6f honey",
+              "value": "\u2705 lifetime honey toward the split: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 royal jelly",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83d\udc1d Apiary",
+          "description": "A sun-warmed row of hives at the meadow's edge, where ten thousand wings turn clover and linden bloom into slow amber gold.",
+          "color": 15770880,
+          "fields": [
+            {
+              "name": "\ud83d\udc1d first full super",
+              "value": "\u2705 10 / 10\nTen hives humming at once \u2014 the whole meadow leans toward the bee yard.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf6f hundred-hive yard",
+              "value": "\u23f3 100 / 100\nA hundred colonies working the bloom; the air over the field is a low, steady roar.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 apiary empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand hives \u2014 beekeepers three counties over queue to borrow your queens.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uded9 first thousand jars",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand jars of honey, capped, spun, and lined up warm on the shelf.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f county-fair gold",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand jars; your amber takes the blue ribbon and then the fair's whole shelf.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 honey of legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million jars. Bakers and brewers speak of your bloom the way sailors speak of the weather.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc1d first swarm sent",
+              "value": "\u2705 1 / 1\nThe first hive split \u2014 one jar of royal jelly set aside as the old queen leads her swarm to new ground.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uded9 rack of royal jelly",
+              "value": "\u23f3 5 / 5\nFive pale jars of royal jelly cold in the cellar \u2014 five colonies begun from a crowded frame.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f queen of queens",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five jars of royal jelly \u2014 every apiary on the horizon traces its line back to one of your splits.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "arctic-outpost",
+      "theme_id": "arctic-outpost",
+      "views": {
+        "status": {
+          "title": "\ud83e\uddca Arctic Outpost \u2014 the field log",
+          "description": "A wind-battered research outpost on the polar ice, where every metre of snowpack hides another season of science.\n\nWhile the blizzard pinned you inside, the sled team kept working the ice: +1,054,800 \u2744\ufe0f snowpack",
+          "color": 5220568,
+          "fields": [
+            {
+              "name": "\u2744\ufe0f snowpack",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0c aurora shards",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\ude9b ice-core drill",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udef7 husky sled team",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udd29 The Supply Cache",
+          "description": "Spend snowpack to keep the drill turning and the huskies fed through the long dark.",
+          "color": 5220568,
+          "fields": [
+            {
+              "name": "\ud83d\udd29 heated drill bit",
+              "value": "\u2705 Expedition level 0 \u2192 1 \u00b7 60 \u2744\ufe0f snowpack\nA heated bit keeps the ice-core drill from seizing in the cold; it cuts through permafrost without a single stall.",
+              "inline": false
+            },
+            {
+              "name": "\ud83e\udd7e seasoned lead musher",
+              "value": "\u26a0\ufe0f Expedition level 1 \u2192 2 \u00b7 345 \u2744\ufe0f snowpack \u00b7 requires \ud83d\udef7 husky sled team\nA seasoned lead musher reads the tundra by instinct; the huskies run truer and haul heavier every trip.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83e\udded pack up and chart a new expedition",
+          "description": "Strike the tents, seal the aurora shards in the flight case, and chart a fresh expedition to untouched ice \u2014 the map is blank again and so is the horizon.",
+          "color": 5220568,
+          "fields": [
+            {
+              "name": "\u2744\ufe0f snowpack",
+              "value": "\u2705 lifetime snowpack toward the new expedition: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0c aurora shards",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83e\uddca Arctic Outpost",
+          "description": "A wind-battered research outpost on the polar ice, where every metre of snowpack hides another season of science.",
+          "color": 5220568,
+          "fields": [
+            {
+              "name": "\ud83e\ude9b first drill line",
+              "value": "\u2705 10 / 10\nTen ice-core drills chewing the glacier at once \u2014 the vault finally fills faster than the storms can bury it.",
+              "inline": true
+            },
+            {
+              "name": "\u26cf\ufe0f hundred-drill traverse",
+              "value": "\u23f3 100 / 100\nA hundred drills strung across the shelf; the ice hums like a struck wire from camp to camp.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd4\ufe0f polar empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand drills \u2014 satellites photograph the grid and analysts assume it is a city.",
+              "inline": true
+            },
+            {
+              "name": "\u2744\ufe0f first thousand cores",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand measures of snowpack, labelled and racked in the cold vault.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddc4\ufe0f deep-time archive",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand measures; the vault now holds more winters than recorded history.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 ten-million-core legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million measures of snowpack. Glaciologists cite the outpost the way sailors cite the pole star.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0c first aurora shard",
+              "value": "\u2705 1 / 1\nThe first expedition charted \u2014 one aurora shard, still flickering faintly in its flight case.",
+              "inline": true
+            },
+            {
+              "name": "\u2728 shard constellation",
+              "value": "\u23f3 5 / 5\nFive aurora shards in the case; open it in the dark and the tent glows like the sky came inside.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf20 keeper of the lights",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five aurora shards \u2014 a career of expeditions, measured in pieces of the sky.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "candy-factory",
+      "theme_id": "candy-factory",
+      "views": {
+        "status": {
+          "title": "\ud83c\udf6c Candy Factory \u2014 the batch tally",
+          "description": "A whirring, sugar-dusted candy factory where the conveyor never sleeps and neither does your sweet tooth.\n\nWhile the lights were off, the conveyor kept the candies rolling: +1,054,800 \ud83c\udf6c candies",
+          "color": 15490204,
+          "fields": [
+            {
+              "name": "\ud83c\udf6c candies",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc8e sugar crystals",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf6d taffy puller",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udfe2 gumdrop line",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83c\udf21\ufe0f The Machine Floor",
+          "description": "Spend candies to keep the taffy soft, the gumdrops shining, and the caramel from ever burning.",
+          "color": 15490204,
+          "fields": [
+            {
+              "name": "\ud83c\udf21\ufe0f warmed pulling arms",
+              "value": "\u2705 Batch level 0 \u2192 1 \u00b7 60 \ud83c\udf6c candies\nGently warmed arms keep the taffy supple; the puller stretches longer ribbons and never tears a batch.",
+              "inline": false
+            },
+            {
+              "name": "\ud83e\uddc2 recalibrated sugar duster",
+              "value": "\u26a0\ufe0f Batch level 1 \u2192 2 \u00b7 345 \ud83c\udf6c candies \u00b7 requires \ud83d\udfe2 gumdrop line\nA recalibrated duster coats each gumdrop in a perfect shell of sugar; the line runs cleaner and twice as sweet.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udf80 sell the recipe and open a new factory",
+          "description": "Auction off the secret recipe, cash out your jarred sugar crystals, and cut the ribbon on a bigger factory downtown \u2014 the conveyor starts empty and hungry.",
+          "color": 15490204,
+          "fields": [
+            {
+              "name": "\ud83c\udf6c candies",
+              "value": "\u2705 lifetime candies toward the new factory: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc8e sugar crystals",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udf6c Candy Factory",
+          "description": "A whirring, sugar-dusted candy factory where the conveyor never sleeps and neither does your sweet tooth.",
+          "color": 15490204,
+          "fields": [
+            {
+              "name": "\ud83c\udf6d first pulling floor",
+              "value": "\u2705 10 / 10\nTen taffy pullers folding in unison \u2014 the whole floor moves like slow, glossy clockwork.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfed hundred-puller works",
+              "value": "\u23f3 100 / 100\nA hundred taffy pullers; the factory windows fog with sugar and passersby press their noses to the glass.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfaa confection empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand taffy pullers \u2014 the town smells of caramel for a mile in every direction, and no one complains.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf6c first thousand candies",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand candies wrapped, crated, and stacked by the loading door.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddb7 sweet-tooth famous",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand candies; dentists in three counties know your wrapper on sight.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 ten-million-candy legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million candies. Children trade the rare wrappers like treasure maps.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc8e first crystal jar",
+              "value": "\u2705 1 / 1\nThe first recipe sold \u2014 one jar of flawless sugar crystals, heavy as a promise.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 the crystal cabinet",
+              "value": "\u23f3 5 / 5\nFive crystal jars glittering in the front office \u2014 one for every factory the recipe outgrew.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f sugar dynasty",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five crystal jars \u2014 a dynasty of factories, each sweeter than the last.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "clockwork-atelier",
+      "theme_id": "clockwork-atelier",
+      "views": {
+        "status": {
+          "title": "\ud83d\udd70\ufe0f Clockwork Atelier \u2014 the horologist's ledger",
+          "description": "A candlelit workshop of gears and patience, where every tick of the city's clocks was filed into being by hand.\n\nWhile the shop stood dark, the escapements kept perfect time: +1,054,800 \u2699\ufe0f cogs",
+          "color": 11570519,
+          "fields": [
+            {
+              "name": "\u2699\ufe0f cogs",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\u231a grand complications",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd27 apprentice bench",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udede mainspring lathe",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\uddc4\ufe0f The Parts Drawer",
+          "description": "Spend cogs on finer tools, truer springs, and a workshop that hums like a tuned movement.",
+          "color": 11570519,
+          "fields": [
+            {
+              "name": "\ud83d\udc8e jeweled bearings",
+              "value": "\u2705 Caliber level 0 \u2192 1 \u00b7 60 \u2699\ufe0f cogs\nRuby bearings set into every pivot; the bench work glides where it used to grind.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udd25 tempered spring steel",
+              "value": "\u26a0\ufe0f Caliber level 1 \u2192 2 \u00b7 345 \u2699\ufe0f cogs \u00b7 requires \ud83d\udede mainspring lathe\nA hotter temper and a slower quench; every spring off the lathe holds twice the wind.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\udd5b wind the master clock",
+          "description": "Strike midnight on the master clock, sell every movement on the wall, and carry one grand complication into a brand-new atelier.",
+          "color": 11570519,
+          "fields": [
+            {
+              "name": "\u2699\ufe0f cogs",
+              "value": "\u2705 lifetime cogs toward midnight on the master clock: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\u231a grand complications",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83d\udd70\ufe0f Clockwork Atelier",
+          "description": "A candlelit workshop of gears and patience, where every tick of the city's clocks was filed into being by hand.",
+          "color": 11570519,
+          "fields": [
+            {
+              "name": "\u2699\ufe0f first gear train",
+              "value": "\u2705 10 / 10\nTen benches turning at once \u2014 the whole shop ticks like one patient movement.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd27 hundred-bench workshop",
+              "value": "\u23f3 100 / 100\nA hundred benches; visitors mistake the workshop's hum for a cathedral organ.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfdb\ufe0f horological empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand benches \u2014 every tower clock in the country keeps your time.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udddc\ufe0f first thousand cogs",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand cogs, filed smooth, polished bright, and racked by size.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f guild-mark famous",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand cogs; the guild stamps your mark without looking twice.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 keeper of the hours",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million cogs. Somewhere, every clock striking noon owes you a tooth.",
+              "inline": true
+            },
+            {
+              "name": "\u231a first grand complication",
+              "value": "\u2705 1 / 1\nThe first master clock wound down \u2014 one grand complication, ticking softly in its case.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udddd\ufe0f cabinet of complications",
+              "value": "\u23f3 5 / 5\nFive grand complications behind glass; apprentices dust them holding their breath.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0c midnight dynasty",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five grand complications \u2014 time itself seems to pause and check your work.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "coffee-roastery",
+      "theme_id": "coffee-roastery",
+      "views": {
+        "status": {
+          "title": "\u2615 Coffee Roastery \u2014 the morning count",
+          "description": "A corner roastery where the first crack of the morning turns green beans into a queue out the door.\n\nWhile the shop was shuttered, the roaster kept the beans coming: +1,054,800 \ud83e\uded8 beans",
+          "color": 7294519,
+          "fields": [
+            {
+              "name": "\ud83e\uded8 beans",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd6b reserve blends",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\u2615 drip station",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd41 roasting drum",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\u2699\ufe0f The Roaster's Bench",
+          "description": "Spend beans to keep the grind fine, the drum hot, and the espresso crema thick.",
+          "color": 7294519,
+          "fields": [
+            {
+              "name": "\u2699\ufe0f calibrated burr grinder",
+              "value": "\u2705 Roast level 0 \u2192 1 \u00b7 60 \ud83e\uded8 beans\nA freshly calibrated burr grinder pulls a cleaner shot; the barista works faster and the drip line never stalls.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udd25 convection roast profile",
+              "value": "\u26a0\ufe0f Roast level 1 \u2192 2 \u00b7 345 \ud83e\uded8 beans \u00b7 requires \ud83e\udd41 roasting drum\nA tuned convection profile roasts each batch evenly to first crack; the drum turns green beans golden twice as quick.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udfea sell the shop and franchise a new roastery",
+          "description": "Hand over the keys, bottle your signature reserve blend, and open a gleaming new roastery across town \u2014 the aroma travels with you.",
+          "color": 7294519,
+          "fields": [
+            {
+              "name": "\ud83e\uded8 beans",
+              "value": "\u2705 lifetime beans toward the new roastery: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd6b reserve blends",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\u2615 Coffee Roastery",
+          "description": "A corner roastery where the first crack of the morning turns green beans into a queue out the door.",
+          "color": 7294519,
+          "fields": [
+            {
+              "name": "\u2615 first full counter",
+              "value": "\u2705 10 / 10\nTen drip stations steaming at once \u2014 the morning rush finally meets its match.",
+              "inline": true
+            },
+            {
+              "name": "\u2699\ufe0f hundred-station roastery",
+              "value": "\u23f3 100 / 100\nA hundred drip stations; the whole block wakes to your grinder before its own alarm.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd9\ufe0f caffeine empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand drip stations \u2014 visitors navigate the district by aroma alone.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uded8 first thousand beans",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand beans weighed, roasted, and logged in the cupping journal.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcd3 neighborhood habit",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand beans; regulars order the usual at a counter they never really leave.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 ten-million-bean legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million beans. Baristas apprentice here just to say they did.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd6b first reserve tin",
+              "value": "\u2705 1 / 1\nThe first shop franchised \u2014 one sealed tin of reserve blend, label still tacky.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 the tasting shelf",
+              "value": "\u23f3 5 / 5\nFive reserve tins lined behind the bar \u2014 a flight of every roastery you ever perfected.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f reserve dynasty",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five reserve tins \u2014 a franchise empire measured in first cracks.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "cyber-city",
+      "theme_id": "cyber-city",
+      "views": {
+        "status": {
+          "title": "\ud83c\udf06 Cyber City \u2014 skyline uplink",
+          "description": "A rain-slick sprawl of neon and antennae where everything is for sale and the skyline never sleeps.\n\nWhile you were jacked out, the city kept streaming credits: +1,054,800 \ud83d\udcb3 credits",
+          "color": 49873,
+          "fields": [
+            {
+              "name": "\ud83d\udcb3 credits",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcbe legacy code fragments",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddc4\ufe0f data haven",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udef8 courier drone swarm",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udee0\ufe0f The Night Market Node",
+          "description": "Burn credits on gear that keeps the grid paying you first.",
+          "color": 49873,
+          "fields": [
+            {
+              "name": "\ud83e\uddca cryo-coolant overclock",
+              "value": "\u2705 Firmware rev 0 \u2192 1 \u00b7 60 \ud83d\udcb3 credits\nSupercooled coolant lets the haven's racks run red-line all night without a single thermal stall.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udcf6 swarm routing firmware",
+              "value": "\u26a0\ufe0f Firmware rev 1 \u2192 2 \u00b7 345 \ud83d\udcb3 credits \u00b7 requires \ud83d\udef8 courier drone swarm\nBlack-market pathing firmware; the swarm stops circling the towers and starts threading them.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83e\udde0 upload your consciousness",
+          "description": "Burn the safehouses, wipe the ledgers, and pour yourself into the grid \u2014 you wake in a new body with legacy code fragments etched behind your eyes.",
+          "color": 49873,
+          "fields": [
+            {
+              "name": "\ud83d\udcb3 credits",
+              "value": "\u2705 lifetime credits toward the upload: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcbe legacy code fragments",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udf06 Cyber City",
+          "description": "A rain-slick sprawl of neon and antennae where everything is for sale and the skyline never sleeps.",
+          "color": 49873,
+          "fields": [
+            {
+              "name": "\ud83d\uddc4\ufe0f first node cluster",
+              "value": "\u2705 10 / 10\nTen data havens online at once \u2014 the block finally shows up on the grid map.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf06 district uplink",
+              "value": "\u23f3 100 / 100\nA hundred installations humming; the district reroutes its traffic through you.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udef0\ufe0f citywide grid",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand installations \u2014 the whole rain-slick sprawl runs on your dark fiber now.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcb3 first thousand credits",
+              "value": "\u2705 1,000 / 1,000\nThe first clean thousand credits, laundered through accounts that don't exist.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcb0 shadow fortune",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand credits routed so far into the dark they cast no ledger shadow.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 grid legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million credits. The old syndicates study your ledgers like scripture.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcbe first code fragment",
+              "value": "\u2705 1 / 1\nOne legacy code fragment recovered \u2014 proof a mind once outlived its body.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddec fragment cache",
+              "value": "\u23f3 5 / 5\nFive fragments of pre-collapse code, archived behind ice no ice can reach.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udde0 ascended intelligence",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five fragments \u2014 you no longer log into the grid; you are the grid.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "deep-sea-station",
+      "theme_id": "deep-sea-station",
+      "views": {
+        "status": {
+          "title": "\ud83c\udf0a Deep-Sea Station \u2014 pressure-hull report",
+          "description": "A pressurized research outpost on the trench floor, harvesting the abyss one pearl at a time.\n\nWhile you were topside, the abyss kept providing: +1,054,800 \ud83e\uddaa pearls",
+          "color": 749196,
+          "fields": [
+            {
+              "name": "\ud83e\uddaa pearls",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udffa abyssal relics",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc1a oyster bed",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd16 submersible drone",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\u2699\ufe0f Station Stores",
+          "description": "Trade pearls for gear that keeps the harvest coming.",
+          "color": 749196,
+          "fields": [
+            {
+              "name": "\ud83e\udda0 plankton drip line",
+              "value": "\u2705 Depth rating 0 \u2192 1 \u00b7 60 \ud83e\uddaa pearls\nA steady drip of rich plankton keeps every oyster fat, content, and productive.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udce1 sonar trench maps",
+              "value": "\u26a0\ufe0f Depth rating 1 \u2192 2 \u00b7 345 \ud83e\uddaa pearls \u00b7 requires \ud83e\udd16 submersible drone\nFine-grained sonar charts of the trench; the drone stops searching and starts harvesting.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\u2693 surface and resupply",
+          "description": "Blow the ballast, ride up into the light, and refit \u2014 you return to the deep with abyssal relics in the hold.",
+          "color": 749196,
+          "fields": [
+            {
+              "name": "\ud83e\uddaa pearls",
+              "value": "\u2705 lifetime pearls toward the surface run: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udffa abyssal relics",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udf0a Deep-Sea Station",
+          "description": "A pressurized research outpost on the trench floor, harvesting the abyss one pearl at a time.",
+          "color": 749196,
+          "fields": [
+            {
+              "name": "\ud83d\udc1a first oyster bed",
+              "value": "\u2705 10 / 10\nTen harvesters working at once \u2014 the station stops feeling so alone down here.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0a trench operation",
+              "value": "\u23f3 100 / 100\nA hundred harvesters combing the dark; the survey charts fill with your marks.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd9\ufe0f abyssal enterprise",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand harvesters \u2014 the whole trench floor answers to the station now.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddaa first thousand pearls",
+              "value": "\u2705 1,000 / 1,000\nA thousand pearls in the vault, each one prised from the crushing dark.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc8e pearl fortune",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand pearls; surface buyers send submarines just to bid.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 legend of the deep",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million pearls. Sailors swear the trench still glows where you dredged it.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udffa first relic",
+              "value": "\u2705 1 / 1\nOne abyssal relic in the hold \u2014 something down there was here long before us.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddff relic vault",
+              "value": "\u23f3 5 / 5\nFive relics dredged from the black, older than any chart aboard.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf00 keeper of the abyss",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five relics \u2014 you read the trench's silences like a logbook.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "dragon-hoard",
+      "theme_id": "dragon-hoard",
+      "views": {
+        "status": {
+          "title": "\ud83d\udc09 Dragon Hoard \u2014 a dragon's accounting",
+          "description": "You are the dragon. The hoard must grow.\n\nWhile you slumbered, the tribute kept piling up: +1,054,800 \ud83e\ude99 gold coins",
+          "color": 12092939,
+          "fields": [
+            {
+              "name": "\ud83e\ude99 gold coins",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc32 ancient scales",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\u26cf\ufe0f kobold miner",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd8\ufe0f tribute village",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udd25 The Dragon's Demands",
+          "description": "Spend coins now to make the hoard grow faster. It is an investment.",
+          "color": 12092939,
+          "fields": [
+            {
+              "name": "\u2692\ufe0f sharper pickaxes",
+              "value": "\u2705 Menace level 0 \u2192 1 \u00b7 60 \ud83e\ude99 gold coins\nSharper pickaxes for the kobold crews; the coin seams give up their riches faster.",
+              "inline": false
+            },
+            {
+              "name": "\ud83c\udf25\ufe0f wings over the rooftops",
+              "value": "\u26a0\ufe0f Menace level 1 \u2192 2 \u00b7 345 \ud83e\ude99 gold coins \u00b7 requires \ud83c\udfd8\ufe0f tribute village\nOne slow circle over the rooftops and the village discovers a deeper well of gratitude.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\udd25 burn it all and fly on",
+          "description": "Torch the lair, scatter the hoard to the winds, and fly for new mountains \u2014 nothing teaches like beginning again with ancient scales.",
+          "color": 12092939,
+          "fields": [
+            {
+              "name": "\ud83e\ude99 gold coins",
+              "value": "\u2705 lifetime gold toward the burning: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc32 ancient scales",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83d\udc09 Dragon Hoard",
+          "description": "You are the dragon. The hoard must grow.",
+          "color": 12092939,
+          "fields": [
+            {
+              "name": "\u26cf\ufe0f first coin seam",
+              "value": "\u2705 10 / 10\nTen earners toiling at once \u2014 the pile is finally deep enough to sleep on.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd4\ufe0f hundred-earner hoard",
+              "value": "\u23f3 100 / 100\nA hundred earners digging and tithing below; the mountain hums with your wealth.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc09 hoard of legend",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand earners \u2014 knights write their wills before they ride out for you.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\ude99 first thousand coins",
+              "value": "\u2705 1,000 / 1,000\nA thousand coins counted onto the pile, each one warm and gleaming and yours.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcb0 gleaming fortune",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand coins; the hoard is large enough to have its own weather.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 wealth beyond song",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million coins. Bards run out of adjectives and simply start again.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc32 first ancient scale",
+              "value": "\u2705 1 / 1\nOne iridescent scale shed at the first rebirth \u2014 you fly on, older and wiser.",
+              "inline": true
+            },
+            {
+              "name": "\u2728 scaled reserve",
+              "value": "\u23f3 5 / 5\nFive ancient scales, each the memory of a hoard you dared to burn.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 elder wyrm",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five scales \u2014 the eldest dragons speak your name in the high cold air.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "egg-farm",
+      "theme_id": "egg-farm",
+      "views": {
+        "status": {
+          "title": "\ud83e\udd5a Egg Farm \u2014 the morning count",
+          "description": "A cozy backyard farm where patient chickens fund your empire.\n\nWhile you were away, the hens kept laying: +1,054,800 \ud83e\udd5a eggs",
+          "color": 16106818,
+          "fields": [
+            {
+              "name": "\ud83e\udd5a eggs",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd47 golden eggs",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc14 chicken coop",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83e\uddfa The Farm Supply Shed",
+          "description": "Trade fresh eggs for a busier, happier farm.",
+          "color": 16106818,
+          "fields": [
+            {
+              "name": "\ud83c\udfe0 bigger henhouse",
+              "value": "\u2705 Coop size 0 \u2192 1 \u00b7 60 \ud83e\udd5a eggs\nA roomier henhouse; every hen in the coop lays that bit faster.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udf1f sell the farm",
+          "description": "Sell the whole farm and start over with golden eggs in hand.",
+          "color": 16106818,
+          "fields": [
+            {
+              "name": "\ud83e\udd5a eggs",
+              "value": "\u2705 lifetime eggs toward the sale: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd47 golden eggs",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83e\udd5a Egg Farm",
+          "description": "A cozy backyard farm where patient chickens fund your empire.",
+          "color": 16106818,
+          "fields": [
+            {
+              "name": "\ud83d\udc23 first flock",
+              "value": "\u2705 10 / 10\nTen layers on the roost \u2014 the yard finally sounds like a farm.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc25 hundred-hen farmstead",
+              "value": "\u23f3 100 / 100\nA hundred layers strong; the feed bill is now a line item.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 poultry empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand layers \u2014 neighbors set their clocks by the morning chorus.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddfa first thousand eggs",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand eggs of the season, counted and crated.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f county-fair famous",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand eggs \u2014 the county fair knows your name.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 ten-million-egg legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million eggs. Songs are sung. Omelettes are legion.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd47 first golden egg",
+              "value": "\u2705 1 / 1\nThe first farm sold \u2014 one golden egg, warm in your palm.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcb0 golden clutch",
+              "value": "\u23f3 5 / 5\nFive golden eggs in the nest box of your retirement fund.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f golden dynasty",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five golden eggs \u2014 a dynasty measured in farms sold.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "haunted-manor",
+      "theme_id": "haunted-manor",
+      "views": {
+        "status": {
+          "title": "\ud83c\udfda\ufe0f Haunted Manor \u2014 the night ledger",
+          "description": "A creaking old manor whose restless spirits pay their rent in ectoplasm.\n\nWhile you were away, the spirits kept seeping: +1,054,800 \ud83c\udf2b\ufe0f ectoplasm",
+          "color": 6179723,
+          "fields": [
+            {
+              "name": "\ud83c\udf2b\ufe0f ectoplasm",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc7b restless spirits",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddbc\ufe0f haunted portrait",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\ude91 poltergeist parlor",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udd6f\ufe0f The S\u00e9ance Supply Cabinet",
+          "description": "Spend ectoplasm to make the haunting that little bit worse.",
+          "color": 6179723,
+          "fields": [
+            {
+              "name": "\ud83d\udd6f\ufe0f midnight candles",
+              "value": "\u2705 Haunting level 0 \u2192 1 \u00b7 60 \ud83c\udf2b\ufe0f ectoplasm\nCandles lit at exactly midnight; the portrait broods harder and weeps faster.",
+              "inline": false
+            },
+            {
+              "name": "\ud83e\udeb5 creakier floorboards",
+              "value": "\u26a0\ufe0f Haunting level 1 \u2192 2 \u00b7 345 \ud83c\udf2b\ufe0f ectoplasm \u00b7 requires \ud83e\ude91 poltergeist parlor\nLoosened floorboards give the poltergeists more to slam; the parlor's output rattles upward.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\udcff hold a s\u00e9ance",
+          "description": "Gather the household for one last s\u00e9ance and set every spirit free \u2014 they remember you kindly.",
+          "color": 6179723,
+          "fields": [
+            {
+              "name": "\ud83c\udf2b\ufe0f ectoplasm",
+              "value": "\u2705 lifetime ectoplasm toward the s\u00e9ance: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc7b restless spirits",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udfda\ufe0f Haunted Manor",
+          "description": "A creaking old manor whose restless spirits pay their rent in ectoplasm.",
+          "color": 6179723,
+          "fields": [
+            {
+              "name": "\ud83d\uddbc\ufe0f first haunting",
+              "value": "\u2705 10 / 10\nTen spectres stirring at once \u2014 the manor finally earns the word haunted.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd78\ufe0f restless household",
+              "value": "\u23f3 100 / 100\nA hundred spectres at work; no guest ever makes it past the foyer.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udff0 manor of a thousand ghosts",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand spectres \u2014 the house holds more dead than the town holds living.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf2b\ufe0f first thousand drops",
+              "value": "\u2705 1,000 / 1,000\nA thousand drops of ectoplasm skimmed from the cold spots and bottled.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f spectral fortune",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand drops; the cellar glows faintly up through the floorboards.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 legend of the manor",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million drops of ectoplasm. Ghost-hunters retire rather than knock.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc7b first freed spirit",
+              "value": "\u2705 1 / 1\nOne restless spirit set free \u2014 and grateful enough now to owe you a favor.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc80 grateful dead",
+              "value": "\u23f3 5 / 5\nFive freed spirits, each drifting back on cold nights to lend a colder hand.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcff master of s\u00e9ances",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five freed spirits \u2014 the veil parts for you like a held-open door.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "idol-agency",
+      "theme_id": "idol-agency",
+      "views": {
+        "status": {
+          "title": "\ud83c\udfa4 Idol Agency \u2014 the fandom report",
+          "description": "A scrappy talent agency turning midnight practice and shaky livestreams into stadium-filling stardom.\n\nWhile you were offstage, the fandom kept the lightsticks waving: +1,054,800 \ud83d\udc96 fans",
+          "color": 15160448,
+          "fields": [
+            {
+              "name": "\ud83d\udc96 fans",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcbf platinum records",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\ude70 practice room",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udce1 livestream studio",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udcbf The Producer's Desk",
+          "description": "Spend fan devotion on polish, practice, and a little stage magic.",
+          "color": 15160448,
+          "fields": [
+            {
+              "name": "\ud83e\ude77 guest choreography coach",
+              "value": "\u2705 Spotlight level 0 \u2192 1 \u00b7 60 \ud83d\udc96 fans\nA legendary coach tightens every eight-count; the practice room turns polish into devotion.",
+              "inline": false
+            },
+            {
+              "name": "\ud83c\udfac viral fancam edit",
+              "value": "\u26a0\ufe0f Spotlight level 1 \u2192 2 \u00b7 345 \ud83d\udc96 fans \u00b7 requires \ud83d\udce1 livestream studio\nOne perfectly timed fancam edit and the algorithm falls in love; the studio's numbers go vertical.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udf93 graduate and debut a new group",
+          "description": "Hold the tearful graduation concert, hang the platinum record, and audition a brand-new lineup \u2014 the agency's next era starts tonight.",
+          "color": 15160448,
+          "fields": [
+            {
+              "name": "\ud83d\udc96 fans",
+              "value": "\u2705 lifetime fans toward the graduation stage: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcbf platinum records",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udfa4 Idol Agency",
+          "description": "A scrappy talent agency turning midnight practice and shaky livestreams into stadium-filling stardom.",
+          "color": 15160448,
+          "fields": [
+            {
+              "name": "\ud83e\ude70 first fandom",
+              "value": "\u2705 10 / 10\nTen acts drilling at once \u2014 the agency finally sounds like a hit factory.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfb6 chart-topping roster",
+              "value": "\u23f3 100 / 100\nA hundred acts in rotation; the trending page is basically your roster.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd9\ufe0f entertainment empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand acts \u2014 every stadium in the country books through your desk.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc96 first thousand fans",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand fans, won one encore and one shaky livestream at a time.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf9f\ufe0f sold-out arenas",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand fans; the lightstick ocean stretches past the nosebleeds.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 household name",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million fans. Your groups trend before they have even announced.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcbf first platinum record",
+              "value": "\u2705 1 / 1\nThe first platinum record on the wall \u2014 a fandom built up from absolute zero.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 platinum wall",
+              "value": "\u23f3 5 / 5\nFive platinum records framed in a row; new trainees photograph them for luck.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f hall of fame",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five platinum records \u2014 the industry names its trophies after your eras.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "lighthouse-keep",
+      "theme_id": "lighthouse-keep",
+      "views": {
+        "status": {
+          "title": "\ud83d\uddfc Lighthouse Keep \u2014 the night watch log",
+          "description": "A salt-bitten tower on the last headland, where one stubborn flame argues with the fog and wins.\n\nWhile you slept in the watch room, the beam kept sweeping the channel: +1,054,800 \ud83d\udd06 lamplight",
+          "color": 1793674,
+          "fields": [
+            {
+              "name": "\ud83d\udd06 lamplight",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udca0 fresnel lenses",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfee oil lantern",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd26 fresnel array",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83e\uddf0 The Keeper's Store Room",
+          "description": "Spend lamplight on brighter wicks, truer glass, and a tower the fog cannot argue with.",
+          "color": 1793674,
+          "fields": [
+            {
+              "name": "\ud83e\ude9e polished reflectors",
+              "value": "\u2705 Watch level 0 \u2192 1 \u00b7 60 \ud83d\udd06 lamplight\nSilvered reflectors set behind the wick; the lantern spends the same oil and throws twice the shine.",
+              "inline": false
+            },
+            {
+              "name": "\u2696\ufe0f counterweight drive",
+              "value": "\u26a0\ufe0f Watch level 1 \u2192 2 \u00b7 345 \ud83d\udd06 lamplight \u00b7 requires \ud83d\udd26 fresnel array\nA rewound counterweight drive spins the array smooth and constant; the beam never stutters again.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udf05 hand over the keep",
+          "description": "Log the last watch, hand the keys to a new keeper, and carry one retired lens up the coast to raise a taller tower.",
+          "color": 1793674,
+          "fields": [
+            {
+              "name": "\ud83d\udd06 lamplight",
+              "value": "\u2705 lifetime lamplight toward handing over the keep: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udca0 fresnel lenses",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83d\uddfc Lighthouse Keep",
+          "description": "A salt-bitten tower on the last headland, where one stubborn flame argues with the fog and wins.",
+          "color": 1793674,
+          "fields": [
+            {
+              "name": "\ud83d\udd6f\ufe0f first watch lit",
+              "value": "\u2705 10 / 10\nTen lamps burning at once \u2014 from the sea, the headland finally looks inhabited.",
+              "inline": true
+            },
+            {
+              "name": "\u2728 coastline constellation",
+              "value": "\u23f3 100 / 100\nA hundred lamps; sailors steer by your headland before they trust their own charts.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddfa\ufe0f keeper of the coast",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand lamps \u2014 the whole seaboard blinks to your rhythm after dusk.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcd4 first thousand measures",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand measures of lamplight, logged in a salt-stained ledger.",
+              "inline": true
+            },
+            {
+              "name": "\u26c8\ufe0f storm-proven",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand measures of lamplight; captains toast a tower they have never once visited.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 the light that never failed",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million measures of lamplight. Not one wreck on your watch \u2014 the charts mark this coast as kind.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udca0 first retired lens",
+              "value": "\u2705 1 / 1\nThe first keep handed over \u2014 one fresnel lens, heavier than its story.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfdb\ufe0f gallery of lenses",
+              "value": "\u23f3 5 / 5\nFive retired lenses catching the sun in the tower's base; visitors whisper without knowing why.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf05 dynasty of keepers",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five retired lenses \u2014 every light on the coast traces its flame back to yours.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "pirate-cove",
+      "theme_id": "pirate-cove",
+      "views": {
+        "status": {
+          "title": "\ud83c\udff4\u200d\u2620\ufe0f Pirate Cove \u2014 the captain's ledger",
+          "description": "A hidden smugglers' cove where every tide brings in doubloons and nobody asks where they came from.\n\nWhile ye were ashore, the tide kept the smugglers busy: +1,054,800 \ud83e\ude99 doubloons",
+          "color": 947344,
+          "fields": [
+            {
+              "name": "\ud83e\ude99 doubloons",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\u26b1\ufe0f cursed relics",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udef6 smuggler skiff",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf7b tavern crew",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\u2693 The Quartermaster's Stores",
+          "description": "Spend doubloons to keep the skiffs swift and the crew wicked.",
+          "color": 947344,
+          "fields": [
+            {
+              "name": "\u26f5 patched black sails",
+              "value": "\u2705 Infamy level 0 \u2192 1 \u00b7 60 \ud83e\ude99 doubloons\nNew sailcloth dyed midnight black; the skiff runs faster and the customs sloop sees nothing.",
+              "inline": false
+            },
+            {
+              "name": "\ud83e\udd43 double rum rations",
+              "value": "\u26a0\ufe0f Infamy level 1 \u2192 2 \u00b7 345 \ud83e\ude99 doubloons \u00b7 requires \ud83c\udf7b tavern crew\nTwice the rum makes the crew twice as charming; the dice keep landing the cove's way.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\uddfa\ufe0f bury the treasure and set sail",
+          "description": "Sink the chest beneath the palm, burn the map into memory, and chase a fresh horizon \u2014 the sea remembers your legend.",
+          "color": 947344,
+          "fields": [
+            {
+              "name": "\ud83e\ude99 doubloons",
+              "value": "\u2705 lifetime doubloons toward the buried chest: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\u26b1\ufe0f cursed relics",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udff4\u200d\u2620\ufe0f Pirate Cove",
+          "description": "A hidden smugglers' cove where every tide brings in doubloons and nobody asks where they came from.",
+          "color": 947344,
+          "fields": [
+            {
+              "name": "\ud83d\udef6 first fleet",
+              "value": "\u2705 10 / 10\nTen crews working the tide at once \u2014 the cove finally sounds like a pirate haven.",
+              "inline": true
+            },
+            {
+              "name": "\u26f5 smuggler's flotilla",
+              "value": "\u23f3 100 / 100\nA hundred crews on the water; the customs sloop stops leaving harbor at all.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udff4\u200d\u2620\ufe0f scourge of the coast",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand crews \u2014 every port on the map flies your flag or fears it.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\ude99 first thousand doubloons",
+              "value": "\u2705 1,000 / 1,000\nA thousand doubloons counted twice, trusted never, and buried once for luck.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcb0 captain's fortune",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand doubloons; the hold rides low and the crew grins wide.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 legend of the seas",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million doubloons. Navies name their worst storms after your worst nights.",
+              "inline": true
+            },
+            {
+              "name": "\u26b1\ufe0f first cursed relic",
+              "value": "\u2705 1 / 1\nOne cursed relic in the chest \u2014 off a ship that should have stayed sunk.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc80 cursed reliquary",
+              "value": "\u23f3 5 / 5\nFive cursed relics, humming in the dark, best not counted after midnight.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddfa\ufe0f ghost of the horizon",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five relics \u2014 the sea itself carries rumors of where you'll strike next.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "potion-brewery",
+      "theme_id": "potion-brewery",
+      "views": {
+        "status": {
+          "title": "\u2697\ufe0f Potion Brewery \u2014 the stockroom ledger",
+          "description": "A crooked little brewery where the pots mutter to themselves and every bottle glows.\n\nWhile you were out, the cauldrons kept bubbling: +1,054,800 \ud83e\uddea potions",
+          "color": 8077216,
+          "fields": [
+            {
+              "name": "\ud83e\uddea potions",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd2e arcane essence",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf72 cauldron",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddd9 apprentice alchemist",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udcdc The Alchemist's Catalogue",
+          "description": "Trade bottled potions for a fiercer, faster brewery.",
+          "color": 8077216,
+          "fields": [
+            {
+              "name": "\ud83d\udd25 hotter flames",
+              "value": "\u2705 Brew grade 0 \u2192 1 \u00b7 60 \ud83e\uddea potions\nStoke the fire under the cauldron; a fiercer boil means faster brewing.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udcd6 dog-eared grimoire",
+              "value": "\u26a0\ufe0f Brew grade 1 \u2192 2 \u00b7 345 \ud83e\uddea potions \u00b7 requires \ud83e\uddd9 apprentice alchemist\nA hand-annotated grimoire; every apprentice who studies it brews with fewer mistakes.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\u2728 transcend the craft",
+          "description": "Shutter the brewery, distill everything you have learned, and begin again with arcane essence in hand.",
+          "color": 8077216,
+          "fields": [
+            {
+              "name": "\ud83e\uddea potions",
+              "value": "\u2705 lifetime potions toward transcendence: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd2e arcane essence",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\u2697\ufe0f Potion Brewery",
+          "description": "A crooked little brewery where the pots mutter to themselves and every bottle glows.",
+          "color": 8077216,
+          "fields": [
+            {
+              "name": "\ud83e\uded5 a proper kitchen",
+              "value": "\u2705 10 / 10\nTen brewers bubbling at once \u2014 the hallway smells permanently of lavender and sulfur.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udff0 guild-sized operation",
+              "value": "\u23f3 100 / 100\nA hundred brewers; the guild sends inspectors just to watch.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0b the thousand-pot works",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand brewers \u2014 the town downwind reports prophetic dreams.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udce6 first crate corked",
+              "value": "\u2705 1,000 / 1,000\nA thousand potions sealed and shelved without a single explosion. Well, one.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 royal supplier",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand potions \u2014 the palace buys by the wagonload.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf20 legend of the still",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million potions; apprentices whisper your recipes like scripture.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udca7 first drop of essence",
+              "value": "\u2705 1 / 1\nOne measure of arcane essence \u2014 the craft finally distilled to its truth.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddff essence in reserve",
+              "value": "\u23f3 5 / 5\nFive measures of essence, humming softly in their vials.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0c transcendent brewer",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five measures \u2014 you no longer follow recipes; recipes follow you.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "ramen-stand",
+      "theme_id": "ramen-stand",
+      "views": {
+        "status": {
+          "title": "\ud83c\udf5c Ramen Stand \u2014 the night market tally",
+          "description": "A one-lantern noodle cart in the night market, where the broth has simmered longer than the city has had streetlights.\n\nWhile you napped behind the curtain, the stockpot never stopped rolling: +1,054,800 \ud83c\udf5c bowls",
+          "color": 12597547,
+          "fields": [
+            {
+              "name": "\ud83c\udf5c bowls",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd44 golden ladles",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf72 stockpot burner",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd62 noodle press",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83c\udfee The Cart's Back Shelf",
+          "description": "Spend bowls on deeper broth, springier noodles, and a lantern bright enough to summon the whole street.",
+          "color": 12597547,
+          "fields": [
+            {
+              "name": "\ud83e\uddc2 overnight tare",
+              "value": "\u2705 Ladle level 0 \u2192 1 \u00b7 60 \ud83c\udf5c bowls\nA deeper, darker tare steeped overnight; one ladleful in the bowl and the regulars close their eyes.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udd29 sharper brass dies",
+              "value": "\u26a0\ufe0f Ladle level 1 \u2192 2 \u00b7 345 \ud83c\udf5c bowls \u00b7 requires \ud83e\udd62 noodle press\nFresh-cut brass dies fitted to the press; the noodles come out springier and the queue moves twice as fast.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udfee roll the cart on",
+          "description": "Hang the last golden ladle, wipe down the counter, and wheel the cart to a new corner where nobody knows the broth yet.",
+          "color": 12597547,
+          "fields": [
+            {
+              "name": "\ud83c\udf5c bowls",
+              "value": "\u2705 lifetime bowls toward rolling the cart on: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd44 golden ladles",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udf5c Ramen Stand",
+          "description": "A one-lantern noodle cart in the night market, where the broth has simmered longer than the city has had streetlights.",
+          "color": 12597547,
+          "fields": [
+            {
+              "name": "\ud83e\udd62 first full counter",
+              "value": "\u2705 10 / 10\nTen burners going at once \u2014 the steam column marks the stand from three alleys away.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd25 hundred-burner kitchen",
+              "value": "\u23f3 100 / 100\nA hundred burners; the night market quietly rearranges itself around your queue.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfee noodle empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand burners \u2014 every alley in the city smells faintly of your broth.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf5c first thousand bowls",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand bowls, slurped clean and stacked into a wobbling porcelain tower.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udeb6 queue around the block",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand bowls; strangers queue on rumor alone and leave as regulars.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 broth of legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million bowls. Cooks across the city bow to a cart they have only heard described.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd44 first golden ladle",
+              "value": "\u2705 1 / 1\nThe first corner conquered \u2014 one golden ladle, still warm from the stockpot.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 rack of ladles",
+              "value": "\u23f3 5 / 5\nFive golden ladles clinking overhead; the cart sounds like a wind chime when it rolls.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf19 the wandering legend",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five golden ladles \u2014 the cart is a myth that keeps arriving exactly where the city is hungriest.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "royal-bakery",
+      "theme_id": "royal-bakery",
+      "views": {
+        "status": {
+          "title": "\ud83e\udd50 Royal Bakery \u2014 the morning proof",
+          "description": "A flour-dusted bakehouse by appointment to the crown, where the ovens never cool and the queue never ends.\n\nWhile you were away from the counter, the ovens never cooled: +1,054,800 \ud83e\udd50 pastries",
+          "color": 14257714,
+          "fields": [
+            {
+              "name": "\ud83e\udd50 pastries",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 royal seals",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uded9 sourdough starter",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddf1 brick oven",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83e\uddfe The Pantry Ledger",
+          "description": "Trade pastries for a warmer, busier bakehouse.",
+          "color": 14257714,
+          "fields": [
+            {
+              "name": "\ud83c\udf3e stone-ground flour",
+              "value": "\u2705 Recipe mastery 0 \u2192 1 \u00b7 60 \ud83e\udd50 pastries\nFiner flour from the old mill; the starter rises faster and the crumb turns cloud-light.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udeaa twin hearth doors",
+              "value": "\u26a0\ufe0f Recipe mastery 1 \u2192 2 \u00b7 345 \ud83e\udd50 pastries \u00b7 requires \ud83e\uddf1 brick oven\nA second door on the hearth; loaves go in as loaves come out, and the oven never waits.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udff0 open a new royal franchise",
+          "description": "Hand the keys to your best baker, take the crown's charter, and raise a new bakehouse in a new town \u2014 with royal seals to your name.",
+          "color": 14257714,
+          "fields": [
+            {
+              "name": "\ud83e\udd50 pastries",
+              "value": "\u2705 lifetime pastries toward the charter: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 royal seals",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83e\udd50 Royal Bakery",
+          "description": "A flour-dusted bakehouse by appointment to the crown, where the ovens never cool and the queue never ends.",
+          "color": 14257714,
+          "fields": [
+            {
+              "name": "\ud83d\udd25 first hearth lit",
+              "value": "\u2705 10 / 10\nTen ovens firing at once \u2014 the bakehouse finally fills with the good noise.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd50 guild bakehouse",
+              "value": "\u23f3 100 / 100\nA hundred ovens going; the morning queue winds clear around the square.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udff0 royal bakery empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand ovens \u2014 every town of note eats your crust by royal charter.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\udd50 first thousand pastries",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand pastries out of the oven, counted warm onto the cooling racks.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f by appointment to the crown",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand pastries; the palace now orders by the cartload.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 legend of the ovens",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million pastries. Rival bakers make pilgrimages just to smell the air.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 first royal seal",
+              "value": "\u2705 1 / 1\nThe first wax seal of royal favor \u2014 one bakehouse chartered and thriving.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcdc sealed charters",
+              "value": "\u23f3 5 / 5\nFive royal seals in the strongbox, one per bakehouse founded and fed.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udff0 baker to the realm",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five royal seals \u2014 the crown sets its table by your calendar.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "space-colony",
+      "theme_id": "space-colony",
+      "views": {
+        "status": {
+          "title": "\ud83e\ude90 Space Colony \u2014 life-support readout",
+          "description": "A fledgling outpost on a far-off world, kept alive one breath at a time.\n\nWhile you slept in cryo, the colony kept breathing: +1,054,800 \ud83e\udee7 oxygen",
+          "color": 4881360,
+          "fields": [
+            {
+              "name": "\ud83e\udee7 oxygen",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddff alien artifacts",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd06 solar array",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf31 hydroponics bay",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udee0\ufe0f Colony Requisitions",
+          "description": "Spend hard-won oxygen on hardware the colony will thank you for.",
+          "color": 4881360,
+          "fields": [
+            {
+              "name": "\ud83e\ude9e polished reflectors",
+              "value": "\u2705 Mark 0 \u2192 1 \u00b7 60 \ud83e\udee7 oxygen\nMirror-finish reflectors squeeze more light into every panel of the solar array.",
+              "inline": false
+            },
+            {
+              "name": "\ud83e\uddea enriched nutrient feed",
+              "value": "\u26a0\ufe0f Mark 1 \u2192 2 \u00b7 345 \ud83e\udee7 oxygen \u00b7 requires \ud83c\udf31 hydroponics bay\nA richer feed line for the hydroponics bay; every rack grows denser and breathes harder.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\ude80 launch a new colony",
+          "description": "Pack the ship, leave the outpost behind, and found a new colony with alien artifacts in the hold.",
+          "color": 4881360,
+          "fields": [
+            {
+              "name": "\ud83e\udee7 oxygen",
+              "value": "\u2705 lifetime oxygen toward launch: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddff alien artifacts",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83e\ude90 Space Colony",
+          "description": "A fledgling outpost on a far-off world, kept alive one breath at a time.",
+          "color": 4881360,
+          "fields": [
+            {
+              "name": "\ud83c\udfd7\ufe0f first hab module",
+              "value": "\u2705 10 / 10\nTen machines humming at once \u2014 the outpost officially has a skyline.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddfa\ufe0f sector on the map",
+              "value": "\u23f3 100 / 100\nA hundred installations; the star charts finally print your name.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0d terraforming tier",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand installations \u2014 the planet is starting to breathe back.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uded9 first tank banked",
+              "value": "\u2705 1,000 / 1,000\nA thousand units of oxygen in reserve; nobody rations tonight.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfd9\ufe0f breathable dome",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand units \u2014 the dome no longer whistles at night.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcab atmosphere exporter",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million units of oxygen \u2014 neighboring outposts buy from YOU now.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\uddff first artifact",
+              "value": "\u2705 1 / 1\nOne alien artifact in the hold \u2014 proof there was someone here before.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfdb\ufe0f xenoarchive shelf",
+              "value": "\u23f3 5 / 5\nFive artifacts, each older than your whole civilization.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcdc precursor scholar",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five artifacts \u2014 you read the vanished script like a morning briefing.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "wizard-tower",
+      "theme_id": "wizard-tower",
+      "views": {
+        "status": {
+          "title": "\ud83e\uddd9 Wizard Tower \u2014 the evening attunement",
+          "description": "A crooked tower above the clouds where mana condenses on the windowsills and every floor holds a stranger discipline.\n\nWhile you wandered other planes, the tower kept humming with mana: +1,054,800 \ud83d\udd2e mana",
+          "color": 6963125,
+          "fields": [
+            {
+              "name": "\ud83d\udd2e mana",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\u2728 crystallized starlight",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd8b\ufe0f apprentice scribe",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcda enchanted library",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udd2e The Arcanum Exchange",
+          "description": "Trade raw mana for a taller, stranger, more studious tower.",
+          "color": 6963125,
+          "fields": [
+            {
+              "name": "\ud83e\udeb6 self-inking quills",
+              "value": "\u2705 Circle 0 \u2192 1 \u00b7 60 \ud83d\udd2e mana\nQuills that never run dry; the scribes stop dipping and never look up from the page.",
+              "inline": false
+            },
+            {
+              "name": "\ud83c\udf00 levitating stacks",
+              "value": "\u26a0\ufe0f Circle 1 \u2192 2 \u00b7 345 \ud83d\udd2e mana \u00b7 requires \ud83d\udcda enchanted library\nThe shelves learn to drift to the reader; the library spends no time fetching and all of it humming.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udf0c ascend to the astral plane",
+          "description": "Unmoor the tower from the world and step through the topmost door \u2014 you return to an empty foundation with crystallized starlight in your sleeves.",
+          "color": 6963125,
+          "fields": [
+            {
+              "name": "\ud83d\udd2e mana",
+              "value": "\u2705 lifetime mana toward the ascension: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\u2728 crystallized starlight",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83e\uddd9 Wizard Tower",
+          "description": "A crooked tower above the clouds where mana condenses on the windowsills and every floor holds a stranger discipline.",
+          "color": 6963125,
+          "fields": [
+            {
+              "name": "\ud83d\udd8b\ufe0f first circle",
+              "value": "\u2705 10 / 10\nTen workings running at once \u2014 the tower finally hums the way a wizard's should.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udcda conclave of floors",
+              "value": "\u23f3 100 / 100\nA hundred workings underway; each floor mutters a different discipline.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udff0 tower beyond counting",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand workings \u2014 the stairwell no longer agrees on how tall you are.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd2e first thousand mana",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand drops of mana, distilled from moonlit air and jarred.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udca7 brimming reservoir",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand drops of mana; the cellar sigils glow through the stone.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 wellspring of legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million drops of mana. Rival towers send apprentices just to measure the air.",
+              "inline": true
+            },
+            {
+              "name": "\u2728 first starlight",
+              "value": "\u2705 1 / 1\nOne shard of crystallized starlight \u2014 proof of a plane survived and left behind.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f starlit reserve",
+              "value": "\u23f3 5 / 5\nFive shards of crystallized starlight, cold and patient in their velvet case.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf0c archmage ascendant",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five shards \u2014 you step between planes the way others step between rooms.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
