@@ -1,0 +1,1 @@
+- `claude/test-render-offline-dropline` · **tests: cover render.py offline-gain drop branch (240->243)** · tests/ · 2026-07-17
