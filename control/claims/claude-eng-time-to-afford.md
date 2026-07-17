@@ -1,0 +1,1 @@
+- `claude/eng-time-to-afford` · **engine: add time_to_afford() helper (ENG-8)** · idle_engine/upgrades.py + tests/ · 2026-07-17
