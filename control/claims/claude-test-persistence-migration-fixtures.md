@@ -1,0 +1,1 @@
+- `claude/test-persistence-migration-fixtures` · **tests: harden save-migration coverage (TEST-9)** · tests/test_persistence.py · 2026-07-17
