@@ -1,6 +1,6 @@
 # 2026-07-17 — tests: cover render.py offline-gain drop branch (240->243)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · test writing · render-layer seat (offline-gain drop) · 2026-07-17T23:19Z (`date -u`)
 
