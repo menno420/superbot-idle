@@ -310,6 +310,38 @@ def test_theme_sourced_description_overflow_raises():
         render_status(GameState(), rogue, now=0)
 
 
+def test_offline_line_dropped_when_description_leaves_no_room(egg_farm):
+    """Neutral path (no themed ``offline_return`` slot), description at the
+    budget edge: the offline-gain line is DROPPED, not silently truncated or
+    over-budget. This pins branch ``render.py`` 240->243 — the ``room < 1``
+    arm — as intentional budget protection, not a swallow of player earnings.
+
+    A themed description 4094 chars long leaves ``room = 4096 - 4094 - 2 = 0``,
+    so the ``if room >= 1`` gate is False and the formatted gains are not
+    appended. The offline earnings are DISPLAY-only here (crediting is the
+    engine's job), and the same state DOES surface the line under a short
+    description — proving this is the near-full path, not a no-gain case.
+    """
+    state = GameState(owned={"tier1": 1}, last_seen=0)
+
+    # Same state, short description: the offline line IS shown -> gains are real.
+    shown = render_status(state, _theme_with(description="Fine."), now=100)
+    assert "+100" in shown["description"]  # the neutral offline line is present
+
+    # Now saturate the description budget so room == 0: the line is dropped.
+    near_full = "z" * 4094
+    theme = _theme_with(description=near_full)
+    embed = render_status(state, theme, now=100)
+
+    # The offline flavor line is omitted -> description is the theme's, unchanged.
+    assert embed["description"] == near_full
+    assert "+100" not in embed["description"]
+    # ...and the rest of the payload stays valid within the 4096 cap.
+    assert len(embed["description"]) <= DESCRIPTION_LIMIT
+    _assert_budgets(embed)
+    assert [f["name"] for f in embed["fields"]] == ["🔹 points", "⚙️ maker"]
+
+
 def test_validate_embed_rejects_too_many_fields():
     embed = {
         "title": "t",
