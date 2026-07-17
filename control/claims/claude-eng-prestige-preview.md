@@ -1,0 +1,1 @@
+- `claude/eng-prestige-preview` · **engine: add prestige preview helper (ENG-9)** · idle_engine/prestige.py + tests/ · 2026-07-17
