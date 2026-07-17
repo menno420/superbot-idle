@@ -1,6 +1,6 @@
 # 2026-07-17 — record OA-003 done: `pytest` is now a required status check on `main`
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · docs-only · control seat (owner-action ledger) · 2026-07-17T16:47Z (`date -u`)
 
