@@ -33,6 +33,9 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 # — and from wave 5: "bench", "caliber", "complication", "movement",
 # "watch", "keep", "keeper", "beam", "counter", "queue", "press",
 # "burner", "cart", "tare", "dies"
+# — and from apiary (THM-2): "super" (Python's super()), "frame" (stack
+# frames), "forage"/"forager" (already carried by ant-colony), "worker",
+# "queen", "royal", "jelly", "swarm" (already generic-excluded above)
 # — the packs' truly distinctive nouns below carry the guard instead.
 #
 # One entry per shipped pack, in catalog-growth order. Nouns are plain
@@ -124,6 +127,11 @@ FORBIDDEN_NOUNS_BY_PACK: dict[str, tuple[str, ...]] = {
         "ramen", "noodle", "noodles", "broth", "broths", "stockpot",
         "stockpots", "slurp", "slurps", "slurped", "ladle", "ladles",
         "ladleful", "bowl", "bowls",
+    ),
+    "apiary": (
+        "apiary", "apiaries", "bee", "bees", "beekeeper", "beekeepers",
+        "honey", "hive", "hives", "honeycomb", "nectar", "pollen",
+        "brood", "clover", "linden", "beeswax",
     ),
 }
 
@@ -232,6 +240,9 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("a Ramen Stand noodle press")
     assert FORBIDDEN_NOUNS.search("bowls of broth from the stockpot")
     assert FORBIDDEN_NOUNS.search("a golden ladle slurped clean")
+    assert FORBIDDEN_NOUNS.search("an Apiary worker bee at the hive")
+    assert FORBIDDEN_NOUNS.search("capped honey and royal jelly")
+    assert FORBIDDEN_NOUNS.search("nectar and pollen from the clover")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")

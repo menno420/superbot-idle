@@ -19,6 +19,7 @@
   },
   "themes": [
     "ant-colony",
+    "apiary",
     "arctic-outpost",
     "candy-factory",
     "clockwork-atelier",
@@ -44,8 +45,8 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 90,
-    "tolerance": 109,
+    "valid": 95,
+    "tolerance": 115,
     "errors": 25
   },
   "vectors": {
@@ -114,6 +115,71 @@
         "payload_hex": "04616e742d636f6c6f6e79",
         "crc16_hex": "e65f",
         "code": "IDLE1-0HGPWX1DCDQPRVVEF7K5Y"
+      },
+      {
+        "name": "apiary--all-on",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07617069617279",
+        "crc16_hex": "16b2",
+        "code": "IDLE1-0XGQ0TB1E9WHDCG"
+      },
+      {
+        "name": "apiary--all-off",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00617069617279",
+        "crc16_hex": "283c",
+        "code": "IDLE1-01GQ0TB1E9WJGF0"
+      },
+      {
+        "name": "apiary--only-offline_progress",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01617069617279",
+        "crc16_hex": "2388",
+        "code": "IDLE1-05GQ0TB1E9WJ720"
+      },
+      {
+        "name": "apiary--only-upgrades",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02617069617279",
+        "crc16_hex": "3915",
+        "code": "IDLE1-09GQ0TB1E9WKJ58"
+      },
+      {
+        "name": "apiary--only-prestige",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04617069617279",
+        "crc16_hex": "0c2f",
+        "code": "IDLE1-0HGQ0TB1E9WGRBR"
       },
       {
         "name": "arctic-outpost--all-on",
@@ -1288,6 +1354,78 @@
         "canonical": "IDLE1-0XGPWX1DCDQPRVVEF605W",
         "config": {
           "theme_id": "ant-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "apiary--lowercase",
+        "input": "idle1-0xgq0tb1e9whdcg",
+        "canonical": "IDLE1-0XGQ0TB1E9WHDCG",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "apiary--hyphen-grouped",
+        "input": "IDLE1-0XGQ-0TB1-E9WH-DCG",
+        "canonical": "IDLE1-0XGQ0TB1E9WHDCG",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "apiary--lookalike-O-for-0",
+        "input": "IDLE1-OXGQOTB1E9WHDCG",
+        "canonical": "IDLE1-0XGQ0TB1E9WHDCG",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "apiary--all-on--lookalike-I-for-1",
+        "input": "IDLE1-0XGQ0TBIE9WHDCG",
+        "canonical": "IDLE1-0XGQ0TB1E9WHDCG",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "apiary--all-on--lookalike-L-for-1",
+        "input": "IDLE1-0XGQ0TBLE9WHDCG",
+        "canonical": "IDLE1-0XGQ0TB1E9WHDCG",
+        "config": {
+          "theme_id": "apiary",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "apiary--kitchen-sink",
+        "input": "idle1-oxgq-otbl-e9wh-dcg",
+        "canonical": "IDLE1-0XGQ0TB1E9WHDCG",
+        "config": {
+          "theme_id": "apiary",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true

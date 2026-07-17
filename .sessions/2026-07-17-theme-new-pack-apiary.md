@@ -2,7 +2,7 @@
 
 > **Status:** `in-progress`
 
-- **📊 Model:** neutral builder-agent · high · theme authoring · content seat (new theme pack) · 2026-07-17T23:36Z (`date -u`)
+- **📊 Model:** neutral builder-agent · high · feature build · content seat (new theme pack, THM-2) · 2026-07-17T23:36Z (`date -u`)
 
 ## What / why
 
