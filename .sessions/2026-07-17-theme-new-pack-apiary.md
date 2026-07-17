@@ -1,6 +1,6 @@
 # 2026-07-17 — theme: add apiary/beekeeping theme pack (THM-2)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · feature build · content seat (new theme pack, THM-2) · 2026-07-17T23:36Z (`date -u`)
 
