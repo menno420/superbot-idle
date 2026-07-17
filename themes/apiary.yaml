@@ -1,0 +1,103 @@
+# apiary — theme pack #19 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: apiary
+  name: Apiary
+  description: A sun-warmed row of hives at the meadow's edge, where ten thousand wings turn clover and linden bloom into slow amber gold.
+  emoji: "🐝"
+  embed_color: "#F0A500"
+
+currencies:
+  - id: primary
+    name: honey
+    description: Capped honey drawn frame by frame — the bee yard keeps its whole ledger in slow, amber gold.
+    emoji: "🍯"
+  - id: prestige
+    name: royal jelly
+    description: Royal jelly set aside split after split — the milk of queens, one pale jar for every colony you sent swarming to new ground.
+    emoji: "👑"
+
+generators:
+  - id: tier1
+    name: worker bee
+    description: A single forager working the bloom from first light, ferrying nectar home one heavy trip at a time.
+    emoji: "🐝"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: honey super
+    description: A stacked super of drawn frames the colony fills top to bottom; the comb caps over faster than the workers can empty the field.
+    emoji: "🗄️"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: clover-rich pasture
+    description: A field reseeded thick with clover and linden; every forager comes home heavier and leaves again sooner.
+    emoji: "🍀"
+    target: tier1
+  - id: boost2
+    name: drawn comb foundation
+    description: Pre-drawn wax foundation slotted into every frame; the colony skips the building and goes straight to storing.
+    emoji: "🪟"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: split the hive
+  action_description: When the brood box brims, lift the crowded frames into a fresh box, let the old queen swarm to new ground, and begin the apiary again with a jar of royal jelly set aside.
+  action_emoji: "🐝"
+
+labels:
+  offline_return: "While you were away from the bee yard, the colony never stopped foraging: {gains}"
+  status_title: "🐝 Apiary — the morning hive check"
+  shop_title: "🍯 The Honey House"
+  shop_description: Spend capped honey on richer pasture, drawn comb, and a calmer, busier bee yard.
+  level: Frame level
+  prestige_progress: "lifetime honey toward the split:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first full super
+    description: Ten hives humming at once — the whole meadow leans toward the bee yard.
+    emoji: "🐝"
+  - id: owned-2
+    name: hundred-hive yard
+    description: A hundred colonies working the bloom; the air over the field is a low, steady roar.
+    emoji: "🍯"
+  - id: owned-3
+    name: apiary empire
+    description: A thousand hives — beekeepers three counties over queue to borrow your queens.
+    emoji: "🏆"
+  - id: lifetime-1
+    name: first thousand jars
+    description: The first thousand jars of honey, capped, spun, and lined up warm on the shelf.
+    emoji: "🫙"
+  - id: lifetime-2
+    name: county-fair gold
+    description: A hundred thousand jars; your amber takes the blue ribbon and then the fair's whole shelf.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: honey of legend
+    description: Ten million jars. Bakers and brewers speak of your bloom the way sailors speak of the weather.
+    emoji: "👑"
+  - id: prestige-1
+    name: first swarm sent
+    description: The first hive split — one jar of royal jelly set aside as the old queen leads her swarm to new ground.
+    emoji: "🐝"
+  - id: prestige-2
+    name: rack of royal jelly
+    description: Five pale jars of royal jelly cold in the cellar — five colonies begun from a crowded frame.
+    emoji: "🫙"
+  - id: prestige-3
+    name: queen of queens
+    description: Twenty-five jars of royal jelly — every apiary on the horizon traces its line back to one of your splits.
+    emoji: "🌟"
