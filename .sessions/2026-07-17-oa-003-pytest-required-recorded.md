@@ -2,7 +2,7 @@
 
 > **Status:** `in-progress`
 
-- **📊 Model:** neutral builder-agent · high · docs · control seat (owner-action ledger) · 2026-07-17T16:47Z (`date -u`)
+- **📊 Model:** neutral builder-agent · high · docs-only · control seat (owner-action ledger) · 2026-07-17T16:47Z (`date -u`)
 
 ## What / why
 
@@ -62,3 +62,15 @@ required-checks probe (a tiny `gh api .../rules/branches/main` wrapper the
 enabler already uses, or a documented MCP path) so future OA-00x completions can
 be live-verified instead of owner-reported — closing the "verified-needed" gap
 these items carry by construction.
+
+## ⟲ Previous-session review
+
+The prior session (`tests: cover idle_engine/theme.py load_theme structural
+guards`, PR #146/#149, 2026-07-17) closed the last sub-100% engine-core module
+with test-only work; it touched no owner-action ledger. This session is a
+different lane — recording an owner-only branch-protection completion (OA-003)
+in the live state doc. It relies on the same born-red landing discipline that
+slice used, and on the CI truth that slice's `pytest` job established: OA-003
+makes that job's check a REQUIRED gate, so the two slices bookend the
+GREEN ≠ TESTED story — one added the test coverage, this one records the gate
+that now forces it.
