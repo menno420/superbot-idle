@@ -1,6 +1,6 @@
 # 2026-07-17 — theme loader-guard tests: pin the 14 structural-shape guards in `load_theme`
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · tests · idle-engine seat (theme loader coverage) · 2026-07-17T16:28Z (`date -u`)
 
@@ -42,3 +42,22 @@ Card born RED (`in-progress`) in the first commit alongside
 last commit to clear the born-red HOLD so substrate-gate goes green and the
 landing workflow can merge on all-green. PR opened READY; the worker does not
 merge its own PR.
+
+## 💡 Session idea
+
+Coverage now pins the reject side of every `load_theme` structural guard, but a
+guard whose *message* drifts (e.g. a copy-edit that renames a block) would still
+pass a `match=` fragment if the fragment is loose. A cheap follow-up: assert the
+guard messages against a single source-of-truth table so a wording change turns
+one obvious test red instead of silently loosening the contract — the same
+"one canonical string, asserted both ways" discipline the label/milestone
+semantic tests already lean on.
+
+## ⟲ Previous-session review
+
+The prior tests slice (`tests: cover idle_engine defensive-guard edge cases`,
+PR #146) pinned the pure-domain math guards in `tests/test_engine_guards.py`
+but stopped at the engine core's *values*; it did not touch the SKIN loader, so
+`idle_engine/theme.py` stayed the lone sub-100% engine-core module at 94%. This
+session extends the identical accept/reject discipline to the loader's structural
+pass, closing the last 14 lines. No product code changed by either slice.
