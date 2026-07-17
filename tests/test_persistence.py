@@ -533,6 +533,65 @@ def test_unregistered_old_version_names_the_migratable_set(monkeypatch):
         load_state('{"state_version":-1}')
 
 
+# --- 5b. registry structure: what makes the NEXT STATE_VERSION bump test-safe ------
+
+
+def test_migration_registry_is_a_gapless_run_up_to_current():
+    """The precondition ``_migrate``'s loop relies on: it can only walk the
+    OLDEST supported save up to :data:`STATE_VERSION` if every intermediate
+    version is registered in an unbroken single-step run ending at
+    ``STATE_VERSION - 1`` — a gap would leave the loop with no step and
+    silently break every save at the missing version.
+
+    This is the forcing function for the next bump: raise ``STATE_VERSION``
+    without registering the new ``previous -> current`` step and this reds
+    here, before any real save ever fails in production.
+    """
+    versions = sorted(persistence._MIGRATIONS)
+    assert versions, "at least the v1->v2 migration is registered"
+    # No DEAD entry: a migration registered at/above the current version is
+    # never consulted by _migrate (it only steps while version < current).
+    assert max(versions) < STATE_VERSION
+    # Contiguous single-step run from the oldest supported version to current.
+    assert versions == list(range(versions[0], STATE_VERSION))
+    # The immediately-previous format is therefore always migratable.
+    assert STATE_VERSION - 1 in persistence._MIGRATIONS
+
+
+def test_migrate_is_a_noop_at_the_current_version(monkeypatch):
+    """A current-version document rides through ``_migrate`` unchanged and
+    invokes NO migration — the loop-not-entered branch. A poison step
+    registered AT ``STATE_VERSION`` would only ever fire if the walk
+    wrongly stepped past current; it must never be called, and the exact
+    same object rides through.
+    """
+
+    def _poison(doc):  # pragma: no cover - asserts it is never invoked
+        raise AssertionError("no migration runs for a current-version document")
+
+    monkeypatch.setitem(persistence._MIGRATIONS, STATE_VERSION, _poison)
+    doc = _valid_doc()
+    assert persistence._migrate(doc, STATE_VERSION) is doc
+
+
+@pytest.mark.parametrize("bad_version", ["1", True, 1.0])
+def test_migration_returning_a_malformed_version_is_a_field_type_error(
+    monkeypatch, bad_version
+):
+    """A migration whose result carries a wrong-typed ``state_version`` is
+    caught by the chain's re-read (``_read_version``) as a
+    :class:`FieldTypeError`. This closes the misbehaving-migration branch
+    :func:`test_misbehaving_migrations_fail_loud` does not reach — it
+    covers a non-dict result, a skipped version, and a forgotten bump, but
+    not a version field of the wrong JSON type.
+    """
+    monkeypatch.setitem(
+        persistence._MIGRATIONS, 0, lambda doc: {**doc, "state_version": bad_version}
+    )
+    with pytest.raises(FieldTypeError):
+        load_state(json.dumps(_v0_doc()))
+
+
 # --- 6. cross-module integration -------------------------------------------------
 
 REPO_THEMES = REPO_ROOT / "themes"
