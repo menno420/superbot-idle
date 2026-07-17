@@ -1,0 +1,1 @@
+- `claude/test-play-main-repl` · **tests: cover tools/play.py main() REPL loop (TEST-11)** · tests/ · 2026-07-17
