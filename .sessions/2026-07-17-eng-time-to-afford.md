@@ -1,8 +1,8 @@
 # 2026-07-17 — engine: add a pure `time_to_afford()` affordability-ETA helper (ENG-8)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** neutral builder-agent · high · engine · idle-engine seat (economy helpers) · 2026-07-17T22:55Z (`date -u`)
+- **📊 Model:** neutral builder-agent · high · feature build · idle-engine seat (economy helpers) · 2026-07-17T22:55Z (`date -u`)
 
 ## What / why
 
@@ -51,3 +51,15 @@ SKIN half: teach `render_shop` to compute the cost-currency rate (it already has
 the state and specs the status view uses) and append an "affordable in Ns /
 affordable now" tail to the cost line — behind the render budget with its own
 golden vector, so the ETA text is pinned the same way the cost line is.
+
+## ⟲ Previous-session review
+
+The prior overnight slice (`tests: cover idle_engine/theme.py load_theme
+structural guards`, PR on `claude/theme-loader-guards`) closed the last sub-100%
+engine-core module by pinning the loader's reject side — test-only, no product
+code. This slice is the first of the overnight backlog's ENGINE arm: it adds
+actual mechanics (`time_to_afford`) rather than coverage, extending the
+affordability surface (`upgrade_cost` / `max_affordable_levels`) with its
+missing time dimension. Both keep the CORE/SKIN wall intact — the helper carries
+zero theme vocabulary — and both land born-red under the same session-gate
+discipline.
