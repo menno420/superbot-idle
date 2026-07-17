@@ -10,7 +10,7 @@
 improvement-wave touch-up 2026-07-14 against main `c53eba9` (post-PR #126);
 truth refresh 2026-07-15 against main `8a7275d` (post-PR #139 — kit
 version claims corrected to the measured v1.16.0, PR #134 `3df5449`);
-suite 1381 passed, 1 skipped sb-free (see stability baseline).*
+suite 1415 passed, 1 skipped sb-free (see stability baseline).*
 
 ## Stability baseline
 
@@ -60,7 +60,7 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (224 vectors: 90 valid with layer-by-layer intermediates, 109 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1381 passing, 1 skipped sb-free; the pinned-host CI job runs
+- **Test suite: 1415 passing, 1 skipped sb-free; the pinned-host CI job runs
   the 15 extra manifest-contract tests on top of that with zero skips.** The
   old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
   ORDER 007 item 3): `plugin/tests/test_manifest.py` still `importorskip`s
