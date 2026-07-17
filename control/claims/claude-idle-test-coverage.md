@@ -1,0 +1,1 @@
+- `claude/idle-test-coverage` · **idle_engine defensive-guard test coverage** · tests/test_engine_guards.py · 2026-07-16
