@@ -70,7 +70,10 @@ Known-good and not to be re-audited without a reported regression:
   `9634e81748363184bf13abf1485e80262e19e8cb` (bump recipe in the workflow
   comment), exposes `sb` via `PYTHONPATH`, and RUNS the 15 manifest-contract
   tests on every PR (`1378 passed`; a grep guard hard-fails the job on any
-  skip). The sb-free `pytest` job is unchanged. Suite content: unit +
+  skip). The sb-free `pytest` job is unchanged. As of 2026-07-17 the owner
+  made `pytest` a REQUIRED status check on `main` (OA-003 done), so the required
+  set is now `substrate-gate` + `theme-gate` + `pytest` — merge-on-green means
+  merge-on-tested. Suite content: unit +
   doc-parity tests plus a seeded
   property/invariant layer (128 tests: tick/offline exact equivalence,
   per-pack determinism trajectories, conservation/monotonicity,
@@ -152,8 +155,11 @@ Known-good and not to be re-audited without a reported regression:
 #36+#38; plugin adapter build — PRs #75+#78 plus #85/#86 fixes. Live
 host-side wiring remains host-side work, not this repo's. Still PARKED, not
 roadmap: PRESTIGE_BONUS_PERCENT 10→25 — behind the 18:45Z process ask;
-timed-events + generator-purchase — await fleet Q-numbers; OA-003 mark
-`pytest` required — owner click.)
+timed-events + generator-purchase — await fleet Q-numbers. DONE (was owner
+click): OA-003 — the owner added `pytest` as a required status check on `main`
+(reported 2026-07-17), so merge-on-green now means merge-on-tested; recorded on
+owner report — not agent-verifiable this seat, branch-protection is admin-only
+and this container ships no required-checks reader.)
 
 ## Recently shipped (newest first)
 
