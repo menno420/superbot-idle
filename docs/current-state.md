@@ -10,7 +10,9 @@
 improvement-wave touch-up 2026-07-14 against main `c53eba9` (post-PR #126);
 truth refresh 2026-07-15 against main `8a7275d` (post-PR #139 — kit
 version claims corrected to the measured v1.16.0, PR #134 `3df5449`);
-suite 1415 passed, 1 skipped sb-free (see stability baseline).*
+suite-count reconcile 2026-07-18 against main `97e4c71` (post-PR #161 forge —
+sb-free 1415→1561, host job 1378→1576);
+suite 1561 passed, 1 skipped sb-free (see stability baseline).*
 
 ## Stability baseline
 
@@ -60,7 +62,7 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (246 vectors: 100 valid with layer-by-layer intermediates, 121 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1415 passing, 1 skipped sb-free; the pinned-host CI job runs
+- **Test suite: 1561 passing, 1 skipped sb-free; the pinned-host CI job runs
   the 15 extra manifest-contract tests on top of that with zero skips.** The
   old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
   ORDER 007 item 3): `plugin/tests/test_manifest.py` still `importorskip`s
@@ -69,8 +71,9 @@ Known-good and not to be re-audited without a reported regression:
   checks out superbot-next pinned @
   `9634e81748363184bf13abf1485e80262e19e8cb` (bump recipe in the workflow
   comment), exposes `sb` via `PYTHONPATH`, and RUNS the 15 manifest-contract
-  tests on every PR (`1378 passed`; a grep guard hard-fails the job on any
-  skip). The sb-free `pytest` job is unchanged. As of 2026-07-17 the owner
+  tests on every PR (`1576 passed` = the 1561 sb-free plus the 15 manifest
+  tests that read as `1 skipped` sb-free; a grep guard hard-fails the job on
+  any skip). The sb-free `pytest` job is unchanged. As of 2026-07-17 the owner
   made `pytest` a REQUIRED status check on `main` (OA-003 done), so the required
   set is now `substrate-gate` + `theme-gate` + `pytest` — merge-on-green means
   merge-on-tested. Suite content: unit +
