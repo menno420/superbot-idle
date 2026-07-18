@@ -28,6 +28,7 @@
     "deep-sea-station",
     "dragon-hoard",
     "egg-farm",
+    "forge",
     "haunted-manor",
     "idol-agency",
     "lighthouse-keep",
@@ -45,8 +46,8 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 95,
-    "tolerance": 115,
+    "valid": 100,
+    "tolerance": 121,
     "errors": 25
   },
   "vectors": {
@@ -700,6 +701,71 @@
         "payload_hex": "046567672d6661726d",
         "crc16_hex": "4218",
         "code": "IDLE1-0HJPESSDCSGQ4VA230"
+      },
+      {
+        "name": "forge--all-on",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "07666f726765",
+        "crc16_hex": "202a",
+        "code": "IDLE1-0XK6YWK7CMG2M"
+      },
+      {
+        "name": "forge--all-off",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "00666f726765",
+        "crc16_hex": "1092",
+        "code": "IDLE1-01K6YWK7CM894"
+      },
+      {
+        "name": "forge--only-offline_progress",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "01666f726765",
+        "crc16_hex": "c337",
+        "code": "IDLE1-05K6YWK7CQ1KE"
+      },
+      {
+        "name": "forge--only-upgrades",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "02666f726765",
+        "crc16_hex": "b199",
+        "code": "IDLE1-09K6YWK7CPRSJ"
+      },
+      {
+        "name": "forge--only-prestige",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "04666f726765",
+        "crc16_hex": "5284",
+        "code": "IDLE1-0HK6YWK7CN988"
       },
       {
         "name": "haunted-manor--all-on",
@@ -2002,6 +2068,78 @@
         "canonical": "IDLE1-0XJPESSDCSGQ4VBYVM",
         "config": {
           "theme_id": "egg-farm",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "forge--lowercase",
+        "input": "idle1-0xk6ywk7cmg2m",
+        "canonical": "IDLE1-0XK6YWK7CMG2M",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "forge--hyphen-grouped",
+        "input": "IDLE1-0XK6-YWK7-CMG2-M",
+        "canonical": "IDLE1-0XK6YWK7CMG2M",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "forge--lookalike-O-for-0",
+        "input": "IDLE1-OXK6YWK7CMG2M",
+        "canonical": "IDLE1-0XK6YWK7CMG2M",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "forge--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IK6YWK7CM894",
+        "canonical": "IDLE1-01K6YWK7CM894",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "forge--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LK6YWK7CM894",
+        "canonical": "IDLE1-01K6YWK7CM894",
+        "config": {
+          "theme_id": "forge",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "forge--kitchen-sink",
+        "input": "idle1-oxk6-ywk7-cmg2-m",
+        "canonical": "IDLE1-0XK6YWK7CMG2M",
+        "config": {
+          "theme_id": "forge",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true

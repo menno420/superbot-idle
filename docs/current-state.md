@@ -36,13 +36,13 @@ Known-good and not to be re-audited without a reported regression:
   - `persistence.py` — SAVE FORMAT v1: canonical versioned
     `dump_state`/`load_state` + migration registry; contract in
     [`persistence.md`](persistence.md).
-- **Theme catalog: 19 packs**, all schema-v1, all with full `labels` blocks
+- **Theme catalog: 20 packs**, all schema-v1, all with full `labels` blocks
   AND flavored 9-slot `milestones` blocks (waves 4+5 flavored 2026-07-13,
   PRs #105/#109 — zero neutral `Milestone 1 … 9` scaffolding remains):
   egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
   dragon-hoard, wizard-tower, royal-bakery, cyber-city, ant-colony,
   idol-agency, pirate-cove, coffee-roastery, arctic-outpost, candy-factory,
-  clockwork-atelier, lighthouse-keep, ramen-stand, apiary. Waves 1–5 shipped
+  clockwork-atelier, lighthouse-keep, ramen-stand, apiary, forge. Waves 1–5 shipped
   with **zero schema pinches** — the frozen v1 schema fit all foreign content.
 - **Schema v1** (`docs/theme-schema.md` + machine twin
   `schema/theme.schema.json`, md↔json parity test-enforced): additive-only
@@ -58,7 +58,7 @@ Known-good and not to be re-audited without a reported regression:
 - **Setup codes v1** (`IDLE1-` Crockford-base32 + CRC-16, FROZEN):
   encode/decode/catalog-validate with a distinct error taxonomy;
   cross-language vector file `tests/vectors/setup-codes.v1.json`
-  (235 vectors: 95 valid with layer-by-layer intermediates, 115 tolerance,
+  (246 vectors: 100 valid with layer-by-layer intermediates, 121 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
 - **Test suite: 1415 passing, 1 skipped sb-free; the pinned-host CI job runs
   the 15 extra manifest-contract tests on top of that with zero skips.** The

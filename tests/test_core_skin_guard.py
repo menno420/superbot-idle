@@ -133,6 +133,11 @@ FORBIDDEN_NOUNS_BY_PACK: dict[str, tuple[str, ...]] = {
         "honey", "hive", "hives", "honeycomb", "nectar", "pollen",
         "brood", "clover", "linden", "beeswax",
     ),
+    "forge": (
+        "forge", "forges", "blacksmith", "smith", "smiths", "smithy",
+        "anvil", "anvils", "ingot", "ingots", "bellows", "quench",
+        "foundry", "foundries", "damascus", "billet", "billets",
+    ),
 }
 
 FORBIDDEN_NOUNS = re.compile(

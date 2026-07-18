@@ -36,6 +36,7 @@
     "deep-sea-station",
     "dragon-hoard",
     "egg-farm",
+    "forge",
     "haunted-manor",
     "idol-agency",
     "lighthouse-keep",
@@ -47,8 +48,8 @@
     "wizard-tower"
   ],
   "counts": {
-    "packs": 19,
-    "embeds": 76
+    "packs": 20,
+    "embeds": 80
   },
   "vectors": [
     {
@@ -1225,6 +1226,125 @@
             {
               "name": "\ud83c\udf1f golden dynasty",
               "value": "\ud83d\udd12 7 / 25\nTwenty-five golden eggs \u2014 a whole dynasty measured out in farms raised, sold, and quietly remembered.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "forge",
+      "theme_id": "forge",
+      "views": {
+        "status": {
+          "title": "\u2692\ufe0f Forge \u2014 the morning heat check",
+          "description": "A blacksmith's forge banked hot before dawn, where raw ore, a roaring fire, and a patient hammer are turned bar by bar into bright iron ingots.\n\nWhile you were away from the forge, the coals never went cold and the hammer never stopped: +1,054,800 \ud83d\udd29 iron ingots",
+          "color": 14172949,
+          "fields": [
+            {
+              "name": "\ud83d\udd29 iron ingots",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udde1\ufe0f damascus steel",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udd28 apprentice smith",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\u2699\ufe0f trip-hammer",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83d\udd25 The Foundry Workshop",
+          "description": "Spend iron ingots on hotter bellows, harder dies, and a faster, fiercer forge.",
+          "color": 14172949,
+          "fields": [
+            {
+              "name": "\ud83d\udd25 double-lunged bellows",
+              "value": "\u2705 Heat level 0 \u2192 1 \u00b7 60 \ud83d\udd29 iron ingots \u00b7 affordable now\nA twin-chamber bellows that never lets the fire dim; the coals run white-hot, so every bar softens sooner and the apprentice's hammer bites deeper.",
+              "inline": false
+            },
+            {
+              "name": "\ud83d\udee0\ufe0f hardened anvil dies",
+              "value": "\u26a0\ufe0f Heat level 1 \u2192 2 \u00b7 345 \ud83d\udd29 iron ingots \u00b7 requires \u2699\ufe0f trip-hammer\nCase-hardened swage dies bolted under the trip-hammer; each blow lands truer and the billets come off the anvil finished in half the strokes.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83d\udd25 quench and reforge",
+          "description": "When the forge is buried in ingots, plunge the whole glowing batch into the slack tub, fold and reforge the best of it into a single billet of damascus steel, and rake the fire back to life for a fresh start.",
+          "color": 14172949,
+          "fields": [
+            {
+              "name": "\ud83d\udd29 iron ingots",
+              "value": "\u2705 lifetime iron toward the reforge: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udde1\ufe0f damascus steel",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\u2692\ufe0f Forge",
+          "description": "A blacksmith's forge banked hot before dawn, where raw ore, a roaring fire, and a patient hammer are turned bar by bar into bright iron ingots.",
+          "color": 14172949,
+          "fields": [
+            {
+              "name": "\ud83d\udd28 full forge floor",
+              "value": "\u2705 10 / 10\nTen hammers ringing at once \u2014 the whole shop shakes with the beat of iron on iron.",
+              "inline": true
+            },
+            {
+              "name": "\u2699\ufe0f hundred-hammer foundry",
+              "value": "\u23f3 100 / 100\nA hundred trip-hammers driven off one race; the roar of the foundry carries clear across the valley.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 forge empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand fires burning night and day \u2014 smiths three kingdoms over apprentice under your foremen.",
+              "inline": true
+            },
+            {
+              "name": "\ud83e\uddf1 first thousand bars",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand ingots drawn, stamped, and stacked cooling on the racks.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f armory of iron",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand ingots; your mark is struck into blades and plough-blades in every market square.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 iron of legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million ingots. Smiths tell tales of your forge the way sailors tell tales of the sea.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udde1\ufe0f first reforge",
+              "value": "\u2705 1 / 1\nThe first batch quenched and folded \u2014 one billet of damascus steel set aside as the fire is raked back to life.",
+              "inline": true
+            },
+            {
+              "name": "\u2694\ufe0f rack of damascus",
+              "value": "\u23f3 5 / 5\nFive folded billets of damascus steel racked in the cellar \u2014 five forges cooled and begun anew.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f master of the fold",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five billets of damascus steel \u2014 every master blade on the continent traces its pattern back to one of your reforges.",
               "inline": true
             }
           ]
