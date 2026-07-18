@@ -1,0 +1,1 @@
+- `claude/save-catalog-drift` · **engine: pin save graceful-degradation across catalog drift — stale ids inert for production/tick, never crash render (robustness pins, no code change)** · tests/test_persistence_catalog_drift.py · docs/current-state.md · 2026-07-18
