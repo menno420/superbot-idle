@@ -1,0 +1,1 @@
+- `claude/theme-new-pack-forge` · **theme: add forge/blacksmith theme pack** · themes/forge.yaml · 2026-07-18
