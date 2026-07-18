@@ -1,0 +1,103 @@
+# forge — theme pack #20 (data only; validated by theme-gate against
+# docs/theme-schema.md / schema/theme.schema.json). Skins the SAME opaque
+# engine ids as the rest of the catalog (primary/prestige, tier1/tier2,
+# boost1/boost2): identical mechanics, different world.
+schema_version: 1
+
+theme:
+  id: forge
+  name: Forge
+  description: A blacksmith's forge banked hot before dawn, where raw ore, a roaring fire, and a patient hammer are turned bar by bar into bright iron ingots.
+  emoji: "⚒️"
+  embed_color: "#D84315"
+
+currencies:
+  - id: primary
+    name: iron ingots
+    description: Iron ingots drawn out one bar at a time — the forge keeps its whole ledger in stacked, still-warm billets of hammered metal.
+    emoji: "🔩"
+  - id: prestige
+    name: damascus steel
+    description: Folded damascus steel set aside reforge after reforge — the pattern-welded reward for cooling a whole batch and beginning the fire again.
+    emoji: "🗡️"
+
+generators:
+  - id: tier1
+    name: apprentice smith
+    description: A single apprentice at the anvil, heating one bar in the coals and beating it flat with a hand hammer, trip by patient trip to the fire and back.
+    emoji: "🔨"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: trip-hammer
+    description: A water-driven trip-hammer thundering in the foundry, drawing out billet after billet faster than a whole row of smiths could swing.
+    emoji: "⚙️"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: double-lunged bellows
+    description: A twin-chamber bellows that never lets the fire dim; the coals run white-hot, so every bar softens sooner and the apprentice's hammer bites deeper.
+    emoji: "🔥"
+    target: tier1
+  - id: boost2
+    name: hardened anvil dies
+    description: Case-hardened swage dies bolted under the trip-hammer; each blow lands truer and the billets come off the anvil finished in half the strokes.
+    emoji: "🛠️"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: quench and reforge
+  action_description: When the forge is buried in ingots, plunge the whole glowing batch into the slack tub, fold and reforge the best of it into a single billet of damascus steel, and rake the fire back to life for a fresh start.
+  action_emoji: "🔥"
+
+labels:
+  offline_return: "While you were away from the forge, the coals never went cold and the hammer never stopped: {gains}"
+  status_title: "⚒️ Forge — the morning heat check"
+  shop_title: "🔥 The Foundry Workshop"
+  shop_description: Spend iron ingots on hotter bellows, harder dies, and a faster, fiercer forge.
+  level: Heat level
+  prestige_progress: "lifetime iron toward the reforge:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: full forge floor
+    description: Ten hammers ringing at once — the whole shop shakes with the beat of iron on iron.
+    emoji: "🔨"
+  - id: owned-2
+    name: hundred-hammer foundry
+    description: A hundred trip-hammers driven off one race; the roar of the foundry carries clear across the valley.
+    emoji: "⚙️"
+  - id: owned-3
+    name: forge empire
+    description: A thousand fires burning night and day — smiths three kingdoms over apprentice under your foremen.
+    emoji: "🏆"
+  - id: lifetime-1
+    name: first thousand bars
+    description: The first thousand ingots drawn, stamped, and stacked cooling on the racks.
+    emoji: "🧱"
+  - id: lifetime-2
+    name: armory of iron
+    description: A hundred thousand ingots; your mark is struck into blades and plough-blades in every market square.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: iron of legend
+    description: Ten million ingots. Smiths tell tales of your forge the way sailors tell tales of the sea.
+    emoji: "👑"
+  - id: prestige-1
+    name: first reforge
+    description: The first batch quenched and folded — one billet of damascus steel set aside as the fire is raked back to life.
+    emoji: "🗡️"
+  - id: prestige-2
+    name: rack of damascus
+    description: Five folded billets of damascus steel racked in the cellar — five forges cooled and begun anew.
+    emoji: "⚔️"
+  - id: prestige-3
+    name: master of the fold
+    description: Twenty-five billets of damascus steel — every master blade on the continent traces its pattern back to one of your reforges.
+    emoji: "🌟"
