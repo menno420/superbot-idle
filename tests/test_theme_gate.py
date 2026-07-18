@@ -85,3 +85,34 @@ def test_theme_id_matching_filename_stem_passes(tmp_path, capsys):
     assert validate_file(tmp_path / "egg-farm.yaml") == []
     assert main(["theme_gate", str(tmp_path)]) == 0
     assert "filename stem" not in capsys.readouterr().out
+
+
+# --- duplicate YAML mapping keys red the gate (safe_load silently keeps the
+#     last value, so a stray duplicate would otherwise drop the author's
+#     intended content while the gate stayed green).
+
+
+def test_duplicate_top_level_key_reds_gate(tmp_path, capsys):
+    # A stray second theme.name: safe_load would keep 'SHADOW NAME' and pass;
+    # the strict loader must fail loudly instead of silently dropping 'Egg Farm'.
+    dup = EGG_FARM.read_text(encoding="utf-8").replace(
+        "name: Egg Farm", "name: Egg Farm\n  name: SHADOW NAME"
+    )
+    path = tmp_path / "egg-farm.yaml"
+    path.write_text(dup, encoding="utf-8")
+    errors = validate_file(path)
+    assert errors and "duplicate key" in errors[0] and "'name'" in errors[0]
+    assert main(["theme_gate", str(tmp_path)]) == 1
+    assert "duplicate key" in capsys.readouterr().out
+
+
+def test_duplicate_nested_key_reds_gate(tmp_path):
+    # Detection is not top-level-only: a duplicated leaf inside a list item
+    # (generators[0].base_rate) is caught at depth too.
+    dup = EGG_FARM.read_text(encoding="utf-8").replace(
+        "base_rate: 1", "base_rate: 1\n    base_rate: 999", 1
+    )
+    path = tmp_path / "egg-farm.yaml"
+    path.write_text(dup, encoding="utf-8")
+    errors = validate_file(path)
+    assert errors and "duplicate key" in errors[0] and "'base_rate'" in errors[0]

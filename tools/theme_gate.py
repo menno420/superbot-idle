@@ -41,6 +41,7 @@ from __future__ import annotations
 
 import json
 import sys
+from collections.abc import Hashable
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
@@ -52,6 +53,47 @@ import yaml  # noqa: E402
 from idle_engine.theme import load_theme  # noqa: E402
 
 SCHEMA_PATH = REPO_ROOT / "schema" / "theme.schema.json"
+
+
+class _StrictYAMLLoader(yaml.SafeLoader):
+    """A ``SafeLoader`` that REJECTS duplicate mapping keys.
+
+    PyYAML's ``safe_load`` silently accepts a repeated mapping key and keeps
+    the LAST value — so a pack with an accidental duplicate key (a stray
+    second ``name:``, a copy-pasted ``base_rate:``, a whole duplicated
+    ``generators:`` block) would parse cleanly with the author's intended
+    value dropped, and sail through this gate green. The gate is the red
+    gate for malformed packs, so a duplicate key must fail loudly, not
+    corrupt content silently. Everything else stays a faithful SafeLoader.
+    """
+
+    def construct_mapping(self, node, deep: bool = False):  # type: ignore[override]
+        if isinstance(node, yaml.MappingNode):
+            self.flatten_mapping(node)
+        mapping: dict = {}
+        for key_node, value_node in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if not isinstance(key, Hashable):
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    "found unhashable key",
+                    key_node.start_mark,
+                )
+            if key in mapping:
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    f"found duplicate key {key!r}",
+                    key_node.start_mark,
+                )
+            mapping[key] = self.construct_object(value_node, deep=deep)
+        return mapping
+
+
+def _strict_yaml_load(text: str):
+    """Parse ``text`` as YAML, rejecting duplicate mapping keys (see loader)."""
+    return yaml.load(text, Loader=_StrictYAMLLoader)
 
 
 def _load_validator() -> jsonschema.Draft202012Validator:
@@ -197,7 +239,7 @@ def _semantic_errors(data: dict, path: Path) -> list[str]:
 def validate_file(path: Path, validator: jsonschema.Draft202012Validator | None = None) -> list[str]:
     validator = validator or _load_validator()
     try:
-        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+        data = _strict_yaml_load(path.read_text(encoding="utf-8"))
     except Exception as exc:
         return [f"{path}: unreadable YAML: {exc}"]
     if not isinstance(data, dict):
@@ -245,7 +287,7 @@ def main(argv: list[str]) -> int:
                 print(f"  - {error}")
         else:
             print(f"PASS {pack}")
-            data = yaml.safe_load(pack.read_text(encoding="utf-8"))
+            data = _strict_yaml_load(pack.read_text(encoding="utf-8"))
             theme_ids[pack] = data["theme"]["id"]
     cross_pack = catalog_errors(theme_ids)
     for error in cross_pack:
