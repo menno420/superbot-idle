@@ -1,0 +1,1 @@
+- `claude/docs-suite-count-reconcile` · **docs: reconcile stale suite counts in current-state** · docs/current-state.md · 2026-07-18
