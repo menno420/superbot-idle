@@ -68,6 +68,14 @@ def _load(pack, tmp_path):
     return load_theme(path)
 
 
+def _load_text(text: str, tmp_path):
+    """Load a pack from RAW YAML text — the only way to express a duplicate
+    mapping key (``yaml.safe_dump`` of a dict cannot emit a repeated key)."""
+    path = tmp_path / "pack.yaml"
+    path.write_text(text, encoding="utf-8")
+    return load_theme(path)
+
+
 # --- top-level shape ---------------------------------------------------------
 
 
@@ -240,3 +248,71 @@ def test_rejects_non_mapping_milestone_item(tmp_path):
     pack["milestones"] = ["not-a-mapping"]
     with pytest.raises(ValueError, match=re.escape("milestones[0] must be a mapping")):
         _load(pack, tmp_path)
+
+
+# --- duplicate YAML mapping keys (document-structure ambiguity) ---------------
+#
+# PyYAML's ``safe_load`` SILENTLY accepts a repeated mapping key and keeps the
+# LAST value, so a pack with an accidental duplicate key (a stray second
+# ``name:``, a copy-pasted ``base_rate:``) parses clean with the author's
+# intended value dropped — every downstream check then validates corrupted
+# data. The loader is the runtime ground truth, so it must reject the ambiguous
+# document loud, at any nesting depth. Runtime twin of the CI-time gate check
+# in tools/theme_gate.py (kept loader-local, not imported — same cross-layer
+# discipline as the _HEX_COLOR / GAINS_PLACEHOLDER copies).
+
+
+def test_rejects_duplicate_top_level_key(tmp_path):
+    # A stray second ``theme.name``: under safe_load the pack loads with
+    # name == 'SHADOW NAME' and the author's 'Real Name' vanishes silently.
+    text = (
+        "theme:\n"
+        "  id: t\n"
+        "  name: Real Name\n"
+        "  name: SHADOW NAME\n"
+        "  description: d\n"
+        "  emoji: x\n"
+        "  embed_color: '#000000'\n"
+        "currencies:\n"
+        "  - id: primary\n"
+        "    name: coins\n"
+        "    description: d\n"
+        "    emoji: c\n"
+        "generators:\n"
+        "  - id: tier1\n"
+        "    name: gen\n"
+        "    description: d\n"
+        "    emoji: g\n"
+        "    produces: primary\n"
+        "    base_rate: 1\n"
+    )
+    with pytest.raises(ValueError, match="duplicate key"):
+        _load_text(text, tmp_path)
+
+
+def test_rejects_duplicate_nested_key(tmp_path):
+    # A duplicated leaf inside a list item (generators[0].base_rate): proves
+    # detection reaches arbitrary nesting depth, not just the document root.
+    text = (
+        "theme:\n"
+        "  id: t\n"
+        "  name: T\n"
+        "  description: d\n"
+        "  emoji: x\n"
+        "  embed_color: '#000000'\n"
+        "currencies:\n"
+        "  - id: primary\n"
+        "    name: coins\n"
+        "    description: d\n"
+        "    emoji: c\n"
+        "generators:\n"
+        "  - id: tier1\n"
+        "    name: gen\n"
+        "    description: d\n"
+        "    emoji: g\n"
+        "    produces: primary\n"
+        "    base_rate: 1\n"
+        "    base_rate: 999\n"
+    )
+    with pytest.raises(ValueError, match="duplicate key"):
+        _load_text(text, tmp_path)
