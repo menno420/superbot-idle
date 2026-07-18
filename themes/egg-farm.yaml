@@ -54,37 +54,37 @@ labels:
 milestones:
   - id: owned-1
     name: first flock
-    description: Ten layers on the roost — the yard finally sounds like a farm.
+    description: Ten hens settled on the roost — the yard finally clucks and rustles like a real farm at dawn.
     emoji: "🐣"
   - id: owned-2
     name: hundred-hen farmstead
-    description: A hundred layers strong; the feed bill is now a line item.
+    description: A hundred hens strong; the feed bill keeps its own ledger now and the baskets never quite empty.
     emoji: "🐥"
   - id: owned-3
     name: poultry empire
-    description: A thousand layers — neighbors set their clocks by the morning chorus.
+    description: A thousand hens — three counties over, farmers set their clocks by your morning chorus.
     emoji: "🏆"
   - id: lifetime-1
     name: first thousand eggs
-    description: The first thousand eggs of the season, counted and crated.
+    description: The first thousand eggs of the season, wiped clean, counted twice, and crated for the early market.
     emoji: "🧺"
   - id: lifetime-2
     name: county-fair famous
-    description: A hundred thousand eggs — the county fair knows your name.
+    description: A hundred thousand eggs — the county fair pins your blue ribbon before the judging even begins.
     emoji: "🎖️"
   - id: lifetime-3
     name: ten-million-egg legend
-    description: Ten million eggs. Songs are sung. Omelettes are legion.
+    description: Ten million eggs. Bakers name their pastries after you, and the omelettes have grown legion.
     emoji: "👑"
   - id: prestige-1
     name: first golden egg
-    description: The first farm sold — one golden egg, warm in your palm.
+    description: The first farm sold and handed on — one golden egg, still warm in your palm.
     emoji: "🥇"
   - id: prestige-2
     name: golden clutch
-    description: Five golden eggs in the nest box of your retirement fund.
+    description: Five golden eggs nested together — a retirement fund that gleams a little every time you check on it.
     emoji: "💰"
   - id: prestige-3
     name: golden dynasty
-    description: Twenty-five golden eggs — a dynasty measured in farms sold.
+    description: Twenty-five golden eggs — a whole dynasty measured out in farms raised, sold, and quietly remembered.
     emoji: "🌟"
