@@ -1,6 +1,6 @@
 # 2026-07-18 — theme loader: reject malformed embed_color at load
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · medium · runtime bugfix · engine-robustness seat (theme-loader embed_color guard) · 2026-07-18
 
@@ -47,7 +47,8 @@ byte-identically; only invalid input is newly rejected earlier.
   `red` / `#FFF` / `123456` / `#GGGGGG`) — RED on pre-fix main (loader
   accepts the bad color; the crash only fires later in
   `embed_color_int`), GREEN after the guard.
-- `python3 -m pytest -q` — full suite green; count 1563 → 1564.
+- `python3 -m pytest -q` — full suite green; count 1563 → 1568 (the
+  regression test is parametrized over 5 malformed colors).
 - `python3 bootstrap.py check --strict` — only the born-red HOLD
   expected (this card, until flipped `complete`).
 
