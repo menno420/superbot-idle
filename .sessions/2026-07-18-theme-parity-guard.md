@@ -1,8 +1,8 @@
 # 2026-07-18 — theme: durable loader↔schema parity-guard suite (capstone)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** Opus 4.8 (1M context) · medium · test-hardening · engine-loader seat (theme × schema-vs-enforcement parity) · 2026-07-18
+- **📊 Model:** Opus 4.8 (1M context) · medium · test writing · engine-loader seat (theme × schema-vs-enforcement parity) · 2026-07-18
 
 ## 💡 Session idea
 
