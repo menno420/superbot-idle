@@ -1,0 +1,1 @@
+- `claude/theme-loader-dup-keys` · **engine: reject duplicate YAML mapping keys at load time in idle_engine.theme.load_theme — the runtime twin of the CI-time gate hardening #166, closing the door for packs loaded outside the gate (loader-local strict loader, no tools/ import)** · idle_engine/theme.py · tests/test_theme_loader_guards.py · docs/current-state.md · 2026-07-18
