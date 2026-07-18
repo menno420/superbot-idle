@@ -1,8 +1,8 @@
 # 2026-07-18 — docs: cross-pack vocabulary & structural-parity audit (THM-17)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** Opus · medium · docs · theme-vocab-parity audit seat · 2026-07-18T02:07Z (`date -u`)
+- **📊 Model:** Opus · medium · docs-only · theme-vocab-parity audit seat · 2026-07-18T02:07Z (`date -u`)
 
 ## What / why
 

@@ -31,7 +31,9 @@ The planted doc set (this router reaches every live doc — keep it that way):
 `docs/question-router.md` · `docs/CAPABILITIES.md` · `docs/SKILLS.md` ·
 `docs/ROUTINES.md` · `docs/reading-path.md` · `docs/ideas/README.md` ·
 `docs/audits/2026-07-13-fleet-cleanup-audit.md` (external fleet-wide
-cleanup/audit pass, EAP final night) — plus the root
+cleanup/audit pass, EAP final night) ·
+`docs/audits/2026-07-18-theme-vocab-parity-THM-17.md` (cross-pack vocabulary &
+structural-parity audit, menu THM-17) — plus the root
 `CONSTITUTION.md` (the working agreement) and `.session-journal.md`.
 
 Reading or acting across sibling repos in a fleet? **`docs/reading-path.md`**
