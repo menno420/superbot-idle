@@ -1,0 +1,1 @@
+- `claude/theme-color-distinctness` · **theme: decluster embed_color values for visual distinctness (THM-16)** · themes/ · 2026-07-17

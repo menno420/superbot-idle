@@ -415,7 +415,7 @@
         "status": {
           "title": "\ud83c\udf6c Candy Factory \u2014 the batch tally",
           "description": "A whirring, sugar-dusted candy factory where the conveyor never sleeps and neither does your sweet tooth.\n\nWhile the lights were off, the conveyor kept the candies rolling: +1,054,800 \ud83c\udf6c candies",
-          "color": 15490204,
+          "color": 11544265,
           "fields": [
             {
               "name": "\ud83c\udf6c candies",
@@ -442,7 +442,7 @@
         "shop": {
           "title": "\ud83c\udf21\ufe0f The Machine Floor",
           "description": "Spend candies to keep the taffy soft, the gumdrops shining, and the caramel from ever burning.",
-          "color": 15490204,
+          "color": 11544265,
           "fields": [
             {
               "name": "\ud83c\udf21\ufe0f warmed pulling arms",
@@ -459,7 +459,7 @@
         "prestige": {
           "title": "\ud83c\udf80 sell the recipe and open a new factory",
           "description": "Auction off the secret recipe, cash out your jarred sugar crystals, and cut the ribbon on a bigger factory downtown \u2014 the conveyor starts empty and hungry.",
-          "color": 15490204,
+          "color": 11544265,
           "fields": [
             {
               "name": "\ud83c\udf6c candies",
@@ -476,7 +476,7 @@
         "achievements": {
           "title": "\ud83c\udf6c Candy Factory",
           "description": "A whirring, sugar-dusted candy factory where the conveyor never sleeps and neither does your sweet tooth.",
-          "color": 15490204,
+          "color": 11544265,
           "fields": [
             {
               "name": "\ud83c\udf6d first pulling floor",
@@ -653,7 +653,7 @@
         "status": {
           "title": "\u2615 Coffee Roastery \u2014 the morning count",
           "description": "A corner roastery where the first crack of the morning turns green beans into a queue out the door.\n\nWhile the shop was shuttered, the roaster kept the beans coming: +1,054,800 \ud83e\uded8 beans",
-          "color": 7294519,
+          "color": 3875863,
           "fields": [
             {
               "name": "\ud83e\uded8 beans",
@@ -680,7 +680,7 @@
         "shop": {
           "title": "\u2699\ufe0f The Roaster's Bench",
           "description": "Spend beans to keep the grind fine, the drum hot, and the espresso crema thick.",
-          "color": 7294519,
+          "color": 3875863,
           "fields": [
             {
               "name": "\u2699\ufe0f calibrated burr grinder",
@@ -697,7 +697,7 @@
         "prestige": {
           "title": "\ud83c\udfea sell the shop and franchise a new roastery",
           "description": "Hand over the keys, bottle your signature reserve blend, and open a gleaming new roastery across town \u2014 the aroma travels with you.",
-          "color": 7294519,
+          "color": 3875863,
           "fields": [
             {
               "name": "\ud83e\uded8 beans",
@@ -714,7 +714,7 @@
         "achievements": {
           "title": "\u2615 Coffee Roastery",
           "description": "A corner roastery where the first crack of the morning turns green beans into a queue out the door.",
-          "color": 7294519,
+          "color": 3875863,
           "fields": [
             {
               "name": "\u2615 first full counter",
@@ -1476,7 +1476,7 @@
         "status": {
           "title": "\ud83d\uddfc Lighthouse Keep \u2014 the night watch log",
           "description": "A salt-bitten tower on the last headland, where one stubborn flame argues with the fog and wins.\n\nWhile you slept in the watch room, the beam kept sweeping the channel: +1,054,800 \ud83d\udd06 lamplight",
-          "color": 1793674,
+          "color": 1455211,
           "fields": [
             {
               "name": "\ud83d\udd06 lamplight",
@@ -1503,7 +1503,7 @@
         "shop": {
           "title": "\ud83e\uddf0 The Keeper's Store Room",
           "description": "Spend lamplight on brighter wicks, truer glass, and a tower the fog cannot argue with.",
-          "color": 1793674,
+          "color": 1455211,
           "fields": [
             {
               "name": "\ud83e\ude9e polished reflectors",
@@ -1520,7 +1520,7 @@
         "prestige": {
           "title": "\ud83c\udf05 hand over the keep",
           "description": "Log the last watch, hand the keys to a new keeper, and carry one retired lens up the coast to raise a taller tower.",
-          "color": 1793674,
+          "color": 1455211,
           "fields": [
             {
               "name": "\ud83d\udd06 lamplight",
@@ -1537,7 +1537,7 @@
         "achievements": {
           "title": "\ud83d\uddfc Lighthouse Keep",
           "description": "A salt-bitten tower on the last headland, where one stubborn flame argues with the fog and wins.",
-          "color": 1793674,
+          "color": 1455211,
           "fields": [
             {
               "name": "\ud83d\udd6f\ufe0f first watch lit",
@@ -1595,7 +1595,7 @@
         "status": {
           "title": "\ud83c\udff4\u200d\u2620\ufe0f Pirate Cove \u2014 the captain's ledger",
           "description": "A hidden smugglers' cove where every tide brings in doubloons and nobody asks where they came from.\n\nWhile ye were ashore, the tide kept the smugglers busy: +1,054,800 \ud83e\ude99 doubloons",
-          "color": 947344,
+          "color": 1482885,
           "fields": [
             {
               "name": "\ud83e\ude99 doubloons",
@@ -1622,7 +1622,7 @@
         "shop": {
           "title": "\u2693 The Quartermaster's Stores",
           "description": "Spend doubloons to keep the skiffs swift and the crew wicked.",
-          "color": 947344,
+          "color": 1482885,
           "fields": [
             {
               "name": "\u26f5 patched black sails",
@@ -1639,7 +1639,7 @@
         "prestige": {
           "title": "\ud83d\uddfa\ufe0f bury the treasure and set sail",
           "description": "Sink the chest beneath the palm, burn the map into memory, and chase a fresh horizon \u2014 the sea remembers your legend.",
-          "color": 947344,
+          "color": 1482885,
           "fields": [
             {
               "name": "\ud83e\ude99 doubloons",
@@ -1656,7 +1656,7 @@
         "achievements": {
           "title": "\ud83c\udff4\u200d\u2620\ufe0f Pirate Cove",
           "description": "A hidden smugglers' cove where every tide brings in doubloons and nobody asks where they came from.",
-          "color": 947344,
+          "color": 1482885,
           "fields": [
             {
               "name": "\ud83d\udef6 first fleet",
@@ -1714,7 +1714,7 @@
         "status": {
           "title": "\u2697\ufe0f Potion Brewery \u2014 the stockroom ledger",
           "description": "A crooked little brewery where the pots mutter to themselves and every bottle glows.\n\nWhile you were out, the cauldrons kept bubbling: +1,054,800 \ud83e\uddea potions",
-          "color": 8077216,
+          "color": 3522910,
           "fields": [
             {
               "name": "\ud83e\uddea potions",
@@ -1741,7 +1741,7 @@
         "shop": {
           "title": "\ud83d\udcdc The Alchemist's Catalogue",
           "description": "Trade bottled potions for a fiercer, faster brewery.",
-          "color": 8077216,
+          "color": 3522910,
           "fields": [
             {
               "name": "\ud83d\udd25 hotter flames",
@@ -1758,7 +1758,7 @@
         "prestige": {
           "title": "\u2728 transcend the craft",
           "description": "Shutter the brewery, distill everything you have learned, and begin again with arcane essence in hand.",
-          "color": 8077216,
+          "color": 3522910,
           "fields": [
             {
               "name": "\ud83e\uddea potions",
@@ -1775,7 +1775,7 @@
         "achievements": {
           "title": "\u2697\ufe0f Potion Brewery",
           "description": "A crooked little brewery where the pots mutter to themselves and every bottle glows.",
-          "color": 8077216,
+          "color": 3522910,
           "fields": [
             {
               "name": "\ud83e\uded5 a proper kitchen",

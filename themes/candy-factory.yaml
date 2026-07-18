@@ -9,7 +9,7 @@ theme:
   name: Candy Factory
   description: A whirring, sugar-dusted candy factory where the conveyor never sleeps and neither does your sweet tooth.
   emoji: "🍬"
-  embed_color: "#EC5C9C"
+  embed_color: "#B026C9"
 
 currencies:
   - id: primary

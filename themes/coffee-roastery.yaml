@@ -9,7 +9,7 @@ theme:
   name: Coffee Roastery
   description: A corner roastery where the first crack of the morning turns green beans into a queue out the door.
   emoji: "☕"
-  embed_color: "#6F4E37"
+  embed_color: "#3B2417"
 
 currencies:
   - id: primary
