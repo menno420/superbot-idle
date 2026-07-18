@@ -155,11 +155,18 @@ def test_shop_costs_and_affordability(egg_farm):
     assert field_broke["name"] == "🏠 bigger henhouse"
     assert "60 🥚 eggs" in field_broke["value"]
     assert field_broke["value"].startswith("🔒")
+    # Unaffordable, but the owned coop produces 1 egg/s (base_rate 1 × 1 coop):
+    # 1 egg short at 1/s is a one-second wait — the ETA fragment reads it off
+    # the pure time_to_afford helper instead of leaving the player to compute it.
+    assert "· buy in 1s" in field_broke["value"]
     assert field_rich["value"].startswith("✅")
     assert "Coop size 0 → 1" in field_rich["value"]  # labels.level
-    # Shop composition: cost line first, themed flavor on the line below.
+    # Affordable now — the ETA fragment says so explicitly.
+    assert "· affordable now" in field_rich["value"]
+    # Shop composition: cost line (now carrying the ETA) first, themed flavor
+    # on the line below.
     assert field_rich["value"] == (
-        "✅ Coop size 0 → 1 · 60 🥚 eggs"
+        "✅ Coop size 0 → 1 · 60 🥚 eggs · affordable now"
         "\nA roomier henhouse; every hen in the coop lays that bit faster."
     )
     assert shop_rich["title"] == "🧺 The Farm Supply Shed"  # labels.shop_title
@@ -173,6 +180,32 @@ def test_shop_cost_tracks_current_level(egg_farm):
     (field,) = render_shop(state, egg_farm)["fields"]
     assert "Coop size 3 → 4" in field["value"]
     assert "91 🥚 eggs" in field["value"]
+
+
+def test_shop_affordability_eta_reads_off_time_to_afford(egg_farm):
+    """The shop's ETA fragment reads off time_to_afford, deterministically:
+    ``0`` -> "affordable now" and a positive shortfall/rate -> "buy in Ns".
+    boost1 costs 60 eggs at level 0 and each owned coop makes 1 egg/s.
+    """
+    # Affordable now: 60 eggs banked, one coop earning.
+    (field,) = render_shop(
+        GameState(balances={"primary": 60}, owned={"tier1": 1}), egg_farm
+    )["fields"]
+    assert field["value"].startswith("✅")
+    assert "· affordable now" in field["value"]
+    assert "buy in" not in field["value"]
+
+    # A known wait: 0 eggs, one coop at 1 egg/s -> 60 eggs is exactly 60s away.
+    (field,) = render_shop(GameState(owned={"tier1": 1}), egg_farm)["fields"]
+    assert field["value"].startswith("🔒")
+    assert "· buy in 60s" in field["value"]
+
+    # A 0-owned target keeps the trap-buy "requires" annotation and shows no
+    # ETA — buying is pointless, so the shop must not invite it with a countdown.
+    (field,) = render_shop(GameState(balances={"primary": 10}), egg_farm)["fields"]
+    assert "requires" in field["value"]
+    assert "buy in" not in field["value"]
+    assert "affordable now" not in field["value"]
 
 
 def test_shop_is_none_without_upgrade_block(egg_farm):
@@ -522,22 +555,27 @@ def test_shop_composes_description_below_cost_line(egg_farm):
     """The composed value is exactly: cost line, newline, themed flavor."""
     (field,) = render_shop(_fixed_state(), egg_farm)["fields"]
     cost_line, _, flavor = field["value"].partition("\n")
-    assert cost_line == "✅ Coop size 1 → 2 · 69 🥚 eggs"
+    assert cost_line == "✅ Coop size 1 → 2 · 69 🥚 eggs · affordable now"
     assert flavor == egg_farm.upgrades["boost1"].description
 
 
 def test_shop_without_description_pins_pre_composition_bytes():
     """Absent flavor (hand-built themes only — the gate requires the field)
-    renders the bare cost line BYTE-IDENTICALLY to the pre-composition layer:
-    no newline, no trailing scaffolding."""
+    renders the cost line with NO description composition: a single line, no
+    newline, no flavor below it. The ETA fragment rides the cost line itself,
+    so it is present but the value stays one line."""
     theme = _shop_theme("")
     # Own the target generator so the row is a live buy (a 0-owned target is
     # annotated as a trap buy — covered by test_shop_annotates_trap_buy).
     owned = {"tier1": 1}
     (field,) = render_shop(GameState(balances={"primary": 60}, owned=owned), theme)["fields"]
-    assert field["value"] == "✅ Lv 0 → 1 · 60 🔹 points"
+    assert "\n" not in field["value"]
+    assert field["value"] == "✅ Lv 0 → 1 · 60 🔹 points · affordable now"
+    # Unaffordable at 1 point/s (base_rate 1 × 1 maker): 60 points short is a
+    # 60-second wait, read off time_to_afford.
     (field,) = render_shop(GameState(owned=owned), theme)["fields"]
-    assert field["value"] == "🔒 Lv 0 → 1 · 60 🔹 points"
+    assert "\n" not in field["value"]
+    assert field["value"] == "🔒 Lv 0 → 1 · 60 🔹 points · buy in 60s"
 
 
 def test_shop_composition_budget_at_worst_case_extremes():
