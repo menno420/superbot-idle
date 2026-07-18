@@ -16,6 +16,7 @@ values, hard-bounded to the schema-declared 90..110 range (see
 from __future__ import annotations
 
 import re
+from collections.abc import Hashable
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
@@ -58,6 +59,49 @@ RATE_MULTIPLIER_MAX = 110
 # must not import the render module (same discipline render follows by keeping
 # its own copy of GAINS_PLACEHOLDER); parity with render's regex is intentional.
 _HEX_COLOR = re.compile(r"#[0-9A-Fa-f]{6}\Z")
+
+
+class _StrictYAMLLoader(yaml.SafeLoader):
+    """A ``SafeLoader`` that REJECTS duplicate mapping keys.
+
+    PyYAML's ``safe_load`` silently accepts a repeated mapping key and keeps
+    the LAST value, so a pack with an accidental duplicate key (a stray second
+    ``name:``, a copy-pasted ``base_rate:``, a whole duplicated ``generators:``
+    block) parses cleanly with the author's intended value dropped — and every
+    downstream check in :func:`load_theme` then validates corrupted content.
+    The loader is the engine's runtime ground truth for a pack, so it must
+    reject the ambiguous document loud rather than resolve it silently.
+
+    This is the loader's OWN copy of the strict-parse discipline: it must not
+    import ``tools/theme_gate.py`` (whose gate carries the CI-time twin), for
+    the same reason the loader keeps its own ``_HEX_COLOR`` regex and
+    ``GAINS_PLACEHOLDER`` — the engine layer never imports the tools/render
+    layers. Parity with the gate's loader is intentional. Everything else stays
+    a faithful ``SafeLoader``.
+    """
+
+    def construct_mapping(self, node, deep: bool = False):  # type: ignore[override]
+        if isinstance(node, yaml.MappingNode):
+            self.flatten_mapping(node)
+        mapping: dict = {}
+        for key_node, value_node in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if not isinstance(key, Hashable):
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    "found unhashable key",
+                    key_node.start_mark,
+                )
+            if key in mapping:
+                raise yaml.constructor.ConstructorError(
+                    "while constructing a mapping",
+                    node.start_mark,
+                    f"found duplicate key {key!r}",
+                    key_node.start_mark,
+                )
+            mapping[key] = self.construct_object(value_node, deep=deep)
+        return mapping
 
 
 @dataclass(frozen=True)
@@ -230,7 +274,17 @@ def _require_str(mapping: dict, key: str, where: str) -> str:
 def load_theme(path: str | Path) -> Theme:
     """Load and structurally validate a theme pack from YAML."""
     path = Path(path)
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    # Parse through the strict loader so a duplicate mapping key at ANY depth
+    # fails loud here rather than silently keeping the last value (which every
+    # downstream check below would then validate as if it were the author's
+    # intent). Re-raise the constructor-level error in this loader's own
+    # where-anchored ValueError style (path + the mark's line/column), matching
+    # the 'duplicate <x> id' / malformed-color messages. Genuine YAML syntax
+    # errors keep propagating as before.
+    try:
+        data = yaml.load(path.read_text(encoding="utf-8"), Loader=_StrictYAMLLoader)
+    except yaml.constructor.ConstructorError as exc:
+        raise ValueError(f"{path}: {exc}") from exc
     if not isinstance(data, dict):
         raise ValueError(f"{path}: theme pack must be a mapping")
 
