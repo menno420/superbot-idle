@@ -1,6 +1,6 @@
 # 2026-07-18 — theme: reject duplicate YAML mapping keys at load time
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** Opus 4.8 (1M context) · medium · runtime bugfix · engine-loader seat (theme × malformed input) · 2026-07-18
 
