@@ -1,0 +1,1 @@
+- `claude/theme-flavor-depth` · **theme: enrich milestone/label flavor on thinnest packs (THM-19)** · themes/ · 2026-07-18
