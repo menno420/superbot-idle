@@ -242,6 +242,8 @@ def load_theme(path: str | Path) -> Theme:
             raise ValueError(f"{path}:currencies[{i}] must be a mapping")
         w = f"{path}:currencies[{i}]"
         cid = _require_str(entry, "id", w)
+        if cid in currencies:
+            raise ValueError(f"{w}: duplicate currency id {cid!r}")
         currencies[cid] = ThemeCurrency(
             currency_id=cid,
             name=_require_str(entry, "name", w),
@@ -258,6 +260,8 @@ def load_theme(path: str | Path) -> Theme:
             raise ValueError(f"{path}:generators[{i}] must be a mapping")
         w = f"{path}:generators[{i}]"
         gid = _require_str(entry, "id", w)
+        if gid in generators:
+            raise ValueError(f"{w}: duplicate generator id {gid!r}")
         produces = _require_str(entry, "produces", w)
         if produces not in currencies:
             raise ValueError(f"{w}: 'produces' ({produces!r}) is not a declared currency id")
