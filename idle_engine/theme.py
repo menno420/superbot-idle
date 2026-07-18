@@ -51,6 +51,18 @@ RATE_MULTIPLIER_NEUTRAL = 100
 RATE_MULTIPLIER_MAX = 110
 
 
+# The schema bounds ``generators[].base_rate`` to the integer range 1..1000
+# ("so a theme cannot smuggle economy balance"). These are the loader's own
+# copy of that schema-declared min/max (parity test-pinned), re-checked HERE
+# independently of the gate — same defense-in-depth discipline as the balance
+# bounds above and the _HEX_COLOR regex below: a pack loaded through
+# load_theme OUTSIDE the CI gate (a live server reading an unvetted pack, or
+# any direct caller) must fail loud at load rather than carry an out-of-bounds
+# rate silently into the engine economy. 1 = the slowest permitted rate.
+BASE_RATE_MIN = 1
+BASE_RATE_MAX = 1000
+
+
 # The one schema-declared FORMAT constraint the loader re-checks itself, as
 # defense in depth: both schema/theme.schema.json (pattern "^#[0-9A-Fa-f]{6}$")
 # and the render layer (idle_engine/render.py:embed_color_int) require #RRGGBB
@@ -339,8 +351,18 @@ def load_theme(path: str | Path) -> Theme:
         if produces not in currencies:
             raise ValueError(f"{w}: 'produces' ({produces!r}) is not a declared currency id")
         base_rate = entry.get("base_rate")
-        if not isinstance(base_rate, int) or isinstance(base_rate, bool) or base_rate < 1:
+        if not isinstance(base_rate, int) or isinstance(base_rate, bool):
             raise ValueError(f"{w}: 'base_rate' must be a positive integer")
+        # Defense in depth: the SAME schema-declared bounds (1..1000) the gate
+        # enforces, re-checked at load — mirroring the balance-bounds re-check.
+        # The lower bound alone was enforced historically; without the upper
+        # bound a pack loaded outside the gate silently smuggled an
+        # out-of-bounds economy rate. Both ends now fail loud here.
+        if not BASE_RATE_MIN <= base_rate <= BASE_RATE_MAX:
+            raise ValueError(
+                f"{w}: 'base_rate' ({base_rate}) is outside the "
+                f"schema-declared bounds {BASE_RATE_MIN}..{BASE_RATE_MAX}"
+            )
         generators[gid] = ThemeGenerator(
             generator_id=gid,
             name=_require_str(entry, "name", w),

@@ -250,6 +250,37 @@ def test_rejects_non_mapping_milestone_item(tmp_path):
         _load(pack, tmp_path)
 
 
+# --- base_rate numeric bounds (schema minimum 1, maximum 1000) ---------------
+#
+# The schema declares ``generators[].base_rate`` an integer bounded 1..1000
+# ("Bounded 1-1000 in v1 so a theme cannot smuggle economy balance"). The gate
+# (jsonschema) enforces both ends. The loader — the engine's runtime ground
+# truth — re-checks the LOWER bound (positivity) as defense in depth, but the
+# UPPER bound must be re-checked too: without it a pack with ``base_rate:
+# 999999``, loaded directly via ``load_theme`` OUTSIDE the gate, loads clean and
+# carries an out-of-bounds rate straight into the engine economy (no crash, no
+# error — the exact balance-smuggling the schema bound exists to prevent).
+# Mirror the balance-bounds re-check: both ends enforced at load with a
+# where-anchored ValueError.
+
+
+@pytest.mark.parametrize("bad_rate", [1001, 5000, 999999])
+def test_rejects_base_rate_above_schema_max(tmp_path, bad_rate):
+    pack = _base_pack()
+    pack["generators"][0]["base_rate"] = bad_rate
+    with pytest.raises(ValueError, match="base_rate"):
+        _load(pack, tmp_path)
+
+
+def test_accepts_base_rate_at_schema_max(tmp_path):
+    # The boundary value 1000 is IN-bounds — the guard is inclusive and must
+    # not over-reject a valid pack.
+    pack = _base_pack()
+    pack["generators"][0]["base_rate"] = 1000
+    theme = _load(pack, tmp_path)
+    assert theme.generators["tier1"].base_rate == 1000
+
+
 # --- duplicate YAML mapping keys (document-structure ambiguity) ---------------
 #
 # PyYAML's ``safe_load`` SILENTLY accepts a repeated mapping key and keeps the
