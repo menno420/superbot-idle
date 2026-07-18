@@ -1,6 +1,6 @@
 # 2026-07-18 — theme-gate: reject duplicate YAML mapping keys
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · medium · runtime bugfix · tooling-gate seat (theme-gate × malformed input) · 2026-07-18
 
