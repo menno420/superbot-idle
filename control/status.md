@@ -81,7 +81,7 @@ MOVED at close-out → `docs/retro/2026-07-11-lane-retro.md` § 1 (verbatim, wit
 - REQUEST: in GitHub repo Settings → Branches → branch protection for `main`, add the status check named **`pytest`** to the required checks (alongside the existing `substrate-gate` + `theme-gate`). This is branch-protection config, which only the owner can change — a worker cannot self-mark a required check.
 - WHY: until `pytest` is required, a PR can still merge green without the suite having passed (a run could be skipped/cancelled and merge would not be blocked). Making it required is what finally makes GREEN == TESTED for merges to `main`.
 - VERIFIED-NEEDED: a subsequent PR shows `pytest` listed among the required checks and auto-merge holds until it concludes.
-- DO NOT: this worker did NOT arm auto-merge and did NOT merge PR #74 — leaving the merge decision to the owner/coordinator per lane convention.
+- DO NOT: this worker did NOT arm auto-merge and did NOT merge PR #74 — leaving the merge decision to the owner/coordinator per lane convention. (That lane convention was retired 2026-07-18: agents now merge their own green PRs directly — fleet #308/#309.)
 
 ## PLATFORM-LIMITS
 - Two transient GitHub rate-limit hits ("API rate limit already exceeded for user ID 225413533"): PR #26 arming → REST fallback; PR #27 arming → paced retry succeeded. Recorded per PLATFORM-LIMITS; workers now pace GitHub calls.
