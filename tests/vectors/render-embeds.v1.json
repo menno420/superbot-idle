@@ -89,7 +89,7 @@
           "fields": [
             {
               "name": "\ud83e\uddea stronger pheromone markers",
-              "value": "\u2705 Instar level 0 \u2192 1 \u00b7 60 \ud83c\udf5e crumbs\nA bolder scent line no forager can lose; the trail marches straighter, faster, heavier-laden.",
+              "value": "\u2705 Instar level 0 \u2192 1 \u00b7 60 \ud83c\udf5e crumbs \u00b7 affordable now\nA bolder scent line no forager can lose; the trail marches straighter, faster, heavier-laden.",
               "inline": false
             },
             {
@@ -208,7 +208,7 @@
           "fields": [
             {
               "name": "\ud83c\udf40 clover-rich pasture",
-              "value": "\u2705 Frame level 0 \u2192 1 \u00b7 60 \ud83c\udf6f honey\nA field reseeded thick with clover and linden; every forager comes home heavier and leaves again sooner.",
+              "value": "\u2705 Frame level 0 \u2192 1 \u00b7 60 \ud83c\udf6f honey \u00b7 affordable now\nA field reseeded thick with clover and linden; every forager comes home heavier and leaves again sooner.",
               "inline": false
             },
             {
@@ -327,7 +327,7 @@
           "fields": [
             {
               "name": "\ud83d\udd29 heated drill bit",
-              "value": "\u2705 Expedition level 0 \u2192 1 \u00b7 60 \u2744\ufe0f snowpack\nA heated bit keeps the ice-core drill from seizing in the cold; it cuts through permafrost without a single stall.",
+              "value": "\u2705 Expedition level 0 \u2192 1 \u00b7 60 \u2744\ufe0f snowpack \u00b7 affordable now\nA heated bit keeps the ice-core drill from seizing in the cold; it cuts through permafrost without a single stall.",
               "inline": false
             },
             {
@@ -446,7 +446,7 @@
           "fields": [
             {
               "name": "\ud83c\udf21\ufe0f warmed pulling arms",
-              "value": "\u2705 Batch level 0 \u2192 1 \u00b7 60 \ud83c\udf6c candies\nGently warmed arms keep the taffy supple; the puller stretches longer ribbons and never tears a batch.",
+              "value": "\u2705 Batch level 0 \u2192 1 \u00b7 60 \ud83c\udf6c candies \u00b7 affordable now\nGently warmed arms keep the taffy supple; the puller stretches longer ribbons and never tears a batch.",
               "inline": false
             },
             {
@@ -565,7 +565,7 @@
           "fields": [
             {
               "name": "\ud83d\udc8e jeweled bearings",
-              "value": "\u2705 Caliber level 0 \u2192 1 \u00b7 60 \u2699\ufe0f cogs\nRuby bearings set into every pivot; the bench work glides where it used to grind.",
+              "value": "\u2705 Caliber level 0 \u2192 1 \u00b7 60 \u2699\ufe0f cogs \u00b7 affordable now\nRuby bearings set into every pivot; the bench work glides where it used to grind.",
               "inline": false
             },
             {
@@ -684,7 +684,7 @@
           "fields": [
             {
               "name": "\u2699\ufe0f calibrated burr grinder",
-              "value": "\u2705 Roast level 0 \u2192 1 \u00b7 60 \ud83e\uded8 beans\nA freshly calibrated burr grinder pulls a cleaner shot; the barista works faster and the drip line never stalls.",
+              "value": "\u2705 Roast level 0 \u2192 1 \u00b7 60 \ud83e\uded8 beans \u00b7 affordable now\nA freshly calibrated burr grinder pulls a cleaner shot; the barista works faster and the drip line never stalls.",
               "inline": false
             },
             {
@@ -803,7 +803,7 @@
           "fields": [
             {
               "name": "\ud83e\uddca cryo-coolant overclock",
-              "value": "\u2705 Firmware rev 0 \u2192 1 \u00b7 60 \ud83d\udcb3 credits\nSupercooled coolant lets the haven's racks run red-line all night without a single thermal stall.",
+              "value": "\u2705 Firmware rev 0 \u2192 1 \u00b7 60 \ud83d\udcb3 credits \u00b7 affordable now\nSupercooled coolant lets the haven's racks run red-line all night without a single thermal stall.",
               "inline": false
             },
             {
@@ -922,7 +922,7 @@
           "fields": [
             {
               "name": "\ud83e\udda0 plankton drip line",
-              "value": "\u2705 Depth rating 0 \u2192 1 \u00b7 60 \ud83e\uddaa pearls\nA steady drip of rich plankton keeps every oyster fat, content, and productive.",
+              "value": "\u2705 Depth rating 0 \u2192 1 \u00b7 60 \ud83e\uddaa pearls \u00b7 affordable now\nA steady drip of rich plankton keeps every oyster fat, content, and productive.",
               "inline": false
             },
             {
@@ -1041,7 +1041,7 @@
           "fields": [
             {
               "name": "\u2692\ufe0f sharper pickaxes",
-              "value": "\u2705 Menace level 0 \u2192 1 \u00b7 60 \ud83e\ude99 gold coins\nSharper pickaxes for the kobold crews; the coin seams give up their riches faster.",
+              "value": "\u2705 Menace level 0 \u2192 1 \u00b7 60 \ud83e\ude99 gold coins \u00b7 affordable now\nSharper pickaxes for the kobold crews; the coin seams give up their riches faster.",
               "inline": false
             },
             {
@@ -1155,7 +1155,7 @@
           "fields": [
             {
               "name": "\ud83c\udfe0 bigger henhouse",
-              "value": "\u2705 Coop size 0 \u2192 1 \u00b7 60 \ud83e\udd5a eggs\nA roomier henhouse; every hen in the coop lays that bit faster.",
+              "value": "\u2705 Coop size 0 \u2192 1 \u00b7 60 \ud83e\udd5a eggs \u00b7 affordable now\nA roomier henhouse; every hen in the coop lays that bit faster.",
               "inline": false
             }
           ]
@@ -1269,7 +1269,7 @@
           "fields": [
             {
               "name": "\ud83d\udd6f\ufe0f midnight candles",
-              "value": "\u2705 Haunting level 0 \u2192 1 \u00b7 60 \ud83c\udf2b\ufe0f ectoplasm\nCandles lit at exactly midnight; the portrait broods harder and weeps faster.",
+              "value": "\u2705 Haunting level 0 \u2192 1 \u00b7 60 \ud83c\udf2b\ufe0f ectoplasm \u00b7 affordable now\nCandles lit at exactly midnight; the portrait broods harder and weeps faster.",
               "inline": false
             },
             {
@@ -1388,7 +1388,7 @@
           "fields": [
             {
               "name": "\ud83e\ude77 guest choreography coach",
-              "value": "\u2705 Spotlight level 0 \u2192 1 \u00b7 60 \ud83d\udc96 fans\nA legendary coach tightens every eight-count; the practice room turns polish into devotion.",
+              "value": "\u2705 Spotlight level 0 \u2192 1 \u00b7 60 \ud83d\udc96 fans \u00b7 affordable now\nA legendary coach tightens every eight-count; the practice room turns polish into devotion.",
               "inline": false
             },
             {
@@ -1507,7 +1507,7 @@
           "fields": [
             {
               "name": "\ud83e\ude9e polished reflectors",
-              "value": "\u2705 Watch level 0 \u2192 1 \u00b7 60 \ud83d\udd06 lamplight\nSilvered reflectors set behind the wick; the lantern spends the same oil and throws twice the shine.",
+              "value": "\u2705 Watch level 0 \u2192 1 \u00b7 60 \ud83d\udd06 lamplight \u00b7 affordable now\nSilvered reflectors set behind the wick; the lantern spends the same oil and throws twice the shine.",
               "inline": false
             },
             {
@@ -1626,7 +1626,7 @@
           "fields": [
             {
               "name": "\u26f5 patched black sails",
-              "value": "\u2705 Infamy level 0 \u2192 1 \u00b7 60 \ud83e\ude99 doubloons\nNew sailcloth dyed midnight black; the skiff runs faster and the customs sloop sees nothing.",
+              "value": "\u2705 Infamy level 0 \u2192 1 \u00b7 60 \ud83e\ude99 doubloons \u00b7 affordable now\nNew sailcloth dyed midnight black; the skiff runs faster and the customs sloop sees nothing.",
               "inline": false
             },
             {
@@ -1745,7 +1745,7 @@
           "fields": [
             {
               "name": "\ud83d\udd25 hotter flames",
-              "value": "\u2705 Brew grade 0 \u2192 1 \u00b7 60 \ud83e\uddea potions\nStoke the fire under the cauldron; a fiercer boil means faster brewing.",
+              "value": "\u2705 Brew grade 0 \u2192 1 \u00b7 60 \ud83e\uddea potions \u00b7 affordable now\nStoke the fire under the cauldron; a fiercer boil means faster brewing.",
               "inline": false
             },
             {
@@ -1864,7 +1864,7 @@
           "fields": [
             {
               "name": "\ud83e\uddc2 overnight tare",
-              "value": "\u2705 Ladle level 0 \u2192 1 \u00b7 60 \ud83c\udf5c bowls\nA deeper, darker tare steeped overnight; one ladleful in the bowl and the regulars close their eyes.",
+              "value": "\u2705 Ladle level 0 \u2192 1 \u00b7 60 \ud83c\udf5c bowls \u00b7 affordable now\nA deeper, darker tare steeped overnight; one ladleful in the bowl and the regulars close their eyes.",
               "inline": false
             },
             {
@@ -1983,7 +1983,7 @@
           "fields": [
             {
               "name": "\ud83c\udf3e stone-ground flour",
-              "value": "\u2705 Recipe mastery 0 \u2192 1 \u00b7 60 \ud83e\udd50 pastries\nFiner flour from the old mill; the starter rises faster and the crumb turns cloud-light.",
+              "value": "\u2705 Recipe mastery 0 \u2192 1 \u00b7 60 \ud83e\udd50 pastries \u00b7 affordable now\nFiner flour from the old mill; the starter rises faster and the crumb turns cloud-light.",
               "inline": false
             },
             {
@@ -2102,7 +2102,7 @@
           "fields": [
             {
               "name": "\ud83e\ude9e polished reflectors",
-              "value": "\u2705 Mark 0 \u2192 1 \u00b7 60 \ud83e\udee7 oxygen\nMirror-finish reflectors squeeze more light into every panel of the solar array.",
+              "value": "\u2705 Mark 0 \u2192 1 \u00b7 60 \ud83e\udee7 oxygen \u00b7 affordable now\nMirror-finish reflectors squeeze more light into every panel of the solar array.",
               "inline": false
             },
             {
@@ -2221,7 +2221,7 @@
           "fields": [
             {
               "name": "\ud83e\udeb6 self-inking quills",
-              "value": "\u2705 Circle 0 \u2192 1 \u00b7 60 \ud83d\udd2e mana\nQuills that never run dry; the scribes stop dipping and never look up from the page.",
+              "value": "\u2705 Circle 0 \u2192 1 \u00b7 60 \ud83d\udd2e mana \u00b7 affordable now\nQuills that never run dry; the scribes stop dipping and never look up from the page.",
               "inline": false
             },
             {

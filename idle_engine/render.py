@@ -43,7 +43,7 @@ from idle_engine.achievements import (
 )
 from idle_engine.engine import offline_progress, production_per_second
 from idle_engine.prestige import prestige_award, prestige_eligible
-from idle_engine.upgrades import upgrade_cost
+from idle_engine.upgrades import time_to_afford, upgrade_cost
 
 if TYPE_CHECKING:  # imported for type checking only: keeps runtime stdlib-only
     from idle_engine.state import GameState
@@ -99,6 +99,15 @@ _MILESTONE_READY_MARK = "⏳"  # ⏳ hourglass — reached, awaiting the award a
 # is generic engine vocabulary (like "Lv"), never a theme noun.
 _UPGRADE_UNAVAILABLE_MARK = "⚠️"  # ⚠️ — target generator not yet owned
 _REQUIRES_LABEL = "requires"
+
+# Shop affordability ETA scaffolding — generic engine vocabulary (like "Lv" and
+# "requires"), never theme nouns. ``time_to_afford`` (idle_engine.upgrades)
+# answers "when can I buy this?": ``_AFFORDABLE_NOW_LABEL`` renders its ``0``
+# (already covered), ``_BUY_IN_LABEL`` prefixes its integer-seconds answer, and
+# its ``None`` (never — nothing produced yet and still short) renders nothing,
+# since the 🔒 mark already says "locked".
+_AFFORDABLE_NOW_LABEL = "affordable now"
+_BUY_IN_LABEL = "buy in"
 
 
 class RenderBudgetError(ValueError):
@@ -298,12 +307,23 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
         return None
     spec_by_id = {spec.spec_id: spec for spec in theme.upgrade_specs()}
     level_label = _label_slot(theme, "level") or _NEUTRAL_LEVEL_LABEL
+    # Per-currency income, the SAME rate the status view shows: reuse the one
+    # rate seam (production_per_second) so the shop's ETA never forks the
+    # formula. Computed once for all upgrades, then looked up per cost currency.
+    rates = production_per_second(
+        state,
+        theme.generator_specs(),
+        list(spec_by_id.values()),
+        _prestige_specs(theme),
+        theme.milestone_specs(),
+    )
     fields = []
     for upgrade in theme.upgrades.values():
         spec = spec_by_id[upgrade.upgrade_id]
         level = state.upgrades.get(spec.spec_id, 0)
         cost = upgrade_cost(spec, level)
-        affordable = state.balances.get(spec.cost_currency, 0) >= cost
+        balance = state.balances.get(spec.cost_currency, 0)
+        affordable = balance >= cost
         currency = theme.currencies[spec.cost_currency]
         target_owned = state.owned.get(spec.target, 0)
         if target_owned == 0:
@@ -321,7 +341,20 @@ def render_shop(state: GameState, theme: Theme) -> dict | None:
             suffix = f" · {_REQUIRES_LABEL} {requires}"
         else:
             mark = "✅" if affordable else "\U0001f512"
-            suffix = ""
+            # Affordability ETA (display only): the pure time_to_afford helper
+            # over this currency's live income answers "WHEN can I buy this?"
+            # so the player need not compute (cost - balance) / rate by hand.
+            # 0 -> affordable now; a positive int -> whole seconds; None (never:
+            # rate 0 and still short) -> nothing, since 🔒 already reads "locked".
+            # Numeric tier — rides the cost line's clamp below, so it can never
+            # bust the field-value budget.
+            eta = time_to_afford(cost, balance, rates.get(spec.cost_currency, 0))
+            if eta == 0:
+                suffix = f" · {_AFFORDABLE_NOW_LABEL}"
+            elif eta is None:
+                suffix = ""
+            else:
+                suffix = f" · {_BUY_IN_LABEL} {_format_amount(eta)}s"
         cost_line = (
             f"{mark} {level_label} {_format_amount(level)} → {_format_amount(level + 1)}"
             f" · {_format_amount(cost)} {_labelled(currency.emoji, currency.name)}"

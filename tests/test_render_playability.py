@@ -113,7 +113,9 @@ def test_shop_live_upgrade_with_owned_target_is_unannotated(royal_bakery):
     line = {f["name"]: f["value"] for f in render_shop(state, royal_bakery)["fields"]}[
         "🌾 stone-ground flour"
     ].split("\n")[0]
-    assert line == "✅ Recipe mastery 0 → 1 · 60 🥐 pastries"
+    # Owned target, affordable: normal ✅ mark plus the affordability ETA — and
+    # crucially NO trap-buy annotation (⚠️/requires fire only for 0-owned targets).
+    assert line == "✅ Recipe mastery 0 → 1 · 60 🥐 pastries · affordable now"
     assert "⚠️" not in line
     assert "requires" not in line
 
