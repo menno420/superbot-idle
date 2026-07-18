@@ -101,6 +101,20 @@ def test_rejects_non_mapping_currency_item(tmp_path):
         _load(pack, tmp_path)
 
 
+def test_rejects_duplicate_currency_id(tmp_path):
+    # Two currencies sharing an id must fail loud, not silently drop the
+    # first — matching the balance/upgrades/milestones dup guards. Without
+    # the guard the loader keeps only the LAST entry, so the earlier
+    # name/emoji vanish with no error (silent authoring-error data loss).
+    pack = _base_pack()
+    pack["currencies"] = [
+        {"id": "primary", "name": "first", "description": "d", "emoji": "a"},
+        {"id": "primary", "name": "second", "description": "d", "emoji": "b"},
+    ]
+    with pytest.raises(ValueError, match="duplicate currency id"):
+        _load(pack, tmp_path)
+
+
 # --- generators block --------------------------------------------------------
 
 
@@ -115,6 +129,37 @@ def test_rejects_non_mapping_generator_item(tmp_path):
     pack = _base_pack()
     pack["generators"] = ["not-a-mapping"]
     with pytest.raises(ValueError, match=re.escape("generators[0] must be a mapping")):
+        _load(pack, tmp_path)
+
+
+def test_rejects_duplicate_generator_id(tmp_path):
+    # Two generators sharing an id must fail loud. Without the guard the
+    # last entry silently wins, so the surviving generator can 'produces' a
+    # DIFFERENT currency than the author's first declaration named — a
+    # silent mechanics change, worse than a shape nit.
+    pack = _base_pack()
+    pack["currencies"].append(
+        {"id": "secondary", "name": "gems", "description": "d", "emoji": "s"}
+    )
+    pack["generators"] = [
+        {
+            "id": "tier1",
+            "name": "first",
+            "description": "d",
+            "emoji": "g",
+            "produces": "primary",
+            "base_rate": 1,
+        },
+        {
+            "id": "tier1",
+            "name": "second",
+            "description": "d",
+            "emoji": "h",
+            "produces": "secondary",
+            "base_rate": 5,
+        },
+    ]
+    with pytest.raises(ValueError, match="duplicate generator id"):
         _load(pack, tmp_path)
 
 
