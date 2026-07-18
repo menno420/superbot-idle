@@ -1,8 +1,8 @@
 # 2026-07-18 — docs: reconcile stale suite counts in current-state
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** neutral builder-agent · low · docs · docs-truth seat (suite-count reconcile) · 2026-07-18T00:00Z (`date -u`)
+- **📊 Model:** neutral builder-agent · low · docs-only · docs-truth seat (suite-count reconcile) · 2026-07-18T00:00Z (`date -u`)
 
 ## What / why
 
