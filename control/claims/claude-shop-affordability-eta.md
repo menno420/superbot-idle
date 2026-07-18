@@ -1,0 +1,1 @@
+- `claude/shop-affordability-eta` · **engine/render: surface time_to_afford ETA in shop view (ENG-8)** · idle_engine/render.py · 2026-07-18
