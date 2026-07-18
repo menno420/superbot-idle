@@ -1,8 +1,8 @@
 # 2026-07-18 — engine: pin save graceful-degradation across catalog drift
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** neutral builder-agent · medium · test-only robustness pin · engine-robustness seat (save × catalog drift) · 2026-07-18
+- **📊 Model:** neutral builder-agent · medium · test writing · engine-robustness seat (save × catalog drift) · 2026-07-18
 
 ## What / why
 
@@ -76,9 +76,10 @@ correct.
 
 ## Verification
 
-- `python3 -m pytest -q` — full suite green; count 1568 → NEW (see
-  the committed `docs/current-state.md` bump; the pinned-host job is
-  the sb-free count + 15).
+- `python3 -m pytest -q` — full suite green; count 1568 → 1590 sb-free
+  (+22: the drift test parametrizes over all 20 packs, plus 2 unit pins;
+  `docs/current-state.md` bumped, pinned-host job 1583 → 1605 = sb-free
+  1590 + 15).
 - `python3 bootstrap.py check --strict` — only the born-red HOLD
   expected (this card, until flipped `complete`).
 
