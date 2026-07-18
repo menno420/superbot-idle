@@ -1,0 +1,1 @@
+- `claude/theme-dup-id-guard` · **theme loader: reject duplicate currency/generator ids (bug fix + regression tests)** · idle_engine/theme.py · tests/test_theme_loader_guards.py · 2026-07-18
