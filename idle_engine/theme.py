@@ -15,6 +15,7 @@ values, hard-bounded to the schema-declared 90..110 range (see
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field, replace
 from pathlib import Path
 
@@ -47,6 +48,16 @@ class ThemeCurrency:
 RATE_MULTIPLIER_MIN = 90
 RATE_MULTIPLIER_NEUTRAL = 100
 RATE_MULTIPLIER_MAX = 110
+
+
+# The one schema-declared FORMAT constraint the loader re-checks itself, as
+# defense in depth: both schema/theme.schema.json (pattern "^#[0-9A-Fa-f]{6}$")
+# and the render layer (idle_engine/render.py:embed_color_int) require #RRGGBB
+# hex, so a malformed color that slipped past CI would otherwise load clean and
+# crash deep at render time. This is the loader's own copy of the pattern — it
+# must not import the render module (same discipline render follows by keeping
+# its own copy of GAINS_PLACEHOLDER); parity with render's regex is intentional.
+_HEX_COLOR = re.compile(r"#[0-9A-Fa-f]{6}\Z")
 
 
 @dataclass(frozen=True)
@@ -232,6 +243,14 @@ def load_theme(path: str | Path) -> Theme:
     description = _require_str(meta, "description", where)
     emoji = _require_str(meta, "emoji", where)
     embed_color = _require_str(meta, "embed_color", where)
+    # Defense in depth: re-check the schema-declared #RRGGBB format here so a
+    # malformed color is rejected at load with a clear where-anchored message
+    # rather than surfacing as a render-time crash from embed_color_int —
+    # mirroring the balance-bounds re-check below.
+    if not _HEX_COLOR.match(embed_color):
+        raise ValueError(
+            f"{where}: 'embed_color' ({embed_color!r}) must be #RRGGBB hex"
+        )
 
     raw_currencies = data.get("currencies")
     if not isinstance(raw_currencies, list) or not raw_currencies:

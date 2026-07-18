@@ -59,6 +59,32 @@ def test_loader_rejects_produces_pointing_at_unknown_currency(tmp_path):
         load_theme(path)
 
 
+@pytest.mark.parametrize(
+    "bad_color",
+    [
+        "red",        # not hex at all
+        "#FFF",       # 3-digit shorthand, not #RRGGBB
+        "123456",     # missing leading '#'
+        "#GGGGGG",    # right shape, non-hex digits
+        "#F5C5423",   # 7 hex digits, too long
+    ],
+)
+def test_loader_rejects_malformed_embed_color(tmp_path, bad_color):
+    # embed_color is the one schema-declared FORMAT constraint the loader
+    # must re-check itself (defense in depth, matching the balance-bounds
+    # re-check): the schema requires #RRGGBB and render.embed_color_int
+    # raises on anything else, so without a load-time guard a malformed
+    # color loads clean and only crashes deep at render time. Reject it
+    # loud at load with a where-anchored message instead.
+    broken = EGG_FARM.read_text(encoding="utf-8").replace(
+        'embed_color: "#F5C542"', f'embed_color: "{bad_color}"'
+    )
+    path = tmp_path / "broken.yaml"
+    path.write_text(broken, encoding="utf-8")
+    with pytest.raises(ValueError, match="embed_color"):
+        load_theme(path)
+
+
 # --- labels block (optional, every slot optional) ----------------------------
 
 
