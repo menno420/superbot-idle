@@ -1,0 +1,1 @@
+- `claude/theme-gate-dup-keys` · **theme-gate: reject duplicate YAML mapping keys (a duplicate key silently drops the author's value under safe_load; the gate is the red gate for malformed packs)** · tools/theme_gate.py · tests/test_theme_gate.py · docs/current-state.md · 2026-07-18

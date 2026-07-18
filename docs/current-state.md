@@ -12,7 +12,7 @@ truth refresh 2026-07-15 against main `8a7275d` (post-PR #139 — kit
 version claims corrected to the measured v1.16.0, PR #134 `3df5449`);
 suite-count reconcile 2026-07-18 against main `97e4c71` (post-PR #161 forge —
 sb-free 1415→1561, host job 1378→1576);
-suite 1590 passed, 1 skipped sb-free (see stability baseline).*
+suite 1592 passed, 1 skipped sb-free (see stability baseline).*
 
 ## Stability baseline
 
@@ -55,14 +55,16 @@ Known-good and not to be re-audited without a reported regression:
   validation plus referential checks — `produces`/`target`/prestige-currency
   references resolve; per-pack id uniqueness; `theme.id` == filename stem;
   `labels.offline_return` contains `{gains}` exactly once; the pack loads
-  through `idle_engine.theme.load_theme`; catalog-wide `theme.id` uniqueness.
+  through `idle_engine.theme.load_theme`; catalog-wide `theme.id` uniqueness;
+  duplicate YAML mapping keys rejected (a strict loader fails loud instead of
+  silently keeping the last value).
   Gate-green = safe to enable on a live server unreviewed.
 - **Setup codes v1** (`IDLE1-` Crockford-base32 + CRC-16, FROZEN):
   encode/decode/catalog-validate with a distinct error taxonomy;
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (246 vectors: 100 valid with layer-by-layer intermediates, 121 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1590 passing, 1 skipped sb-free; the pinned-host CI job runs
+- **Test suite: 1592 passing, 1 skipped sb-free; the pinned-host CI job runs
   the 15 extra manifest-contract tests on top of that with zero skips.** The
   old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
   ORDER 007 item 3): `plugin/tests/test_manifest.py` still `importorskip`s
@@ -71,7 +73,7 @@ Known-good and not to be re-audited without a reported regression:
   checks out superbot-next pinned @
   `9634e81748363184bf13abf1485e80262e19e8cb` (bump recipe in the workflow
   comment), exposes `sb` via `PYTHONPATH`, and RUNS the 15 manifest-contract
-  tests on every PR (`1605 passed` = the 1590 sb-free plus the 15 manifest
+  tests on every PR (`1607 passed` = the 1592 sb-free plus the 15 manifest
   tests that read as `1 skipped` sb-free; a grep guard hard-fails the job on
   any skip). The sb-free `pytest` job is unchanged. As of 2026-07-17 the owner
   made `pytest` a REQUIRED status check on `main` (OA-003 done), so the required
