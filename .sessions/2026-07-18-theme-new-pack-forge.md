@@ -1,6 +1,6 @@
 # 2026-07-18 — theme: add forge/blacksmith theme pack
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** neutral builder-agent · high · feature build · content seat (new theme pack) · 2026-07-18T00:31Z (`date -u`)
 
@@ -51,3 +51,23 @@ Card born RED (`in-progress`) in the first commit alongside
 vectors; card flipped `complete` as the last commit to clear the born-red HOLD
 so substrate-gate goes green and the landing workflow can merge on all-green. PR
 opened READY; the worker does not merge its own PR.
+
+## 💡 Session idea
+
+The catalog now carries 20 packs on one numeric shape. A natural follow-up is a
+catalog-level "silhouette" tripwire that renders each pack's status embed and
+asserts the visible nouns (currency + generator + prestige names) are pairwise
+distinct within the pack, so a copy-paste skin that accidentally reuses a noun
+across two slots reds instead of shipping a confusing embed — a cheap
+doc-honesty guard that scales with the growing roster.
+
+## ⟲ Previous-session review
+
+The immediately prior content slice added the apiary pack (the 19th) on this
+same born-red, mirror-the-numbers recipe; this slice is its direct sibling —
+the 20th pack, a forge/blacksmith world, exercising the same CORE/SKIN split
+(new nouns registered in the guard, zero new mechanics) and the same
+no-economy-pinning convention (it mirrors an existing two-tier pack's rates
+rather than forking new ones). The regenerate-or-red vector corpora
+(setup-codes + render-embeds) both auto-absorbed the new pack, confirming the
+catalog-coupling the earlier golden-corpus slices set up is working as intended.
