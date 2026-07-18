@@ -55,10 +55,10 @@ prestige:
   action_emoji: "✨"
 
 labels:
-  offline_return: "While you were out, the cauldrons kept bubbling: {gains}"
+  offline_return: "While you were out, the cauldrons muttered to themselves and kept right on bubbling: {gains}"
   status_title: "⚗️ Potion Brewery — the stockroom ledger"
   shop_title: "📜 The Alchemist's Catalogue"
-  shop_description: Trade bottled potions for a fiercer, faster brewery.
+  shop_description: Trade bottled potions for hotter flames, wiser apprentices, and a brewery that mutters back when you lock up for the night.
   level: Brew grade
   prestige_progress: "lifetime potions toward transcendence:"
 
@@ -71,11 +71,11 @@ milestones:
     emoji: "🫕"
   - id: owned-2
     name: guild-sized operation
-    description: A hundred brewers; the guild sends inspectors just to watch.
+    description: A hundred brewers going at once; the guild stops sending inspectors and starts sending spectators.
     emoji: "🏰"
   - id: owned-3
     name: the thousand-pot works
-    description: A thousand brewers — the town downwind reports prophetic dreams.
+    description: A thousand brewers roiling — the town downwind reports shared dreams and unusually purple sunsets.
     emoji: "🌋"
   - id: lifetime-1
     name: first crate corked
@@ -83,7 +83,7 @@ milestones:
     emoji: "📦"
   - id: lifetime-2
     name: royal supplier
-    description: A hundred thousand potions — the palace buys by the wagonload.
+    description: A hundred thousand potions — the palace buys by the wagonload and pays, for once, on time.
     emoji: "👑"
   - id: lifetime-3
     name: legend of the still
@@ -95,7 +95,7 @@ milestones:
     emoji: "💧"
   - id: prestige-2
     name: essence in reserve
-    description: Five measures of essence, humming softly in their vials.
+    description: Five measures of essence humming softly in their vials, warm to the touch and faintly impatient.
     emoji: "🧿"
   - id: prestige-3
     name: transcendent brewer

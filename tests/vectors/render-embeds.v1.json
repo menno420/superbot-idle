@@ -1184,47 +1184,47 @@
           "fields": [
             {
               "name": "\ud83d\udc23 first flock",
-              "value": "\u2705 10 / 10\nTen layers on the roost \u2014 the yard finally sounds like a farm.",
+              "value": "\u2705 10 / 10\nTen hens settled on the roost \u2014 the yard finally clucks and rustles like a real farm at dawn.",
               "inline": true
             },
             {
               "name": "\ud83d\udc25 hundred-hen farmstead",
-              "value": "\u23f3 100 / 100\nA hundred layers strong; the feed bill is now a line item.",
+              "value": "\u23f3 100 / 100\nA hundred hens strong; the feed bill keeps its own ledger now and the baskets never quite empty.",
               "inline": true
             },
             {
               "name": "\ud83c\udfc6 poultry empire",
-              "value": "\ud83d\udd12 150 / 1,000\nA thousand layers \u2014 neighbors set their clocks by the morning chorus.",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand hens \u2014 three counties over, farmers set their clocks by your morning chorus.",
               "inline": true
             },
             {
               "name": "\ud83e\uddfa first thousand eggs",
-              "value": "\u2705 1,000 / 1,000\nThe first thousand eggs of the season, counted and crated.",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand eggs of the season, wiped clean, counted twice, and crated for the early market.",
               "inline": true
             },
             {
               "name": "\ud83c\udf96\ufe0f county-fair famous",
-              "value": "\u23f3 100,000 / 100,000\nA hundred thousand eggs \u2014 the county fair knows your name.",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand eggs \u2014 the county fair pins your blue ribbon before the judging even begins.",
               "inline": true
             },
             {
               "name": "\ud83d\udc51 ten-million-egg legend",
-              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million eggs. Songs are sung. Omelettes are legion.",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million eggs. Bakers name their pastries after you, and the omelettes have grown legion.",
               "inline": true
             },
             {
               "name": "\ud83e\udd47 first golden egg",
-              "value": "\u2705 1 / 1\nThe first farm sold \u2014 one golden egg, warm in your palm.",
+              "value": "\u2705 1 / 1\nThe first farm sold and handed on \u2014 one golden egg, still warm in your palm.",
               "inline": true
             },
             {
               "name": "\ud83d\udcb0 golden clutch",
-              "value": "\u23f3 5 / 5\nFive golden eggs in the nest box of your retirement fund.",
+              "value": "\u23f3 5 / 5\nFive golden eggs nested together \u2014 a retirement fund that gleams a little every time you check on it.",
               "inline": true
             },
             {
               "name": "\ud83c\udf1f golden dynasty",
-              "value": "\ud83d\udd12 7 / 25\nTwenty-five golden eggs \u2014 a dynasty measured in farms sold.",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five golden eggs \u2014 a whole dynasty measured out in farms raised, sold, and quietly remembered.",
               "inline": true
             }
           ]
@@ -1713,7 +1713,7 @@
       "views": {
         "status": {
           "title": "\u2697\ufe0f Potion Brewery \u2014 the stockroom ledger",
-          "description": "A crooked little brewery where the pots mutter to themselves and every bottle glows.\n\nWhile you were out, the cauldrons kept bubbling: +1,054,800 \ud83e\uddea potions",
+          "description": "A crooked little brewery where the pots mutter to themselves and every bottle glows.\n\nWhile you were out, the cauldrons muttered to themselves and kept right on bubbling: +1,054,800 \ud83e\uddea potions",
           "color": 3522910,
           "fields": [
             {
@@ -1740,7 +1740,7 @@
         },
         "shop": {
           "title": "\ud83d\udcdc The Alchemist's Catalogue",
-          "description": "Trade bottled potions for a fiercer, faster brewery.",
+          "description": "Trade bottled potions for hotter flames, wiser apprentices, and a brewery that mutters back when you lock up for the night.",
           "color": 3522910,
           "fields": [
             {
@@ -1784,12 +1784,12 @@
             },
             {
               "name": "\ud83c\udff0 guild-sized operation",
-              "value": "\u23f3 100 / 100\nA hundred brewers; the guild sends inspectors just to watch.",
+              "value": "\u23f3 100 / 100\nA hundred brewers going at once; the guild stops sending inspectors and starts sending spectators.",
               "inline": true
             },
             {
               "name": "\ud83c\udf0b the thousand-pot works",
-              "value": "\ud83d\udd12 150 / 1,000\nA thousand brewers \u2014 the town downwind reports prophetic dreams.",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand brewers roiling \u2014 the town downwind reports shared dreams and unusually purple sunsets.",
               "inline": true
             },
             {
@@ -1799,7 +1799,7 @@
             },
             {
               "name": "\ud83d\udc51 royal supplier",
-              "value": "\u23f3 100,000 / 100,000\nA hundred thousand potions \u2014 the palace buys by the wagonload.",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand potions \u2014 the palace buys by the wagonload and pays, for once, on time.",
               "inline": true
             },
             {
@@ -1814,7 +1814,7 @@
             },
             {
               "name": "\ud83e\uddff essence in reserve",
-              "value": "\u23f3 5 / 5\nFive measures of essence, humming softly in their vials.",
+              "value": "\u23f3 5 / 5\nFive measures of essence humming softly in their vials, warm to the touch and faintly impatient.",
               "inline": true
             },
             {
@@ -2070,7 +2070,7 @@
       "views": {
         "status": {
           "title": "\ud83e\ude90 Space Colony \u2014 life-support readout",
-          "description": "A fledgling outpost on a far-off world, kept alive one breath at a time.\n\nWhile you slept in cryo, the colony kept breathing: +1,054,800 \ud83e\udee7 oxygen",
+          "description": "A fledgling outpost on a far-off world, kept alive one breath at a time.\n\nWhile you slept in cryo, the scrubbers held the line and the colony kept breathing without you: +1,054,800 \ud83e\udee7 oxygen",
           "color": 4881360,
           "fields": [
             {
@@ -2097,7 +2097,7 @@
         },
         "shop": {
           "title": "\ud83d\udee0\ufe0f Colony Requisitions",
-          "description": "Spend hard-won oxygen on hardware the colony will thank you for.",
+          "description": "Spend hard-won oxygen on brighter arrays, denser gardens, and hardware that buys the outpost one more sunrise.",
           "color": 4881360,
           "fields": [
             {
@@ -2119,7 +2119,7 @@
           "fields": [
             {
               "name": "\ud83e\udee7 oxygen",
-              "value": "\u2705 lifetime oxygen toward launch: 150,000 / 100,000",
+              "value": "\u2705 lifetime oxygen banked toward the next launch: 150,000 / 100,000",
               "inline": true
             },
             {
@@ -2136,47 +2136,47 @@
           "fields": [
             {
               "name": "\ud83c\udfd7\ufe0f first hab module",
-              "value": "\u2705 10 / 10\nTen machines humming at once \u2014 the outpost officially has a skyline.",
+              "value": "\u2705 10 / 10\nTen machines humming in the dark \u2014 the outpost has its first crooked little skyline.",
               "inline": true
             },
             {
               "name": "\ud83d\uddfa\ufe0f sector on the map",
-              "value": "\u23f3 100 / 100\nA hundred installations; the star charts finally print your name.",
+              "value": "\u23f3 100 / 100\nA hundred installations wired together; the orbital star charts finally print your outpost by name.",
               "inline": true
             },
             {
               "name": "\ud83c\udf0d terraforming tier",
-              "value": "\ud83d\udd12 150 / 1,000\nA thousand installations \u2014 the planet is starting to breathe back.",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand installations running hot \u2014 the dead planet is, ever so faintly, starting to breathe back.",
               "inline": true
             },
             {
               "name": "\ud83e\uded9 first tank banked",
-              "value": "\u2705 1,000 / 1,000\nA thousand units of oxygen in reserve; nobody rations tonight.",
+              "value": "\u2705 1,000 / 1,000\nA thousand units of oxygen sealed in reserve \u2014 for the first time, nobody rations their breath tonight.",
               "inline": true
             },
             {
               "name": "\ud83c\udfd9\ufe0f breathable dome",
-              "value": "\u23f3 100,000 / 100,000\nA hundred thousand units \u2014 the dome no longer whistles at night.",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand units banked \u2014 the dome stops whistling at night and the masks come off indoors.",
               "inline": true
             },
             {
               "name": "\ud83d\udcab atmosphere exporter",
-              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million units of oxygen \u2014 neighboring outposts buy from YOU now.",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million units of oxygen \u2014 the neighboring outposts have stopped begging and started buying from you.",
               "inline": true
             },
             {
               "name": "\ud83d\uddff first artifact",
-              "value": "\u2705 1 / 1\nOne alien artifact in the hold \u2014 proof there was someone here before.",
+              "value": "\u2705 1 / 1\nOne alien artifact sealed in the hold \u2014 cold proof that someone walked this world long before you.",
               "inline": true
             },
             {
               "name": "\ud83c\udfdb\ufe0f xenoarchive shelf",
-              "value": "\u23f3 5 / 5\nFive artifacts, each older than your whole civilization.",
+              "value": "\u23f3 5 / 5\nFive artifacts racked on the shelf, each one older than your entire civilization put together.",
               "inline": true
             },
             {
               "name": "\ud83d\udcdc precursor scholar",
-              "value": "\ud83d\udd12 7 / 25\nTwenty-five artifacts \u2014 you read the vanished script like a morning briefing.",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five artifacts catalogued \u2014 you read the vanished precursors' script like a morning briefing.",
               "inline": true
             }
           ]

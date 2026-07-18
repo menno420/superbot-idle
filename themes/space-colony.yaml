@@ -55,49 +55,49 @@ prestige:
   action_emoji: "🚀"
 
 labels:
-  offline_return: "While you slept in cryo, the colony kept breathing: {gains}"
+  offline_return: "While you slept in cryo, the scrubbers held the line and the colony kept breathing without you: {gains}"
   status_title: "🪐 Space Colony — life-support readout"
   shop_title: "🛠️ Colony Requisitions"
-  shop_description: Spend hard-won oxygen on hardware the colony will thank you for.
+  shop_description: Spend hard-won oxygen on brighter arrays, denser gardens, and hardware that buys the outpost one more sunrise.
   level: Mark
-  prestige_progress: "lifetime oxygen toward launch:"
+  prestige_progress: "lifetime oxygen banked toward the next launch:"
 
 # Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
 # engine-side, pre-registered in docs/design/achievements-v0.md).
 milestones:
   - id: owned-1
     name: first hab module
-    description: Ten machines humming at once — the outpost officially has a skyline.
+    description: Ten machines humming in the dark — the outpost has its first crooked little skyline.
     emoji: "🏗️"
   - id: owned-2
     name: sector on the map
-    description: A hundred installations; the star charts finally print your name.
+    description: A hundred installations wired together; the orbital star charts finally print your outpost by name.
     emoji: "🗺️"
   - id: owned-3
     name: terraforming tier
-    description: A thousand installations — the planet is starting to breathe back.
+    description: A thousand installations running hot — the dead planet is, ever so faintly, starting to breathe back.
     emoji: "🌍"
   - id: lifetime-1
     name: first tank banked
-    description: A thousand units of oxygen in reserve; nobody rations tonight.
+    description: A thousand units of oxygen sealed in reserve — for the first time, nobody rations their breath tonight.
     emoji: "🫙"
   - id: lifetime-2
     name: breathable dome
-    description: A hundred thousand units — the dome no longer whistles at night.
+    description: A hundred thousand units banked — the dome stops whistling at night and the masks come off indoors.
     emoji: "🏙️"
   - id: lifetime-3
     name: atmosphere exporter
-    description: Ten million units of oxygen — neighboring outposts buy from YOU now.
+    description: Ten million units of oxygen — the neighboring outposts have stopped begging and started buying from you.
     emoji: "💫"
   - id: prestige-1
     name: first artifact
-    description: One alien artifact in the hold — proof there was someone here before.
+    description: One alien artifact sealed in the hold — cold proof that someone walked this world long before you.
     emoji: "🗿"
   - id: prestige-2
     name: xenoarchive shelf
-    description: Five artifacts, each older than your whole civilization.
+    description: Five artifacts racked on the shelf, each one older than your entire civilization put together.
     emoji: "🏛️"
   - id: prestige-3
     name: precursor scholar
-    description: Twenty-five artifacts — you read the vanished script like a morning briefing.
+    description: Twenty-five artifacts catalogued — you read the vanished precursors' script like a morning briefing.
     emoji: "📜"
