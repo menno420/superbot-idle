@@ -1,6 +1,6 @@
 # 2026-07-18 — theme: enforce base_rate upper bound (schema maximum 1000) at load
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** Opus 4.8 (1M context) · medium · runtime bugfix · engine-loader seat (theme × schema-vs-enforcement parity) · 2026-07-18
 
