@@ -9,7 +9,7 @@ theme:
   name: Lighthouse Keep
   description: A salt-bitten tower on the last headland, where one stubborn flame argues with the fog and wins.
   emoji: "🗼"
-  embed_color: "#1B5E8A"
+  embed_color: "#16346B"
 
 currencies:
   - id: primary

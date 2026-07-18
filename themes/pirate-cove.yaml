@@ -9,7 +9,7 @@ theme:
   name: Pirate Cove
   description: A hidden smugglers' cove where every tide brings in doubloons and nobody asks where they came from.
   emoji: "🏴‍☠️"
-  embed_color: "#0E7490"
+  embed_color: "#16A085"
 
 currencies:
   - id: primary

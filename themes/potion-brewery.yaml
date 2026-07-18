@@ -9,7 +9,7 @@ theme:
   name: Potion Brewery
   description: A crooked little brewery where the pots mutter to themselves and every bottle glows.
   emoji: "⚗️"
-  embed_color: "#7B3FA0"
+  embed_color: "#35C15E"
 
 currencies:
   - id: primary
