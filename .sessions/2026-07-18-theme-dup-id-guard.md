@@ -1,8 +1,8 @@
 # 2026-07-18 — theme loader: reject duplicate currency/generator ids
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
-- **📊 Model:** neutral builder-agent · medium · bug fix · engine-robustness seat (theme-loader dup-id guard) · 2026-07-18T00:51Z (`date -u`)
+- **📊 Model:** neutral builder-agent · medium · runtime bugfix · engine-robustness seat (theme-loader dup-id guard) · 2026-07-18T00:51Z (`date -u`)
 
 ## What / why
 
