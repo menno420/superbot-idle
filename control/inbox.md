@@ -135,3 +135,12 @@ do: EAP EXTENDED through 2026-07-21 (Anthropic mail, Diana Liu, 2026-07-14T23:07
 why: the seat's dormancy record predates the extension; without this note a rebooted session would treat dormancy as current
 done-when: seat acknowledges on its first rebooted wake
 provenance: relayed by the Fleet Manager coordinator on live owner directives, 2026-07-15
+
+## ORDER 011 · 2026-07-19T07:15:40Z · status: new
+owner direction (2026-07-18, live) — record correction.
+do:
+- Note that the 2026-07-17 wind-down note and any earlier pause-the-loop guidance are superseded for seat operations by the owner's live 2026-07-18 direction (most-recent-wins).
+- The seat work loop is resumed under standing mandate fm ORDER 048.
+- The Projects EAP read-only date (2026-07-21) stays a platform fact to re-verify on the day; unchanged by this order.
+owner verbatim (2026-07-18, live): "most recent info wins, my message in the chat is leading, continue, do not let anything stall, if you run out of executable work start planning."
+why: the 2026-07-17 note predates the owner's 2026-07-18 direction; recording it keeps a later session from treating the old note as current.
