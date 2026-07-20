@@ -1,0 +1,1 @@
+- `claude/idle-theme-wave6` · self-initiated wave-6 data-only theme pack (21st: vineyard/winery) · 2026-07-20
