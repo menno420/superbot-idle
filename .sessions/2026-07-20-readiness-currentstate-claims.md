@@ -1,6 +1,6 @@
 # 2026-07-20 — docs+control(readiness): refresh current-state truth-stamp + prune terminal stale claims
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** Opus 4.8 · medium · docs-only — docs-readiness sweep · 2026-07-20
 - **Previous-session review:** predecessors idle #169 (loader↔schema parity-guard capstone) / #170 (THM-17 cross-pack vocab audit) / #171 (merge-doctrine de-wall — agents merge own green PRs) / #172 (retired merge-decision convention in status.md) / #173 (ORDER 011 record). This sweep grooms `docs/current-state.md` to their HEAD and prunes the claim files their merges left orphaned.
@@ -28,4 +28,4 @@ Regenerated `docs/seat-digest.md` (`python3 bootstrap.py seat-digest`) to clear 
 
 ## Landing (born-red convention)
 
-Born red: this card holds `in-progress` until the final flip commit marks it `complete`, clearing the HOLD so the landing workflow can merge on all-green.
+Born red: held `in-progress` through the sweep; flipped `complete` in the final commit (PR #174), clearing the HOLD so the landing workflow can merge on all-green.
