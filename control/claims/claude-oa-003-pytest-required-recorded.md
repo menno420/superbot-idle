@@ -1,1 +1,0 @@
-- `claude/oa-003-pytest-required-recorded` · **docs: record OA-003 done — pytest now a required check on main** · docs/current-state.md · 2026-07-17

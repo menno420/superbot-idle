@@ -3,7 +3,7 @@
 > **Status:** `in-progress`
 
 - **📊 Model:** Opus 4.8 · medium · docs-only — docs-readiness sweep · 2026-07-20
-- **Predecessors reviewed:** idle #169 (loader↔schema parity-guard capstone) / #170 (THM-17 cross-pack vocab audit) / #171 (merge-doctrine de-wall — agents merge own green PRs) / #172 (retired merge-decision convention in status.md) / #173 (ORDER 011 record). This sweep grooms `docs/current-state.md` to their HEAD and prunes the claim files their merges left orphaned.
+- **Previous-session review:** predecessors idle #169 (loader↔schema parity-guard capstone) / #170 (THM-17 cross-pack vocab audit) / #171 (merge-doctrine de-wall — agents merge own green PRs) / #172 (retired merge-decision convention in status.md) / #173 (ORDER 011 record). This sweep grooms `docs/current-state.md` to their HEAD and prunes the claim files their merges left orphaned.
 
 ## What / why
 

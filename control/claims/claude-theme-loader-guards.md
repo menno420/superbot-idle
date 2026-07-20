@@ -1,1 +1,0 @@
-- `claude/theme-loader-guards` · **tests: cover idle_engine/theme.py load_theme structural guards (94%→100%)** · tests/test_theme_loader_guards.py · 2026-07-17
