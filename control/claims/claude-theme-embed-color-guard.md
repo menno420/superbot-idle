@@ -1,1 +1,0 @@
-- `claude/theme-embed-color-guard` · **theme loader: reject malformed embed_color at load (bug fix + regression test)** · idle_engine/theme.py · tests/test_theme.py · 2026-07-18

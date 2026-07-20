@@ -1,1 +1,0 @@
-- `claude/theme-new-pack-apiary` · **theme: add apiary/beekeeping theme pack (THM-2)** · themes/apiary.yaml · 2026-07-17

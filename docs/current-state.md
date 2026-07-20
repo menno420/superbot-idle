@@ -12,6 +12,10 @@ truth refresh 2026-07-15 against main `8a7275d` (post-PR #139 — kit
 version claims corrected to the measured v1.16.0, PR #134 `3df5449`);
 suite-count reconcile 2026-07-18 against main `97e4c71` (post-PR #161 forge —
 sb-free 1415→1561, host job 1378→1576);
+readiness refresh 2026-07-20 against main `d2b6d38` (post-#173; In-flight note
+re-verified against live source control — zero open PRs, `control/claims/`
+pruned to README-only, ORDER 011 owner-resume + merge-doctrine de-wall
+#171/#172 recorded);
 suite 1607 passed, 1 skipped sb-free (see stability baseline).*
 
 ## Stability baseline
@@ -131,13 +135,23 @@ Known-good and not to be re-audited without a reported regression:
 
 (Verify against live source control — this section is a dated snapshot.)
 
-- Nothing in flight as of the 2026-07-17 owner-live fresh-start cleanup
-  (main HEAD): zero open PRs, and `control/claims/` holds only its README
-  after this cleanup swept the stale `claude-idle-test-coverage` claim (its
-  work merged as PR #146). Context: **EAP is EXTENDED through 2026-07-21**
-  (inbox ORDER 010, PR #139) — the 2026-07-14 dormancy orders are
-  superseded pending the owner's per-seat reboot go; routines stay
-  un-armed until then.
+- Nothing in flight as of the 2026-07-20 readiness sweep (main HEAD
+  `d2b6d38`): **zero open PRs** (re-verified on live GitHub), and
+  `control/claims/` pruned back to holding only its README — the 23
+  non-README claim files were all orphans of already-merged PRs (#150–#173,
+  each branch confirmed gone / PR merged on live GitHub) and were deleted in
+  this sweep.
+- **Seat work loop is RESUMED** under standing mandate fm ORDER 048, per the
+  owner's live 2026-07-18 direction (inbox **ORDER 011**, recorded #173,
+  most-recent-wins): the 2026-07-17 wind-down note and earlier
+  pause-the-loop guidance are superseded for seat operations. The Projects
+  **EAP read-only date (2026-07-21)** stays a platform fact to re-verify on
+  the day — unchanged by ORDER 011; routines stay un-armed until the owner's
+  per-seat reboot go.
+- **Merge doctrine de-walled** (#171/#172, 2026-07-18): the false "worker
+  does not merge its own PR" convention is retired — agents merge their own
+  green PRs; the born-red session-card HOLD (flip `complete` to clear) is the
+  remaining gate, not a human merge hand-off.
 
 ## Roadmap (groomed 2026-07-13 night — ordered, blockers marked)
 
