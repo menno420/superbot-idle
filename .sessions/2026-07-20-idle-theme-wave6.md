@@ -1,6 +1,6 @@
 # 2026-07-20 — theme: add vineyard/winery theme pack (wave 6, 21st)
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** Opus · high · data-authoring · content seat (new theme pack) · 2026-07-20
 
