@@ -45,11 +45,12 @@
     "ramen-stand",
     "royal-bakery",
     "space-colony",
+    "vineyard",
     "wizard-tower"
   ],
   "counts": {
-    "packs": 20,
-    "embeds": 80
+    "packs": 21,
+    "embeds": 84
   },
   "vectors": [
     {
@@ -2297,6 +2298,125 @@
             {
               "name": "\ud83d\udcdc precursor scholar",
               "value": "\ud83d\udd12 7 / 25\nTwenty-five artifacts catalogued \u2014 you read the vanished precursors' script like a morning briefing.",
+              "inline": true
+            }
+          ]
+        }
+      }
+    },
+    {
+      "pack": "vineyard",
+      "theme_id": "vineyard",
+      "views": {
+        "status": {
+          "title": "\ud83c\udf47 Vineyard \u2014 the morning cellar count",
+          "description": "A hillside wine estate ripening in the long afternoon light, where patient vine rows and a groaning estate press turn each harvest, cask by cask, into deep cellared wine.\n\nWhile you were away from the estate, the vines kept ripening and the casks kept filling: +1,054,800 \ud83c\udf77 casks of wine",
+          "color": 8068667,
+          "fields": [
+            {
+              "name": "\ud83c\udf77 casks of wine",
+              "value": "50,000 (+293/s)",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 grand cru vintages",
+              "value": "7",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf47 hillside vine row",
+              "value": "\u00d7 150 \u00b7 +293/s",
+              "inline": true
+            },
+            {
+              "name": "\u2699\ufe0f estate winepress",
+              "value": "\u00d7 0",
+              "inline": true
+            }
+          ]
+        },
+        "shop": {
+          "title": "\ud83c\udf77 The Estate Cellar",
+          "description": "Spend casks of wine on better trellises, a stronger press, and a fuller, faster harvest.",
+          "color": 8068667,
+          "fields": [
+            {
+              "name": "\ud83c\udf3f espaliered trellises",
+              "value": "\u2705 Vintage tier 0 \u2192 1 \u00b7 60 \ud83c\udf77 casks of wine \u00b7 affordable now\nVines trained flat along wire espaliers to catch every hour of sun; each row sets a heavier crop, so the hand-pickers fill their baskets that bit sooner.",
+              "inline": false
+            },
+            {
+              "name": "\u2699\ufe0f geared basket press",
+              "value": "\u26a0\ufe0f Vintage tier 1 \u2192 2 \u00b7 345 \ud83c\udf77 casks of wine \u00b7 requires \u2699\ufe0f estate winepress\nA ratcheted, geared basket fitted over the winepress; every turn of the screw bites deeper and the tubs run dry of must in half the time.",
+              "inline": false
+            }
+          ]
+        },
+        "prestige": {
+          "title": "\ud83c\udf7e lay down the cellar",
+          "description": "When the cellar overflows with young wine, bottle the very finest of the year, seal it under the ch\u00e2teau as a grand cru vintage, and prune the slope back to bare wood for a fresh season.",
+          "color": 8068667,
+          "fields": [
+            {
+              "name": "\ud83c\udf77 casks of wine",
+              "value": "\u2705 lifetime wine toward the vintage: 150,000 / 100,000",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 grand cru vintages",
+              "value": "7 (+1)",
+              "inline": true
+            }
+          ]
+        },
+        "achievements": {
+          "title": "\ud83c\udf47 Vineyard",
+          "description": "A hillside wine estate ripening in the long afternoon light, where patient vine rows and a groaning estate press turn each harvest, cask by cask, into deep cellared wine.",
+          "color": 8068667,
+          "fields": [
+            {
+              "name": "\ud83c\udf31 first full row",
+              "value": "\u2705 10 / 10\nTen vines staked and tied along the terrace \u2014 the slope finally rustles like a working vineyard at last light.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf47 hundred-vine estate",
+              "value": "\u23f3 100 / 100\nA hundred vine rows climbing the hill; the harvest crew needs a second cart and the cellar a second aisle.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udfc6 vineyard empire",
+              "value": "\ud83d\udd12 150 / 1,000\nA thousand rows across the valley \u2014 vintners three regions over graft their cuttings from your slopes.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udee2\ufe0f first thousand casks",
+              "value": "\u2705 1,000 / 1,000\nThe first thousand casks racked, bunged, and chalked with the year \u2014 the cellar smells of oak and new wine.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf96\ufe0f cellar of renown",
+              "value": "\u23f3 100,000 / 100,000\nA hundred thousand casks; your estate label is poured at every fair table from the coast to the capital.",
+              "inline": true
+            },
+            {
+              "name": "\ud83d\udc51 wine of legend",
+              "value": "\ud83d\udd12 150,000 / 10,000,000\nTen million casks. Sommeliers speak your vintages the way poets speak of summers long past.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf7e first grand cru",
+              "value": "\u2705 1 / 1\nThe first year laid down \u2014 one sealed grand cru vintage cellared under the ch\u00e2teau as the slope is pruned bare again.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf77 rack of vintages",
+              "value": "\u23f3 5 / 5\nFive grand cru vintages resting in the cellar rack \u2014 five harvests cellared and begun anew.",
+              "inline": true
+            },
+            {
+              "name": "\ud83c\udf1f master vintner",
+              "value": "\ud83d\udd12 7 / 25\nTwenty-five grand cru vintages \u2014 every great cellar on the continent keeps a bottle of your reserve for the occasions that matter.",
               "inline": true
             }
           ]
