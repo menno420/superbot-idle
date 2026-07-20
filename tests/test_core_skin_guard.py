@@ -138,6 +138,12 @@ FORBIDDEN_NOUNS_BY_PACK: dict[str, tuple[str, ...]] = {
         "anvil", "anvils", "ingot", "ingots", "bellows", "quench",
         "foundry", "foundries", "damascus", "billet", "billets",
     ),
+    "vineyard": (
+        "vineyard", "vineyards", "vine", "vines", "grape", "grapes",
+        "vintner", "vintners", "winepress", "cask", "casks", "vintage",
+        "vintages", "trellis", "trellises", "sommelier", "espalier",
+        "espaliered", "château", "chateau", "cellarhouse",
+    ),
 }
 
 FORBIDDEN_NOUNS = re.compile(
@@ -248,6 +254,9 @@ def test_guard_pattern_actually_catches_nouns():
     assert FORBIDDEN_NOUNS.search("an Apiary worker bee at the hive")
     assert FORBIDDEN_NOUNS.search("capped honey and royal jelly")
     assert FORBIDDEN_NOUNS.search("nectar and pollen from the clover")
+    assert FORBIDDEN_NOUNS.search("a Vineyard hillside vine row")
+    assert FORBIDDEN_NOUNS.search("grapes pressed at the estate winepress")
+    assert FORBIDDEN_NOUNS.search("casks of a grand cru vintage")
     assert not FORBIDDEN_NOUNS.search("when the tick happens")
     assert not FORBIDDEN_NOUNS.search("prestige multiplier upgrade")
     assert not FORBIDDEN_NOUNS.search("essential engine invariants")

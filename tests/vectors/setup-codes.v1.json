@@ -37,6 +37,7 @@
     "ramen-stand",
     "royal-bakery",
     "space-colony",
+    "vineyard",
     "wizard-tower"
   ],
   "decode_error_classes": [
@@ -46,8 +47,8 @@
     "UnknownFeatureError"
   ],
   "counts": {
-    "valid": 100,
-    "tolerance": 121,
+    "valid": 105,
+    "tolerance": 127,
     "errors": 25
   },
   "vectors": {
@@ -1286,6 +1287,71 @@
         "payload_hex": "0473706163652d636f6c6f6e79",
         "crc16_hex": "df30",
         "code": "IDLE1-0HSQ0RB3CMPP6VVCDXQ7KQSG"
+      },
+      {
+        "name": "vineyard--all-on",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "flags_byte": "07",
+        "payload_hex": "0776696e6579617264",
+        "crc16_hex": "8e65",
+        "code": "IDLE1-0XV6JVK5F5GQ4S4ECM"
+      },
+      {
+        "name": "vineyard--all-off",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "00",
+        "payload_hex": "0076696e6579617264",
+        "crc16_hex": "e3ac",
+        "code": "IDLE1-01V6JVK5F5GQ4S73NG"
+      },
+      {
+        "name": "vineyard--only-offline_progress",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": true,
+          "upgrades": false,
+          "prestige": false
+        },
+        "flags_byte": "01",
+        "payload_hex": "0176696e6579617264",
+        "crc16_hex": "f7ef",
+        "code": "IDLE1-05V6JVK5F5GQ4S7QXW"
+      },
+      {
+        "name": "vineyard--only-upgrades",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": false,
+          "upgrades": true,
+          "prestige": false
+        },
+        "flags_byte": "02",
+        "payload_hex": "0276696e6579617264",
+        "crc16_hex": "cb2a",
+        "code": "IDLE1-09V6JVK5F5GQ4S6B58"
+      },
+      {
+        "name": "vineyard--only-prestige",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": true
+        },
+        "flags_byte": "04",
+        "payload_hex": "0476696e6579617264",
+        "crc16_hex": "b2a0",
+        "code": "IDLE1-0HV6JVK5F5GQ4S5JM0"
       },
       {
         "name": "wizard-tower--all-on",
@@ -2716,6 +2782,78 @@
         "canonical": "IDLE1-0XSQ0RB3CMPP6VVCDXQ7KCZY",
         "config": {
           "theme_id": "space-colony",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "lowercase + hyphen groups + look-alike folds combined"
+      },
+      {
+        "name": "vineyard--lowercase",
+        "input": "idle1-0xv6jvk5f5gq4s4ecm",
+        "canonical": "IDLE1-0XV6JVK5F5GQ4S4ECM",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "decoding is case-insensitive (prefix and body)"
+      },
+      {
+        "name": "vineyard--hyphen-grouped",
+        "input": "IDLE1-0XV6-JVK5-F5GQ-4S4E-CM",
+        "canonical": "IDLE1-0XV6JVK5F5GQ4S4ECM",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "internal hyphens in the body are ignored"
+      },
+      {
+        "name": "vineyard--lookalike-O-for-0",
+        "input": "IDLE1-OXV6JVK5F5GQ4S4ECM",
+        "canonical": "IDLE1-0XV6JVK5F5GQ4S4ECM",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": true,
+          "upgrades": true,
+          "prestige": true
+        },
+        "note": "O folds to 0"
+      },
+      {
+        "name": "vineyard--all-off--lookalike-I-for-1",
+        "input": "IDLE1-0IV6JVK5F5GQ4S73NG",
+        "canonical": "IDLE1-01V6JVK5F5GQ4S73NG",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "I folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "vineyard--all-off--lookalike-L-for-1",
+        "input": "IDLE1-0LV6JVK5F5GQ4S73NG",
+        "canonical": "IDLE1-01V6JVK5F5GQ4S73NG",
+        "config": {
+          "theme_id": "vineyard",
+          "offline_progress": false,
+          "upgrades": false,
+          "prestige": false
+        },
+        "note": "L folds to 1 (body only \u2014 the prefix version digit is literal)"
+      },
+      {
+        "name": "vineyard--kitchen-sink",
+        "input": "idle1-oxv6-jvk5-f5gq-4s4e-cm",
+        "canonical": "IDLE1-0XV6JVK5F5GQ4S4ECM",
+        "config": {
+          "theme_id": "vineyard",
           "offline_progress": true,
           "upgrades": true,
           "prestige": true

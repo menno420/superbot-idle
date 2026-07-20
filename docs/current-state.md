@@ -42,9 +42,10 @@ Known-good and not to be re-audited without a reported regression:
   - `persistence.py` — SAVE FORMAT v1: canonical versioned
     `dump_state`/`load_state` + migration registry; contract in
     [`persistence.md`](persistence.md).
-- **Theme catalog: 20 packs**, all schema-v1, all with full `labels` blocks
+- **Theme catalog: 21 packs**, all schema-v1, all with full `labels` blocks
   AND flavored 9-slot `milestones` blocks (waves 4+5 flavored 2026-07-13,
-  PRs #105/#109 — zero neutral `Milestone 1 … 9` scaffolding remains):
+  PRs #105/#109 — zero neutral `Milestone 1 … 9` scaffolding remains; wave 6
+  opened 2026-07-20 with the `vineyard` pack, PR #175):
   egg-farm, space-colony, potion-brewery, haunted-manor, deep-sea-station,
   dragon-hoard, wizard-tower, royal-bakery, cyber-city, ant-colony,
   idol-agency, pirate-cove, coffee-roastery, arctic-outpost, candy-factory,
@@ -66,7 +67,7 @@ Known-good and not to be re-audited without a reported regression:
 - **Setup codes v1** (`IDLE1-` Crockford-base32 + CRC-16, FROZEN):
   encode/decode/catalog-validate with a distinct error taxonomy;
   cross-language vector file `tests/vectors/setup-codes.v1.json`
-  (246 vectors: 100 valid with layer-by-layer intermediates, 121 tolerance,
+  (257 vectors: 105 valid with layer-by-layer intermediates, 127 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
 - **Test suite: 1607 passing, 1 skipped sb-free; the pinned-host CI job runs
   the 15 extra manifest-contract tests on top of that with zero skips.** The

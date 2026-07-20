@@ -1,0 +1,105 @@
+# vineyard — theme pack #21, first of wave 6 (data only; validated by
+# theme-gate against docs/theme-schema.md / schema/theme.schema.json). Skins the
+# SAME opaque engine ids as the rest of the catalog (primary/prestige,
+# tier1/tier2, boost1/boost2): identical mechanics, different world. Numbers
+# mirror the two-tier forge pack exactly (tier1 1, tier2 5) — neutral rates, no
+# balance block.
+schema_version: 1
+
+theme:
+  id: vineyard
+  name: Vineyard
+  description: A hillside wine estate ripening in the long afternoon light, where patient vine rows and a groaning estate press turn each harvest, cask by cask, into deep cellared wine.
+  emoji: "🍇"
+  embed_color: "#7B1E3B"
+
+currencies:
+  - id: primary
+    name: casks of wine
+    description: Oak casks of estate wine racked in the cool cellar — the whole vineyard keeps its ledger in barrels stacked three deep against the stone.
+    emoji: "🍷"
+  - id: prestige
+    name: grand cru vintages
+    description: Bottled grand cru vintages laid down season after season — the sealed, dust-veiled reward for cellaring a whole year's wine and replanting the slope anew.
+    emoji: "🏆"
+
+generators:
+  - id: tier1
+    name: hillside vine row
+    description: A single row of hand-tended vines terraced into the slope, ripening one heavy cluster at a time and pressed by hand at the end of the long day.
+    emoji: "🍇"
+    produces: primary
+    base_rate: 1
+  - id: tier2
+    name: estate winepress
+    description: A great screw-driven estate winepress groaning in the cellarhouse, crushing tub after tub of grapes into flowing must faster than a whole crew of pickers could tread.
+    emoji: "⚙️"
+    produces: primary
+    base_rate: 5
+
+upgrades:
+  - id: boost1
+    name: espaliered trellises
+    description: Vines trained flat along wire espaliers to catch every hour of sun; each row sets a heavier crop, so the hand-pickers fill their baskets that bit sooner.
+    emoji: "🌿"
+    target: tier1
+  - id: boost2
+    name: geared basket press
+    description: A ratcheted, geared basket fitted over the winepress; every turn of the screw bites deeper and the tubs run dry of must in half the time.
+    emoji: "⚙️"
+    target: tier2
+
+prestige:
+  currency: prestige
+  measures: primary
+  action_name: lay down the cellar
+  action_description: When the cellar overflows with young wine, bottle the very finest of the year, seal it under the château as a grand cru vintage, and prune the slope back to bare wood for a fresh season.
+  action_emoji: "🍾"
+
+labels:
+  offline_return: "While you were away from the estate, the vines kept ripening and the casks kept filling: {gains}"
+  status_title: "🍇 Vineyard — the morning cellar count"
+  shop_title: "🍷 The Estate Cellar"
+  shop_description: Spend casks of wine on better trellises, a stronger press, and a fuller, faster harvest.
+  level: Vintage tier
+  prestige_progress: "lifetime wine toward the vintage:"
+
+# Noun skins for the ENGINE-DERIVED milestone slots (thresholds/bonuses are
+# engine-side, pre-registered in docs/design/achievements-v0.md).
+milestones:
+  - id: owned-1
+    name: first full row
+    description: Ten vines staked and tied along the terrace — the slope finally rustles like a working vineyard at last light.
+    emoji: "🌱"
+  - id: owned-2
+    name: hundred-vine estate
+    description: A hundred vine rows climbing the hill; the harvest crew needs a second cart and the cellar a second aisle.
+    emoji: "🍇"
+  - id: owned-3
+    name: vineyard empire
+    description: A thousand rows across the valley — vintners three regions over graft their cuttings from your slopes.
+    emoji: "🏆"
+  - id: lifetime-1
+    name: first thousand casks
+    description: The first thousand casks racked, bunged, and chalked with the year — the cellar smells of oak and new wine.
+    emoji: "🛢️"
+  - id: lifetime-2
+    name: cellar of renown
+    description: A hundred thousand casks; your estate label is poured at every fair table from the coast to the capital.
+    emoji: "🎖️"
+  - id: lifetime-3
+    name: wine of legend
+    description: Ten million casks. Sommeliers speak your vintages the way poets speak of summers long past.
+    emoji: "👑"
+  - id: prestige-1
+    name: first grand cru
+    description: The first year laid down — one sealed grand cru vintage cellared under the château as the slope is pruned bare again.
+    emoji: "🍾"
+  - id: prestige-2
+    name: rack of vintages
+    description: Five grand cru vintages resting in the cellar rack — five harvests cellared and begun anew.
+    emoji: "🍷"
+  - id: prestige-3
+    name: master vintner
+    description: Twenty-five grand cru vintages — every great cellar on the continent keeps a bottle of your reserve for the occasions that matter.
+    emoji: "🌟"
