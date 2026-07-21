@@ -1,6 +1,6 @@
 # 2026-07-21 — docs: superbot-idle project closeout
 
-> **Status:** `in-progress`
+> **Status:** `complete`
 
 - **📊 Model:** opus-4.8 · high · docs-only
 
