@@ -1,1 +1,0 @@
-- `claude/readiness-currentstate-claims` · readiness: refresh current-state truth-stamp + prune terminal stale claims · 2026-07-20
