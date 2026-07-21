@@ -53,6 +53,9 @@ themes/*.yaml` locally).
 
 ## Lane-layer docs (this repo's own additions — reachable from here on purpose)
 
+- [`PROJECT-CLOSEOUT.md`](PROJECT-CLOSEOUT.md) — project closeout: plain-language
+  wrap-up of what shipped, how to run it, and how a fresh session continues.
+  Read first when picking up this repo cold.
 - [`../README.md`](../README.md) — the lane contract: CORE/SKIN split, integrity
   floor, mission. Read before any engine or theme work.
 - [`../CONVENTIONS.md`](../CONVENTIONS.md) — how work ships (PR flow, merge

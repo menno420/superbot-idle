@@ -16,7 +16,13 @@ readiness refresh 2026-07-20 against main `d2b6d38` (post-#173; In-flight note
 re-verified against live source control — zero open PRs, `control/claims/`
 pruned to README-only, ORDER 011 owner-resume + merge-doctrine de-wall
 #171/#172 recorded);
-suite 1607 passed, 1 skipped sb-free (see stability baseline).*
+project closeout 2026-07-21 against main `31a4a3a` (post-PR #175 vineyard wave 6 —
+suite count trued 1607→1642; see `PROJECT-CLOSEOUT.md`);
+suite 1642 passed, 1 skipped sb-free (see stability baseline).*
+
+> **Project closeout:** the plain-language wrap-up for this repo — what shipped,
+> how to run it, and how a fresh session continues — lives in
+> [`PROJECT-CLOSEOUT.md`](PROJECT-CLOSEOUT.md).
 
 ## Stability baseline
 
@@ -69,7 +75,7 @@ Known-good and not to be re-audited without a reported regression:
   cross-language vector file `tests/vectors/setup-codes.v1.json`
   (257 vectors: 105 valid with layer-by-layer intermediates, 127 tolerance,
   25 error; regenerate-or-red via `tools/gen_setup_vectors.py`).
-- **Test suite: 1607 passing, 1 skipped sb-free; the pinned-host CI job runs
+- **Test suite: 1642 passing, 1 skipped sb-free; the pinned-host CI job runs
   the 15 extra manifest-contract tests on top of that with zero skips.** The
   old `1 skipped` CI hole is **CLOSED in CI** (PR #107,
   ORDER 007 item 3): `plugin/tests/test_manifest.py` still `importorskip`s
@@ -78,7 +84,7 @@ Known-good and not to be re-audited without a reported regression:
   checks out superbot-next pinned @
   `9634e81748363184bf13abf1485e80262e19e8cb` (bump recipe in the workflow
   comment), exposes `sb` via `PYTHONPATH`, and RUNS the 15 manifest-contract
-  tests on every PR (`1622 passed` = the 1607 sb-free plus the 15 manifest
+  tests on every PR (`1657 passed` = the 1642 sb-free plus the 15 manifest
   tests that read as `1 skipped` sb-free; a grep guard hard-fails the job on
   any skip). The sb-free `pytest` job is unchanged. As of 2026-07-17 the owner
   made `pytest` a REQUIRED status check on `main` (OA-003 done), so the required
